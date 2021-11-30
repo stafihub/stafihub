@@ -1,0 +1,42 @@
+syntax = "proto3";
+package stafiprotocol.stafihub.rate;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/stafiprotocol/stafihub/x/rate/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a list of rate items.
+	rpc Rate(QueryRateRequest) returns (QueryRateResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/rate/{denom}";
+	}
+
+// Queries a list of eraRate items.
+	rpc EraRate(QueryEraRateRequest) returns (QueryEraRateResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/rate/eraRate/{denom}/{era}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryRateRequest {
+    string denom = 1;
+}
+
+message QueryRateResponse {
+    string ratio = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec"];
+}
+
+message QueryEraRateRequest {
+  string denom = 1;
+  string era = 2;
+}
+
+message QueryEraRateResponse {
+    string ratio = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec"];
+}
+
+// this line is used by starport scaffolding # 3
