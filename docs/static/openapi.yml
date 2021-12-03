@@ -12950,6 +12950,38 @@ paths:
           type: string
       tags:
         - Query
+  /stafiprotocol/stafihub/sudo/admin:
+    get:
+      summary: Queries a list of admin items.
+      operationId: StafiprotocolStafihubSudoAdmin
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
 definitions:
   cosmos.authz.v1beta1.Grant:
     type: object
@@ -20413,3 +20445,10 @@ definitions:
       value:
         type: integer
         format: int64
+  stafiprotocol.stafihub.sudo.MsgUpdateAdminResponse:
+    type: object
+  stafiprotocol.stafihub.sudo.QueryAdminResponse:
+    type: object
+    properties:
+      address:
+        type: string

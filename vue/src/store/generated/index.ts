@@ -12,6 +12,7 @@ import CosmosCosmosSdkCosmosStakingV1Beta1 from './cosmos/cosmos-sdk/cosmos.stak
 import CosmosCosmosSdkCosmosVestingV1Beta1 from './cosmos/cosmos-sdk/cosmos.vesting.v1beta1'
 import CosmosIbcGoIbcApplicationsTransferV1 from './cosmos/ibc-go/ibc.applications.transfer.v1'
 import StafiprotocolStafihubStafiprotocolStafihubRelayers from './stafiprotocol/stafihub/stafiprotocol.stafihub.relayers'
+import StafiprotocolStafihubStafiprotocolStafihubSudo from './stafiprotocol/stafihub/stafiprotocol.stafihub.sudo'
 
 
 export default { 
@@ -27,6 +28,7 @@ export default {
   CosmosCosmosSdkCosmosVestingV1Beta1: load(CosmosCosmosSdkCosmosVestingV1Beta1, 'cosmos.vesting.v1beta1'),
   CosmosIbcGoIbcApplicationsTransferV1: load(CosmosIbcGoIbcApplicationsTransferV1, 'ibc.applications.transfer.v1'),
   StafiprotocolStafihubStafiprotocolStafihubRelayers: load(StafiprotocolStafihubStafiprotocolStafihubRelayers, 'stafiprotocol.stafihub.relayers'),
+  StafiprotocolStafihubStafiprotocolStafihubSudo: load(StafiprotocolStafihubStafiprotocolStafihubSudo, 'stafiprotocol.stafihub.sudo'),
   
 }
 

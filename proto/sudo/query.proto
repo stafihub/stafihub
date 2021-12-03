@@ -1,0 +1,26 @@
+syntax = "proto3";
+package stafiprotocol.stafihub.sudo;
+
+import "google/api/annotations.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a list of admin items.
+	rpc Admin(QueryAdminRequest) returns (QueryAdminResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/sudo/admin";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryAdminRequest {
+}
+
+message QueryAdminResponse {
+  string address = 1;
+}
+
+// this line is used by starport scaffolding # 3
