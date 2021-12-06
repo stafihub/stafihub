@@ -21,55 +21,11 @@ func TestGenesisState_Validate(t *testing.T) {
         {
             desc:     "valid genesis state",
             genState: &types.GenesisState{
-                RelayerList: []types.Relayer{
-	{
-		Index: "0",
-},
-	{
-		Index: "1",
-},
-},
-ThresholdList: []types.Threshold{
-	{
-		Index: "0",
-},
-	{
-		Index: "1",
-},
-},
-// this line is used by starport scaffolding # types/genesis/validField
+                // this line is used by starport scaffolding # types/genesis/validField
             },
             valid:    true,
         },
-        {
-	desc:     "duplicated relayer",
-	genState: &types.GenesisState{
-		RelayerList: []types.Relayer{
-			{
-				Index: "0",
-},
-			{
-				Index: "0",
-},
-		},
-	},
-	valid:    false,
-},
-{
-	desc:     "duplicated threshold",
-	genState: &types.GenesisState{
-		ThresholdList: []types.Threshold{
-			{
-				Index: "0",
-},
-			{
-				Index: "0",
-},
-		},
-	},
-	valid:    false,
-},
-// this line is used by starport scaffolding # types/genesis/testcase
+        // this line is used by starport scaffolding # types/genesis/testcase
     } {
         t.Run(tc.desc, func(t *testing.T) {
             err := tc.genState.Validate()

@@ -16,11 +16,11 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_relayers"
 
-
+    
 )
 
-var (
-	RelayerPrefix    = []byte{0x00}
-	ThresholdPrefix = []byte{0x01}
-	AdminPrefix = []byte{0x02}
-)
+
+
+func KeyPrefix(p string) []byte {
+    return []byte(p)
+}

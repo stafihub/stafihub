@@ -91,12 +91,12 @@ import (
 	ratemodule "github.com/stafiprotocol/stafihub/x/rate"
 		ratemodulekeeper "github.com/stafiprotocol/stafihub/x/rate/keeper"
 		ratemoduletypes "github.com/stafiprotocol/stafihub/x/rate/types"
-relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
-		relayersmodulekeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
-		relayersmoduletypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 sudomodule "github.com/stafiprotocol/stafihub/x/sudo"
 		sudomodulekeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
 		sudomoduletypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
+		relayersmodulekeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
+		relayersmoduletypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 // this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -148,8 +148,8 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		ratemodule.AppModuleBasic{},
-relayersmodule.AppModuleBasic{},
 sudomodule.AppModuleBasic{},
+relayersmodule.AppModuleBasic{},
 // this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -218,12 +218,12 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	
+
 		RateKeeper ratemodulekeeper.Keeper
 
-		RelayersKeeper relayersmodulekeeper.Keeper
-
 		SudoKeeper sudomodulekeeper.Keeper
+
+		RelayersKeeper relayersmodulekeeper.Keeper
 // this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -258,8 +258,8 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		ratemoduletypes.StoreKey,
-relayersmoduletypes.StoreKey,
 sudomoduletypes.StoreKey,
+relayersmoduletypes.StoreKey,
 // this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -358,14 +358,22 @@ sudomoduletypes.StoreKey,
         &stakingKeeper, govRouter,
     )
 
-	
+
 		app.RateKeeper = *ratemodulekeeper.NewKeeper(
 			appCodec,
 			keys[ratemoduletypes.StoreKey],
 			keys[ratemoduletypes.MemStoreKey],
-			
+
 			)
 		rateModule := ratemodule.NewAppModule(appCodec, app.RateKeeper)
+
+		app.SudoKeeper = *sudomodulekeeper.NewKeeper(
+			appCodec,
+			keys[sudomoduletypes.StoreKey],
+			keys[sudomoduletypes.MemStoreKey],
+
+			)
+		sudoModule := sudomodule.NewAppModule(appCodec, app.SudoKeeper)
 
 		
 		app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
@@ -373,17 +381,9 @@ sudomoduletypes.StoreKey,
 			keys[relayersmoduletypes.StoreKey],
 			keys[relayersmoduletypes.MemStoreKey],
 			
-			)
+			app.SudoKeeper,
+)
 		relayersModule := relayersmodule.NewAppModule(appCodec, app.RelayersKeeper)
-
-		
-		app.SudoKeeper = *sudomodulekeeper.NewKeeper(
-			appCodec,
-			keys[sudomoduletypes.StoreKey],
-			keys[sudomoduletypes.MemStoreKey],
-			
-			)
-		sudoModule := sudomodule.NewAppModule(appCodec, app.SudoKeeper)
 
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -426,6 +426,7 @@ sudomoduletypes.StoreKey,
 		rateModule,
 relayersModule,
 sudoModule,
+relayersModule,
 // this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -461,8 +462,8 @@ sudoModule,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		ratemoduletypes.ModuleName,
+		sudomoduletypes.ModuleName,
 relayersmoduletypes.ModuleName,
-sudomoduletypes.ModuleName,
 // this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -651,8 +652,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
     paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(ratemoduletypes.ModuleName)
-paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
 paramsKeeper.Subspace(sudomoduletypes.ModuleName)
+paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
 // this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
