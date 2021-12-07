@@ -12516,6 +12516,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    creator:
+                      type: string
                     denom:
                       type: string
                     address:
@@ -12621,7 +12623,7 @@ paths:
           type: boolean
       tags:
         - Query
-  /stafiprotocol/stafihub/relayers/isRelayer:
+  '/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}':
     get:
       summary: Queries a list of isRelayer items.
       operationId: StafiprotocolStafihubRelayersIsRelayer
@@ -12653,16 +12655,16 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: denom
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
         - name: address
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
-  /stafiprotocol/stafihub/relayers/relayersByDenom:
+  '/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}':
     get:
       summary: Queries a list of relayersByDenom items.
       operationId: StafiprotocolStafihubRelayersRelayersByDenom
@@ -12677,6 +12679,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    creator:
+                      type: string
                     denom:
                       type: string
                     address:
@@ -12728,8 +12732,8 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: denom
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
         - name: pagination.key
           description: |-
@@ -12801,6 +12805,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    creator:
+                      type: string
                     denom:
                       type: string
                     value:
@@ -12920,6 +12926,8 @@ paths:
               threshold:
                 type: object
                 properties:
+                  creator:
+                    type: string
                   denom:
                     type: string
                   value:
@@ -20300,7 +20308,7 @@ definitions:
     type: object
   stafiprotocol.stafihub.relayers.MsgDeleteRelayerResponse:
     type: object
-  stafiprotocol.stafihub.relayers.MsgSetThresholdResponse:
+  stafiprotocol.stafihub.relayers.MsgUpdateThresholdResponse:
     type: object
   stafiprotocol.stafihub.relayers.QueryAllRelayerResponse:
     type: object
@@ -20310,6 +20318,8 @@ definitions:
         items:
           type: object
           properties:
+            creator:
+              type: string
             denom:
               type: string
             address:
@@ -20347,6 +20357,8 @@ definitions:
         items:
           type: object
           properties:
+            creator:
+              type: string
             denom:
               type: string
             value:
@@ -20377,6 +20389,19 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  stafiprotocol.stafihub.relayers.QueryGetThresholdResponse:
+    type: object
+    properties:
+      threshold:
+        type: object
+        properties:
+          creator:
+            type: string
+          denom:
+            type: string
+          value:
+            type: integer
+            format: int64
   stafiprotocol.stafihub.relayers.QueryIsRelayerResponse:
     type: object
     properties:
@@ -20390,6 +20415,8 @@ definitions:
         items:
           type: object
           properties:
+            creator:
+              type: string
             denom:
               type: string
             address:
@@ -20419,20 +20446,11 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  stafiprotocol.stafihub.relayers.QueryThresholdResponse:
-    type: object
-    properties:
-      threshold:
-        type: object
-        properties:
-          denom:
-            type: string
-          value:
-            type: integer
-            format: int64
   stafiprotocol.stafihub.relayers.Relayer:
     type: object
     properties:
+      creator:
+        type: string
       denom:
         type: string
       address:
@@ -20440,6 +20458,8 @@ definitions:
   stafiprotocol.stafihub.relayers.Threshold:
     type: object
     properties:
+      creator:
+        type: string
       denom:
         type: string
       value:

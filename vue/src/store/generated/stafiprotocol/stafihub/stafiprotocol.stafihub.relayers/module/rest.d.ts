@@ -3,7 +3,7 @@ export interface ProtobufAny {
 }
 export declare type RelayersMsgCreateRelayerResponse = object;
 export declare type RelayersMsgDeleteRelayerResponse = object;
-export declare type RelayersMsgSetThresholdResponse = object;
+export declare type RelayersMsgUpdateThresholdResponse = object;
 export interface RelayersQueryAllRelayerResponse {
     relayers?: RelayersRelayer[];
     /**
@@ -30,6 +30,9 @@ export interface RelayersQueryAllThresholdResponse {
      */
     pagination?: V1Beta1PageResponse;
 }
+export interface RelayersQueryGetThresholdResponse {
+    threshold?: RelayersThreshold;
+}
 export interface RelayersQueryIsRelayerResponse {
     flag?: boolean;
 }
@@ -46,14 +49,13 @@ export interface RelayersQueryRelayersByDenomResponse {
      */
     pagination?: V1Beta1PageResponse;
 }
-export interface RelayersQueryThresholdResponse {
-    threshold?: RelayersThreshold;
-}
 export interface RelayersRelayer {
+    creator?: string;
     denom?: string;
     address?: string;
 }
 export interface RelayersThreshold {
+    creator?: string;
     denom?: string;
     /** @format int64 */
     value?: number;
@@ -195,22 +197,18 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @tags Query
      * @name QueryIsRelayer
      * @summary Queries a list of isRelayer items.
-     * @request GET:/stafiprotocol/stafihub/relayers/isRelayer
+     * @request GET:/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}
      */
-    queryIsRelayer: (query?: {
-        denom?: string;
-        address?: string;
-    }, params?: RequestParams) => Promise<HttpResponse<RelayersQueryIsRelayerResponse, RpcStatus>>;
+    queryIsRelayer: (denom: string, address: string, params?: RequestParams) => Promise<HttpResponse<RelayersQueryIsRelayerResponse, RpcStatus>>;
     /**
      * No description
      *
      * @tags Query
      * @name QueryRelayersByDenom
      * @summary Queries a list of relayersByDenom items.
-     * @request GET:/stafiprotocol/stafihub/relayers/relayersByDenom
+     * @request GET:/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}
      */
-    queryRelayersByDenom: (query?: {
-        denom?: string;
+    queryRelayersByDenom: (denom: string, query?: {
         "pagination.key"?: string;
         "pagination.offset"?: string;
         "pagination.limit"?: string;
@@ -240,6 +238,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @summary Queries a threshold by denom.
      * @request GET:/stafiprotocol/stafihub/relayers/threshold/{denom}
      */
-    queryThreshold: (denom: string, params?: RequestParams) => Promise<HttpResponse<RelayersQueryThresholdResponse, RpcStatus>>;
+    queryThreshold: (denom: string, params?: RequestParams) => Promise<HttpResponse<RelayersQueryGetThresholdResponse, RpcStatus>>;
 }
 export {};

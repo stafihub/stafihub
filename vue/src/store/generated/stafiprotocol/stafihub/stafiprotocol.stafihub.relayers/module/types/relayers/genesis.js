@@ -2,17 +2,14 @@
 import { Relayer, Threshold } from '../relayers/relayer';
 import { Writer, Reader } from 'protobufjs/minimal';
 export const protobufPackage = 'stafiprotocol.stafihub.relayers';
-const baseGenesisState = { admin: '' };
+const baseGenesisState = {};
 export const GenesisState = {
     encode(message, writer = Writer.create()) {
-        if (message.admin !== '') {
-            writer.uint32(10).string(message.admin);
-        }
         for (const v of message.relayers) {
-            Relayer.encode(v, writer.uint32(18).fork()).ldelim();
+            Relayer.encode(v, writer.uint32(10).fork()).ldelim();
         }
         for (const v of message.thresholds) {
-            Threshold.encode(v, writer.uint32(26).fork()).ldelim();
+            Threshold.encode(v, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -26,12 +23,9 @@ export const GenesisState = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.admin = reader.string();
-                    break;
-                case 2:
                     message.relayers.push(Relayer.decode(reader, reader.uint32()));
                     break;
-                case 3:
+                case 2:
                     message.thresholds.push(Threshold.decode(reader, reader.uint32()));
                     break;
                 default:
@@ -45,12 +39,6 @@ export const GenesisState = {
         const message = { ...baseGenesisState };
         message.relayers = [];
         message.thresholds = [];
-        if (object.admin !== undefined && object.admin !== null) {
-            message.admin = String(object.admin);
-        }
-        else {
-            message.admin = '';
-        }
         if (object.relayers !== undefined && object.relayers !== null) {
             for (const e of object.relayers) {
                 message.relayers.push(Relayer.fromJSON(e));
@@ -65,7 +53,6 @@ export const GenesisState = {
     },
     toJSON(message) {
         const obj = {};
-        message.admin !== undefined && (obj.admin = message.admin);
         if (message.relayers) {
             obj.relayers = message.relayers.map((e) => (e ? Relayer.toJSON(e) : undefined));
         }
@@ -84,12 +71,6 @@ export const GenesisState = {
         const message = { ...baseGenesisState };
         message.relayers = [];
         message.thresholds = [];
-        if (object.admin !== undefined && object.admin !== null) {
-            message.admin = object.admin;
-        }
-        else {
-            message.admin = '';
-        }
         if (object.relayers !== undefined && object.relayers !== null) {
             for (const e of object.relayers) {
                 message.relayers.push(Relayer.fromPartial(e));

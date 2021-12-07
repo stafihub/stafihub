@@ -7,7 +7,31 @@ option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+  rpc CreateRelayer(MsgCreateRelayer) returns (MsgCreateRelayerResponse);
+  rpc DeleteRelayer(MsgDeleteRelayer) returns (MsgDeleteRelayerResponse);
+  rpc UpdateThreshold(MsgUpdateThreshold) returns (MsgUpdateThresholdResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
 }
+
+message MsgCreateRelayer {
+  string creator = 1;
+  string denom = 2;
+  string address = 3;
+}
+message MsgCreateRelayerResponse {}
+
+message MsgDeleteRelayer {
+  string creator = 1;
+  string denom = 2;
+  string address = 3;
+}
+message MsgDeleteRelayerResponse {}
+
+message MsgUpdateThreshold {
+  string creator = 1;
+  string denom = 2;
+  uint32 value = 3;
+}
+message MsgUpdateThresholdResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -16,7 +16,12 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_relayers"
 
-    
+
+)
+
+var (
+	RelayerPrefix    = []byte{0x00}
+	ThresholdPrefix = []byte{0x01}
 )
 
 

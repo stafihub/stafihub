@@ -5,15 +5,6 @@ import { Relayer, Threshold } from '../relayers/relayer'
 
 export const protobufPackage = 'stafiprotocol.stafihub.relayers'
 
-export interface QueryIsRelayerRequest {
-  denom: string
-  address: string
-}
-
-export interface QueryIsRelayerResponse {
-  flag: boolean
-}
-
 export interface QueryAllRelayerRequest {
   pagination: PageRequest | undefined
 }
@@ -21,6 +12,15 @@ export interface QueryAllRelayerRequest {
 export interface QueryAllRelayerResponse {
   relayers: Relayer[]
   pagination: PageResponse | undefined
+}
+
+export interface QueryIsRelayerRequest {
+  denom: string
+  address: string
+}
+
+export interface QueryIsRelayerResponse {
+  flag: boolean
 }
 
 export interface QueryRelayersByDenomRequest {
@@ -33,11 +33,11 @@ export interface QueryRelayersByDenomResponse {
   pagination: PageResponse | undefined
 }
 
-export interface QueryThresholdRequest {
+export interface QueryGetThresholdRequest {
   denom: string
 }
 
-export interface QueryThresholdResponse {
+export interface QueryGetThresholdResponse {
   threshold: Threshold | undefined
 }
 
@@ -48,133 +48,6 @@ export interface QueryAllThresholdRequest {
 export interface QueryAllThresholdResponse {
   threshold: Threshold[]
   pagination: PageResponse | undefined
-}
-
-const baseQueryIsRelayerRequest: object = { denom: '', address: '' }
-
-export const QueryIsRelayerRequest = {
-  encode(message: QueryIsRelayerRequest, writer: Writer = Writer.create()): Writer {
-    if (message.denom !== '') {
-      writer.uint32(10).string(message.denom)
-    }
-    if (message.address !== '') {
-      writer.uint32(18).string(message.address)
-    }
-    return writer
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): QueryIsRelayerRequest {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryIsRelayerRequest } as QueryIsRelayerRequest
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.denom = reader.string()
-          break
-        case 2:
-          message.address = reader.string()
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): QueryIsRelayerRequest {
-    const message = { ...baseQueryIsRelayerRequest } as QueryIsRelayerRequest
-    if (object.denom !== undefined && object.denom !== null) {
-      message.denom = String(object.denom)
-    } else {
-      message.denom = ''
-    }
-    if (object.address !== undefined && object.address !== null) {
-      message.address = String(object.address)
-    } else {
-      message.address = ''
-    }
-    return message
-  },
-
-  toJSON(message: QueryIsRelayerRequest): unknown {
-    const obj: any = {}
-    message.denom !== undefined && (obj.denom = message.denom)
-    message.address !== undefined && (obj.address = message.address)
-    return obj
-  },
-
-  fromPartial(object: DeepPartial<QueryIsRelayerRequest>): QueryIsRelayerRequest {
-    const message = { ...baseQueryIsRelayerRequest } as QueryIsRelayerRequest
-    if (object.denom !== undefined && object.denom !== null) {
-      message.denom = object.denom
-    } else {
-      message.denom = ''
-    }
-    if (object.address !== undefined && object.address !== null) {
-      message.address = object.address
-    } else {
-      message.address = ''
-    }
-    return message
-  }
-}
-
-const baseQueryIsRelayerResponse: object = { flag: false }
-
-export const QueryIsRelayerResponse = {
-  encode(message: QueryIsRelayerResponse, writer: Writer = Writer.create()): Writer {
-    if (message.flag === true) {
-      writer.uint32(8).bool(message.flag)
-    }
-    return writer
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): QueryIsRelayerResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryIsRelayerResponse } as QueryIsRelayerResponse
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.flag = reader.bool()
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): QueryIsRelayerResponse {
-    const message = { ...baseQueryIsRelayerResponse } as QueryIsRelayerResponse
-    if (object.flag !== undefined && object.flag !== null) {
-      message.flag = Boolean(object.flag)
-    } else {
-      message.flag = false
-    }
-    return message
-  },
-
-  toJSON(message: QueryIsRelayerResponse): unknown {
-    const obj: any = {}
-    message.flag !== undefined && (obj.flag = message.flag)
-    return obj
-  },
-
-  fromPartial(object: DeepPartial<QueryIsRelayerResponse>): QueryIsRelayerResponse {
-    const message = { ...baseQueryIsRelayerResponse } as QueryIsRelayerResponse
-    if (object.flag !== undefined && object.flag !== null) {
-      message.flag = object.flag
-    } else {
-      message.flag = false
-    }
-    return message
-  }
 }
 
 const baseQueryAllRelayerRequest: object = {}
@@ -306,6 +179,133 @@ export const QueryAllRelayerResponse = {
       message.pagination = PageResponse.fromPartial(object.pagination)
     } else {
       message.pagination = undefined
+    }
+    return message
+  }
+}
+
+const baseQueryIsRelayerRequest: object = { denom: '', address: '' }
+
+export const QueryIsRelayerRequest = {
+  encode(message: QueryIsRelayerRequest, writer: Writer = Writer.create()): Writer {
+    if (message.denom !== '') {
+      writer.uint32(10).string(message.denom)
+    }
+    if (message.address !== '') {
+      writer.uint32(18).string(message.address)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryIsRelayerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryIsRelayerRequest } as QueryIsRelayerRequest
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.denom = reader.string()
+          break
+        case 2:
+          message.address = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryIsRelayerRequest {
+    const message = { ...baseQueryIsRelayerRequest } as QueryIsRelayerRequest
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom)
+    } else {
+      message.denom = ''
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address)
+    } else {
+      message.address = ''
+    }
+    return message
+  },
+
+  toJSON(message: QueryIsRelayerRequest): unknown {
+    const obj: any = {}
+    message.denom !== undefined && (obj.denom = message.denom)
+    message.address !== undefined && (obj.address = message.address)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryIsRelayerRequest>): QueryIsRelayerRequest {
+    const message = { ...baseQueryIsRelayerRequest } as QueryIsRelayerRequest
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom
+    } else {
+      message.denom = ''
+    }
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address
+    } else {
+      message.address = ''
+    }
+    return message
+  }
+}
+
+const baseQueryIsRelayerResponse: object = { flag: false }
+
+export const QueryIsRelayerResponse = {
+  encode(message: QueryIsRelayerResponse, writer: Writer = Writer.create()): Writer {
+    if (message.flag === true) {
+      writer.uint32(8).bool(message.flag)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryIsRelayerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryIsRelayerResponse } as QueryIsRelayerResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.flag = reader.bool()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryIsRelayerResponse {
+    const message = { ...baseQueryIsRelayerResponse } as QueryIsRelayerResponse
+    if (object.flag !== undefined && object.flag !== null) {
+      message.flag = Boolean(object.flag)
+    } else {
+      message.flag = false
+    }
+    return message
+  },
+
+  toJSON(message: QueryIsRelayerResponse): unknown {
+    const obj: any = {}
+    message.flag !== undefined && (obj.flag = message.flag)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryIsRelayerResponse>): QueryIsRelayerResponse {
+    const message = { ...baseQueryIsRelayerResponse } as QueryIsRelayerResponse
+    if (object.flag !== undefined && object.flag !== null) {
+      message.flag = object.flag
+    } else {
+      message.flag = false
     }
     return message
   }
@@ -462,20 +462,20 @@ export const QueryRelayersByDenomResponse = {
   }
 }
 
-const baseQueryThresholdRequest: object = { denom: '' }
+const baseQueryGetThresholdRequest: object = { denom: '' }
 
-export const QueryThresholdRequest = {
-  encode(message: QueryThresholdRequest, writer: Writer = Writer.create()): Writer {
+export const QueryGetThresholdRequest = {
+  encode(message: QueryGetThresholdRequest, writer: Writer = Writer.create()): Writer {
     if (message.denom !== '') {
       writer.uint32(10).string(message.denom)
     }
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryThresholdRequest {
+  decode(input: Reader | Uint8Array, length?: number): QueryGetThresholdRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryThresholdRequest } as QueryThresholdRequest
+    const message = { ...baseQueryGetThresholdRequest } as QueryGetThresholdRequest
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -490,8 +490,8 @@ export const QueryThresholdRequest = {
     return message
   },
 
-  fromJSON(object: any): QueryThresholdRequest {
-    const message = { ...baseQueryThresholdRequest } as QueryThresholdRequest
+  fromJSON(object: any): QueryGetThresholdRequest {
+    const message = { ...baseQueryGetThresholdRequest } as QueryGetThresholdRequest
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
@@ -500,14 +500,14 @@ export const QueryThresholdRequest = {
     return message
   },
 
-  toJSON(message: QueryThresholdRequest): unknown {
+  toJSON(message: QueryGetThresholdRequest): unknown {
     const obj: any = {}
     message.denom !== undefined && (obj.denom = message.denom)
     return obj
   },
 
-  fromPartial(object: DeepPartial<QueryThresholdRequest>): QueryThresholdRequest {
-    const message = { ...baseQueryThresholdRequest } as QueryThresholdRequest
+  fromPartial(object: DeepPartial<QueryGetThresholdRequest>): QueryGetThresholdRequest {
+    const message = { ...baseQueryGetThresholdRequest } as QueryGetThresholdRequest
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {
@@ -517,20 +517,20 @@ export const QueryThresholdRequest = {
   }
 }
 
-const baseQueryThresholdResponse: object = {}
+const baseQueryGetThresholdResponse: object = {}
 
-export const QueryThresholdResponse = {
-  encode(message: QueryThresholdResponse, writer: Writer = Writer.create()): Writer {
+export const QueryGetThresholdResponse = {
+  encode(message: QueryGetThresholdResponse, writer: Writer = Writer.create()): Writer {
     if (message.threshold !== undefined) {
       Threshold.encode(message.threshold, writer.uint32(10).fork()).ldelim()
     }
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryThresholdResponse {
+  decode(input: Reader | Uint8Array, length?: number): QueryGetThresholdResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryThresholdResponse } as QueryThresholdResponse
+    const message = { ...baseQueryGetThresholdResponse } as QueryGetThresholdResponse
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -545,8 +545,8 @@ export const QueryThresholdResponse = {
     return message
   },
 
-  fromJSON(object: any): QueryThresholdResponse {
-    const message = { ...baseQueryThresholdResponse } as QueryThresholdResponse
+  fromJSON(object: any): QueryGetThresholdResponse {
+    const message = { ...baseQueryGetThresholdResponse } as QueryGetThresholdResponse
     if (object.threshold !== undefined && object.threshold !== null) {
       message.threshold = Threshold.fromJSON(object.threshold)
     } else {
@@ -555,14 +555,14 @@ export const QueryThresholdResponse = {
     return message
   },
 
-  toJSON(message: QueryThresholdResponse): unknown {
+  toJSON(message: QueryGetThresholdResponse): unknown {
     const obj: any = {}
     message.threshold !== undefined && (obj.threshold = message.threshold ? Threshold.toJSON(message.threshold) : undefined)
     return obj
   },
 
-  fromPartial(object: DeepPartial<QueryThresholdResponse>): QueryThresholdResponse {
-    const message = { ...baseQueryThresholdResponse } as QueryThresholdResponse
+  fromPartial(object: DeepPartial<QueryGetThresholdResponse>): QueryGetThresholdResponse {
+    const message = { ...baseQueryGetThresholdResponse } as QueryGetThresholdResponse
     if (object.threshold !== undefined && object.threshold !== null) {
       message.threshold = Threshold.fromPartial(object.threshold)
     } else {
@@ -710,14 +710,14 @@ export const QueryAllThresholdResponse = {
 export interface Query {
   /** Queries a list of relayer items. */
   RelayerAll(request: QueryAllRelayerRequest): Promise<QueryAllRelayerResponse>
-  /** Queries a threshold by denom. */
-  Threshold(request: QueryThresholdRequest): Promise<QueryThresholdResponse>
-  /** Queries a list of threshold items. */
-  ThresholdAll(request: QueryAllThresholdRequest): Promise<QueryAllThresholdResponse>
   /** Queries a list of isRelayer items. */
   IsRelayer(request: QueryIsRelayerRequest): Promise<QueryIsRelayerResponse>
   /** Queries a list of relayersByDenom items. */
   RelayersByDenom(request: QueryRelayersByDenomRequest): Promise<QueryRelayersByDenomResponse>
+  /** Queries a threshold by denom. */
+  Threshold(request: QueryGetThresholdRequest): Promise<QueryGetThresholdResponse>
+  /** Queries a list of threshold items. */
+  ThresholdAll(request: QueryAllThresholdRequest): Promise<QueryAllThresholdResponse>
 }
 
 export class QueryClientImpl implements Query {
@@ -731,18 +731,6 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryAllRelayerResponse.decode(new Reader(data)))
   }
 
-  Threshold(request: QueryThresholdRequest): Promise<QueryThresholdResponse> {
-    const data = QueryThresholdRequest.encode(request).finish()
-    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'Threshold', data)
-    return promise.then((data) => QueryThresholdResponse.decode(new Reader(data)))
-  }
-
-  ThresholdAll(request: QueryAllThresholdRequest): Promise<QueryAllThresholdResponse> {
-    const data = QueryAllThresholdRequest.encode(request).finish()
-    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'ThresholdAll', data)
-    return promise.then((data) => QueryAllThresholdResponse.decode(new Reader(data)))
-  }
-
   IsRelayer(request: QueryIsRelayerRequest): Promise<QueryIsRelayerResponse> {
     const data = QueryIsRelayerRequest.encode(request).finish()
     const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'IsRelayer', data)
@@ -753,6 +741,18 @@ export class QueryClientImpl implements Query {
     const data = QueryRelayersByDenomRequest.encode(request).finish()
     const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'RelayersByDenom', data)
     return promise.then((data) => QueryRelayersByDenomResponse.decode(new Reader(data)))
+  }
+
+  Threshold(request: QueryGetThresholdRequest): Promise<QueryGetThresholdResponse> {
+    const data = QueryGetThresholdRequest.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'Threshold', data)
+    return promise.then((data) => QueryGetThresholdResponse.decode(new Reader(data)))
+  }
+
+  ThresholdAll(request: QueryAllThresholdRequest): Promise<QueryAllThresholdResponse> {
+    const data = QueryAllThresholdRequest.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'ThresholdAll', data)
+    return promise.then((data) => QueryAllThresholdResponse.decode(new Reader(data)))
   }
 }
 

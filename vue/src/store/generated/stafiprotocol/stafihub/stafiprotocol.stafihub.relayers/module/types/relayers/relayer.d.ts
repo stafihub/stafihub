@@ -1,10 +1,12 @@
 import { Writer, Reader } from 'protobufjs/minimal';
 export declare const protobufPackage = "stafiprotocol.stafihub.relayers";
 export interface Relayer {
+    creator: string;
     denom: string;
     address: string;
 }
 export interface Threshold {
+    creator: string;
     denom: string;
     value: number;
 }

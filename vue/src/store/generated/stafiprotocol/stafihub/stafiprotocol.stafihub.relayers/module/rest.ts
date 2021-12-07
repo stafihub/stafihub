@@ -17,7 +17,7 @@ export type RelayersMsgCreateRelayerResponse = object;
 
 export type RelayersMsgDeleteRelayerResponse = object;
 
-export type RelayersMsgSetThresholdResponse = object;
+export type RelayersMsgUpdateThresholdResponse = object;
 
 export interface RelayersQueryAllRelayerResponse {
   relayers?: RelayersRelayer[];
@@ -49,6 +49,10 @@ export interface RelayersQueryAllThresholdResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface RelayersQueryGetThresholdResponse {
+  threshold?: RelayersThreshold;
+}
+
 export interface RelayersQueryIsRelayerResponse {
   flag?: boolean;
 }
@@ -68,16 +72,14 @@ export interface RelayersQueryRelayersByDenomResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface RelayersQueryThresholdResponse {
-  threshold?: RelayersThreshold;
-}
-
 export interface RelayersRelayer {
+  creator?: string;
   denom?: string;
   address?: string;
 }
 
 export interface RelayersThreshold {
+  creator?: string;
   denom?: string;
 
   /** @format int64 */
@@ -378,13 +380,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryIsRelayer
    * @summary Queries a list of isRelayer items.
-   * @request GET:/stafiprotocol/stafihub/relayers/isRelayer
+   * @request GET:/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}
    */
-  queryIsRelayer = (query?: { denom?: string; address?: string }, params: RequestParams = {}) =>
+  queryIsRelayer = (denom: string, address: string, params: RequestParams = {}) =>
     this.request<RelayersQueryIsRelayerResponse, RpcStatus>({
-      path: `/stafiprotocol/stafihub/relayers/isRelayer`,
+      path: `/stafiprotocol/stafihub/relayers/is_relayer/${denom}/${address}`,
       method: "GET",
-      query: query,
       format: "json",
       ...params,
     });
@@ -395,11 +396,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryRelayersByDenom
    * @summary Queries a list of relayersByDenom items.
-   * @request GET:/stafiprotocol/stafihub/relayers/relayersByDenom
+   * @request GET:/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}
    */
   queryRelayersByDenom = (
+    denom: string,
     query?: {
-      denom?: string;
       "pagination.key"?: string;
       "pagination.offset"?: string;
       "pagination.limit"?: string;
@@ -409,7 +410,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<RelayersQueryRelayersByDenomResponse, RpcStatus>({
-      path: `/stafiprotocol/stafihub/relayers/relayersByDenom`,
+      path: `/stafiprotocol/stafihub/relayers/relayers_by_denom/${denom}`,
       method: "GET",
       query: query,
       format: "json",
@@ -451,7 +452,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @request GET:/stafiprotocol/stafihub/relayers/threshold/{denom}
    */
   queryThreshold = (denom: string, params: RequestParams = {}) =>
-    this.request<RelayersQueryThresholdResponse, RpcStatus>({
+    this.request<RelayersQueryGetThresholdResponse, RpcStatus>({
       path: `/stafiprotocol/stafihub/relayers/threshold/${denom}`,
       method: "GET",
       format: "json",

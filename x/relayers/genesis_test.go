@@ -11,7 +11,23 @@ import (
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
-		// this line is used by starport scaffolding # genesis/test/state
+		Relayers: []types.Relayer{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
+Thresholds: []types.Threshold{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
+// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.RelayersKeeper(t)
@@ -19,5 +35,9 @@ func TestGenesis(t *testing.T) {
 	got := relayers.ExportGenesis(ctx, *k)
 	require.NotNil(t, got)
 
-	// this line is used by starport scaffolding # genesis/test/assert
+	require.Len(t, got.Relayers, len(genesisState.Relayers))
+require.Subset(t, genesisState.Relayers, got.Relayers)
+require.Len(t, got.Thresholds, len(genesisState.Thresholds))
+require.Subset(t, genesisState.Thresholds, got.Thresholds)
+// this line is used by starport scaffolding # genesis/test/assert
 }

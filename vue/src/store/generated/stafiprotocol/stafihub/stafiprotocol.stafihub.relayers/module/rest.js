@@ -157,12 +157,11 @@ export class Api extends HttpClient {
          * @tags Query
          * @name QueryIsRelayer
          * @summary Queries a list of isRelayer items.
-         * @request GET:/stafiprotocol/stafihub/relayers/isRelayer
+         * @request GET:/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}
          */
-        this.queryIsRelayer = (query, params = {}) => this.request({
-            path: `/stafiprotocol/stafihub/relayers/isRelayer`,
+        this.queryIsRelayer = (denom, address, params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/relayers/is_relayer/${denom}/${address}`,
             method: "GET",
-            query: query,
             format: "json",
             ...params,
         });
@@ -172,10 +171,10 @@ export class Api extends HttpClient {
          * @tags Query
          * @name QueryRelayersByDenom
          * @summary Queries a list of relayersByDenom items.
-         * @request GET:/stafiprotocol/stafihub/relayers/relayersByDenom
+         * @request GET:/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}
          */
-        this.queryRelayersByDenom = (query, params = {}) => this.request({
-            path: `/stafiprotocol/stafihub/relayers/relayersByDenom`,
+        this.queryRelayersByDenom = (denom, query, params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/relayers/relayers_by_denom/${denom}`,
             method: "GET",
             query: query,
             format: "json",

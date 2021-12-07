@@ -1,0 +1,17 @@
+syntax = "proto3";
+package stafiprotocol.stafihub.relayers;
+
+option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
+
+message Relayer {
+    string creator = 1;
+    string denom = 2;
+    string address = 3;
+}
+
+message Threshold {
+    string creator = 1;
+    string denom = 2;
+    uint32 value = 3;
+}
+

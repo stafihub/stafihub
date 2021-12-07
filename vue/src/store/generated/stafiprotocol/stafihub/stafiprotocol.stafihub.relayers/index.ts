@@ -45,10 +45,10 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				RelayerAll: {},
-				Threshold: {},
-				ThresholdAll: {},
 				IsRelayer: {},
 				RelayersByDenom: {},
+				Threshold: {},
+				ThresholdAll: {},
 				
 				_Structure: {
 						Relayer: getStructure(Relayer.fromPartial({})),
@@ -86,18 +86,6 @@ export default {
 					}
 			return state.RelayerAll[JSON.stringify(params)] ?? {}
 		},
-				getThreshold: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.Threshold[JSON.stringify(params)] ?? {}
-		},
-				getThresholdAll: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.ThresholdAll[JSON.stringify(params)] ?? {}
-		},
 				getIsRelayer: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
 						(<any> params).query=null
@@ -109,6 +97,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.RelayersByDenom[JSON.stringify(params)] ?? {}
+		},
+				getThreshold: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Threshold[JSON.stringify(params)] ?? {}
+		},
+				getThresholdAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ThresholdAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -170,6 +170,52 @@ export default {
 		 		
 		
 		
+		async QueryIsRelayer({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+			try {
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryIsRelayer( key.denom,  key.address)).data
+				
+					
+				commit('QUERY', { query: 'IsRelayer', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryIsRelayer', payload: { options: { all }, params: {...key},query }})
+				return getters['getIsRelayer']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new SpVuexError('QueryClient:QueryIsRelayer', 'API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryRelayersByDenom({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+			try {
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryRelayersByDenom( key.denom, query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.nextKey!=null) {
+					let next_values=(await queryClient.queryRelayersByDenom( key.denom, {...query, 'pagination.key':(<any> value).pagination.nextKey})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'RelayersByDenom', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryRelayersByDenom', payload: { options: { all }, params: {...key},query }})
+				return getters['getRelayersByDenom']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new SpVuexError('QueryClient:QueryRelayersByDenom', 'API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
 		async QueryThreshold({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
 			try {
 				const queryClient=await initQueryClient(rootGetters)
@@ -211,56 +257,21 @@ export default {
 		},
 		
 		
-		
-		
-		 		
-		
-		
-		async QueryIsRelayer({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async sendMsgUpdateThreshold({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryIsRelayer(query)).data
-				
-					
-				while (all && (<any> value).pagination && (<any> value).pagination.nextKey!=null) {
-					let next_values=(await queryClient.queryIsRelayer({...query, 'pagination.key':(<any> value).pagination.nextKey})).data
-					value = mergeResults(value, next_values);
-				}
-				commit('QUERY', { query: 'IsRelayer', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryIsRelayer', payload: { options: { all }, params: {...key},query }})
-				return getters['getIsRelayer']( { params: {...key}, query}) ?? {}
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgUpdateThreshold(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
-				throw new SpVuexError('QueryClient:QueryIsRelayer', 'API Node Unavailable. Could not perform query: ' + e.message)
-				
+				if (e == MissingWalletError) {
+					throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgUpdateThreshold:Send', 'Could not broadcast Tx: '+ e.message)
+				}
 			}
 		},
-		
-		
-		
-		
-		 		
-		
-		
-		async QueryRelayersByDenom({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
-			try {
-				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryRelayersByDenom(query)).data
-				
-					
-				while (all && (<any> value).pagination && (<any> value).pagination.nextKey!=null) {
-					let next_values=(await queryClient.queryRelayersByDenom({...query, 'pagination.key':(<any> value).pagination.nextKey})).data
-					value = mergeResults(value, next_values);
-				}
-				commit('QUERY', { query: 'RelayersByDenom', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryRelayersByDenom', payload: { options: { all }, params: {...key},query }})
-				return getters['getRelayersByDenom']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new SpVuexError('QueryClient:QueryRelayersByDenom', 'API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
 		async sendMsgCreateRelayer({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -291,22 +302,21 @@ export default {
 				}
 			}
 		},
-		async sendMsgSetThreshold({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		async MsgUpdateThreshold({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSetThreshold(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				const msg = await txClient.msgUpdateThreshold(value)
+				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSetThreshold:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgSetThreshold:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgUpdateThreshold:Create', 'Could not create message: ' + e.message)
+					
 				}
 			}
 		},
-		
 		async MsgCreateRelayer({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -331,20 +341,6 @@ export default {
 					throw new SpVuexError('TxClient:MsgDeleteRelayer:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgDeleteRelayer:Create', 'Could not create message: ' + e.message)
-					
-				}
-			}
-		},
-		async MsgSetThreshold({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSetThreshold(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSetThreshold:Init', 'Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new SpVuexError('TxClient:MsgSetThreshold:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}

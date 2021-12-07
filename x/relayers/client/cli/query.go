@@ -1,15 +1,12 @@
 package cli
 
 import (
+	"context"
 	"fmt"
-	// "strings"
 
 	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
-
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
@@ -24,8 +21,121 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdListRelayer())
+	cmd.AddCommand(CmdIsRelayer())
+	cmd.AddCommand(CmdRelayersByDenom())
 
-	return cmd 
+	cmd.AddCommand(CmdListThreshold())
+	cmd.AddCommand(CmdShowThreshold())
+// this line is used by starport scaffolding # 1
+
+	return cmd
 }
 
+func CmdIsRelayer() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "is-relayer [denom] [address]",
+		Short: "Query is_relayer",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+			reqAddress := args[1]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryIsRelayerRequest{
+				Denom: reqDenom,
+				Address: reqAddress,
+			}
+
+			res, err := queryClient.IsRelayer(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdListRelayer() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "list-relayer",
+		Short: "list all relayer",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx := client.GetClientContextFromCmd(cmd)
+
+			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryAllRelayerRequest{
+				Pagination: pageReq,
+			}
+
+			res, err := queryClient.RelayerAll(context.Background(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdRelayersByDenom() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "relayers-by-denom [denom]",
+		Short: "Query relayers_by_denom",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryRelayersByDenomRequest{
+
+				Denom: reqDenom,
+			}
+
+			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
+			params.Pagination = pageReq
+
+			res, err := queryClient.RelayersByDenom(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}

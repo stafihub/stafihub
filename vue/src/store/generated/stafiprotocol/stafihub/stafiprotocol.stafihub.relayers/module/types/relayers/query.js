@@ -3,127 +3,6 @@ import { Reader, Writer } from 'protobufjs/minimal';
 import { PageRequest, PageResponse } from '../cosmos/base/query/v1beta1/pagination';
 import { Relayer, Threshold } from '../relayers/relayer';
 export const protobufPackage = 'stafiprotocol.stafihub.relayers';
-const baseQueryIsRelayerRequest = { denom: '', address: '' };
-export const QueryIsRelayerRequest = {
-    encode(message, writer = Writer.create()) {
-        if (message.denom !== '') {
-            writer.uint32(10).string(message.denom);
-        }
-        if (message.address !== '') {
-            writer.uint32(18).string(message.address);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof Uint8Array ? new Reader(input) : input;
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseQueryIsRelayerRequest };
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.denom = reader.string();
-                    break;
-                case 2:
-                    message.address = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-    fromJSON(object) {
-        const message = { ...baseQueryIsRelayerRequest };
-        if (object.denom !== undefined && object.denom !== null) {
-            message.denom = String(object.denom);
-        }
-        else {
-            message.denom = '';
-        }
-        if (object.address !== undefined && object.address !== null) {
-            message.address = String(object.address);
-        }
-        else {
-            message.address = '';
-        }
-        return message;
-    },
-    toJSON(message) {
-        const obj = {};
-        message.denom !== undefined && (obj.denom = message.denom);
-        message.address !== undefined && (obj.address = message.address);
-        return obj;
-    },
-    fromPartial(object) {
-        const message = { ...baseQueryIsRelayerRequest };
-        if (object.denom !== undefined && object.denom !== null) {
-            message.denom = object.denom;
-        }
-        else {
-            message.denom = '';
-        }
-        if (object.address !== undefined && object.address !== null) {
-            message.address = object.address;
-        }
-        else {
-            message.address = '';
-        }
-        return message;
-    }
-};
-const baseQueryIsRelayerResponse = { flag: false };
-export const QueryIsRelayerResponse = {
-    encode(message, writer = Writer.create()) {
-        if (message.flag === true) {
-            writer.uint32(8).bool(message.flag);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof Uint8Array ? new Reader(input) : input;
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseQueryIsRelayerResponse };
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.flag = reader.bool();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-    fromJSON(object) {
-        const message = { ...baseQueryIsRelayerResponse };
-        if (object.flag !== undefined && object.flag !== null) {
-            message.flag = Boolean(object.flag);
-        }
-        else {
-            message.flag = false;
-        }
-        return message;
-    },
-    toJSON(message) {
-        const obj = {};
-        message.flag !== undefined && (obj.flag = message.flag);
-        return obj;
-    },
-    fromPartial(object) {
-        const message = { ...baseQueryIsRelayerResponse };
-        if (object.flag !== undefined && object.flag !== null) {
-            message.flag = object.flag;
-        }
-        else {
-            message.flag = false;
-        }
-        return message;
-    }
-};
 const baseQueryAllRelayerRequest = {};
 export const QueryAllRelayerRequest = {
     encode(message, writer = Writer.create()) {
@@ -247,6 +126,127 @@ export const QueryAllRelayerResponse = {
         }
         else {
             message.pagination = undefined;
+        }
+        return message;
+    }
+};
+const baseQueryIsRelayerRequest = { denom: '', address: '' };
+export const QueryIsRelayerRequest = {
+    encode(message, writer = Writer.create()) {
+        if (message.denom !== '') {
+            writer.uint32(10).string(message.denom);
+        }
+        if (message.address !== '') {
+            writer.uint32(18).string(message.address);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseQueryIsRelayerRequest };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.denom = reader.string();
+                    break;
+                case 2:
+                    message.address = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseQueryIsRelayerRequest };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.address !== undefined && object.address !== null) {
+            message.address = String(object.address);
+        }
+        else {
+            message.address = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.address !== undefined && (obj.address = message.address);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseQueryIsRelayerRequest };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.address !== undefined && object.address !== null) {
+            message.address = object.address;
+        }
+        else {
+            message.address = '';
+        }
+        return message;
+    }
+};
+const baseQueryIsRelayerResponse = { flag: false };
+export const QueryIsRelayerResponse = {
+    encode(message, writer = Writer.create()) {
+        if (message.flag === true) {
+            writer.uint32(8).bool(message.flag);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseQueryIsRelayerResponse };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.flag = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseQueryIsRelayerResponse };
+        if (object.flag !== undefined && object.flag !== null) {
+            message.flag = Boolean(object.flag);
+        }
+        else {
+            message.flag = false;
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.flag !== undefined && (obj.flag = message.flag);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseQueryIsRelayerResponse };
+        if (object.flag !== undefined && object.flag !== null) {
+            message.flag = object.flag;
+        }
+        else {
+            message.flag = false;
         }
         return message;
     }
@@ -397,8 +397,8 @@ export const QueryRelayersByDenomResponse = {
         return message;
     }
 };
-const baseQueryThresholdRequest = { denom: '' };
-export const QueryThresholdRequest = {
+const baseQueryGetThresholdRequest = { denom: '' };
+export const QueryGetThresholdRequest = {
     encode(message, writer = Writer.create()) {
         if (message.denom !== '') {
             writer.uint32(10).string(message.denom);
@@ -408,7 +408,7 @@ export const QueryThresholdRequest = {
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseQueryThresholdRequest };
+        const message = { ...baseQueryGetThresholdRequest };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -423,7 +423,7 @@ export const QueryThresholdRequest = {
         return message;
     },
     fromJSON(object) {
-        const message = { ...baseQueryThresholdRequest };
+        const message = { ...baseQueryGetThresholdRequest };
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = String(object.denom);
         }
@@ -438,7 +438,7 @@ export const QueryThresholdRequest = {
         return obj;
     },
     fromPartial(object) {
-        const message = { ...baseQueryThresholdRequest };
+        const message = { ...baseQueryGetThresholdRequest };
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = object.denom;
         }
@@ -448,8 +448,8 @@ export const QueryThresholdRequest = {
         return message;
     }
 };
-const baseQueryThresholdResponse = {};
-export const QueryThresholdResponse = {
+const baseQueryGetThresholdResponse = {};
+export const QueryGetThresholdResponse = {
     encode(message, writer = Writer.create()) {
         if (message.threshold !== undefined) {
             Threshold.encode(message.threshold, writer.uint32(10).fork()).ldelim();
@@ -459,7 +459,7 @@ export const QueryThresholdResponse = {
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseQueryThresholdResponse };
+        const message = { ...baseQueryGetThresholdResponse };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -474,7 +474,7 @@ export const QueryThresholdResponse = {
         return message;
     },
     fromJSON(object) {
-        const message = { ...baseQueryThresholdResponse };
+        const message = { ...baseQueryGetThresholdResponse };
         if (object.threshold !== undefined && object.threshold !== null) {
             message.threshold = Threshold.fromJSON(object.threshold);
         }
@@ -489,7 +489,7 @@ export const QueryThresholdResponse = {
         return obj;
     },
     fromPartial(object) {
-        const message = { ...baseQueryThresholdResponse };
+        const message = { ...baseQueryGetThresholdResponse };
         if (object.threshold !== undefined && object.threshold !== null) {
             message.threshold = Threshold.fromPartial(object.threshold);
         }
@@ -635,16 +635,6 @@ export class QueryClientImpl {
         const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'RelayerAll', data);
         return promise.then((data) => QueryAllRelayerResponse.decode(new Reader(data)));
     }
-    Threshold(request) {
-        const data = QueryThresholdRequest.encode(request).finish();
-        const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'Threshold', data);
-        return promise.then((data) => QueryThresholdResponse.decode(new Reader(data)));
-    }
-    ThresholdAll(request) {
-        const data = QueryAllThresholdRequest.encode(request).finish();
-        const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'ThresholdAll', data);
-        return promise.then((data) => QueryAllThresholdResponse.decode(new Reader(data)));
-    }
     IsRelayer(request) {
         const data = QueryIsRelayerRequest.encode(request).finish();
         const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'IsRelayer', data);
@@ -654,5 +644,15 @@ export class QueryClientImpl {
         const data = QueryRelayersByDenomRequest.encode(request).finish();
         const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'RelayersByDenom', data);
         return promise.then((data) => QueryRelayersByDenomResponse.decode(new Reader(data)));
+    }
+    Threshold(request) {
+        const data = QueryGetThresholdRequest.encode(request).finish();
+        const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'Threshold', data);
+        return promise.then((data) => QueryGetThresholdResponse.decode(new Reader(data)));
+    }
+    ThresholdAll(request) {
+        const data = QueryAllThresholdRequest.encode(request).finish();
+        const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Query', 'ThresholdAll', data);
+        return promise.then((data) => QueryAllThresholdResponse.decode(new Reader(data)));
     }
 }

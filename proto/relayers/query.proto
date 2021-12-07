@@ -3,13 +3,85 @@ package stafiprotocol.stafihub.relayers;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
+import "relayers/relayer.proto";
 // this line is used by starport scaffolding # 1
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // this line is used by starport scaffolding # 2
+	// Queries a list of relayer items.
+	rpc RelayerAll(QueryAllRelayerRequest) returns (QueryAllRelayerResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/all";
+	}
+
+    // Queries a list of isRelayer items.
+	rpc IsRelayer(QueryIsRelayerRequest) returns (QueryIsRelayerResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}";
+	}
+
+    // Queries a list of relayersByDenom items.
+	rpc RelayersByDenom(QueryRelayersByDenomRequest) returns (QueryRelayersByDenomResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}";
+	}
+
+    // Queries a threshold by denom.
+	rpc Threshold(QueryGetThresholdRequest) returns (QueryGetThresholdResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/threshold/{denom}";
+	}
+
+	// Queries a list of threshold items.
+	rpc ThresholdAll(QueryAllThresholdRequest) returns (QueryAllThresholdResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/threshold";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryAllRelayerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRelayerResponse {
+	repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryIsRelayerRequest {
+    string denom = 1;
+    string address = 2;
+}
+
+message QueryIsRelayerResponse {
+    bool flag = 1;
+}
+
+message QueryRelayersByDenomRequest {
+    string denom = 1;
+    cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryRelayersByDenomResponse {
+    repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetThresholdRequest {
+	  string denom = 1;
+}
+
+message QueryGetThresholdResponse {
+	Threshold threshold = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllThresholdRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllThresholdResponse {
+	repeated Threshold threshold = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

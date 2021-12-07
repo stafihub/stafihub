@@ -1,14 +1,17 @@
 /* eslint-disable */
 import { Writer, Reader } from 'protobufjs/minimal';
 export const protobufPackage = 'stafiprotocol.stafihub.relayers';
-const baseRelayer = { denom: '', address: '' };
+const baseRelayer = { creator: '', denom: '', address: '' };
 export const Relayer = {
     encode(message, writer = Writer.create()) {
+        if (message.creator !== '') {
+            writer.uint32(10).string(message.creator);
+        }
         if (message.denom !== '') {
-            writer.uint32(10).string(message.denom);
+            writer.uint32(18).string(message.denom);
         }
         if (message.address !== '') {
-            writer.uint32(18).string(message.address);
+            writer.uint32(26).string(message.address);
         }
         return writer;
     },
@@ -20,9 +23,12 @@ export const Relayer = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.denom = reader.string();
+                    message.creator = reader.string();
                     break;
                 case 2:
+                    message.denom = reader.string();
+                    break;
+                case 3:
                     message.address = reader.string();
                     break;
                 default:
@@ -34,6 +40,12 @@ export const Relayer = {
     },
     fromJSON(object) {
         const message = { ...baseRelayer };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = String(object.denom);
         }
@@ -50,12 +62,19 @@ export const Relayer = {
     },
     toJSON(message) {
         const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
         message.denom !== undefined && (obj.denom = message.denom);
         message.address !== undefined && (obj.address = message.address);
         return obj;
     },
     fromPartial(object) {
         const message = { ...baseRelayer };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
+        }
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = object.denom;
         }
@@ -71,14 +90,17 @@ export const Relayer = {
         return message;
     }
 };
-const baseThreshold = { denom: '', value: 0 };
+const baseThreshold = { creator: '', denom: '', value: 0 };
 export const Threshold = {
     encode(message, writer = Writer.create()) {
+        if (message.creator !== '') {
+            writer.uint32(10).string(message.creator);
+        }
         if (message.denom !== '') {
-            writer.uint32(10).string(message.denom);
+            writer.uint32(18).string(message.denom);
         }
         if (message.value !== 0) {
-            writer.uint32(16).uint32(message.value);
+            writer.uint32(24).uint32(message.value);
         }
         return writer;
     },
@@ -90,9 +112,12 @@ export const Threshold = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.denom = reader.string();
+                    message.creator = reader.string();
                     break;
                 case 2:
+                    message.denom = reader.string();
+                    break;
+                case 3:
                     message.value = reader.uint32();
                     break;
                 default:
@@ -104,6 +129,12 @@ export const Threshold = {
     },
     fromJSON(object) {
         const message = { ...baseThreshold };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = String(object.denom);
         }
@@ -120,12 +151,19 @@ export const Threshold = {
     },
     toJSON(message) {
         const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
         message.denom !== undefined && (obj.denom = message.denom);
         message.value !== undefined && (obj.value = message.value);
         return obj;
     },
     fromPartial(object) {
         const message = { ...baseThreshold };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
+        }
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = object.denom;
         }

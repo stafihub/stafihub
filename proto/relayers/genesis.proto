@@ -1,11 +1,15 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.relayers;
 
+import "relayers/relayer.proto";
 // this line is used by starport scaffolding # genesis/proto/import
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 // GenesisState defines the relayers module's genesis state.
 message GenesisState {
-    // this line is used by starport scaffolding # genesis/proto/state
+    repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
+    repeated Threshold thresholds = 2 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
 }

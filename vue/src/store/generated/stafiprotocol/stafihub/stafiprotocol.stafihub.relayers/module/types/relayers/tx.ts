@@ -4,6 +4,7 @@ import { Reader, Writer } from 'protobufjs/minimal'
 export const protobufPackage = 'stafiprotocol.stafihub.relayers'
 
 export interface MsgCreateRelayer {
+  creator: string
   denom: string
   address: string
 }
@@ -11,28 +12,33 @@ export interface MsgCreateRelayer {
 export interface MsgCreateRelayerResponse {}
 
 export interface MsgDeleteRelayer {
+  creator: string
   denom: string
   address: string
 }
 
 export interface MsgDeleteRelayerResponse {}
 
-export interface MsgSetThreshold {
+export interface MsgUpdateThreshold {
+  creator: string
   denom: string
-  value: string
+  value: number
 }
 
-export interface MsgSetThresholdResponse {}
+export interface MsgUpdateThresholdResponse {}
 
-const baseMsgCreateRelayer: object = { denom: '', address: '' }
+const baseMsgCreateRelayer: object = { creator: '', denom: '', address: '' }
 
 export const MsgCreateRelayer = {
   encode(message: MsgCreateRelayer, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
     if (message.denom !== '') {
-      writer.uint32(10).string(message.denom)
+      writer.uint32(18).string(message.denom)
     }
     if (message.address !== '') {
-      writer.uint32(18).string(message.address)
+      writer.uint32(26).string(message.address)
     }
     return writer
   },
@@ -45,9 +51,12 @@ export const MsgCreateRelayer = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.denom = reader.string()
+          message.creator = reader.string()
           break
         case 2:
+          message.denom = reader.string()
+          break
+        case 3:
           message.address = reader.string()
           break
         default:
@@ -60,6 +69,11 @@ export const MsgCreateRelayer = {
 
   fromJSON(object: any): MsgCreateRelayer {
     const message = { ...baseMsgCreateRelayer } as MsgCreateRelayer
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
@@ -75,6 +89,7 @@ export const MsgCreateRelayer = {
 
   toJSON(message: MsgCreateRelayer): unknown {
     const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
     message.denom !== undefined && (obj.denom = message.denom)
     message.address !== undefined && (obj.address = message.address)
     return obj
@@ -82,6 +97,11 @@ export const MsgCreateRelayer = {
 
   fromPartial(object: DeepPartial<MsgCreateRelayer>): MsgCreateRelayer {
     const message = { ...baseMsgCreateRelayer } as MsgCreateRelayer
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {
@@ -134,15 +154,18 @@ export const MsgCreateRelayerResponse = {
   }
 }
 
-const baseMsgDeleteRelayer: object = { denom: '', address: '' }
+const baseMsgDeleteRelayer: object = { creator: '', denom: '', address: '' }
 
 export const MsgDeleteRelayer = {
   encode(message: MsgDeleteRelayer, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
     if (message.denom !== '') {
-      writer.uint32(10).string(message.denom)
+      writer.uint32(18).string(message.denom)
     }
     if (message.address !== '') {
-      writer.uint32(18).string(message.address)
+      writer.uint32(26).string(message.address)
     }
     return writer
   },
@@ -155,9 +178,12 @@ export const MsgDeleteRelayer = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.denom = reader.string()
+          message.creator = reader.string()
           break
         case 2:
+          message.denom = reader.string()
+          break
+        case 3:
           message.address = reader.string()
           break
         default:
@@ -170,6 +196,11 @@ export const MsgDeleteRelayer = {
 
   fromJSON(object: any): MsgDeleteRelayer {
     const message = { ...baseMsgDeleteRelayer } as MsgDeleteRelayer
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
@@ -185,6 +216,7 @@ export const MsgDeleteRelayer = {
 
   toJSON(message: MsgDeleteRelayer): unknown {
     const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
     message.denom !== undefined && (obj.denom = message.denom)
     message.address !== undefined && (obj.address = message.address)
     return obj
@@ -192,6 +224,11 @@ export const MsgDeleteRelayer = {
 
   fromPartial(object: DeepPartial<MsgDeleteRelayer>): MsgDeleteRelayer {
     const message = { ...baseMsgDeleteRelayer } as MsgDeleteRelayer
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {
@@ -244,31 +281,37 @@ export const MsgDeleteRelayerResponse = {
   }
 }
 
-const baseMsgSetThreshold: object = { denom: '', value: '' }
+const baseMsgUpdateThreshold: object = { creator: '', denom: '', value: 0 }
 
-export const MsgSetThreshold = {
-  encode(message: MsgSetThreshold, writer: Writer = Writer.create()): Writer {
-    if (message.denom !== '') {
-      writer.uint32(10).string(message.denom)
+export const MsgUpdateThreshold = {
+  encode(message: MsgUpdateThreshold, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
     }
-    if (message.value !== '') {
-      writer.uint32(18).string(message.value)
+    if (message.denom !== '') {
+      writer.uint32(18).string(message.denom)
+    }
+    if (message.value !== 0) {
+      writer.uint32(24).uint32(message.value)
     }
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgSetThreshold {
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateThreshold {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseMsgSetThreshold } as MsgSetThreshold
+    const message = { ...baseMsgUpdateThreshold } as MsgUpdateThreshold
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.denom = reader.string()
+          message.creator = reader.string()
           break
         case 2:
-          message.value = reader.string()
+          message.denom = reader.string()
+          break
+        case 3:
+          message.value = reader.uint32()
           break
         default:
           reader.skipType(tag & 7)
@@ -278,30 +321,41 @@ export const MsgSetThreshold = {
     return message
   },
 
-  fromJSON(object: any): MsgSetThreshold {
-    const message = { ...baseMsgSetThreshold } as MsgSetThreshold
+  fromJSON(object: any): MsgUpdateThreshold {
+    const message = { ...baseMsgUpdateThreshold } as MsgUpdateThreshold
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
       message.denom = ''
     }
     if (object.value !== undefined && object.value !== null) {
-      message.value = String(object.value)
+      message.value = Number(object.value)
     } else {
-      message.value = ''
+      message.value = 0
     }
     return message
   },
 
-  toJSON(message: MsgSetThreshold): unknown {
+  toJSON(message: MsgUpdateThreshold): unknown {
     const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
     message.denom !== undefined && (obj.denom = message.denom)
     message.value !== undefined && (obj.value = message.value)
     return obj
   },
 
-  fromPartial(object: DeepPartial<MsgSetThreshold>): MsgSetThreshold {
-    const message = { ...baseMsgSetThreshold } as MsgSetThreshold
+  fromPartial(object: DeepPartial<MsgUpdateThreshold>): MsgUpdateThreshold {
+    const message = { ...baseMsgUpdateThreshold } as MsgUpdateThreshold
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {
@@ -310,23 +364,23 @@ export const MsgSetThreshold = {
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value
     } else {
-      message.value = ''
+      message.value = 0
     }
     return message
   }
 }
 
-const baseMsgSetThresholdResponse: object = {}
+const baseMsgUpdateThresholdResponse: object = {}
 
-export const MsgSetThresholdResponse = {
-  encode(_: MsgSetThresholdResponse, writer: Writer = Writer.create()): Writer {
+export const MsgUpdateThresholdResponse = {
+  encode(_: MsgUpdateThresholdResponse, writer: Writer = Writer.create()): Writer {
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): MsgSetThresholdResponse {
+  decode(input: Reader | Uint8Array, length?: number): MsgUpdateThresholdResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseMsgSetThresholdResponse } as MsgSetThresholdResponse
+    const message = { ...baseMsgUpdateThresholdResponse } as MsgUpdateThresholdResponse
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -338,18 +392,18 @@ export const MsgSetThresholdResponse = {
     return message
   },
 
-  fromJSON(_: any): MsgSetThresholdResponse {
-    const message = { ...baseMsgSetThresholdResponse } as MsgSetThresholdResponse
+  fromJSON(_: any): MsgUpdateThresholdResponse {
+    const message = { ...baseMsgUpdateThresholdResponse } as MsgUpdateThresholdResponse
     return message
   },
 
-  toJSON(_: MsgSetThresholdResponse): unknown {
+  toJSON(_: MsgUpdateThresholdResponse): unknown {
     const obj: any = {}
     return obj
   },
 
-  fromPartial(_: DeepPartial<MsgSetThresholdResponse>): MsgSetThresholdResponse {
-    const message = { ...baseMsgSetThresholdResponse } as MsgSetThresholdResponse
+  fromPartial(_: DeepPartial<MsgUpdateThresholdResponse>): MsgUpdateThresholdResponse {
+    const message = { ...baseMsgUpdateThresholdResponse } as MsgUpdateThresholdResponse
     return message
   }
 }
@@ -359,7 +413,7 @@ export interface Msg {
   CreateRelayer(request: MsgCreateRelayer): Promise<MsgCreateRelayerResponse>
   DeleteRelayer(request: MsgDeleteRelayer): Promise<MsgDeleteRelayerResponse>
   /** this line is used by starport scaffolding # proto/tx/rpc */
-  SetThreshold(request: MsgSetThreshold): Promise<MsgSetThresholdResponse>
+  UpdateThreshold(request: MsgUpdateThreshold): Promise<MsgUpdateThresholdResponse>
 }
 
 export class MsgClientImpl implements Msg {
@@ -379,10 +433,10 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgDeleteRelayerResponse.decode(new Reader(data)))
   }
 
-  SetThreshold(request: MsgSetThreshold): Promise<MsgSetThresholdResponse> {
-    const data = MsgSetThreshold.encode(request).finish()
-    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Msg', 'SetThreshold', data)
-    return promise.then((data) => MsgSetThresholdResponse.decode(new Reader(data)))
+  UpdateThreshold(request: MsgUpdateThreshold): Promise<MsgUpdateThresholdResponse> {
+    const data = MsgUpdateThreshold.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Msg', 'UpdateThreshold', data)
+    return promise.then((data) => MsgUpdateThresholdResponse.decode(new Reader(data)))
   }
 }
 
