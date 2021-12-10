@@ -1,6 +1,8 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.relayers;
 
+import "gogoproto/gogo.proto";
+
 option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 message Relayer {
@@ -13,3 +15,29 @@ message Threshold {
     uint32 value = 2;
 }
 
+message Proposal {
+  bytes proposalId = 1;
+  ProposalContent content = 2;
+  ProposalStatus status = 3;
+  repeated string votesFor = 4;
+  repeated string votesAgainst = 5;
+  int64 startBlock = 6;
+  int64 expireBlock = 7;
+}
+
+// ProposalStatus enumerates the valid statuses of a proposal.
+enum ProposalStatus {
+  option (gogoproto.goproto_enum_prefix) = false;
+
+  PROPOSAL_STATUS_INITIATED = 0 [(gogoproto.enumvalue_customname) = "StatusInitiated"];
+  PROPOSAL_STATUS_APPROVED = 1 [(gogoproto.enumvalue_customname) = "StatusApproved"];
+  PROPOSAL_STATUS_REJECTED = 2 [(gogoproto.enumvalue_customname) = "StatusRejected"];
+  PROPOSAL_STATUS_EXPIRED = 3 [(gogoproto.enumvalue_customname) = "StatusExpired"];
+}
+
+message ProposalContent {
+    string denom = 1;
+    string proposalRoute = 2;
+    string name = 3;
+    bytes params = 4;
+}

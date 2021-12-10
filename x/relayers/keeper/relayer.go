@@ -4,6 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	gogotypes "github.com/gogo/protobuf/types"
 )
 
 // SetRelayer set a specific relayer in the store from its index
@@ -11,6 +12,7 @@ func (k Keeper) SetRelayer(ctx sdk.Context, relayer *types.Relayer) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
 	b := k.cdc.MustMarshal(relayer)
 	store.Set([]byte(relayer.Denom+relayer.Address), b)
+	k.IncRelayerCount(ctx, relayer.Denom)
 }
 
 // CheckIsRelayer returns a relayer from its index
@@ -19,6 +21,24 @@ func (k Keeper) CheckIsRelayer(ctx sdk.Context, denom, address string) bool {
 
 	b := store.Get([]byte(denom+address))
 	return b != nil
+}
+
+func (k Keeper) IncRelayerCount(ctx sdk.Context, denom string) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerCountPrefix)
+	old := k.RelayerCount(ctx, denom)
+	b := k.cdc.MustMarshal(&gogotypes.Int32Value{Value: old + 1})
+	store.Set([]byte(denom), b)
+}
+
+func (k Keeper) RelayerCount(ctx sdk.Context, denom string) int32 {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerCountPrefix)
+	b := store.Get([]byte(denom))
+	intV := gogotypes.Int32Value{}
+	err := k.cdc.Unmarshal(b, &intV)
+	if err != nil {
+		return 0
+	}
+	return intV.GetValue()
 }
 
 

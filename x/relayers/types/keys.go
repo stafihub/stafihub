@@ -20,9 +20,11 @@ const (
 )
 
 var (
-	RelayerPrefix    = []byte{0x00}
-	ThresholdPrefix = []byte{0x01}
-	ProposalPrefix = []byte{0x02}
+	RelayerPrefix      = []byte{0x00}
+	RelayerCountPrefix = []byte{0x01}
+	ThresholdPrefix    = []byte{0x02}
+	ProposalLifePrefix = []byte{0x03}
+	ProposalPrefix = []byte{0x04}
 )
 
 

@@ -27,6 +27,14 @@ Thresholds: []types.Threshold{
 		Index: "1",
 },
 },
+ProposalList: []types.Proposal{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
 // this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -39,5 +47,7 @@ Thresholds: []types.Threshold{
 require.Subset(t, genesisState.Relayers, got.Relayers)
 require.Len(t, got.Thresholds, len(genesisState.Thresholds))
 require.Subset(t, genesisState.Thresholds, got.Thresholds)
+require.Len(t, got.ProposalList, len(genesisState.ProposalList))
+require.Subset(t, genesisState.ProposalList, got.ProposalList)
 // this line is used by starport scaffolding # genesis/test/assert
 }

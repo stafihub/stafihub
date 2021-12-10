@@ -37,6 +37,14 @@ Thresholds: []types.Threshold{
 		Index: "1",
 },
 },
+ProposalList: []types.Proposal{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
 // this line is used by starport scaffolding # types/genesis/validField
             },
             valid:    true,
@@ -59,6 +67,20 @@ Thresholds: []types.Threshold{
 	desc:     "duplicated threshold",
 	genState: &types.GenesisState{
 		Thresholds: []types.Threshold{
+			{
+				Index: "0",
+},
+			{
+				Index: "0",
+},
+		},
+	},
+	valid:    false,
+},
+{
+	desc:     "duplicated proposal",
+	genState: &types.GenesisState{
+		ProposalList: []types.Proposal{
 			{
 				Index: "0",
 },

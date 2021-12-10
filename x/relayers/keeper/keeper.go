@@ -44,12 +44,12 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 func (k Keeper) SetProposalLife(ctx sdk.Context, proposalLife int64) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&gogotypes.Int64Value{Value: proposalLife})
-	store.Set(types.ProposalPrefix, b)
+	store.Set(types.ProposalLifePrefix, b)
 }
 
 func (k Keeper) ProposalLife(ctx sdk.Context) int64 {
 	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.ProposalPrefix)
+	b := store.Get(types.ProposalLifePrefix)
 	intV := gogotypes.Int64Value{}
 	k.cdc.MustUnmarshal(b, &intV)
 
