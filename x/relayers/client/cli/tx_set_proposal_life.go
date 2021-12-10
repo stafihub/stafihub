@@ -1,24 +1,27 @@
 package cli
 
 import (
+    "strconv"
 
 
-    "github.com/spf13/cobra"
-	"strconv"
 
-	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/spf13/cobra"
+
+    "github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
-func CmdUpdateThreshold() *cobra.Command {
+var _ = strconv.Itoa(0)
+
+func CmdSetProposalLife() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-threshold [denom] [value]",
-		Short: "Update a threshold",
-		Args:  cobra.ExactArgs(2),
+		Use:   "set-proposal-life [proposal-life]",
+		Short: "Broadcast message set_proposal_life",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			value, err := strconv.ParseUint(args[1], 10, 64)
+			value, err := strconv.ParseUint(args[0], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -28,11 +31,10 @@ func CmdUpdateThreshold() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateThreshold(
-			    clientCtx.GetFromAddress().String(),
-				args[0],
-				uint32(value),
-                )
+			msg := types.NewMsgSetProposalLife(
+				clientCtx.GetFromAddress().String(),
+				int64(value),
+			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

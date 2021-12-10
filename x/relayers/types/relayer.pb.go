@@ -23,9 +23,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Relayer struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	Address string `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
+	Denom   string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 }
 
 func (m *Relayer) Reset()         { *m = Relayer{} }
@@ -61,13 +60,6 @@ func (m *Relayer) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Relayer proto.InternalMessageInfo
 
-func (m *Relayer) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
 func (m *Relayer) GetDenom() string {
 	if m != nil {
 		return m.Denom
@@ -83,9 +75,8 @@ func (m *Relayer) GetAddress() string {
 }
 
 type Threshold struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	Value   uint32 `protobuf:"varint,3,opt,name=value,proto3" json:"value,omitempty"`
+	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Value uint32 `protobuf:"varint,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (m *Threshold) Reset()         { *m = Threshold{} }
@@ -121,13 +112,6 @@ func (m *Threshold) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Threshold proto.InternalMessageInfo
 
-func (m *Threshold) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
 func (m *Threshold) GetDenom() string {
 	if m != nil {
 		return m.Denom
@@ -150,20 +134,20 @@ func init() {
 func init() { proto.RegisterFile("relayers/relayer.proto", fileDescriptor_40adf04c18425525) }
 
 var fileDescriptor_40adf04c18425525 = []byte{
-	// 208 bytes of a gzipped FileDescriptorProto
+	// 193 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2b, 0x4a, 0xcd, 0x49,
 	0xac, 0x4c, 0x2d, 0x2a, 0xd6, 0x87, 0x32, 0xf4, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2, 0x85, 0xe4, 0x8b,
 	0x4b, 0x12, 0xd3, 0x32, 0xc1, 0xec, 0xe4, 0xfc, 0x1c, 0x3d, 0x30, 0x2f, 0xa3, 0x34, 0x49, 0x0f,
-	0xa6, 0x5c, 0x29, 0x98, 0x8b, 0x3d, 0x08, 0xc2, 0x16, 0x92, 0xe0, 0x62, 0x4f, 0x2e, 0x4a, 0x4d,
-	0x2c, 0xc9, 0x2f, 0x92, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0x71, 0x85, 0x44, 0xb8, 0x58,
-	0x53, 0x52, 0xf3, 0xf2, 0x73, 0x25, 0x98, 0xc0, 0xe2, 0x10, 0x0e, 0x48, 0x7d, 0x62, 0x4a, 0x4a,
-	0x51, 0x6a, 0x71, 0xb1, 0x04, 0x33, 0x44, 0x3d, 0x94, 0xab, 0x14, 0xc8, 0xc5, 0x19, 0x92, 0x51,
-	0x94, 0x5a, 0x9c, 0x91, 0x9f, 0x93, 0x42, 0xb2, 0xb1, 0x22, 0x5c, 0xac, 0x65, 0x89, 0x39, 0xa5,
-	0xa9, 0x60, 0x43, 0x79, 0x83, 0x20, 0x1c, 0x27, 0x9f, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92,
-	0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c,
-	0x96, 0x63, 0x88, 0x32, 0x4a, 0xcf, 0x2c, 0x01, 0x79, 0x29, 0x39, 0x3f, 0x57, 0x1f, 0xc5, 0xb7,
-	0xfa, 0x30, 0xdf, 0xea, 0x57, 0xe8, 0xc3, 0x83, 0xa7, 0xa4, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d,
-	0xac, 0xc6, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x65, 0x18, 0x19, 0xbd, 0x37, 0x01, 0x00, 0x00,
+	0xa6, 0x5c, 0xc9, 0x92, 0x8b, 0x3d, 0x08, 0xc2, 0x16, 0x12, 0xe1, 0x62, 0x4d, 0x49, 0xcd, 0xcb,
+	0xcf, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0x70, 0x84, 0x24, 0xb8, 0xd8, 0x13, 0x53,
+	0x52, 0x8a, 0x52, 0x8b, 0x8b, 0x25, 0x98, 0xc0, 0xe2, 0x30, 0xae, 0x92, 0x39, 0x17, 0x67, 0x48,
+	0x46, 0x51, 0x6a, 0x71, 0x46, 0x7e, 0x4e, 0x0a, 0x0e, 0xcd, 0x22, 0x5c, 0xac, 0x65, 0x89, 0x39,
+	0xa5, 0xa9, 0x60, 0xad, 0xbc, 0x41, 0x10, 0x8e, 0x93, 0xcf, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e,
+	0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37,
+	0x1e, 0xcb, 0x31, 0x44, 0x19, 0xa5, 0x67, 0x96, 0x80, 0x9c, 0x97, 0x9c, 0x9f, 0xab, 0x8f, 0xe2,
+	0x72, 0x7d, 0x98, 0xcb, 0xf5, 0x2b, 0xf4, 0xe1, 0x5e, 0x2d, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62,
+	0x03, 0xab, 0x31, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x39, 0x65, 0x55, 0x95, 0x03, 0x01, 0x00,
+	0x00,
 }
 
 func (m *Relayer) Marshal() (dAtA []byte, err error) {
@@ -191,19 +175,12 @@ func (m *Relayer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.Address)
 		i = encodeVarintRelayer(dAtA, i, uint64(len(m.Address)))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x12
 	}
 	if len(m.Denom) > 0 {
 		i -= len(m.Denom)
 		copy(dAtA[i:], m.Denom)
 		i = encodeVarintRelayer(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintRelayer(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -233,19 +210,12 @@ func (m *Threshold) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.Value != 0 {
 		i = encodeVarintRelayer(dAtA, i, uint64(m.Value))
 		i--
-		dAtA[i] = 0x18
+		dAtA[i] = 0x10
 	}
 	if len(m.Denom) > 0 {
 		i -= len(m.Denom)
 		copy(dAtA[i:], m.Denom)
 		i = encodeVarintRelayer(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintRelayer(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -269,10 +239,6 @@ func (m *Relayer) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovRelayer(uint64(l))
-	}
 	l = len(m.Denom)
 	if l > 0 {
 		n += 1 + l + sovRelayer(uint64(l))
@@ -290,10 +256,6 @@ func (m *Threshold) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovRelayer(uint64(l))
-	}
 	l = len(m.Denom)
 	if l > 0 {
 		n += 1 + l + sovRelayer(uint64(l))
@@ -341,38 +303,6 @@ func (m *Relayer) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowRelayer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthRelayer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthRelayer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
 			}
 			var stringLen uint64
@@ -403,7 +333,7 @@ func (m *Relayer) Unmarshal(dAtA []byte) error {
 			}
 			m.Denom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
 			}
@@ -487,38 +417,6 @@ func (m *Threshold) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowRelayer
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthRelayer
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthRelayer
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
 			}
 			var stringLen uint64
@@ -549,7 +447,7 @@ func (m *Threshold) Unmarshal(dAtA []byte) error {
 			}
 			m.Denom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 3:
+		case 2:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 			}

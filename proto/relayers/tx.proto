@@ -10,6 +10,7 @@ service Msg {
   rpc CreateRelayer(MsgCreateRelayer) returns (MsgCreateRelayerResponse);
   rpc DeleteRelayer(MsgDeleteRelayer) returns (MsgDeleteRelayerResponse);
   rpc UpdateThreshold(MsgUpdateThreshold) returns (MsgUpdateThresholdResponse);
+  rpc SetProposalLife(MsgSetProposalLife) returns (MsgSetProposalLifeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -33,5 +34,13 @@ message MsgUpdateThreshold {
   uint32 value = 3;
 }
 message MsgUpdateThresholdResponse {}
+
+message MsgSetProposalLife {
+  string creator = 1;
+  int64 proposalLife = 2;
+}
+
+message MsgSetProposalLifeResponse {
+}
 
 // this line is used by starport scaffolding # proto/tx/message

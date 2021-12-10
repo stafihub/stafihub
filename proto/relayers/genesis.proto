@@ -9,7 +9,8 @@ option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 // GenesisState defines the relayers module's genesis state.
 message GenesisState {
-    repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
-    repeated Threshold thresholds = 2 [(gogoproto.nullable) = false];
+    repeated Relayer relayers = 1 [(gogoproto.moretags) = "yaml:\"relayers\""];
+    repeated Threshold thresholds = 2 [(gogoproto.moretags) = "yaml:\"thresholds\""];
+    int64 proposal_life = 3 [(gogoproto.moretags) = "yaml:\"proposal_life\""];
   // this line is used by starport scaffolding # genesis/proto/state
 }

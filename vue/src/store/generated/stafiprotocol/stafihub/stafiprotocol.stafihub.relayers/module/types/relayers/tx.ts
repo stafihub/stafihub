@@ -1,5 +1,6 @@
 /* eslint-disable */
-import { Reader, Writer } from 'protobufjs/minimal'
+import { Reader, util, configure, Writer } from 'protobufjs/minimal'
+import * as Long from 'long'
 
 export const protobufPackage = 'stafiprotocol.stafihub.relayers'
 
@@ -26,6 +27,13 @@ export interface MsgUpdateThreshold {
 }
 
 export interface MsgUpdateThresholdResponse {}
+
+export interface MsgSetProposalLife {
+  creator: string
+  proposalLife: number
+}
+
+export interface MsgSetProposalLifeResponse {}
 
 const baseMsgCreateRelayer: object = { creator: '', denom: '', address: '' }
 
@@ -408,12 +416,123 @@ export const MsgUpdateThresholdResponse = {
   }
 }
 
+const baseMsgSetProposalLife: object = { creator: '', proposalLife: 0 }
+
+export const MsgSetProposalLife = {
+  encode(message: MsgSetProposalLife, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
+    if (message.proposalLife !== 0) {
+      writer.uint32(16).int64(message.proposalLife)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetProposalLife {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgSetProposalLife } as MsgSetProposalLife
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string()
+          break
+        case 2:
+          message.proposalLife = longToNumber(reader.int64() as Long)
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): MsgSetProposalLife {
+    const message = { ...baseMsgSetProposalLife } as MsgSetProposalLife
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
+    if (object.proposalLife !== undefined && object.proposalLife !== null) {
+      message.proposalLife = Number(object.proposalLife)
+    } else {
+      message.proposalLife = 0
+    }
+    return message
+  },
+
+  toJSON(message: MsgSetProposalLife): unknown {
+    const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
+    message.proposalLife !== undefined && (obj.proposalLife = message.proposalLife)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<MsgSetProposalLife>): MsgSetProposalLife {
+    const message = { ...baseMsgSetProposalLife } as MsgSetProposalLife
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
+    if (object.proposalLife !== undefined && object.proposalLife !== null) {
+      message.proposalLife = object.proposalLife
+    } else {
+      message.proposalLife = 0
+    }
+    return message
+  }
+}
+
+const baseMsgSetProposalLifeResponse: object = {}
+
+export const MsgSetProposalLifeResponse = {
+  encode(_: MsgSetProposalLifeResponse, writer: Writer = Writer.create()): Writer {
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetProposalLifeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgSetProposalLifeResponse } as MsgSetProposalLifeResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(_: any): MsgSetProposalLifeResponse {
+    const message = { ...baseMsgSetProposalLifeResponse } as MsgSetProposalLifeResponse
+    return message
+  },
+
+  toJSON(_: MsgSetProposalLifeResponse): unknown {
+    const obj: any = {}
+    return obj
+  },
+
+  fromPartial(_: DeepPartial<MsgSetProposalLifeResponse>): MsgSetProposalLifeResponse {
+    const message = { ...baseMsgSetProposalLifeResponse } as MsgSetProposalLifeResponse
+    return message
+  }
+}
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateRelayer(request: MsgCreateRelayer): Promise<MsgCreateRelayerResponse>
   DeleteRelayer(request: MsgDeleteRelayer): Promise<MsgDeleteRelayerResponse>
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UpdateThreshold(request: MsgUpdateThreshold): Promise<MsgUpdateThresholdResponse>
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SetProposalLife(request: MsgSetProposalLife): Promise<MsgSetProposalLifeResponse>
 }
 
 export class MsgClientImpl implements Msg {
@@ -438,11 +557,27 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Msg', 'UpdateThreshold', data)
     return promise.then((data) => MsgUpdateThresholdResponse.decode(new Reader(data)))
   }
+
+  SetProposalLife(request: MsgSetProposalLife): Promise<MsgSetProposalLifeResponse> {
+    const data = MsgSetProposalLife.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.relayers.Msg', 'SetProposalLife', data)
+    return promise.then((data) => MsgSetProposalLifeResponse.decode(new Reader(data)))
+  }
 }
 
 interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>
 }
+
+declare var self: any | undefined
+declare var window: any | undefined
+var globalThis: any = (() => {
+  if (typeof globalThis !== 'undefined') return globalThis
+  if (typeof self !== 'undefined') return self
+  if (typeof window !== 'undefined') return window
+  if (typeof global !== 'undefined') return global
+  throw 'Unable to locate global object'
+})()
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined
 export type DeepPartial<T> = T extends Builtin
@@ -454,3 +589,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER')
+  }
+  return long.toNumber()
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any
+  configure()
+}

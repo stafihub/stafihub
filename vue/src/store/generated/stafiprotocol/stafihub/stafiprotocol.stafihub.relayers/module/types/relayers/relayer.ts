@@ -4,29 +4,24 @@ import { Writer, Reader } from 'protobufjs/minimal'
 export const protobufPackage = 'stafiprotocol.stafihub.relayers'
 
 export interface Relayer {
-  creator: string
   denom: string
   address: string
 }
 
 export interface Threshold {
-  creator: string
   denom: string
   value: number
 }
 
-const baseRelayer: object = { creator: '', denom: '', address: '' }
+const baseRelayer: object = { denom: '', address: '' }
 
 export const Relayer = {
   encode(message: Relayer, writer: Writer = Writer.create()): Writer {
-    if (message.creator !== '') {
-      writer.uint32(10).string(message.creator)
-    }
     if (message.denom !== '') {
-      writer.uint32(18).string(message.denom)
+      writer.uint32(10).string(message.denom)
     }
     if (message.address !== '') {
-      writer.uint32(26).string(message.address)
+      writer.uint32(18).string(message.address)
     }
     return writer
   },
@@ -39,12 +34,9 @@ export const Relayer = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.creator = reader.string()
-          break
-        case 2:
           message.denom = reader.string()
           break
-        case 3:
+        case 2:
           message.address = reader.string()
           break
         default:
@@ -57,11 +49,6 @@ export const Relayer = {
 
   fromJSON(object: any): Relayer {
     const message = { ...baseRelayer } as Relayer
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = String(object.creator)
-    } else {
-      message.creator = ''
-    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
@@ -77,7 +64,6 @@ export const Relayer = {
 
   toJSON(message: Relayer): unknown {
     const obj: any = {}
-    message.creator !== undefined && (obj.creator = message.creator)
     message.denom !== undefined && (obj.denom = message.denom)
     message.address !== undefined && (obj.address = message.address)
     return obj
@@ -85,11 +71,6 @@ export const Relayer = {
 
   fromPartial(object: DeepPartial<Relayer>): Relayer {
     const message = { ...baseRelayer } as Relayer
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator
-    } else {
-      message.creator = ''
-    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {
@@ -104,18 +85,15 @@ export const Relayer = {
   }
 }
 
-const baseThreshold: object = { creator: '', denom: '', value: 0 }
+const baseThreshold: object = { denom: '', value: 0 }
 
 export const Threshold = {
   encode(message: Threshold, writer: Writer = Writer.create()): Writer {
-    if (message.creator !== '') {
-      writer.uint32(10).string(message.creator)
-    }
     if (message.denom !== '') {
-      writer.uint32(18).string(message.denom)
+      writer.uint32(10).string(message.denom)
     }
     if (message.value !== 0) {
-      writer.uint32(24).uint32(message.value)
+      writer.uint32(16).uint32(message.value)
     }
     return writer
   },
@@ -128,12 +106,9 @@ export const Threshold = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.creator = reader.string()
-          break
-        case 2:
           message.denom = reader.string()
           break
-        case 3:
+        case 2:
           message.value = reader.uint32()
           break
         default:
@@ -146,11 +121,6 @@ export const Threshold = {
 
   fromJSON(object: any): Threshold {
     const message = { ...baseThreshold } as Threshold
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = String(object.creator)
-    } else {
-      message.creator = ''
-    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
@@ -166,7 +136,6 @@ export const Threshold = {
 
   toJSON(message: Threshold): unknown {
     const obj: any = {}
-    message.creator !== undefined && (obj.creator = message.creator)
     message.denom !== undefined && (obj.denom = message.denom)
     message.value !== undefined && (obj.value = message.value)
     return obj
@@ -174,11 +143,6 @@ export const Threshold = {
 
   fromPartial(object: DeepPartial<Threshold>): Threshold {
     const message = { ...baseThreshold } as Threshold
-    if (object.creator !== undefined && object.creator !== null) {
-      message.creator = object.creator
-    } else {
-      message.creator = ''
-    }
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {

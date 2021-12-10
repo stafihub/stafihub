@@ -7,9 +7,9 @@ import (
 )
 
 // SetThreshold set a specific threshold in the store from its denom
-func (k Keeper) SetThreshold(ctx sdk.Context, threshold types.Threshold) {
+func (k Keeper) SetThreshold(ctx sdk.Context, threshold *types.Threshold) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
-	b := k.cdc.MustMarshal(&threshold)
+	b := k.cdc.MustMarshal(threshold)
 	store.Set([]byte(threshold.Denom), b)
 }
 
@@ -30,7 +30,7 @@ func (k Keeper) GetThreshold(
 }
 
 // GetAllThreshold returns all threshold
-func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []types.Threshold) {
+func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []*types.Threshold) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
@@ -39,7 +39,7 @@ func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []types.Threshold) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Threshold
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-        list = append(list, val)
+        list = append(list, &val)
 	}
 
     return

@@ -17,6 +17,8 @@ export type RelayersMsgCreateRelayerResponse = object;
 
 export type RelayersMsgDeleteRelayerResponse = object;
 
+export type RelayersMsgSetProposalLifeResponse = object;
+
 export type RelayersMsgUpdateThresholdResponse = object;
 
 export interface RelayersQueryAllRelayerResponse {
@@ -73,13 +75,11 @@ export interface RelayersQueryRelayersByDenomResponse {
 }
 
 export interface RelayersRelayer {
-  creator?: string;
   denom?: string;
   address?: string;
 }
 
 export interface RelayersThreshold {
-  creator?: string;
   denom?: string;
 
   /** @format int64 */

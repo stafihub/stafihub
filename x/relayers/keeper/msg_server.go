@@ -37,8 +37,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 		return nil, types.ErrRelayerAlreadySet
 	}
 
-	var relayer = types.Relayer{
-		Creator: msg.Creator,
+	var relayer = &types.Relayer{
 		Denom: msg.Denom,
 		Address: msg.Address,
 	}
@@ -70,12 +69,23 @@ func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateT
 	}
 
 	var threshold = types.Threshold{
-		Creator: msg.Creator,
 		Denom: msg.Denom,
 		Value: msg.Value,
 	}
 
-	k.SetThreshold(ctx, threshold)
+	k.SetThreshold(ctx, &threshold)
 
 	return &types.MsgUpdateThresholdResponse{}, nil
+}
+
+func (k msgServer) SetProposalLife(goCtx context.Context,  msg *types.MsgSetProposalLife) (*types.MsgSetProposalLifeResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.IsAdmin(ctx, msg.Creator) {
+		return nil, types.ErrCreatorNotAdmin
+	}
+
+	k.Keeper.SetProposalLife(ctx, msg.ProposalLife)
+
+	return &types.MsgSetProposalLifeResponse{}, nil
 }

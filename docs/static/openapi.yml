@@ -12516,8 +12516,6 @@ paths:
                 items:
                   type: object
                   properties:
-                    creator:
-                      type: string
                     denom:
                       type: string
                     address:
@@ -12679,8 +12677,6 @@ paths:
                 items:
                   type: object
                   properties:
-                    creator:
-                      type: string
                     denom:
                       type: string
                     address:
@@ -12805,8 +12801,6 @@ paths:
                 items:
                   type: object
                   properties:
-                    creator:
-                      type: string
                     denom:
                       type: string
                     value:
@@ -12926,8 +12920,6 @@ paths:
               threshold:
                 type: object
                 properties:
-                  creator:
-                    type: string
                   denom:
                     type: string
                   value:
@@ -20308,6 +20300,8 @@ definitions:
     type: object
   stafiprotocol.stafihub.relayers.MsgDeleteRelayerResponse:
     type: object
+  stafiprotocol.stafihub.relayers.MsgSetProposalLifeResponse:
+    type: object
   stafiprotocol.stafihub.relayers.MsgUpdateThresholdResponse:
     type: object
   stafiprotocol.stafihub.relayers.QueryAllRelayerResponse:
@@ -20318,8 +20312,6 @@ definitions:
         items:
           type: object
           properties:
-            creator:
-              type: string
             denom:
               type: string
             address:
@@ -20357,8 +20349,6 @@ definitions:
         items:
           type: object
           properties:
-            creator:
-              type: string
             denom:
               type: string
             value:
@@ -20395,8 +20385,6 @@ definitions:
       threshold:
         type: object
         properties:
-          creator:
-            type: string
           denom:
             type: string
           value:
@@ -20415,8 +20403,6 @@ definitions:
         items:
           type: object
           properties:
-            creator:
-              type: string
             denom:
               type: string
             address:
@@ -20449,8 +20435,6 @@ definitions:
   stafiprotocol.stafihub.relayers.Relayer:
     type: object
     properties:
-      creator:
-        type: string
       denom:
         type: string
       address:
@@ -20458,8 +20442,6 @@ definitions:
   stafiprotocol.stafihub.relayers.Threshold:
     type: object
     properties:
-      creator:
-        type: string
       denom:
         type: string
       value:

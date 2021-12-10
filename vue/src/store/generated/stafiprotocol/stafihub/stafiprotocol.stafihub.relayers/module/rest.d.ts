@@ -3,6 +3,7 @@ export interface ProtobufAny {
 }
 export declare type RelayersMsgCreateRelayerResponse = object;
 export declare type RelayersMsgDeleteRelayerResponse = object;
+export declare type RelayersMsgSetProposalLifeResponse = object;
 export declare type RelayersMsgUpdateThresholdResponse = object;
 export interface RelayersQueryAllRelayerResponse {
     relayers?: RelayersRelayer[];
@@ -50,12 +51,10 @@ export interface RelayersQueryRelayersByDenomResponse {
     pagination?: V1Beta1PageResponse;
 }
 export interface RelayersRelayer {
-    creator?: string;
     denom?: string;
     address?: string;
 }
 export interface RelayersThreshold {
-    creator?: string;
     denom?: string;
     /** @format int64 */
     value?: number;

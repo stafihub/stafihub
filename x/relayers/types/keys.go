@@ -22,6 +22,7 @@ const (
 var (
 	RelayerPrefix    = []byte{0x00}
 	ThresholdPrefix = []byte{0x01}
+	ProposalPrefix = []byte{0x02}
 )
 
 

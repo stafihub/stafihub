@@ -1,12 +1,13 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.sudo;
 
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
 
 // GenesisState defines the sudo module's genesis state.
 message GenesisState {
-    string admin = 1;
+    string admin = 1 [(gogoproto.moretags) = "yaml:\"admin\""];
     // this line is used by starport scaffolding # genesis/proto/state
 }
