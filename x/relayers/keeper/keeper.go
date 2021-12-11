@@ -18,6 +18,9 @@ type (
 
 
         sudoKeeper types.SudoKeeper
+
+		// Proposal router
+		router types.Router
 	}
 )
 
@@ -27,18 +30,27 @@ func NewKeeper(
     memKey sdk.StoreKey,
 
     sudoKeeper types.SudoKeeper,
+	rtr types.Router,
 ) *Keeper {
+	rtr.Seal()
+
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
 
 		sudoKeeper: sudoKeeper,
+		router: rtr,
 	}
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+// Router returns the gov Keeper's Router
+func (keeper Keeper) Router() types.Router {
+	return keeper.router
 }
 
 func (k Keeper) SetProposalLife(ctx sdk.Context, proposalLife int64) {

@@ -16,7 +16,7 @@ message Threshold {
 }
 
 message Proposal {
-  bytes proposalId = 1;
+  bytes propId = 1;
   ProposalContent content = 2;
   ProposalStatus status = 3;
   repeated string votesFor = 4;
@@ -37,7 +37,8 @@ enum ProposalStatus {
 
 message ProposalContent {
     string denom = 1;
-    string proposalRoute = 2;
-    string name = 3;
-    bytes params = 4;
+    bytes propId = 2;
+    string proposalRoute = 3;
+    string proposalType = 4;
+    bytes params = 5;
 }

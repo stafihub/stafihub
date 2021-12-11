@@ -1,7 +1,7 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.relayers;
 
-import "gogoproto/gogo.proto";
+import "relayers/relayer.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
@@ -48,14 +48,16 @@ message MsgSetProposalLifeResponse {
 message MsgSubmitProposal {
   string creator = 1;
   string denom = 2;
-  string proposalRoute = 3 [(gogoproto.jsontag) = "proposal_route"];
-  string name = 4 [(gogoproto.jsontag) = "name"];
-  bytes params = 5 [(gogoproto.jsontag) = "params"];
-  bool inFavour = 6 [(gogoproto.jsontag) = "in_favour"];
+  bytes propId = 3;
+  string proposalRoute = 4;
+  string proposalType = 5;
+  bytes params = 6;
+  bool inFavour = 7;
 }
 
 message MsgSubmitProposalResponse {
-    string proposal_id = 1;
+    string propId = 1;
+    ProposalStatus status = 2;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

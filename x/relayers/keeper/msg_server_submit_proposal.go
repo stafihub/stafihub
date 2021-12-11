@@ -2,10 +2,9 @@ package keeper
 
 import (
 	"context"
-	"github.com/tendermint/tendermint/crypto"
-
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 
@@ -16,49 +15,29 @@ func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitPr
 		return nil, types.ErrCreatorNotRelayer
 	}
 
-	content := msg.Content()
-	cbz := k.cdc.MustMarshal(content)
-	id := crypto.Sha256(cbz)
-	threshold, ok := k.GetThreshold(ctx, content.Denom)
-	if !ok {
-		return nil, types.ErrThresholdNotFound
-	}
-	curBlock := ctx.BlockHeight()
-	prop, ok := k.GetProposal(ctx, id)
-	if !ok {
-		prop = &types.Proposal{
-			ProposalId: id,
-			Content: content,
-			Status: types.StatusInitiated,
-			StartBlock: curBlock,
-			VotesFor: make([]string, 0),
-			VotesAgainst: make([]string, 0),
-		}
-		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
+	prop, err := k.Keeper.SubmitProposal(ctx, msg.Content(), msg.Creator, msg.InFavour)
+	if err != nil {
+		return nil, err
 	}
 
-	if msg.InFavour {
-		prop.VotesFor = append(prop.VotesFor, msg.Creator)
-	} else {
-		prop.VotesAgainst = append(prop.VotesAgainst, msg.Creator)
+	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId), Status: prop.Status}
+	if prop.Status != types.StatusApproved {
+		return res, nil
 	}
 
-	if prop.IsExpired(curBlock) {
-		prop.Status = types.StatusExpired
-	} else {
-		total := uint32(k.RelayerCount(ctx, msg.Denom))
-		if threshold.Value > total || uint32(len(prop.VotesAgainst)) + threshold.Value > total {
-			prop.Status = types.StatusRejected
-		} else if uint32(len(prop.VotesFor)) > threshold.Value {
-			prop.Status = types.StatusApproved
-		}
+	rtr := k.Keeper.Router()
+	handler := rtr.GetRoute(prop.ProposalRoute())
+	cacheCtx, writeCache := ctx.CacheContext()
+	if err := handler(cacheCtx, prop.GetContent()); err != nil {
+		return nil, err
 	}
+	// The cached context is created with a new EventManager. However, since
+	// the proposal handler execution was successful, we want to track/keep
+	// any events emitted, so we re-emit to "merge" the events into the
+	// original Context's EventManager.
+	ctx.EventManager().EmitEvents(cacheCtx.EventManager().Events())
 
-	k.SetProposal(ctx, prop)
-
-	if prop.Status == types.StatusApproved {
-	}
-
-
-	return &types.MsgSubmitProposalResponse{}, nil
+	// write state to the underlying multi-store
+	writeCache()
+	return res, nil
 }

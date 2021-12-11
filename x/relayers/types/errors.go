@@ -13,4 +13,5 @@ var (
 	ErrRelayerAlreadySet = sdkerrors.Register(ModuleName, 3, "relayer already set")
 	ErrThresholdNotFound = sdkerrors.Register(ModuleName, 4, "threshold not found")
 	ErrCreatorNotRelayer = sdkerrors.Register(ModuleName, 5, "creator is not a relayer")
+	ErrNoProposalHandlerExists = sdkerrors.Register(ModuleName, 6, "no handler exists for proposal type")
 )

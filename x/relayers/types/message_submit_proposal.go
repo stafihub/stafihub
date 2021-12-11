@@ -7,11 +7,13 @@ import (
 
 var _ sdk.Msg = &MsgSubmitProposal{}
 
-func NewMsgSubmitProposal(creator string, proposalRoute string, name string, params []byte, inFavour bool) *MsgSubmitProposal {
+func NewMsgSubmitProposal(creator string, denom string, propId []byte, proposalRoute string, proposalType string, params []byte, inFavour bool) *MsgSubmitProposal {
   return &MsgSubmitProposal{
 		Creator: creator,
+		Denom: denom,
+		PropId: propId,
     ProposalRoute: proposalRoute,
-    Name: name,
+    ProposalType: proposalType,
     Params: params,
     InFavour: inFavour,
 	}
@@ -49,8 +51,9 @@ func (msg *MsgSubmitProposal) ValidateBasic() error {
 func (msg *MsgSubmitProposal) Content() *ProposalContent {
 	return &ProposalContent{
 		Denom: msg.Denom,
+		PropId: msg.PropId,
 		ProposalRoute: msg.GetProposalRoute(),
-		Name: msg.Name,
+		ProposalType: msg.ProposalType,
 		Params: msg.Params,
 	}
 }

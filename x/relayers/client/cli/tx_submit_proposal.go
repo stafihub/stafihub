@@ -19,18 +19,20 @@ var _ = strconv.Itoa(0)
 
 func CmdSubmitProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "submit-proposal [proposal_route] [name] [params] [in_favour]",
+		Use:   "submit-proposal [denom] [prop_id] [proposal_route] [proposal_type] [params] [in_favour]",
 		Short: "Broadcast message submit_proposal, in_favour should only be true or false",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-      		 argProposalRoute := args[0]
-             argName := args[1]
-             argParams, err := hex.DecodeString(args[2])
+			argDenom := args[0]
+			argPropId := args[1]
+      		 argProposalRoute := args[2]
+			argProposalType := args[3]
+             argParams, err := hex.DecodeString(args[4])
              if err != nil {
              	return err
 			 }
              var argInFavour bool
-			switch args[3] {
+			switch args[5] {
 			case "true":
 				argInFavour = true
 			case "false":
@@ -46,11 +48,12 @@ func CmdSubmitProposal() *cobra.Command {
 
 			msg := types.NewMsgSubmitProposal(
 				clientCtx.GetFromAddress().String(),
+				argDenom,
+				argPropId,
 				argProposalRoute,
-				argName,
+				argProposalType,
 				argParams,
 				argInFavour,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
