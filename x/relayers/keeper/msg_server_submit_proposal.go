@@ -11,16 +11,25 @@ import (
 func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitProposal) (*types.MsgSubmitProposalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.CheckIsRelayer(ctx, msg.Denom, msg.Creator) {
-		return nil, types.ErrCreatorNotRelayer
+	content := msg.GetContent()
+
+	if !k.CheckIsRelayer(ctx, content.Denom(), msg.Proposer) {
+		return nil, types.ErrProposerNotRelayer
 	}
 
-	prop, err := k.Keeper.SubmitProposal(ctx, msg.Content(), msg.Creator, msg.InFavour)
+	prop, err := k.Keeper.SubmitProposal(ctx, content, msg.Proposer)
 	if err != nil {
 		return nil, err
 	}
 
-	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId), Status: prop.Status}
+
+
+	//prop, err := k.Keeper.SubmitProposal(ctx, msg.Content(), msg.Creator, msg.InFavour)
+	//if err != nil {
+	//	return nil, err
+	//}
+
+	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId()), Status: prop.Status}
 	if prop.Status != types.StatusApproved {
 		return res, nil
 	}

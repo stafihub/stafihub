@@ -8,9 +8,6 @@ import (
 
 var _ Router = (*router)(nil)
 
-// Handler defines a function that handles a proposal after it has been approved
-type Handler func(ctx sdk.Context, content *ProposalContent) error
-
 // Router implements a  Handler router.
 type Router interface {
 	AddRoute(r string, h Handler) (rtr Router)

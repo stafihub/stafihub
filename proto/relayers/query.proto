@@ -4,6 +4,7 @@ package stafiprotocol.stafihub.relayers;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "relayers/relayer.proto";
+import "relayers/proposal.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
