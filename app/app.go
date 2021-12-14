@@ -97,6 +97,9 @@ sudomodule "github.com/stafiprotocol/stafihub/x/sudo"
 relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
 		relayersmodulekeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
 		relayersmoduletypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+ledgermodule "github.com/stafiprotocol/stafihub/x/ledger"
+		ledgermodulekeeper "github.com/stafiprotocol/stafihub/x/ledger/keeper"
+		ledgermoduletypes "github.com/stafiprotocol/stafihub/x/ledger/types"
 // this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -150,6 +153,7 @@ var (
 		ratemodule.AppModuleBasic{},
 sudomodule.AppModuleBasic{},
 relayersmodule.AppModuleBasic{},
+ledgermodule.AppModuleBasic{},
 // this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -224,6 +228,8 @@ type App struct {
 		SudoKeeper sudomodulekeeper.Keeper
 
 		RelayersKeeper relayersmodulekeeper.Keeper
+
+		LedgerKeeper ledgermodulekeeper.Keeper
 // this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -260,6 +266,7 @@ func New(
 		ratemoduletypes.StoreKey,
 sudomoduletypes.StoreKey,
 relayersmoduletypes.StoreKey,
+ledgermoduletypes.StoreKey,
 // this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -385,6 +392,16 @@ relayersmoduletypes.StoreKey,
 )
 		relayersModule := relayersmodule.NewAppModule(appCodec, app.RelayersKeeper)
 
+		
+		app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
+			appCodec,
+			keys[ledgermoduletypes.StoreKey],
+			keys[ledgermoduletypes.MemStoreKey],
+			
+			app.SudoKeeper,
+)
+		ledgerModule := ledgermodule.NewAppModule(appCodec, app.LedgerKeeper)
+
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
     // Create static IBC router, add transfer route, then set and seal it
@@ -427,6 +444,7 @@ relayersmoduletypes.StoreKey,
 relayersModule,
 sudoModule,
 relayersModule,
+ledgerModule,
 // this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -464,6 +482,7 @@ relayersModule,
 		ratemoduletypes.ModuleName,
 		sudomoduletypes.ModuleName,
 relayersmoduletypes.ModuleName,
+ledgermoduletypes.ModuleName,
 // this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -654,6 +673,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ratemoduletypes.ModuleName)
 paramsKeeper.Subspace(sudomoduletypes.ModuleName)
 paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
+paramsKeeper.Subspace(ledgermoduletypes.ModuleName)
 // this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
