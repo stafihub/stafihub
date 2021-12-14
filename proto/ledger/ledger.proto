@@ -1,0 +1,136 @@
+syntax = "proto3";
+package stafiprotocol.stafihub.ledger;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
+
+message ChainEra {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message ChainBondingDuration {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message Pool {
+  string denom = 1;
+  repeated string addrs = 2;
+}
+
+message BondedPool {
+  string denom = 1;
+  repeated string addrs = 2;
+}
+
+message TotalExpectedActive {
+  string denom = 1;
+  string era = 2;
+  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+message BondPipeline {
+    string denom = 1;
+    string addr = 2;
+    LinkChunk chunk = 3;
+}
+
+message Snapshot {
+    string denom = 1;
+    bytes shotId = 2;
+    BondSnapshot shot = 3;
+}
+
+message EraSnapShot {
+    string denom = 1;
+    uint32 era = 2;
+    bytes shotId = 3;
+}
+
+message CurrentEraSnapShot {
+    string denom = 1;
+    repeated bytes shotId = 2;
+}
+
+message PoolUnbond {
+    string denom = 1;
+    string addr = 2;
+    uint32 era = 3;
+    repeated Unbonding unbondings = 4;
+}
+
+message EraUnbondLimit {
+    string denom = 1;
+    uint32 limit = 2;
+}
+
+message SubAccount {
+    string denom = 1;
+    string addr = 2;
+    repeated string addrs = 3;
+}
+
+message MultiThreshold {
+    string denom = 1;
+    string addr = 2;
+    uint32 threshold = 3;
+}
+
+message LastVoter {
+    string denom = 1;
+    string voter = 2;
+}
+
+message LeastBond {
+    string denom = 1;
+    string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+message LinkChunk {
+    string bond = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+    string unbond = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+    string active = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+message BondSnapshot {
+    string denom = 1;
+    uint32 era = 2;
+    string addr = 3;
+    string bond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+    string unbond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+    string active = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+    string last_voter = 7;
+    PoolBondState bond_state = 8;
+}
+
+enum PoolBondState {
+    option (gogoproto.goproto_enum_prefix) = false;
+
+    ERA_UPDATED = 0 [(gogoproto.enumvalue_customname) = "EraUpdated"];
+    BOND_REPORTED = 1 [(gogoproto.enumvalue_customname) = "BondReported"];
+    ACTIVE_REPORTED = 2 [(gogoproto.enumvalue_customname) = "ActiveReported"];
+    WITHDRAW_SKIPPED = 3 [(gogoproto.enumvalue_customname) = "WithdrawSkipped"];
+    WITHDRAW_REPORTED = 4 [(gogoproto.enumvalue_customname) = "WithdrawReported"];
+    TRANSFER_REPORTED = 5 [(gogoproto.enumvalue_customname) = "TransferReported"];
+}
+
+enum BondAction {
+    option (gogoproto.goproto_enum_prefix) = false;
+
+    BOND_ONLY = 0 [(gogoproto.enumvalue_customname) = "BondOnly"];
+    UNBOND_ONLY = 1 [(gogoproto.enumvalue_customname) = "UnbondOnly"];
+    BOTH_BOND_UNBOND = 2 [(gogoproto.enumvalue_customname) = "BothBondUnbond"];
+    EITHER_BOND_UNBOND = 3 [(gogoproto.enumvalue_customname) = "EitherBondUnbond"];
+    INTER_DEDUCT = 4 [(gogoproto.enumvalue_customname) = "InterDeduct"];
+}
+
+message Unbonding {
+    string who = 1;
+    string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+    string recipient = 3;
+}
+
+
+
