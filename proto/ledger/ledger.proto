@@ -17,12 +17,7 @@ message ChainBondingDuration {
 
 message Pool {
   string denom = 1;
-  repeated string addrs = 2;
-}
-
-message BondedPool {
-  string denom = 1;
-  repeated string addrs = 2;
+  map<string, bool> addrs = 2;
 }
 
 message TotalExpectedActive {
@@ -33,7 +28,7 @@ message TotalExpectedActive {
 
 message BondPipeline {
     string denom = 1;
-    string addr = 2;
+    string pool = 2;
     LinkChunk chunk = 3;
 }
 
@@ -51,12 +46,12 @@ message EraSnapShot {
 
 message CurrentEraSnapShot {
     string denom = 1;
-    repeated bytes shotId = 2;
+    repeated bytes shotIds = 2;
 }
 
 message PoolUnbond {
     string denom = 1;
-    string addr = 2;
+    string pool = 2;
     uint32 era = 3;
     repeated Unbonding unbondings = 4;
 }
@@ -66,16 +61,11 @@ message EraUnbondLimit {
     uint32 limit = 2;
 }
 
-message SubAccount {
+message PoolDetail {
     string denom = 1;
-    string addr = 2;
-    repeated string addrs = 3;
-}
-
-message MultiThreshold {
-    string denom = 1;
-    string addr = 2;
-    uint32 threshold = 3;
+    string pool = 2;
+    repeated string subAccounts = 3;
+    uint32 threshold = 4;
 }
 
 message LastVoter {
@@ -97,7 +87,7 @@ message LinkChunk {
 message BondSnapshot {
     string denom = 1;
     uint32 era = 2;
-    string addr = 3;
+    string pool = 3;
     string bond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
     string unbond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
     string active = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
@@ -127,7 +117,7 @@ enum BondAction {
 }
 
 message Unbonding {
-    string who = 1;
+    string unbonder = 1;
     string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
     string recipient = 3;
 }

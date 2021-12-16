@@ -8,6 +8,5 @@ import (
 
 // x/sudo module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
-	
+	ErrCreatorNotAdmin = sdkerrors.Register(ModuleName, 1, "creator is not admin")
 )

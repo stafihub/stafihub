@@ -21,5 +21,5 @@ func (k Keeper) Rate(goCtx context.Context,  req *types.QueryRateRequest) (*type
 	ctx := sdk.UnwrapSDKContext(goCtx)
     ratio := k.GetRate(ctx, req.Denom)
 
-	return &types.QueryRateResponse{Ratio: &ratio}, nil
+	return &types.QueryRateResponse{Ratio: ratio}, nil
 }

@@ -56,13 +56,13 @@ func (k Keeper) SetRate(ctx sdk.Context, denom string, total, rtotal sdk.Int) sd
 }
 
 // Load the rate
-func (k Keeper) GetRate(ctx sdk.Context, denom string) sdk.Dec {
+func (k Keeper) GetRate(ctx sdk.Context, denom string) *sdk.Dec {
 	store := ctx.KVStore(k.storeKey)
 	rateStore := prefix.NewStore(store, types.RatePrefix)
 
 	bz := rateStore.Get([]byte(denom))
 	if bz == nil {
-		return sdk.OneDec()
+		return nil
 	}
 
 	var dec sdk.Dec
@@ -71,7 +71,7 @@ func (k Keeper) GetRate(ctx sdk.Context, denom string) sdk.Dec {
 		panic(fmt.Errorf("unable to unmarshal rate value %v", err))
 	}
 
-	return dec
+	return &dec
 }
 
 // Set the era rate.

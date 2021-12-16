@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
 )
 
 type msgServer struct {
@@ -29,7 +30,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.IsAdmin(ctx, msg.Creator) {
-		return nil, types.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	// Check if the value already exists
@@ -50,7 +51,7 @@ func (k msgServer) DeleteRelayer(goCtx context.Context,  msg *types.MsgDeleteRel
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.IsAdmin(ctx, msg.Creator) {
-		return nil, types.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	if !k.CheckIsRelayer(ctx, msg.Denom, msg.Address) {
@@ -65,7 +66,7 @@ func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateT
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.IsAdmin(ctx, msg.Creator) {
-		return nil, types.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	var threshold = types.Threshold{
@@ -82,7 +83,7 @@ func (k msgServer) SetProposalLife(goCtx context.Context,  msg *types.MsgSetProp
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.IsAdmin(ctx, msg.Creator) {
-		return nil, types.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	k.Keeper.SetProposalLife(ctx, msg.ProposalLife)

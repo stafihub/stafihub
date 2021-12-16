@@ -1,13 +1,108 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.ledger;
 
+import "gogoproto/gogo.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc AddNewPool(MsgAddNewPool) returns (MsgAddNewPoolResponse);
+  rpc RemovePool(MsgRemovePool) returns (MsgRemovePoolResponse);
+  rpc SetEraUnbondLimit(MsgSetEraUnbondLimit) returns (MsgSetEraUnbondLimitResponse);
+  rpc SetInitBond(MsgSetInitBond) returns (MsgSetInitBondResponse);
+  rpc SetChainBondingDuration(MsgSetChainBondingDuration) returns (MsgSetChainBondingDurationResponse);
+  rpc SetPoolDetail(MsgSetPoolDetail) returns (MsgSetPoolDetailResponse);
+  rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
+  rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
+  rpc SetChainEra(MsgSetChainEra) returns (MsgSetChainEraResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgAddNewPool {
+  string creator = 1;
+  string denom = 2;
+  string addr = 3;
+}
+
+message MsgAddNewPoolResponse {
+}
+
+message MsgRemovePool {
+  string creator = 1;
+  string denom = 2;
+  string addr = 3;
+}
+
+message MsgRemovePoolResponse {
+}
+
+message MsgSetEraUnbondLimit {
+  string creator = 1;
+  string denom = 2;
+  uint32 limit = 3;
+}
+
+message MsgSetEraUnbondLimitResponse {
+}
+
+message MsgSetInitBond {
+  string creator = 1;
+  string denom = 2;
+  string pool = 3;
+  string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string receiver = 5;
+}
+
+message MsgSetInitBondResponse {
+}
+
+message MsgSetChainBondingDuration {
+  string creator = 1;
+  string denom = 2;
+  uint32 era = 3;
+}
+
+message MsgSetChainBondingDurationResponse {
+}
+
+message MsgSetPoolDetail {
+  string creator = 1;
+  string denom = 2;
+  string pool = 3;
+  repeated string subAccounts = 4;
+  uint32 threshold = 5;
+}
+
+message MsgSetPoolDetailResponse {
+}
+
+message MsgSetLeastBond {
+  string creator = 1;
+  string denom = 2;
+  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+}
+
+message MsgSetLeastBondResponse {
+}
+
+message MsgClearCurrentEraSnapShots {
+  string creator = 1;
+  string denom = 2;
+}
+
+message MsgClearCurrentEraSnapShotsResponse {
+}
+
+message MsgSetChainEra {
+  string creator = 1;
+  string denom = 2;
+  string newEra = 3;
+}
+
+message MsgSetChainEraResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

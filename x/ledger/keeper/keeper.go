@@ -15,9 +15,10 @@ type (
 		cdc      codec.BinaryCodec
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
-		
-		
+
         sudoKeeper types.SudoKeeper
+		rateKeeper types.RateKeeper
+		bankKeeper types.BankKeeper
 	}
 )
 
@@ -25,15 +26,19 @@ func NewKeeper(
     cdc codec.BinaryCodec,
     storeKey,
     memKey sdk.StoreKey,
-    
+
     sudoKeeper types.SudoKeeper,
+    rateKeeper types.RateKeeper,
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
-		
+
 		sudoKeeper: sudoKeeper,
+		rateKeeper: rateKeeper,
+		bankKeeper: bankKeeper,
 	}
 }
 
