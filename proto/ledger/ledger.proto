@@ -32,18 +32,6 @@ message BondPipeline {
     LinkChunk chunk = 3;
 }
 
-message Snapshot {
-    string denom = 1;
-    bytes shotId = 2;
-    BondSnapshot shot = 3;
-}
-
-message EraSnapShot {
-    string denom = 1;
-    uint32 era = 2;
-    bytes shotId = 3;
-}
-
 message CurrentEraSnapShot {
     string denom = 1;
     repeated bytes shotIds = 2;
@@ -68,11 +56,6 @@ message PoolDetail {
     uint32 threshold = 4;
 }
 
-message LastVoter {
-    string denom = 1;
-    string voter = 2;
-}
-
 message LeastBond {
     string denom = 1;
     string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
@@ -86,13 +69,11 @@ message LinkChunk {
 
 message BondSnapshot {
     string denom = 1;
-    uint32 era = 2;
-    string pool = 3;
-    string bond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
-    string unbond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
-    string active = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
-    string last_voter = 7;
-    PoolBondState bond_state = 8;
+    string pool = 2;
+    uint32 era = 3;
+    LinkChunk chunk = 4;
+    string last_voter = 5;
+    PoolBondState bond_state = 6;
 }
 
 enum PoolBondState {

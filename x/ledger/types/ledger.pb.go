@@ -364,126 +364,6 @@ func (m *BondPipeline) GetChunk() *LinkChunk {
 	return nil
 }
 
-type Snapshot struct {
-	Denom  string        `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
-	ShotId []byte        `protobuf:"bytes,2,opt,name=shotId,proto3" json:"shotId,omitempty"`
-	Shot   *BondSnapshot `protobuf:"bytes,3,opt,name=shot,proto3" json:"shot,omitempty"`
-}
-
-func (m *Snapshot) Reset()         { *m = Snapshot{} }
-func (m *Snapshot) String() string { return proto.CompactTextString(m) }
-func (*Snapshot) ProtoMessage()    {}
-func (*Snapshot) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{5}
-}
-func (m *Snapshot) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Snapshot) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Snapshot.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Snapshot) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Snapshot.Merge(m, src)
-}
-func (m *Snapshot) XXX_Size() int {
-	return m.Size()
-}
-func (m *Snapshot) XXX_DiscardUnknown() {
-	xxx_messageInfo_Snapshot.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Snapshot proto.InternalMessageInfo
-
-func (m *Snapshot) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-func (m *Snapshot) GetShotId() []byte {
-	if m != nil {
-		return m.ShotId
-	}
-	return nil
-}
-
-func (m *Snapshot) GetShot() *BondSnapshot {
-	if m != nil {
-		return m.Shot
-	}
-	return nil
-}
-
-type EraSnapShot struct {
-	Denom  string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
-	Era    uint32 `protobuf:"varint,2,opt,name=era,proto3" json:"era,omitempty"`
-	ShotId []byte `protobuf:"bytes,3,opt,name=shotId,proto3" json:"shotId,omitempty"`
-}
-
-func (m *EraSnapShot) Reset()         { *m = EraSnapShot{} }
-func (m *EraSnapShot) String() string { return proto.CompactTextString(m) }
-func (*EraSnapShot) ProtoMessage()    {}
-func (*EraSnapShot) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{6}
-}
-func (m *EraSnapShot) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *EraSnapShot) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_EraSnapShot.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *EraSnapShot) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EraSnapShot.Merge(m, src)
-}
-func (m *EraSnapShot) XXX_Size() int {
-	return m.Size()
-}
-func (m *EraSnapShot) XXX_DiscardUnknown() {
-	xxx_messageInfo_EraSnapShot.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_EraSnapShot proto.InternalMessageInfo
-
-func (m *EraSnapShot) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-func (m *EraSnapShot) GetEra() uint32 {
-	if m != nil {
-		return m.Era
-	}
-	return 0
-}
-
-func (m *EraSnapShot) GetShotId() []byte {
-	if m != nil {
-		return m.ShotId
-	}
-	return nil
-}
-
 type CurrentEraSnapShot struct {
 	Denom   string   `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
 	ShotIds [][]byte `protobuf:"bytes,2,rep,name=shotIds,proto3" json:"shotIds,omitempty"`
@@ -493,7 +373,7 @@ func (m *CurrentEraSnapShot) Reset()         { *m = CurrentEraSnapShot{} }
 func (m *CurrentEraSnapShot) String() string { return proto.CompactTextString(m) }
 func (*CurrentEraSnapShot) ProtoMessage()    {}
 func (*CurrentEraSnapShot) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{7}
+	return fileDescriptor_e71eacad52bcf67e, []int{5}
 }
 func (m *CurrentEraSnapShot) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -547,7 +427,7 @@ func (m *PoolUnbond) Reset()         { *m = PoolUnbond{} }
 func (m *PoolUnbond) String() string { return proto.CompactTextString(m) }
 func (*PoolUnbond) ProtoMessage()    {}
 func (*PoolUnbond) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{8}
+	return fileDescriptor_e71eacad52bcf67e, []int{6}
 }
 func (m *PoolUnbond) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -613,7 +493,7 @@ func (m *EraUnbondLimit) Reset()         { *m = EraUnbondLimit{} }
 func (m *EraUnbondLimit) String() string { return proto.CompactTextString(m) }
 func (*EraUnbondLimit) ProtoMessage()    {}
 func (*EraUnbondLimit) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{9}
+	return fileDescriptor_e71eacad52bcf67e, []int{7}
 }
 func (m *EraUnbondLimit) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -667,7 +547,7 @@ func (m *PoolDetail) Reset()         { *m = PoolDetail{} }
 func (m *PoolDetail) String() string { return proto.CompactTextString(m) }
 func (*PoolDetail) ProtoMessage()    {}
 func (*PoolDetail) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{10}
+	return fileDescriptor_e71eacad52bcf67e, []int{8}
 }
 func (m *PoolDetail) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -724,58 +604,6 @@ func (m *PoolDetail) GetThreshold() uint32 {
 	return 0
 }
 
-type LastVoter struct {
-	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
-	Voter string `protobuf:"bytes,2,opt,name=voter,proto3" json:"voter,omitempty"`
-}
-
-func (m *LastVoter) Reset()         { *m = LastVoter{} }
-func (m *LastVoter) String() string { return proto.CompactTextString(m) }
-func (*LastVoter) ProtoMessage()    {}
-func (*LastVoter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{11}
-}
-func (m *LastVoter) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *LastVoter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_LastVoter.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *LastVoter) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LastVoter.Merge(m, src)
-}
-func (m *LastVoter) XXX_Size() int {
-	return m.Size()
-}
-func (m *LastVoter) XXX_DiscardUnknown() {
-	xxx_messageInfo_LastVoter.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LastVoter proto.InternalMessageInfo
-
-func (m *LastVoter) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-func (m *LastVoter) GetVoter() string {
-	if m != nil {
-		return m.Voter
-	}
-	return ""
-}
-
 type LeastBond struct {
 	Denom  string                                  `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
 	Amount *github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,2,opt,name=amount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"amount,omitempty"`
@@ -785,7 +613,7 @@ func (m *LeastBond) Reset()         { *m = LeastBond{} }
 func (m *LeastBond) String() string { return proto.CompactTextString(m) }
 func (*LeastBond) ProtoMessage()    {}
 func (*LeastBond) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{12}
+	return fileDescriptor_e71eacad52bcf67e, []int{9}
 }
 func (m *LeastBond) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -831,7 +659,7 @@ func (m *LinkChunk) Reset()         { *m = LinkChunk{} }
 func (m *LinkChunk) String() string { return proto.CompactTextString(m) }
 func (*LinkChunk) ProtoMessage()    {}
 func (*LinkChunk) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{13}
+	return fileDescriptor_e71eacad52bcf67e, []int{10}
 }
 func (m *LinkChunk) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -861,21 +689,19 @@ func (m *LinkChunk) XXX_DiscardUnknown() {
 var xxx_messageInfo_LinkChunk proto.InternalMessageInfo
 
 type BondSnapshot struct {
-	Denom     string                                  `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
-	Era       uint32                                  `protobuf:"varint,2,opt,name=era,proto3" json:"era,omitempty"`
-	Pool      string                                  `protobuf:"bytes,3,opt,name=pool,proto3" json:"pool,omitempty"`
-	Bond      *github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=bond,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"bond,omitempty"`
-	Unbond    *github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,5,opt,name=unbond,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"unbond,omitempty"`
-	Active    *github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,6,opt,name=active,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"active,omitempty"`
-	LastVoter string                                  `protobuf:"bytes,7,opt,name=last_voter,json=lastVoter,proto3" json:"last_voter,omitempty"`
-	BondState PoolBondState                           `protobuf:"varint,8,opt,name=bond_state,json=bondState,proto3,enum=stafiprotocol.stafihub.ledger.PoolBondState" json:"bond_state,omitempty"`
+	Denom     string        `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Pool      string        `protobuf:"bytes,2,opt,name=pool,proto3" json:"pool,omitempty"`
+	Era       uint32        `protobuf:"varint,3,opt,name=era,proto3" json:"era,omitempty"`
+	Chunk     *LinkChunk    `protobuf:"bytes,4,opt,name=chunk,proto3" json:"chunk,omitempty"`
+	LastVoter string        `protobuf:"bytes,5,opt,name=last_voter,json=lastVoter,proto3" json:"last_voter,omitempty"`
+	BondState PoolBondState `protobuf:"varint,6,opt,name=bond_state,json=bondState,proto3,enum=stafiprotocol.stafihub.ledger.PoolBondState" json:"bond_state,omitempty"`
 }
 
 func (m *BondSnapshot) Reset()         { *m = BondSnapshot{} }
 func (m *BondSnapshot) String() string { return proto.CompactTextString(m) }
 func (*BondSnapshot) ProtoMessage()    {}
 func (*BondSnapshot) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{14}
+	return fileDescriptor_e71eacad52bcf67e, []int{11}
 }
 func (m *BondSnapshot) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -911,6 +737,13 @@ func (m *BondSnapshot) GetDenom() string {
 	return ""
 }
 
+func (m *BondSnapshot) GetPool() string {
+	if m != nil {
+		return m.Pool
+	}
+	return ""
+}
+
 func (m *BondSnapshot) GetEra() uint32 {
 	if m != nil {
 		return m.Era
@@ -918,11 +751,11 @@ func (m *BondSnapshot) GetEra() uint32 {
 	return 0
 }
 
-func (m *BondSnapshot) GetPool() string {
+func (m *BondSnapshot) GetChunk() *LinkChunk {
 	if m != nil {
-		return m.Pool
+		return m.Chunk
 	}
-	return ""
+	return nil
 }
 
 func (m *BondSnapshot) GetLastVoter() string {
@@ -949,7 +782,7 @@ func (m *Unbonding) Reset()         { *m = Unbonding{} }
 func (m *Unbonding) String() string { return proto.CompactTextString(m) }
 func (*Unbonding) ProtoMessage()    {}
 func (*Unbonding) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e71eacad52bcf67e, []int{15}
+	return fileDescriptor_e71eacad52bcf67e, []int{12}
 }
 func (m *Unbonding) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1001,13 +834,10 @@ func init() {
 	proto.RegisterMapType((map[string]bool)(nil), "stafiprotocol.stafihub.ledger.Pool.AddrsEntry")
 	proto.RegisterType((*TotalExpectedActive)(nil), "stafiprotocol.stafihub.ledger.TotalExpectedActive")
 	proto.RegisterType((*BondPipeline)(nil), "stafiprotocol.stafihub.ledger.BondPipeline")
-	proto.RegisterType((*Snapshot)(nil), "stafiprotocol.stafihub.ledger.Snapshot")
-	proto.RegisterType((*EraSnapShot)(nil), "stafiprotocol.stafihub.ledger.EraSnapShot")
 	proto.RegisterType((*CurrentEraSnapShot)(nil), "stafiprotocol.stafihub.ledger.CurrentEraSnapShot")
 	proto.RegisterType((*PoolUnbond)(nil), "stafiprotocol.stafihub.ledger.PoolUnbond")
 	proto.RegisterType((*EraUnbondLimit)(nil), "stafiprotocol.stafihub.ledger.EraUnbondLimit")
 	proto.RegisterType((*PoolDetail)(nil), "stafiprotocol.stafihub.ledger.PoolDetail")
-	proto.RegisterType((*LastVoter)(nil), "stafiprotocol.stafihub.ledger.LastVoter")
 	proto.RegisterType((*LeastBond)(nil), "stafiprotocol.stafihub.ledger.LeastBond")
 	proto.RegisterType((*LinkChunk)(nil), "stafiprotocol.stafihub.ledger.LinkChunk")
 	proto.RegisterType((*BondSnapshot)(nil), "stafiprotocol.stafihub.ledger.BondSnapshot")
@@ -1017,73 +847,68 @@ func init() {
 func init() { proto.RegisterFile("ledger/ledger.proto", fileDescriptor_e71eacad52bcf67e) }
 
 var fileDescriptor_e71eacad52bcf67e = []byte{
-	// 1048 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0x8e, 0xf3, 0xa3, 0x1b, 0xbf, 0x74, 0xdb, 0xac, 0x5b, 0xa1, 0xc8, 0xb0, 0x59, 0x63, 0x24,
-	0x08, 0xed, 0x92, 0xa0, 0x72, 0x60, 0x85, 0x50, 0x51, 0x52, 0x1b, 0x35, 0x6c, 0x69, 0xa3, 0x69,
-	0xba, 0x15, 0x5c, 0x22, 0x37, 0x9e, 0x4d, 0xac, 0xba, 0x33, 0xd6, 0x78, 0x52, 0xda, 0x23, 0x37,
-	0x36, 0x27, 0xc4, 0x99, 0x9c, 0xf8, 0x67, 0x90, 0xb8, 0xac, 0xc4, 0x05, 0x71, 0x40, 0xa8, 0xfd,
-	0x3f, 0x10, 0x9a, 0x19, 0xe7, 0x47, 0xb5, 0x0a, 0xd9, 0x96, 0x3d, 0x65, 0xde, 0xcc, 0xf7, 0xcd,
-	0xf7, 0xde, 0x9b, 0x6f, 0xc6, 0x81, 0xb5, 0x10, 0xfb, 0x3d, 0xcc, 0x6a, 0xea, 0xa7, 0x1a, 0x31,
-	0xca, 0xa9, 0xf1, 0x30, 0xe6, 0xde, 0xf3, 0x40, 0x8e, 0xbb, 0x34, 0xac, 0xca, 0xa8, 0x3f, 0x38,
-	0xa9, 0x2a, 0x90, 0xb9, 0xde, 0xa3, 0x3d, 0x2a, 0x57, 0x6b, 0x62, 0xa4, 0x48, 0xf6, 0x16, 0xe4,
-	0x77, 0xfa, 0x5e, 0x40, 0x5c, 0xe6, 0x19, 0xeb, 0x90, 0xf3, 0x31, 0xa1, 0x67, 0x25, 0xcd, 0xd2,
-	0x2a, 0x3a, 0x52, 0x81, 0x51, 0x84, 0x0c, 0x66, 0x5e, 0x29, 0x6d, 0x69, 0x95, 0xfb, 0x48, 0x0c,
-	0xed, 0x6d, 0x58, 0x97, 0x9c, 0x06, 0x25, 0x7e, 0x40, 0x7a, 0xce, 0x80, 0x79, 0x3c, 0xa0, 0xe4,
-	0xb5, 0xf9, 0x3f, 0x6b, 0x90, 0x6d, 0x51, 0x1a, 0xce, 0x21, 0x38, 0x90, 0xf3, 0x7c, 0x9f, 0xc5,
-	0xa5, 0xb4, 0x95, 0xa9, 0x14, 0xb6, 0xaa, 0xd5, 0xff, 0xac, 0xab, 0x2a, 0x76, 0xaa, 0xd6, 0x05,
-	0xc1, 0x25, 0x9c, 0x5d, 0x22, 0x45, 0x36, 0x9f, 0x00, 0x4c, 0x27, 0x45, 0x12, 0xa7, 0xf8, 0x32,
-	0xd1, 0x11, 0x43, 0xa1, 0x7d, 0xee, 0x85, 0x03, 0x2c, 0x13, 0xcb, 0x23, 0x15, 0x7c, 0x96, 0x7e,
-	0xa2, 0xd9, 0xdf, 0x6b, 0xb0, 0xd6, 0xa6, 0xdc, 0x0b, 0xdd, 0x8b, 0x08, 0x77, 0x39, 0xf6, 0xeb,
-	0x5d, 0x1e, 0x9c, 0xe3, 0xc5, 0xe5, 0xe9, 0xb2, 0x3c, 0xa3, 0x01, 0x4b, 0xde, 0x19, 0x1d, 0x10,
-	0x5e, 0xca, 0x88, 0xc9, 0xc6, 0xc6, 0x9f, 0x7f, 0x3d, 0x7a, 0xbf, 0x17, 0x70, 0x91, 0x73, 0x97,
-	0x9e, 0xd5, 0xba, 0x34, 0x3e, 0xa3, 0x71, 0xf2, 0xf3, 0x51, 0xec, 0x9f, 0xd6, 0xf8, 0x65, 0x84,
-	0xe3, 0x6a, 0x93, 0x70, 0x94, 0x30, 0xed, 0x0b, 0x58, 0x16, 0xdd, 0x6d, 0x05, 0x11, 0x0e, 0x03,
-	0x32, 0x4f, 0xdb, 0x80, 0x6c, 0x44, 0x69, 0x98, 0x88, 0xcb, 0xb1, 0xb1, 0x0d, 0xb9, 0x6e, 0x7f,
-	0x40, 0x4e, 0xa5, 0x78, 0x61, 0xab, 0xb2, 0xa0, 0x7b, 0x7b, 0x01, 0x39, 0xdd, 0x11, 0x78, 0xa4,
-	0x68, 0xf6, 0x25, 0xe4, 0x0f, 0x89, 0x17, 0xc5, 0x7d, 0xca, 0xe7, 0xa8, 0xbe, 0x05, 0x4b, 0x62,
-	0xb5, 0xe9, 0x4b, 0xdd, 0x65, 0x94, 0x44, 0xc6, 0x17, 0x90, 0x15, 0xa3, 0x44, 0x78, 0x73, 0x81,
-	0xb0, 0x28, 0x6f, 0x2c, 0x84, 0x24, 0xd1, 0xfe, 0x1a, 0x0a, 0x2e, 0xf3, 0xc4, 0xe4, 0xe1, 0x7c,
-	0xf5, 0x57, 0xec, 0x34, 0x93, 0x4f, 0x66, 0x36, 0x1f, 0xdb, 0x01, 0x63, 0x67, 0xc0, 0x18, 0x26,
-	0x7c, 0xf1, 0xae, 0x25, 0xb8, 0xa7, 0x58, 0xca, 0x75, 0xcb, 0x68, 0x1c, 0xda, 0x3f, 0x69, 0x00,
-	0xc2, 0x62, 0x47, 0xe4, 0x84, 0x12, 0xff, 0x16, 0x07, 0x91, 0x24, 0x9a, 0x99, 0x26, 0xba, 0x0b,
-	0x30, 0x90, 0xbb, 0x04, 0xa4, 0x17, 0x97, 0xb2, 0xd2, 0xdd, 0x8b, 0xce, 0xe7, 0x68, 0x4c, 0x40,
-	0x33, 0x5c, 0xfb, 0x73, 0x58, 0x71, 0x99, 0xa7, 0xd6, 0xf6, 0x82, 0xb3, 0x60, 0x5e, 0x59, 0xeb,
-	0x90, 0x0b, 0xc5, 0x72, 0xd2, 0x2e, 0x15, 0xd8, 0xe7, 0xaa, 0x22, 0x07, 0x73, 0x2f, 0x08, 0x6f,
-	0x51, 0x91, 0x05, 0x85, 0x78, 0x70, 0x52, 0xef, 0x76, 0x85, 0x45, 0xe3, 0x52, 0xc6, 0xca, 0x54,
-	0x74, 0x34, 0x3b, 0x65, 0xbc, 0x03, 0x3a, 0xef, 0x33, 0x1c, 0xf7, 0x69, 0xe8, 0x97, 0xb2, 0x52,
-	0x73, 0x3a, 0x61, 0x7f, 0x0a, 0xfa, 0x9e, 0x17, 0xf3, 0x67, 0x94, 0x63, 0x36, 0x3f, 0xe1, 0x73,
-	0xb1, 0x9c, 0xe8, 0xaa, 0xc0, 0xc6, 0xa0, 0xef, 0x61, 0x2f, 0xe6, 0x8d, 0xf9, 0x27, 0x30, 0xbd,
-	0x74, 0xe9, 0x3b, 0x5f, 0xba, 0xdf, 0x35, 0xd0, 0x27, 0xf7, 0xc1, 0xd8, 0x86, 0xac, 0x68, 0xaf,
-	0x92, 0xb9, 0xd5, 0x7e, 0x92, 0x27, 0x32, 0x52, 0x27, 0x76, 0x97, 0x8c, 0x14, 0x53, 0x56, 0x25,
-	0x1f, 0x9f, 0x3b, 0x3d, 0x25, 0x92, 0x69, 0xff, 0x93, 0x56, 0x6f, 0xc9, 0x82, 0x5b, 0xfd, 0xea,
-	0xbd, 0x1a, 0x5b, 0x20, 0x73, 0xe3, 0x75, 0x51, 0x4d, 0xc9, 0xfe, 0xef, 0xa6, 0xe4, 0xde, 0x40,
-	0x53, 0x96, 0xee, 0xda, 0x14, 0xe3, 0x21, 0x40, 0xe8, 0xc5, 0xbc, 0xa3, 0xcc, 0x76, 0x4f, 0x56,
-	0xa8, 0x87, 0x13, 0x73, 0x3e, 0x05, 0x10, 0x52, 0x9d, 0x98, 0x7b, 0x1c, 0x97, 0xf2, 0x96, 0x56,
-	0x59, 0xd9, 0x7a, 0xfc, 0x1a, 0xdf, 0x21, 0xd9, 0x67, 0xc1, 0x41, 0xfa, 0xc9, 0x78, 0x68, 0xbf,
-	0xd0, 0x40, 0x9f, 0x5c, 0x63, 0xc3, 0x84, 0xbc, 0xaa, 0x03, 0xb3, 0xe4, 0x00, 0x26, 0xf1, 0x9b,
-	0x30, 0xb1, 0xb8, 0x82, 0x0c, 0x77, 0x83, 0x28, 0xc0, 0xe3, 0x0f, 0x10, 0x9a, 0x4e, 0x6c, 0xbc,
-	0x48, 0xc3, 0xfd, 0x1b, 0x89, 0x1a, 0x8f, 0xa0, 0xe0, 0xa2, 0x7a, 0xe7, 0xa8, 0xe5, 0xd4, 0xdb,
-	0xae, 0x53, 0x4c, 0x99, 0x2b, 0xc3, 0x91, 0x05, 0xe2, 0x75, 0x89, 0x7c, 0x8f, 0x63, 0xdf, 0x78,
-	0x0f, 0xee, 0x37, 0x0e, 0xf6, 0x9d, 0x0e, 0x72, 0x5b, 0x07, 0x48, 0x40, 0x34, 0xb3, 0x38, 0x1c,
-	0x59, 0xd2, 0x53, 0x08, 0x47, 0x94, 0x09, 0xd0, 0x07, 0xb0, 0x5a, 0xdf, 0x69, 0x37, 0x9f, 0xb9,
-	0x53, 0x58, 0xda, 0x34, 0x86, 0x23, 0x6b, 0x45, 0x7d, 0x3c, 0x27, 0xc0, 0x0f, 0xa1, 0x78, 0xdc,
-	0x6c, 0xef, 0x3a, 0xa8, 0x7e, 0xdc, 0x39, 0x7c, 0xda, 0x6c, 0xb5, 0x5c, 0xa7, 0x98, 0x31, 0xd7,
-	0x86, 0x23, 0x6b, 0xf5, 0x38, 0xe0, 0x7d, 0x9f, 0x79, 0xdf, 0x1d, 0x9e, 0x06, 0x51, 0x84, 0x7d,
-	0x63, 0x13, 0x1e, 0x4c, 0xa0, 0x93, 0x5d, 0xb3, 0xe6, 0xfa, 0x70, 0x64, 0x15, 0xc7, 0xd8, 0xc9,
-	0xbe, 0x9b, 0xf0, 0xa0, 0x8d, 0xea, 0xfb, 0x87, 0x5f, 0xba, 0x68, 0x0a, 0xce, 0x29, 0x70, 0x9b,
-	0x79, 0x24, 0x7e, 0x8e, 0xd9, 0x18, 0x6c, 0x66, 0x7f, 0xf8, 0xa5, 0x9c, 0xda, 0xf8, 0x4d, 0x03,
-	0x10, 0x45, 0x88, 0x0c, 0x29, 0x31, 0xde, 0x06, 0x5d, 0xd6, 0x79, 0xb0, 0xbf, 0xf7, 0x4d, 0x31,
-	0x65, 0x2e, 0x0f, 0x47, 0x56, 0x5e, 0x2c, 0x1f, 0x90, 0xf0, 0x52, 0x74, 0xe9, 0x68, 0x7f, 0xba,
-	0xac, 0xa9, 0x2e, 0xa9, 0x53, 0x95, 0x80, 0x0a, 0x14, 0x1b, 0x07, 0xed, 0xdd, 0x8e, 0xc4, 0x28,
-	0xe8, 0xb8, 0x03, 0x0d, 0xca, 0xfb, 0x62, 0xa3, 0xe4, 0x0b, 0xf2, 0x18, 0x0c, 0xb7, 0xd9, 0xde,
-	0x75, 0xd1, 0x0d, 0x6c, 0x46, 0xa5, 0xea, 0x06, 0xbc, 0x8f, 0xd9, 0x0c, 0xfa, 0x5d, 0x58, 0x6e,
-	0xee, 0xb7, 0x5d, 0xd4, 0x71, 0x5c, 0xe7, 0x68, 0xa7, 0x5d, 0xcc, 0x9a, 0xab, 0xc3, 0x91, 0x55,
-	0x68, 0x12, 0x8e, 0x99, 0x83, 0xfd, 0x41, 0x97, 0xab, 0x6a, 0x1a, 0x5f, 0xfd, 0x7a, 0x55, 0xd6,
-	0x5e, 0x5e, 0x95, 0xb5, 0xbf, 0xaf, 0xca, 0xda, 0x8f, 0xd7, 0xe5, 0xd4, 0xcb, 0xeb, 0x72, 0xea,
-	0x8f, 0xeb, 0x72, 0xea, 0xdb, 0x8f, 0x67, 0x1c, 0x74, 0xc3, 0xc2, 0xb5, 0xb1, 0x85, 0x6b, 0x17,
-	0xc9, 0x3f, 0x49, 0xe5, 0xa7, 0x93, 0x25, 0x89, 0xf8, 0xe4, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0x23, 0x13, 0xd7, 0xe4, 0x67, 0x0a, 0x00, 0x00,
+	// 975 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xcd, 0x6f, 0xe3, 0xc4,
+	0x1b, 0x8e, 0xf3, 0xd1, 0x5f, 0xfd, 0xf6, 0x2b, 0xeb, 0xf6, 0x60, 0xf9, 0xc7, 0x66, 0x8d, 0x91,
+	0x20, 0x74, 0x97, 0x04, 0x95, 0xcb, 0x0a, 0xa1, 0x4a, 0x49, 0x6d, 0xd4, 0xb0, 0x55, 0x1b, 0x4d,
+	0xdd, 0xad, 0xe0, 0x12, 0xb9, 0xf6, 0x6c, 0x6c, 0xd5, 0x9d, 0xb1, 0xc6, 0x93, 0xd2, 0x1e, 0xb9,
+	0xb1, 0x39, 0x21, 0xce, 0xe4, 0xc4, 0x3f, 0x83, 0xc4, 0x65, 0x25, 0x2e, 0x88, 0x03, 0x42, 0xed,
+	0xff, 0xc0, 0x19, 0xcd, 0x4c, 0x3e, 0xda, 0x43, 0xe8, 0x87, 0x38, 0x65, 0xe6, 0x9d, 0xe7, 0x99,
+	0xf7, 0x7d, 0xde, 0x79, 0x5e, 0x2b, 0xb0, 0x9e, 0xe2, 0xa8, 0x8f, 0x59, 0x53, 0xfd, 0x34, 0x32,
+	0x46, 0x39, 0x35, 0x9e, 0xe6, 0x3c, 0x78, 0x93, 0xc8, 0x75, 0x48, 0xd3, 0x86, 0xdc, 0xc5, 0x83,
+	0x93, 0x86, 0x02, 0x59, 0x1b, 0x7d, 0xda, 0xa7, 0xf2, 0xb4, 0x29, 0x56, 0x8a, 0xe4, 0x6c, 0xc1,
+	0xe2, 0x4e, 0x1c, 0x24, 0xc4, 0x63, 0x81, 0xb1, 0x01, 0x95, 0x08, 0x13, 0x7a, 0x66, 0x6a, 0xb6,
+	0x56, 0xd7, 0x91, 0xda, 0x18, 0x55, 0x28, 0x61, 0x16, 0x98, 0x45, 0x5b, 0xab, 0xaf, 0x20, 0xb1,
+	0x74, 0xb6, 0x61, 0x43, 0x72, 0xda, 0x94, 0x44, 0x09, 0xe9, 0xbb, 0x03, 0x16, 0xf0, 0x84, 0x92,
+	0x7b, 0xf3, 0x7f, 0xd2, 0xa0, 0xdc, 0xa5, 0x34, 0x9d, 0x43, 0x70, 0xa1, 0x12, 0x44, 0x11, 0xcb,
+	0xcd, 0xa2, 0x5d, 0xaa, 0x2f, 0x6d, 0x35, 0x1a, 0xff, 0xaa, 0xab, 0x21, 0x6e, 0x6a, 0xb4, 0x04,
+	0xc1, 0x23, 0x9c, 0x5d, 0x22, 0x45, 0xb6, 0x5e, 0x02, 0xcc, 0x82, 0xa2, 0x88, 0x53, 0x7c, 0x39,
+	0xce, 0x23, 0x96, 0x22, 0xf7, 0x79, 0x90, 0x0e, 0xb0, 0x2c, 0x6c, 0x11, 0xa9, 0xcd, 0xe7, 0xc5,
+	0x97, 0x9a, 0xf3, 0x9d, 0x06, 0xeb, 0x3e, 0xe5, 0x41, 0xea, 0x5d, 0x64, 0x38, 0xe4, 0x38, 0x6a,
+	0x85, 0x3c, 0x39, 0xc7, 0x77, 0xcb, 0xd3, 0xa5, 0x3c, 0xa3, 0x0d, 0x0b, 0xc1, 0x19, 0x1d, 0x10,
+	0x6e, 0x96, 0x44, 0xb0, 0xbd, 0xf9, 0xc7, 0x9f, 0xcf, 0x3e, 0xec, 0x27, 0x5c, 0xd4, 0x1c, 0xd2,
+	0xb3, 0x66, 0x48, 0xf3, 0x33, 0x9a, 0x8f, 0x7f, 0x3e, 0xc9, 0xa3, 0xd3, 0x26, 0xbf, 0xcc, 0x70,
+	0xde, 0xe8, 0x10, 0x8e, 0xc6, 0x4c, 0xe7, 0x02, 0x96, 0x45, 0x77, 0xbb, 0x49, 0x86, 0xd3, 0x84,
+	0xcc, 0xcb, 0x6d, 0x40, 0x39, 0xa3, 0x34, 0x1d, 0x27, 0x97, 0x6b, 0x63, 0x1b, 0x2a, 0x61, 0x3c,
+	0x20, 0xa7, 0x32, 0xf9, 0xd2, 0x56, 0xfd, 0x8e, 0xee, 0xed, 0x25, 0xe4, 0x74, 0x47, 0xe0, 0x91,
+	0xa2, 0x39, 0x2e, 0x18, 0x3b, 0x03, 0xc6, 0x30, 0xe1, 0x1e, 0x0b, 0x0e, 0x49, 0x90, 0x1d, 0xc6,
+	0x94, 0xcf, 0xc9, 0x6f, 0xc2, 0xff, 0xf2, 0x98, 0xf2, 0x4e, 0xa4, 0xde, 0x6a, 0x19, 0x4d, 0xb6,
+	0xce, 0x8f, 0x1a, 0x80, 0x78, 0x98, 0x23, 0x72, 0x42, 0x49, 0xf4, 0x80, 0xf2, 0xc7, 0xed, 0x2c,
+	0x4d, 0xdd, 0x62, 0xec, 0x02, 0x0c, 0xe4, 0x2d, 0x09, 0xe9, 0xe7, 0x66, 0x59, 0x7a, 0xe2, 0x2e,
+	0x55, 0x47, 0x13, 0x02, 0xba, 0xc1, 0x75, 0xbe, 0x80, 0x55, 0x8f, 0x05, 0xea, 0x6c, 0x2f, 0x39,
+	0x4b, 0xe6, 0xc9, 0xda, 0x80, 0x4a, 0x2a, 0x8e, 0xc7, 0x9e, 0x55, 0x1b, 0xe7, 0x5c, 0x29, 0x72,
+	0x31, 0x0f, 0x92, 0xf4, 0x01, 0x8a, 0x6c, 0x58, 0xca, 0x07, 0x27, 0xad, 0x30, 0x14, 0x0f, 0x9b,
+	0x9b, 0x25, 0xbb, 0x54, 0xd7, 0xd1, 0xcd, 0x90, 0xf1, 0x1e, 0xe8, 0x3c, 0x66, 0x38, 0x8f, 0x69,
+	0x1a, 0x99, 0x65, 0x99, 0x73, 0x16, 0x70, 0x30, 0xe8, 0x7b, 0x38, 0xc8, 0x79, 0x7b, 0x7e, 0x23,
+	0x67, 0x8e, 0x2b, 0x3e, 0xda, 0x71, 0xbf, 0x69, 0xa0, 0x4f, 0xcd, 0x60, 0x6c, 0x43, 0x59, 0x74,
+	0x49, 0xa5, 0x79, 0xd0, 0x7d, 0x92, 0x27, 0x2a, 0x52, 0x8d, 0x7f, 0x4c, 0x45, 0x8a, 0x29, 0x55,
+	0xc9, 0xc9, 0x7b, 0xd4, 0x1c, 0x49, 0xa6, 0xf3, 0xb7, 0xa6, 0x06, 0x49, 0x18, 0x39, 0x9f, 0x6f,
+	0xe4, 0xfb, 0x39, 0x71, 0x3a, 0x5a, 0xe5, 0x47, 0x8d, 0x96, 0xf1, 0x14, 0x20, 0x0d, 0x72, 0xde,
+	0x3b, 0xa7, 0x1c, 0x33, 0xb3, 0x22, 0x73, 0xe9, 0x22, 0xf2, 0x5a, 0x04, 0x8c, 0x57, 0x00, 0x42,
+	0x77, 0x2f, 0xe7, 0x01, 0xc7, 0xe6, 0x82, 0xad, 0xd5, 0x57, 0xb7, 0x5e, 0xdc, 0xe3, 0xe3, 0x27,
+	0xf5, 0x09, 0x0e, 0xd2, 0x4f, 0x26, 0x4b, 0xe7, 0xad, 0x06, 0xfa, 0x74, 0x0a, 0x0c, 0x0b, 0x16,
+	0x55, 0x53, 0x31, 0x1b, 0x0b, 0x9f, 0xee, 0xff, 0x0b, 0xf3, 0x08, 0x07, 0x33, 0x1c, 0x26, 0x59,
+	0x82, 0x27, 0x5f, 0x3d, 0x34, 0x0b, 0x6c, 0xbe, 0x2d, 0xc2, 0xca, 0xad, 0x42, 0x8d, 0x67, 0xb0,
+	0xe4, 0xa1, 0x56, 0xef, 0xa8, 0xeb, 0xb6, 0x7c, 0xcf, 0xad, 0x16, 0xac, 0xd5, 0xe1, 0xc8, 0x06,
+	0x31, 0x9c, 0x59, 0x14, 0x70, 0x1c, 0x19, 0x1f, 0xc0, 0x4a, 0xfb, 0x60, 0xdf, 0xed, 0x21, 0xaf,
+	0x7b, 0x80, 0x04, 0x44, 0xb3, 0xaa, 0xc3, 0x91, 0x2d, 0xdf, 0x12, 0xe1, 0x8c, 0x32, 0x01, 0xfa,
+	0x08, 0xd6, 0x5a, 0x3b, 0x7e, 0xe7, 0xb5, 0x37, 0x83, 0x15, 0x2d, 0x63, 0x38, 0xb2, 0x57, 0xd5,
+	0x17, 0x7b, 0x0a, 0xfc, 0x18, 0xaa, 0xc7, 0x1d, 0x7f, 0xd7, 0x45, 0xad, 0xe3, 0xde, 0xe1, 0xab,
+	0x4e, 0xb7, 0xeb, 0xb9, 0xd5, 0x92, 0xb5, 0x3e, 0x1c, 0xd9, 0x6b, 0xc7, 0x09, 0x8f, 0x23, 0x16,
+	0x7c, 0x7b, 0x78, 0x9a, 0x64, 0x19, 0x8e, 0x8c, 0xe7, 0xf0, 0x64, 0x0a, 0x9d, 0xde, 0x5a, 0xb6,
+	0x36, 0x86, 0x23, 0xbb, 0x3a, 0xc1, 0x4e, 0xef, 0x7d, 0x0e, 0x4f, 0x7c, 0xd4, 0xda, 0x3f, 0xfc,
+	0xd2, 0x43, 0x33, 0x70, 0x45, 0x81, 0x7d, 0x16, 0x90, 0xfc, 0x0d, 0x66, 0x13, 0xb0, 0x55, 0xfe,
+	0xfe, 0xe7, 0x5a, 0x61, 0xf3, 0x57, 0x0d, 0x40, 0x88, 0x10, 0x15, 0x52, 0x62, 0xfc, 0x1f, 0x74,
+	0xa9, 0xf3, 0x60, 0x7f, 0xef, 0xeb, 0x6a, 0xc1, 0x5a, 0x1e, 0x8e, 0xec, 0x45, 0x71, 0x7c, 0x40,
+	0xd2, 0x4b, 0xd1, 0xa5, 0xa3, 0xfd, 0xd9, 0xb1, 0xa6, 0xba, 0xa4, 0x5e, 0x55, 0x02, 0xea, 0x50,
+	0x6d, 0x1f, 0xf8, 0xbb, 0x3d, 0x89, 0x51, 0xd0, 0x49, 0x07, 0xda, 0x94, 0xc7, 0xe2, 0xa2, 0xf1,
+	0x07, 0xf8, 0x05, 0x18, 0x5e, 0xc7, 0xdf, 0xf5, 0xd0, 0x2d, 0x6c, 0x49, 0x95, 0xea, 0x25, 0x3c,
+	0xc6, 0xec, 0x06, 0xfa, 0x7d, 0x58, 0xee, 0xec, 0xfb, 0x1e, 0xea, 0xb9, 0x9e, 0x7b, 0xb4, 0xe3,
+	0x57, 0xcb, 0xd6, 0xda, 0x70, 0x64, 0x2f, 0x75, 0x08, 0xc7, 0xcc, 0xc5, 0xd1, 0x20, 0xe4, 0x4a,
+	0x4d, 0xfb, 0xab, 0x5f, 0xae, 0x6a, 0xda, 0xbb, 0xab, 0x9a, 0xf6, 0xd7, 0x55, 0x4d, 0xfb, 0xe1,
+	0xba, 0x56, 0x78, 0x77, 0x5d, 0x2b, 0xfc, 0x7e, 0x5d, 0x2b, 0x7c, 0xf3, 0xe9, 0x0d, 0x07, 0xdd,
+	0xb2, 0x70, 0x73, 0x62, 0xe1, 0xe6, 0xc5, 0xf8, 0xef, 0x8b, 0xf2, 0xd3, 0xc9, 0x82, 0x44, 0x7c,
+	0xf6, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xb7, 0x27, 0x44, 0xba, 0xdc, 0x08, 0x00, 0x00,
 }
 
 func (m *ChainEra) Marshal() (dAtA []byte, err error) {
@@ -1306,97 +1131,6 @@ func (m *BondPipeline) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Snapshot) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Snapshot) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Snapshot) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Shot != nil {
-		{
-			size, err := m.Shot.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintLedger(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.ShotId) > 0 {
-		i -= len(m.ShotId)
-		copy(dAtA[i:], m.ShotId)
-		i = encodeVarintLedger(dAtA, i, uint64(len(m.ShotId)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintLedger(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *EraSnapShot) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *EraSnapShot) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *EraSnapShot) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.ShotId) > 0 {
-		i -= len(m.ShotId)
-		copy(dAtA[i:], m.ShotId)
-		i = encodeVarintLedger(dAtA, i, uint64(len(m.ShotId)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if m.Era != 0 {
-		i = encodeVarintLedger(dAtA, i, uint64(m.Era))
-		i--
-		dAtA[i] = 0x10
-	}
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintLedger(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *CurrentEraSnapShot) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1578,43 +1312,6 @@ func (m *PoolDetail) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LastVoter) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *LastVoter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *LastVoter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Voter) > 0 {
-		i -= len(m.Voter)
-		copy(dAtA[i:], m.Voter)
-		i = encodeVarintLedger(dAtA, i, uint64(len(m.Voter)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintLedger(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *LeastBond) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1739,62 +1436,38 @@ func (m *BondSnapshot) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.BondState != 0 {
 		i = encodeVarintLedger(dAtA, i, uint64(m.BondState))
 		i--
-		dAtA[i] = 0x40
+		dAtA[i] = 0x30
 	}
 	if len(m.LastVoter) > 0 {
 		i -= len(m.LastVoter)
 		copy(dAtA[i:], m.LastVoter)
 		i = encodeVarintLedger(dAtA, i, uint64(len(m.LastVoter)))
 		i--
-		dAtA[i] = 0x3a
-	}
-	if m.Active != nil {
-		{
-			size := m.Active.Size()
-			i -= size
-			if _, err := m.Active.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-			i = encodeVarintLedger(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x32
-	}
-	if m.Unbond != nil {
-		{
-			size := m.Unbond.Size()
-			i -= size
-			if _, err := m.Unbond.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-			i = encodeVarintLedger(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x2a
 	}
-	if m.Bond != nil {
+	if m.Chunk != nil {
 		{
-			size := m.Bond.Size()
-			i -= size
-			if _, err := m.Bond.MarshalTo(dAtA[i:]); err != nil {
+			size, err := m.Chunk.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
 				return 0, err
 			}
+			i -= size
 			i = encodeVarintLedger(dAtA, i, uint64(size))
 		}
 		i--
 		dAtA[i] = 0x22
+	}
+	if m.Era != 0 {
+		i = encodeVarintLedger(dAtA, i, uint64(m.Era))
+		i--
+		dAtA[i] = 0x18
 	}
 	if len(m.Pool) > 0 {
 		i -= len(m.Pool)
 		copy(dAtA[i:], m.Pool)
 		i = encodeVarintLedger(dAtA, i, uint64(len(m.Pool)))
 		i--
-		dAtA[i] = 0x1a
-	}
-	if m.Era != 0 {
-		i = encodeVarintLedger(dAtA, i, uint64(m.Era))
-		i--
-		dAtA[i] = 0x10
+		dAtA[i] = 0x12
 	}
 	if len(m.Denom) > 0 {
 		i -= len(m.Denom)
@@ -1961,47 +1634,6 @@ func (m *BondPipeline) Size() (n int) {
 	return n
 }
 
-func (m *Snapshot) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	l = len(m.ShotId)
-	if l > 0 {
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	if m.Shot != nil {
-		l = m.Shot.Size()
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	return n
-}
-
-func (m *EraSnapShot) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	if m.Era != 0 {
-		n += 1 + sovLedger(uint64(m.Era))
-	}
-	l = len(m.ShotId)
-	if l > 0 {
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	return n
-}
-
 func (m *CurrentEraSnapShot) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2089,23 +1721,6 @@ func (m *PoolDetail) Size() (n int) {
 	return n
 }
 
-func (m *LastVoter) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	l = len(m.Voter)
-	if l > 0 {
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	return n
-}
-
 func (m *LeastBond) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2154,23 +1769,15 @@ func (m *BondSnapshot) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovLedger(uint64(l))
 	}
-	if m.Era != 0 {
-		n += 1 + sovLedger(uint64(m.Era))
-	}
 	l = len(m.Pool)
 	if l > 0 {
 		n += 1 + l + sovLedger(uint64(l))
 	}
-	if m.Bond != nil {
-		l = m.Bond.Size()
-		n += 1 + l + sovLedger(uint64(l))
+	if m.Era != 0 {
+		n += 1 + sovLedger(uint64(m.Era))
 	}
-	if m.Unbond != nil {
-		l = m.Unbond.Size()
-		n += 1 + l + sovLedger(uint64(l))
-	}
-	if m.Active != nil {
-		l = m.Active.Size()
+	if m.Chunk != nil {
+		l = m.Chunk.Size()
 		n += 1 + l + sovLedger(uint64(l))
 	}
 	l = len(m.LastVoter)
@@ -2909,293 +2516,6 @@ func (m *BondPipeline) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Snapshot) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowLedger
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Snapshot: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Snapshot: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ShotId", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ShotId = append(m.ShotId[:0], dAtA[iNdEx:postIndex]...)
-			if m.ShotId == nil {
-				m.ShotId = []byte{}
-			}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Shot", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Shot == nil {
-				m.Shot = &BondSnapshot{}
-			}
-			if err := m.Shot.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipLedger(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *EraSnapShot) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowLedger
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: EraSnapShot: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EraSnapShot: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Era", wireType)
-			}
-			m.Era = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Era |= uint32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ShotId", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ShotId = append(m.ShotId[:0], dAtA[iNdEx:postIndex]...)
-			if m.ShotId == nil {
-				m.ShotId = []byte{}
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipLedger(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *CurrentEraSnapShot) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3743,120 +3063,6 @@ func (m *PoolDetail) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LastVoter) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowLedger
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: LastVoter: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LastVoter: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Voter", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Voter = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipLedger(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *LeastBond) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4195,25 +3401,6 @@ func (m *BondSnapshot) Unmarshal(dAtA []byte) error {
 			m.Denom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Era", wireType)
-			}
-			m.Era = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Era |= uint32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Pool", wireType)
 			}
@@ -4245,11 +3432,11 @@ func (m *BondSnapshot) Unmarshal(dAtA []byte) error {
 			}
 			m.Pool = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Bond", wireType)
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Era", wireType)
 			}
-			var stringLen uint64
+			m.Era = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowLedger
@@ -4259,101 +3446,48 @@ func (m *BondSnapshot) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Era |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Chunk", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLedger
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
 				return ErrInvalidLengthLedger
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthLedger
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			var v github_com_cosmos_cosmos_sdk_types.Int
-			m.Bond = &v
-			if err := m.Bond.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if m.Chunk == nil {
+				m.Chunk = &LinkChunk{}
+			}
+			if err := m.Chunk.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Unbond", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			var v github_com_cosmos_cosmos_sdk_types.Int
-			m.Unbond = &v
-			if err := m.Unbond.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Active", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowLedger
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthLedger
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthLedger
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			var v github_com_cosmos_cosmos_sdk_types.Int
-			m.Active = &v
-			if err := m.Active.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field LastVoter", wireType)
 			}
@@ -4385,7 +3519,7 @@ func (m *BondSnapshot) Unmarshal(dAtA []byte) error {
 			}
 			m.LastVoter = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 6:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BondState", wireType)
 			}

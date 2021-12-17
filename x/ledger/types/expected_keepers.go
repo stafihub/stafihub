@@ -2,6 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 type SudoKeeper interface {
@@ -21,4 +22,9 @@ type BankKeeper interface {
 	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
 	SendCoinsFromModuleToModule(ctx sdk.Context, senderModule, recipientModule string, amt sdk.Coins) error
 	MintCoins(ctx sdk.Context, name string, amt sdk.Coins) error
+}
+
+type RelayerKeeper interface {
+	CheckIsRelayer(ctx sdk.Context, denom, address string) bool
+	LastVoter(ctx sdk.Context, denom string) (val *relayertypes.LastVoter, found bool)
 }

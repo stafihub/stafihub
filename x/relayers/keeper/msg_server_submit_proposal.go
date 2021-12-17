@@ -24,10 +24,6 @@ func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitPr
 
 
 
-	//prop, err := k.Keeper.SubmitProposal(ctx, msg.Content(), msg.Creator, msg.InFavour)
-	//if err != nil {
-	//	return nil, err
-	//}
 
 	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId()), Status: prop.Status}
 	if prop.Status != types.StatusApproved {

@@ -14,4 +14,8 @@ var (
 	ErrRepeatInitBond = sdkerrors.Register(ModuleName, 4, "repeat init bond error")
 	ErrActiveAlreadySet = sdkerrors.Register(ModuleName, 5, "active already set error")
 	ErrBondPipelineNotFound = sdkerrors.Register(ModuleName, 6, "bond pipeline not found error")
+	ErrNeitherRelayerNorAdmin = sdkerrors.Register(ModuleName, 7, "neither relayer not admin error")
+	ErrEraNotContinuable = sdkerrors.Register(ModuleName, 8, "era not continuable error")
+	ErrLastVoterNobody = sdkerrors.Register(ModuleName, 9, "last era nobody error")
+	ErrEraSkipped =  sdkerrors.Register(ModuleName, 10, "era skipped error")
 )

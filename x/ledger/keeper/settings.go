@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"encoding/binary"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	//gogotypes "github.com/gogo/protobuf/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
 )
 
@@ -75,21 +76,9 @@ func (k Keeper) SetInitBond(ctx sdk.Context, denom, pool string, amount *sdk.Int
 		k.rateKeeper.SetRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
 	}
 
-	bond := sdk.NewInt(0)
-	unbond := sdk.NewInt(0)
-	active := sdk.NewInt(0)
-	pipe := &types.BondPipeline{
-		Denom: denom,
-		Pool: pool,
-		Chunk: &types.LinkChunk{
-			Bond: &bond,
-			Unbond: &unbond,
-			Active: &active,
-		},
-	}
-
+	pipe := types.NewBondPipeline(denom, pool)
 	k.AddBondedPool(ctx, bpool)
-	k.SetPipeline(ctx, pipe)
+	k.SetBondPipeline(ctx, pipe)
 	return nil
 }
 
@@ -99,7 +88,7 @@ func (k Keeper) AddBondedPool(ctx sdk.Context, pool *types.Pool) {
 	store.Set([]byte(pool.Denom), b)
 }
 
-func (k Keeper) GetBondedPoolByDenom(ctx sdk.Context, denom string) (val *types.Pool, found bool) {
+func (k Keeper) GetBondedPoolByDenom(ctx sdk.Context, denom string) (val types.Pool, found bool) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.BondedPoolPrefix)
 
 	b := store.Get([]byte(denom))
@@ -107,7 +96,7 @@ func (k Keeper) GetBondedPoolByDenom(ctx sdk.Context, denom string) (val *types.
 		return val, false
 	}
 
-	k.cdc.MustUnmarshal(b, val)
+	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
@@ -179,6 +168,25 @@ func (k Keeper) LeastBond(ctx sdk.Context, denom string) (val *types.LeastBond, 
 	return val, true
 }
 
+func (k Keeper) SetCurrentEraSnapShot(ctx sdk.Context, shot types.CurrentEraSnapShot) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.CurrentEraSnapShotPrefix)
+	b := k.cdc.MustMarshal(&shot)
+	store.Set([]byte(shot.Denom), b)
+}
+
+func (k Keeper) CurrentEraSnapShots(ctx sdk.Context, denom string) types.CurrentEraSnapShot {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.CurrentEraSnapShotPrefix)
+
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return types.NewEraSnapShot(denom)
+	}
+
+	var val types.CurrentEraSnapShot
+	k.cdc.MustUnmarshal(b, &val)
+	return val
+}
+
 func (k Keeper) ClearCurrentEraSnapShots(ctx sdk.Context, denom string) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.CurrentEraSnapShotPrefix)
 
@@ -190,22 +198,65 @@ func (k Keeper) ClearCurrentEraSnapShots(ctx sdk.Context, denom string) {
 	store.Set([]byte(denom), b)
 }
 
-//func (k Keeper) SetBondPipeLine(ctx sdk.Context, denom string, )
+func (k Keeper) AddSnapShot(ctx sdk.Context, shotId []byte, shot types.BondSnapshot)  {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.SnapShotPrefix)
+	b := k.cdc.MustMarshal(&shot)
+	store.Set(shotId, b)
+}
 
-func (k Keeper) BondPipeLine(ctx sdk.Context, denom string, pool string) (val *types.BondPipeline, found bool) {
+func (k Keeper) SetEraSnapShot(ctx sdk.Context, era uint32, shot types.CurrentEraSnapShot) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.EraSnapShotPrefix)
+
+	bera:= make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, era)
+	b := k.cdc.MustMarshal(&shot)
+	key := append([]byte(shot.Denom), bera...)
+	store.Set(key, b)
+}
+
+func (k Keeper) SetBondPipeline(ctx sdk.Context, pipe types.BondPipeline) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.BondPipelinePrefix)
+	b := k.cdc.MustMarshal(&pipe)
+	store.Set([]byte(pipe.Denom), b)
+}
+
+func (k Keeper) BondPipeLine(ctx sdk.Context, denom string, pool string) (val types.BondPipeline, found bool) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.BondPipelinePrefix)
 
 	b := store.Get([]byte(denom+pool))
 	if b == nil {
-		return val, false
+		return types.NewBondPipeline(denom, pool), false
 	}
 
-	k.cdc.MustUnmarshal(b, val)
+	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
+func (k Keeper) SetChainEra(ctx sdk.Context, denom string, era uint32) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ChainEraPrefix)
+	ce := &types.ChainEra{
+		Denom: denom,
+		Era: era,
+	}
 
+	b := k.cdc.MustMarshal(ce)
+	store.Set([]byte(denom), b)
+}
 
+func (k Keeper) ChainEra(ctx sdk.Context, denom string) (val types.ChainEra) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ChainEraPrefix)
+
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return types.ChainEra{
+			Denom: denom,
+			Era: 0,
+		}
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val
+}
 
 func (k Keeper) TryFindPool(ctx sdk.Context, denom, addr string, pref []byte) (val *types.Pool, found bool) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), pref)
@@ -225,10 +276,6 @@ func (k Keeper) TryFindPool(ctx sdk.Context, denom, addr string, pref []byte) (v
 
 	val.Addrs[addr] = true
 	return val, false
-}
-
-func (k Keeper) SetPipeline(ctx sdk.Context, pipe *types.BondPipeline) {
-
 }
 
 //func (k Keeper) GetPoolByDenom(ctx sdk.Context, denom string) (val *types.Pool, found bool) {

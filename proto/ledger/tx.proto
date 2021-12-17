@@ -99,7 +99,7 @@ message MsgClearCurrentEraSnapShotsResponse {
 message MsgSetChainEra {
   string creator = 1;
   string denom = 2;
-  string newEra = 3;
+  uint32 era = 3;
 }
 
 message MsgSetChainEraResponse {

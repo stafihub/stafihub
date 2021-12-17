@@ -29,6 +29,8 @@ var (
 	SnapShotPrefix = []byte{0x06}
 	CurrentEraSnapShotPrefix = []byte{0x07}
 	BondPipelinePrefix = []byte{0x08}
+	ChainEraPrefix = []byte{0x09}
+	EraSnapShotPrefix = []byte{0x0a}
 )
 
 

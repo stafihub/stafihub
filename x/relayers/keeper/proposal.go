@@ -90,3 +90,27 @@ func (k Keeper) GetAllProposal(ctx sdk.Context) (list []types.Proposal) {
 
     return
 }
+
+func (k Keeper) SetLastVoter(ctx sdk.Context, denom, voter string) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
+	lv := &types.LastVoter{
+		Denom: denom,
+		Voter: voter,
+	}
+	b := k.cdc.MustMarshal(lv)
+	store.Set([]byte(denom), b)
+}
+
+func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val *types.LastVoter, found bool) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
+
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, val)
+	return val, true
+}
+
+
