@@ -8,7 +8,7 @@ func NewBondPipeline(denom, pool string) BondPipeline {
 	return BondPipeline{
 		Denom: denom,
 		Pool: pool,
-		Chunk: &LinkChunk{
+		Chunk: LinkChunk{
 			Bond: SdkNewInt(),
 			Unbond: SdkNewInt(),
 			Active: SdkNewInt(),
@@ -16,7 +16,7 @@ func NewBondPipeline(denom, pool string) BondPipeline {
 	}
 }
 
-func NewBondSnapshot(denom, pool string, era uint32, chunk *LinkChunk, voter string) BondSnapshot {
+func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk, voter string) BondSnapshot {
 	return BondSnapshot{
 		Denom: denom,
 		Pool: pool,
@@ -27,15 +27,21 @@ func NewBondSnapshot(denom, pool string, era uint32, chunk *LinkChunk, voter str
 	}
 }
 
-func NewEraSnapShot(denom string) CurrentEraSnapShot {
-	return CurrentEraSnapShot{
+func NewEraSnapShot(denom string) EraSnapShot {
+	return EraSnapShot{
 		Denom: denom,
 		ShotIds: [][]byte{},
 	}
 }
 
+func (bss BondSnapshot) UpdateState(state PoolBondState) {
+	bss.BondState = state
+}
 
-func SdkNewInt() *sdk.Int {
-	i := sdk.NewInt(0)
-	return &i
+func (bss BondSnapshot) Continuable() bool {
+	return bss.BondState == WithdrawSkipped || bss.BondState == TransferReported
+}
+
+func SdkNewInt() sdk.Int {
+	return sdk.NewInt(0)
 }

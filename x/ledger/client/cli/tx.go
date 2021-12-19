@@ -39,6 +39,9 @@ cmd.AddCommand(CmdSetPoolDetail())
 cmd.AddCommand(CmdSetLeastBond())
 cmd.AddCommand(CmdClearCurrentEraSnapShots())
 cmd.AddCommand(CmdSetChainEra())
+cmd.AddCommand(CmdActiveReport())
+cmd.AddCommand(CmdSetCommission())
+cmd.AddCommand(CmdSetReceiver())
 // this line is used by starport scaffolding # 1
 
 	return cmd 

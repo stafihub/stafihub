@@ -31,6 +31,10 @@ var (
 	BondPipelinePrefix = []byte{0x08}
 	ChainEraPrefix = []byte{0x09}
 	EraSnapShotPrefix = []byte{0x0a}
+	CommissionPrefix = []byte{0x0b}
+	ReceiverPrefix = []byte{0x0c}
+	TotalExpectedActivePrefix = []byte{0x0d}
+	PoolUnbondPrefix = []byte{0x0e}
 )
 
 

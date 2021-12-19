@@ -130,3 +130,27 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context,  msg *types.M
 
 	return &types.MsgClearCurrentEraSnapShotsResponse{}, nil
 }
+
+func (k msgServer) SetCommission(goCtx context.Context,  msg *types.MsgSetCommission) (*types.MsgSetCommissionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	k.Keeper.SetCommission(ctx, msg.Commission)
+	return &types.MsgSetCommissionResponse{}, nil
+}
+
+func (k msgServer) SetReceiver(goCtx context.Context,  msg *types.MsgSetReceiver) (*types.MsgSetReceiverResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	receiver, _ := sdk.AccAddressFromBech32(msg.Receiver)
+	k.Keeper.SetReceiver(ctx, receiver)
+
+	return &types.MsgSetReceiverResponse{}, nil
+}

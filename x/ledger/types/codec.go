@@ -17,6 +17,9 @@ cdc.RegisterConcrete(&MsgSetPoolDetail{}, "ledger/SetPoolDetail", nil)
 cdc.RegisterConcrete(&MsgSetLeastBond{}, "ledger/SetLeastBond", nil)
 cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
 cdc.RegisterConcrete(&MsgSetChainEra{}, "ledger/SetChainEra", nil)
+cdc.RegisterConcrete(&MsgActiveReport{}, "ledger/ActiveReport", nil)
+cdc.RegisterConcrete(&MsgSetCommission{}, "ledger/SetCommission", nil)
+cdc.RegisterConcrete(&MsgSetReceiver{}, "ledger/SetReceiver", nil)
 // this line is used by starport scaffolding # 2
 } 
 
@@ -47,6 +50,15 @@ registry.RegisterImplementations((*sdk.Msg)(nil),
 )
 registry.RegisterImplementations((*sdk.Msg)(nil),
 	&MsgSetChainEra{},
+)
+registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgActiveReport{},
+)
+registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgSetCommission{},
+)
+registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgSetReceiver{},
 )
 // this line is used by starport scaffolding # 3
 

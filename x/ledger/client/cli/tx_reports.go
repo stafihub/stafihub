@@ -44,3 +44,39 @@ func CmdSetChainEra() *cobra.Command {
 
 	return cmd
 }
+
+func CmdActiveReport() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "active-report [denom] [shot-id] [staked] [unstaked]",
+		Short: "Broadcast message active_report",
+		Args:  cobra.ExactArgs(4),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argDenom := args[0]
+			argShotId := args[1]
+			argStaked := args[2]
+			argUnstaked := args[3]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgActiveReport(
+				clientCtx.GetFromAddress().String(),
+				argDenom,
+				argShotId,
+				argStaked,
+				argUnstaked,
+
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}

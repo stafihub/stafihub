@@ -18,6 +18,9 @@ service Msg {
   rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
   rpc SetChainEra(MsgSetChainEra) returns (MsgSetChainEraResponse);
+  rpc ActiveReport(MsgActiveReport) returns (MsgActiveReportResponse);
+  rpc SetCommission(MsgSetCommission) returns (MsgSetCommissionResponse);
+  rpc SetReceiver(MsgSetReceiver) returns (MsgSetReceiverResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -52,7 +55,7 @@ message MsgSetInitBond {
   string creator = 1;
   string denom = 2;
   string pool = 3;
-  string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string receiver = 5;
 }
 
@@ -82,7 +85,7 @@ message MsgSetPoolDetailResponse {
 message MsgSetLeastBond {
   string creator = 1;
   string denom = 2;
-  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int"];
+  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message MsgSetLeastBondResponse {
@@ -103,6 +106,33 @@ message MsgSetChainEra {
 }
 
 message MsgSetChainEraResponse {
+}
+
+message MsgActiveReport {
+  string creator = 1;
+  string denom = 2;
+  bytes shotId = 3;
+  string staked = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string unstaked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgActiveReportResponse {
+}
+
+message MsgSetCommission {
+  string creator = 1;
+  string commission = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+}
+
+message MsgSetCommissionResponse {
+}
+
+message MsgSetReceiver {
+  string creator = 1;
+  string receiver = 2;
+}
+
+message MsgSetReceiverResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

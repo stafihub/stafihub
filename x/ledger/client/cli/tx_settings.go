@@ -142,7 +142,7 @@ func CmdSetInitBond() *cobra.Command {
 				clientCtx.GetFromAddress(),
 				argDenom,
 				argPool,
-				&argAmount,
+				argAmount,
 				argReceiver,
 			)
 			if err := msg.ValidateBasic(); err != nil {
@@ -251,7 +251,7 @@ func CmdSetLeastBond() *cobra.Command {
 			msg := types.NewMsgSetLeastBond(
 				clientCtx.GetFromAddress(),
 				argDenom,
-				&argAmount,
+				argAmount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -281,6 +281,71 @@ func CmdClearCurrentEraSnapShots() *cobra.Command {
 			msg := types.NewMsgClearCurrentEraSnapShots(
 				clientCtx.GetFromAddress(),
 				argDenom,
+
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdSetCommission() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "set-commission [rate]",
+		Short: "Broadcast message set_commission",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argCommission, err := sdk.NewDecFromStr(args[0])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSetCommission(
+				clientCtx.GetFromAddress(),
+				argCommission,
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdSetReceiver() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "set-receiver [receiver]",
+		Short: "Broadcast message set_receiver",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argReceiver, err := sdk.AccAddressFromBech32(args[0])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSetReceiver(
+				clientCtx.GetFromAddress(),
+				argReceiver,
 
 			)
 			if err := msg.ValidateBasic(); err != nil {

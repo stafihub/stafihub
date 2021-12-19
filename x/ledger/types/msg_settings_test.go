@@ -255,3 +255,65 @@ func TestMsgClearCurrentEraSnapShots_ValidateBasic(t *testing.T) {
 		})
 	}
 }
+
+func TestMsgSetCommission_ValidateBasic(t *testing.T) {
+	tests := []struct {
+		name string
+		msg  MsgSetCommission
+		err  error
+	}{
+		{
+			name: "invalid address",
+			msg: MsgSetCommission{
+				Creator: "invalid_address",
+			},
+			err: sdkerrors.ErrInvalidAddress,
+		}, {
+			name: "valid address",
+			msg: MsgSetCommission{
+				Creator: sample.AccAddress(),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.msg.ValidateBasic()
+			if tt.err != nil {
+				require.ErrorIs(t, err, tt.err)
+				return
+			}
+			require.NoError(t, err)
+		})
+	}
+}
+
+func TestMsgSetReceiver_ValidateBasic(t *testing.T) {
+	tests := []struct {
+		name string
+		msg  MsgSetReceiver
+		err  error
+	}{
+		{
+			name: "invalid address",
+			msg: MsgSetReceiver{
+				Creator: "invalid_address",
+			},
+			err: sdkerrors.ErrInvalidAddress,
+		}, {
+			name: "valid address",
+			msg: MsgSetReceiver{
+				Creator: sample.AccAddress(),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.msg.ValidateBasic()
+			if tt.err != nil {
+				require.ErrorIs(t, err, tt.err)
+				return
+			}
+			require.NoError(t, err)
+		})
+	}
+}

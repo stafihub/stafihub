@@ -15,6 +15,8 @@ var (
 	_ sdk.Msg = &MsgSetPoolDetail{}
 	_ sdk.Msg = &MsgSetLeastBond{}
 	_ sdk.Msg = &MsgClearCurrentEraSnapShots{}
+	_ sdk.Msg = &MsgSetCommission{}
+	_ sdk.Msg = &MsgSetReceiver{}
 )
 
 func NewMsgAddNewPool(creator sdk.AccAddress, denom string, addr string) *MsgAddNewPool {
@@ -128,7 +130,7 @@ func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetInitBond(creator sdk.AccAddress, denom string, pool string, amount *sdk.Int, receiver sdk.AccAddress) *MsgSetInitBond {
+func NewMsgSetInitBond(creator sdk.AccAddress, denom string, pool string, amount sdk.Int, receiver sdk.AccAddress) *MsgSetInitBond {
 	return &MsgSetInitBond{
 		Creator: creator.String(),
 		Denom: denom,
@@ -257,7 +259,7 @@ func (msg *MsgSetPoolDetail) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetLeastBond(creator sdk.AccAddress, denom string, amount *sdk.Int) *MsgSetLeastBond {
+func NewMsgSetLeastBond(creator sdk.AccAddress, denom string, amount sdk.Int) *MsgSetLeastBond {
 	return &MsgSetLeastBond{
 		Creator: creator.String(),
 		Denom: denom,
@@ -329,4 +331,85 @@ func (msg *MsgClearCurrentEraSnapShots) ValidateBasic() error {
 	}
 	return nil
 }
+
+func NewMsgSetCommission(creator sdk.AccAddress, commission sdk.Dec) *MsgSetCommission {
+	return &MsgSetCommission{
+		Creator: creator.String(),
+		Commission: commission,
+	}
+}
+
+func (msg *MsgSetCommission) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSetCommission) Type() string {
+	return "SetCommission"
+}
+
+func (msg *MsgSetCommission) GetSigners() []sdk.AccAddress {
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSetCommission) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSetCommission) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if msg.Commission.GT(sdk.OneDec()) {
+		return fmt.Errorf("rate %s bigger than oneDec", msg.Commission.String())
+	}
+	return nil
+}
+
+func NewMsgSetReceiver(creator sdk.AccAddress, receiver sdk.AccAddress) *MsgSetReceiver {
+	return &MsgSetReceiver{
+		Creator: creator.String(),
+		Receiver: receiver.String(),
+	}
+}
+
+func (msg *MsgSetReceiver) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSetReceiver) Type() string {
+	return "SetReceiver"
+}
+
+func (msg *MsgSetReceiver) GetSigners() []sdk.AccAddress {
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSetReceiver) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSetReceiver) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+
+	if msg.Receiver == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "empty receiver address (%s)", err)
+	}
+	return nil
+}
+
 
