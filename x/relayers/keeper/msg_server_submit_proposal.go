@@ -13,7 +13,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitPr
 
 	content := msg.GetContent()
 
-	if !k.CheckIsRelayer(ctx, content.Denom(), msg.Proposer) {
+	if !k.CheckIsRelayer(ctx, content.GetDenom(), msg.Proposer) {
 		return nil, types.ErrProposerNotRelayer
 	}
 

@@ -7,13 +7,13 @@ import (
 )
 
 func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
-	threshold, ok := k.GetThreshold(ctx, content.Denom())
+	threshold, ok := k.GetThreshold(ctx, content.GetDenom())
 	if !ok {
 		return nil, types.ErrThresholdNotFound
 	}
 
 	curBlock := ctx.BlockHeight()
-	prop, ok := k.GetProposal(ctx, content.PropId())
+	prop, ok := k.GetProposal(ctx, content.GetPropId())
 	if !ok {
 		prop = &types.Proposal{
 			Status: types.StatusInitiated,
@@ -40,7 +40,7 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 	if prop.IsExpired(curBlock) {
 		prop.Status = types.StatusExpired
 	} else {
-		total := uint32(k.RelayerCount(ctx, content.Denom()))
+		total := uint32(k.RelayerCount(ctx, content.GetDenom()))
 		if threshold.Value > total || uint32(len(prop.VotesAgainst)) + threshold.Value > total {
 			prop.Status = types.StatusRejected
 		} else if uint32(len(prop.VotesFor)) > threshold.Value {

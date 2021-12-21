@@ -7,7 +7,6 @@ import (
 
 // Constants pertaining to a Content object
 const (
-	MaxDenomLength = 100
 	PropIdLength = 32
 )
 
@@ -18,8 +17,8 @@ const (
 // TODO Try to unify this interface with types/module/simulation
 // https://github.com/cosmos/cosmos-sdk/issues/5853
 type Content interface {
-	PropId() []byte
-	Denom() string
+	GetPropId() []byte
+	GetDenom() string
 	ProposalRoute() string
 	ProposalType() string
 	InFavour() bool
@@ -34,18 +33,14 @@ type Handler func(ctx sdk.Context, content Content) error
 // ValidateAbstract validates a proposal's abstract contents returning an error
 // if invalid.
 func ValidateAbstract(c Content) error {
-	propId := c.PropId()
+	propId := c.GetPropId()
 	if len(propId) == PropIdLength {
 		return sdkerrors.Wrapf(ErrInvalidProposalContent, "propId's length %d != %d", len(propId), PropIdLength)
 	}
 
-	denom := c.Denom()
+	denom := c.GetDenom()
 	if len(denom) == 0 {
 		return sdkerrors.Wrap(ErrInvalidProposalContent, "proposal denom cannot be blank")
-	}
-
-	if len(denom) > MaxDenomLength {
-		return sdkerrors.Wrapf(ErrInvalidProposalContent, "proposal denom is longer than max length of %d", MaxDenomLength)
 	}
 
 	return nil

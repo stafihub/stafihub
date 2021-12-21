@@ -2,14 +2,14 @@ syntax = "proto3";
 package stafiprotocol.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
-
+import "ledger/ledger.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc AddNewPool(MsgAddNewPool) returns (MsgAddNewPoolResponse);
+  rpc AddNewPool(MsgAddNewPool) returns (MsgAddNewPoolResponse);
   rpc RemovePool(MsgRemovePool) returns (MsgRemovePoolResponse);
   rpc SetEraUnbondLimit(MsgSetEraUnbondLimit) returns (MsgSetEraUnbondLimitResponse);
   rpc SetInitBond(MsgSetInitBond) returns (MsgSetInitBondResponse);
@@ -17,8 +17,6 @@ service Msg {
   rpc SetPoolDetail(MsgSetPoolDetail) returns (MsgSetPoolDetailResponse);
   rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
-  rpc SetChainEra(MsgSetChainEra) returns (MsgSetChainEraResponse);
-  rpc ActiveReport(MsgActiveReport) returns (MsgActiveReportResponse);
   rpc SetCommission(MsgSetCommission) returns (MsgSetCommissionResponse);
   rpc SetReceiver(MsgSetReceiver) returns (MsgSetReceiverResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
@@ -97,26 +95,6 @@ message MsgClearCurrentEraSnapShots {
 }
 
 message MsgClearCurrentEraSnapShotsResponse {
-}
-
-message MsgSetChainEra {
-  string creator = 1;
-  string denom = 2;
-  uint32 era = 3;
-}
-
-message MsgSetChainEraResponse {
-}
-
-message MsgActiveReport {
-  string creator = 1;
-  string denom = 2;
-  bytes shotId = 3;
-  string staked = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string unstaked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-}
-
-message MsgActiveReportResponse {
 }
 
 message MsgSetCommission {

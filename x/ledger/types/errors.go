@@ -18,7 +18,10 @@ var (
 	ErrEraNotContinuable = sdkerrors.Register(ModuleName, 8, "era not continuable error")
 	ErrLastVoterNobody = sdkerrors.Register(ModuleName, 9, "last era nobody error")
 	ErrEraSkipped =  sdkerrors.Register(ModuleName, 10, "era skipped error")
-	ErrSnapShotNotFound = sdkerrors.Register(ModuleName, 11, "snapshot not found error")
-	ErrStateNotBondReported = sdkerrors.Register(ModuleName, 12, "state not bond reported error")
-	ErrNoReceiver = sdkerrors.Register(ModuleName, 13, "no receiver error")
+	ErrNoReceiver = sdkerrors.Register(ModuleName, 11, "no receiver error")
+	ErrSnapShotNotFound = sdkerrors.Register(ModuleName, 12, "snapshot not found error")
+	ErrStateNotBondReported = sdkerrors.Register(ModuleName, 13, "state not bond reported error")
+	ErrStateNotEraUpdated = sdkerrors.Register(ModuleName, 14, "state not era updated error")
+	ErrRateIsNone = sdkerrors.Register(ModuleName, 15, "rate is none error")
+
 )

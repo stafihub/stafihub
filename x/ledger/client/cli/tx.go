@@ -31,18 +31,22 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdAddNewPool())
-cmd.AddCommand(CmdRemovePool())
-cmd.AddCommand(CmdSetEraUnbondLimit())
-cmd.AddCommand(CmdSetInitBond())
-cmd.AddCommand(CmdSetChainBondingDuration())
-cmd.AddCommand(CmdSetPoolDetail())
-cmd.AddCommand(CmdSetLeastBond())
-cmd.AddCommand(CmdClearCurrentEraSnapShots())
-cmd.AddCommand(CmdSetChainEra())
-cmd.AddCommand(CmdActiveReport())
-cmd.AddCommand(CmdSetCommission())
-cmd.AddCommand(CmdSetReceiver())
+	cmd.AddCommand(CmdRemovePool())
+	cmd.AddCommand(CmdSetEraUnbondLimit())
+	cmd.AddCommand(CmdSetInitBond())
+	cmd.AddCommand(CmdSetChainBondingDuration())
+	cmd.AddCommand(CmdSetPoolDetail())
+	cmd.AddCommand(CmdSetLeastBond())
+	cmd.AddCommand(CmdClearCurrentEraSnapShots())
+	cmd.AddCommand(CmdSetCommission())
+	cmd.AddCommand(CmdSetReceiver())
+	cmd.AddCommand(CmdSetChainEra())
+	cmd.AddCommand(CmdActiveReport())
+	cmd.AddCommand(CmdBondReport())
+	cmd.AddCommand(CmdBondAndReportActive())
+	cmd.AddCommand(CmdWithdrawReport())
+	cmd.AddCommand(CmdTransferReport())
 // this line is used by starport scaffolding # 1
 
-	return cmd 
+	return cmd
 }

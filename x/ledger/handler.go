@@ -41,12 +41,6 @@ case *types.MsgSetLeastBond:
 case *types.MsgClearCurrentEraSnapShots:
 					res, err := msgServer.ClearCurrentEraSnapShots(sdk.WrapSDKContext(ctx), msg)
 					return sdk.WrapServiceResult(ctx, res, err)
-case *types.MsgSetChainEra:
-					res, err := msgServer.SetChainEra(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-case *types.MsgActiveReport:
-					res, err := msgServer.ActiveReport(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
 case *types.MsgSetCommission:
 					res, err := msgServer.SetCommission(sdk.WrapSDKContext(ctx), msg)
 					return sdk.WrapServiceResult(ctx, res, err)

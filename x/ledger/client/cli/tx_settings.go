@@ -121,12 +121,10 @@ func CmdSetInitBond() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argPool := args[1]
-
-			amount, err := strconv.ParseUint(args[2], 10, 64)
-			if err != nil {
-				return err
+			argAmount, ok := sdk.NewIntFromString(args[2])
+			if !ok {
+				return fmt.Errorf("cast amount %s into Int error", args[2])
 			}
-			argAmount := sdk.NewIntFromUint64(amount)
 
 			argReceiver, err := sdk.AccAddressFromBech32(args[3])
 			if err != nil {

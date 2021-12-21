@@ -4,6 +4,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+const (
+	ShotIdLength = 32
+)
+
 func NewBondPipeline(denom, pool string) BondPipeline {
 	return BondPipeline{
 		Denom: denom,
@@ -35,6 +39,7 @@ func NewEraSnapShot(denom string) EraSnapShot {
 }
 
 func (bss BondSnapshot) UpdateState(state PoolBondState) {
+	// todo need to test if the change was kept
 	bss.BondState = state
 }
 

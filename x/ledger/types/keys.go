@@ -37,8 +37,6 @@ var (
 	PoolUnbondPrefix = []byte{0x0e}
 )
 
-
-
 func KeyPrefix(p string) []byte {
     return []byte(p)
 }

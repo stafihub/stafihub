@@ -36,7 +36,7 @@ func (p *Proposal) PropId() []byte {
 	if content == nil {
 		return nil
 	}
-	return content.PropId()
+	return content.GetPropId()
 }
 
 func (p *Proposal) ProposalType() string {
