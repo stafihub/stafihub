@@ -33,20 +33,54 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-// SetAdmin set the admin account in the store
 func (k Keeper) SetAdmin(ctx sdk.Context, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.AdminPrefix, address)
 }
 
-// GetRelayer returns a relayer from its index
 func (k Keeper) GetAdmin(ctx sdk.Context) sdk.AccAddress {
 	store := ctx.KVStore(k.storeKey)
 	return store.Get(types.AdminPrefix)
 }
 
-// SetAdmin set the admin account in the store
 func (k Keeper) IsAdmin(ctx sdk.Context, address sdk.AccAddress) bool {
 	admin := k.GetAdmin(ctx)
 	return address.Equals(admin)
 }
+
+func (k Keeper) AddDenom(ctx sdk.Context, denom string) {
+	store := ctx.KVStore(k.storeKey)
+	sym := k.GetSymbol(ctx)
+	sym.Denoms[denom] = true
+	b := k.cdc.MustMarshal(&sym)
+	store.Set(types.SymbolPrefix, b)
+}
+
+func (k Keeper) GetSymbol(ctx sdk.Context) (val types.Symbol) {
+	store := ctx.KVStore(k.storeKey)
+	b := store.Get(types.SymbolPrefix)
+	if b == nil {
+		return types.Symbol{Denoms: map[string]bool{}}
+	}
+	k.cdc.MustUnmarshal(b, &val)
+	return
+}
+
+func (k Keeper) GetAllDenoms(ctx sdk.Context) []string {
+	sym := k.GetSymbol(ctx)
+	denoms := make([]string, 0)
+	for denom, ok := range sym.Denoms {
+		if ok {
+			denoms = append(denoms, denom)
+		}
+	}
+
+	return denoms
+}
+
+func (k Keeper) IsDenomValid(ctx sdk.Context, denom string) bool {
+	sym := k.GetSymbol(ctx)
+	_, ok := sym.Denoms[denom]
+	return ok
+}
+

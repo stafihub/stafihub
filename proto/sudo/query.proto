@@ -13,6 +13,11 @@ service Query {
 		option (google.api.http).get = "/stafiprotocol/stafihub/sudo/admin";
 	}
 
+// Queries a list of allDenoms items.
+	rpc AllDenoms(QueryAllDenomsRequest) returns (QueryAllDenomsResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/sudo/allDenoms";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -21,6 +26,13 @@ message QueryAdminRequest {
 
 message QueryAdminResponse {
   string address = 1;
+}
+
+message QueryAllDenomsRequest {
+}
+
+message QueryAllDenomsResponse {
+  repeated string denoms = 1;
 }
 
 // this line is used by starport scaffolding # 3

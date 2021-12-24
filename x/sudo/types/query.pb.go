@@ -108,15 +108,97 @@ func (m *QueryAdminResponse) GetAddress() string {
 	return ""
 }
 
+type QueryAllDenomsRequest struct {
+}
+
+func (m *QueryAllDenomsRequest) Reset()         { *m = QueryAllDenomsRequest{} }
+func (m *QueryAllDenomsRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllDenomsRequest) ProtoMessage()    {}
+func (*QueryAllDenomsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8e89a5ddd8e4c069, []int{2}
+}
+func (m *QueryAllDenomsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllDenomsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllDenomsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllDenomsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllDenomsRequest.Merge(m, src)
+}
+func (m *QueryAllDenomsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllDenomsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllDenomsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllDenomsRequest proto.InternalMessageInfo
+
+type QueryAllDenomsResponse struct {
+	Denoms []string `protobuf:"bytes,1,rep,name=denoms,proto3" json:"denoms,omitempty"`
+}
+
+func (m *QueryAllDenomsResponse) Reset()         { *m = QueryAllDenomsResponse{} }
+func (m *QueryAllDenomsResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllDenomsResponse) ProtoMessage()    {}
+func (*QueryAllDenomsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8e89a5ddd8e4c069, []int{3}
+}
+func (m *QueryAllDenomsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllDenomsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllDenomsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllDenomsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllDenomsResponse.Merge(m, src)
+}
+func (m *QueryAllDenomsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllDenomsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllDenomsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllDenomsResponse proto.InternalMessageInfo
+
+func (m *QueryAllDenomsResponse) GetDenoms() []string {
+	if m != nil {
+		return m.Denoms
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryAdminRequest)(nil), "stafiprotocol.stafihub.sudo.QueryAdminRequest")
 	proto.RegisterType((*QueryAdminResponse)(nil), "stafiprotocol.stafihub.sudo.QueryAdminResponse")
+	proto.RegisterType((*QueryAllDenomsRequest)(nil), "stafiprotocol.stafihub.sudo.QueryAllDenomsRequest")
+	proto.RegisterType((*QueryAllDenomsResponse)(nil), "stafiprotocol.stafihub.sudo.QueryAllDenomsResponse")
 }
 
 func init() { proto.RegisterFile("sudo/query.proto", fileDescriptor_8e89a5ddd8e4c069) }
 
 var fileDescriptor_8e89a5ddd8e4c069 = []byte{
-	// 245 bytes of a gzipped FileDescriptorProto
+	// 314 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x2e, 0x4d, 0xc9,
 	0xd7, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x2e, 0x2e,
 	0x49, 0x4c, 0xcb, 0x04, 0xb3, 0x93, 0xf3, 0x73, 0xf4, 0xc0, 0xbc, 0x8c, 0xd2, 0x24, 0x3d, 0x90,
@@ -124,15 +206,19 @@ var fileDescriptor_8e89a5ddd8e4c069 = []byte{
 	0xbc, 0xfc, 0x92, 0xc4, 0x92, 0xcc, 0xfc, 0xbc, 0x62, 0x88, 0x56, 0x25, 0x61, 0x2e, 0xc1, 0x40,
 	0x90, 0x49, 0x8e, 0x29, 0xb9, 0x99, 0x79, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x4a, 0x7a,
 	0x5c, 0x42, 0xc8, 0x82, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x42, 0x12, 0x5c, 0xec, 0x89, 0x29,
-	0x29, 0x45, 0xa9, 0xc5, 0xc5, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0xd1, 0x3c,
-	0x46, 0x2e, 0x56, 0xb0, 0x06, 0xa1, 0x29, 0x8c, 0x5c, 0xac, 0x60, 0x5d, 0x42, 0x7a, 0x7a, 0x78,
-	0x1c, 0xa5, 0x87, 0x61, 0xa7, 0x94, 0x3e, 0xd1, 0xea, 0x21, 0xce, 0x51, 0xd2, 0x6a, 0xba, 0xfc,
-	0x64, 0x32, 0x93, 0x8a, 0x90, 0x92, 0x3e, 0x8a, 0x46, 0x7d, 0x98, 0x46, 0x7d, 0x70, 0x30, 0x25,
-	0x82, 0xf4, 0x38, 0x79, 0x9c, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72,
-	0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x5e,
-	0x7a, 0x66, 0x09, 0xc8, 0x96, 0xe4, 0xfc, 0x5c, 0x5c, 0xe6, 0x54, 0x40, 0x4c, 0x2a, 0xa9, 0x2c,
-	0x48, 0x2d, 0x4e, 0x62, 0x03, 0xcb, 0x1b, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x6c, 0xff, 0x69,
-	0xcd, 0x85, 0x01, 0x00, 0x00,
+	0x29, 0x45, 0xa9, 0xc5, 0xc5, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0x92, 0x38,
+	0x97, 0x28, 0x44, 0x7d, 0x4e, 0x8e, 0x4b, 0x6a, 0x5e, 0x7e, 0x6e, 0x31, 0xcc, 0x20, 0x03, 0x2e,
+	0x31, 0x74, 0x09, 0xa8, 0x61, 0x62, 0x5c, 0x6c, 0x29, 0x60, 0x11, 0x09, 0x46, 0x05, 0x66, 0x0d,
+	0xce, 0x20, 0x28, 0xcf, 0xe8, 0x28, 0x13, 0x17, 0x2b, 0x58, 0x8b, 0xd0, 0x14, 0x46, 0x2e, 0x56,
+	0xb0, 0x03, 0x84, 0xf4, 0xf4, 0xf0, 0xf8, 0x4f, 0x0f, 0xc3, 0xf9, 0x52, 0xfa, 0x44, 0xab, 0x87,
+	0x38, 0x46, 0x49, 0xab, 0xe9, 0xf2, 0x93, 0xc9, 0x4c, 0x2a, 0x42, 0x4a, 0xfa, 0x28, 0x1a, 0xf5,
+	0x61, 0x1a, 0xf5, 0xc1, 0x21, 0x9e, 0x08, 0x76, 0xcc, 0x12, 0x46, 0x2e, 0x4e, 0xb8, 0x77, 0x84,
+	0x8c, 0x88, 0xb0, 0x0a, 0x2d, 0x50, 0xa4, 0x8c, 0x49, 0xd2, 0x03, 0x75, 0xa2, 0x1e, 0xd8, 0x89,
+	0x1a, 0x42, 0x6a, 0xf8, 0x9d, 0x08, 0xd3, 0xe7, 0xe4, 0x71, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47,
+	0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d,
+	0xc7, 0x72, 0x0c, 0x51, 0x7a, 0xe9, 0x99, 0x25, 0x20, 0xdb, 0x92, 0xf3, 0x73, 0x71, 0x99, 0x55,
+	0x01, 0x31, 0xad, 0xa4, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x2c, 0x6f, 0x0c, 0x08, 0x00, 0x00,
+	0xff, 0xff, 0x17, 0x10, 0xea, 0x31, 0x77, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -149,6 +235,8 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Queries a list of admin items.
 	Admin(ctx context.Context, in *QueryAdminRequest, opts ...grpc.CallOption) (*QueryAdminResponse, error)
+	// Queries a list of allDenoms items.
+	AllDenoms(ctx context.Context, in *QueryAllDenomsRequest, opts ...grpc.CallOption) (*QueryAllDenomsResponse, error)
 }
 
 type queryClient struct {
@@ -168,10 +256,21 @@ func (c *queryClient) Admin(ctx context.Context, in *QueryAdminRequest, opts ...
 	return out, nil
 }
 
+func (c *queryClient) AllDenoms(ctx context.Context, in *QueryAllDenomsRequest, opts ...grpc.CallOption) (*QueryAllDenomsResponse, error) {
+	out := new(QueryAllDenomsResponse)
+	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.sudo.Query/AllDenoms", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a list of admin items.
 	Admin(context.Context, *QueryAdminRequest) (*QueryAdminResponse, error)
+	// Queries a list of allDenoms items.
+	AllDenoms(context.Context, *QueryAllDenomsRequest) (*QueryAllDenomsResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -180,6 +279,9 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Admin(ctx context.Context, req *QueryAdminRequest) (*QueryAdminResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Admin not implemented")
+}
+func (*UnimplementedQueryServer) AllDenoms(ctx context.Context, req *QueryAllDenomsRequest) (*QueryAllDenomsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllDenoms not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -204,6 +306,24 @@ func _Query_Admin_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_AllDenoms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllDenomsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AllDenoms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafiprotocol.stafihub.sudo.Query/AllDenoms",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AllDenoms(ctx, req.(*QueryAllDenomsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "stafiprotocol.stafihub.sudo.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -211,6 +331,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Admin",
 			Handler:    _Query_Admin_Handler,
+		},
+		{
+			MethodName: "AllDenoms",
+			Handler:    _Query_AllDenoms_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -270,6 +394,61 @@ func (m *QueryAdminResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryAllDenomsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllDenomsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllDenomsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllDenomsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllDenomsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllDenomsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Denoms) > 0 {
+		for iNdEx := len(m.Denoms) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Denoms[iNdEx])
+			copy(dAtA[i:], m.Denoms[iNdEx])
+			i = encodeVarintQuery(dAtA, i, uint64(len(m.Denoms[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -299,6 +478,30 @@ func (m *QueryAdminResponse) Size() (n int) {
 	l = len(m.Address)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllDenomsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryAllDenomsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Denoms) > 0 {
+		for _, s := range m.Denoms {
+			l = len(s)
+			n += 1 + l + sovQuery(uint64(l))
+		}
 	}
 	return n
 }
@@ -419,6 +622,138 @@ func (m *QueryAdminResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllDenomsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllDenomsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllDenomsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllDenomsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllDenomsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllDenomsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denoms", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denoms = append(m.Denoms, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

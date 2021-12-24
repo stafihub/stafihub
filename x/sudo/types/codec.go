@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateAdmin{}, "sudo/UpdateAdmin", nil)
+cdc.RegisterConcrete(&MsgAddDenom{}, "sudo/AddDenom", nil)
 // this line is used by starport scaffolding # 2
 } 
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 	&MsgUpdateAdmin{},
+)
+registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgAddDenom{},
 )
 // this line is used by starport scaffolding # 3
 

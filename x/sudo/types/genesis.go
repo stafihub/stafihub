@@ -14,6 +14,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Admin: "fis1xrhhus43kjhqdccee7aqnuukh8ugv09affsg84",
+		Denoms: []string{},
 	    // this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -25,6 +26,12 @@ func (gs GenesisState) Validate() error {
 	_, err := sdk.AccAddressFromBech32(gs.Admin)
 	if err != nil {
 		return fmt.Errorf("invalid admin address %s", gs.Admin)
+	}
+
+	for _, dnm := range gs.Denoms {
+		if sdk.ValidateDenom(dnm) != nil {
+			return fmt.Errorf("invalid denom %s", dnm)
+		}
 	}
 
 	return nil

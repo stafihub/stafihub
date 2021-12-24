@@ -2,7 +2,6 @@ syntax = "proto3";
 package stafiprotocol.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
-import "ledger/ledger.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";

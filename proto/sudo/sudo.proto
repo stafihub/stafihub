@@ -1,0 +1,10 @@
+syntax = "proto3";
+package stafiprotocol.stafihub.sudo;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
+
+message Symbol {
+    map<string, bool> denoms = 1 [(gogoproto.nullable) = false];
+}
