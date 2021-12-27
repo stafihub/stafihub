@@ -7,13 +7,9 @@ import (
 
 var _ sdk.Msg = &MsgUpdateThreshold{}
 
-func NewMsgUpdateThreshold(
-    creator string,
-    denom string,
-    value uint32,
-) *MsgUpdateThreshold {
+func NewMsgUpdateThreshold(creator sdk.AccAddress, denom string, value uint32) *MsgUpdateThreshold {
   return &MsgUpdateThreshold{
-		Creator: creator,
+		Creator: creator.String(),
         Denom: denom,
         Value: value,
 	}
@@ -28,10 +24,7 @@ func (msg *MsgUpdateThreshold) Type() string {
 }
 
 func (msg *MsgUpdateThreshold) GetSigners() []sdk.AccAddress {
-  creator, err := sdk.AccAddressFromBech32(msg.Creator)
-  if err != nil {
-    panic(err)
-  }
+  creator, _ := sdk.AccAddressFromBech32(msg.Creator)
   return []sdk.AccAddress{creator}
 }
 
@@ -41,9 +34,9 @@ func (msg *MsgUpdateThreshold) GetSignBytes() []byte {
 }
 
 func (msg *MsgUpdateThreshold) ValidateBasic() error {
-  _, err := sdk.AccAddressFromBech32(msg.Creator)
-  if err != nil {
-    return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+  if msg.Creator == "" {
+    return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
   }
-   return nil
+
+  return nil
 }

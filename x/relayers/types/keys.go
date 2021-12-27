@@ -15,8 +15,6 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_relayers"
-
-
 )
 
 var (
@@ -27,8 +25,6 @@ var (
 	ProposalPrefix = []byte{0x04}
 	LastVoterPrefix = []byte{0x05}
 )
-
-
 
 func KeyPrefix(p string) []byte {
     return []byte(p)

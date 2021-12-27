@@ -17,10 +17,6 @@ for _, elem := range genState.Relayers {
 for _, elem := range genState.Thresholds {
 	k.SetThreshold(ctx, elem)
 }
-// Set all the proposal
-for _, elem := range genState.ProposalList {
-	k.SetProposal(ctx, elem)
-}
 // this line is used by starport scaffolding # genesis/module/init
 }
 
@@ -30,7 +26,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
     genesis.Relayers = k.GetAllRelayer(ctx)
 	genesis.Thresholds = k.GetAllThreshold(ctx)
-genesis.ProposalList = k.GetAllProposal(ctx)
 // this line is used by starport scaffolding # genesis/module/export
 
     return genesis

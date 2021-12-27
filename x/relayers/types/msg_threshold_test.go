@@ -8,21 +8,21 @@ import (
 	"github.com/stafiprotocol/stafihub/testutil/sample"
 )
 
-func TestMsgSetProposalLife_ValidateBasic(t *testing.T) {
+func TestMsgUpdateThreshold_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetProposalLife
+		msg  MsgUpdateThreshold
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetProposalLife{
+			msg: MsgUpdateThreshold{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetProposalLife{
+			msg: MsgUpdateThreshold{
 				Creator: sample.AccAddress(),
 			},
 		},

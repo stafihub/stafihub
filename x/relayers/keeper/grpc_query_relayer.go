@@ -11,17 +11,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) IsRelayer(goCtx context.Context,  req *types.QueryIsRelayerRequest) (*types.QueryIsRelayerResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	flag := k.CheckIsRelayer(ctx, req.Denom, req.Address)
-
-	return &types.QueryIsRelayerResponse{Flag: flag}, nil
-}
-
 func (k Keeper) RelayerAll(c context.Context, req *types.QueryAllRelayerRequest) (*types.QueryAllRelayerResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

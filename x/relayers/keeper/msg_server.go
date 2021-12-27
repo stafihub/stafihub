@@ -2,10 +2,10 @@ package keeper
 
 import (
 	"context"
+	"encoding/hex"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
 )
 
@@ -21,20 +21,15 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (ms msgServer) IsAdmin(ctx sdk.Context, creator string) bool {
-	addr, _ := sdk.AccAddressFromBech32(creator)
-	return ms.sudoKeeper.IsAdmin(ctx, addr)
-}
-
 func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRelayer) (*types.MsgCreateRelayerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	// Check if the value already exists
-	if k.CheckIsRelayer(ctx, msg.Denom, msg.Address) {
+	if k.Keeper.IsRelayer(ctx, msg.Denom, msg.Address) {
 		return nil, types.ErrRelayerAlreadySet
 	}
 
@@ -50,12 +45,12 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 func (k msgServer) DeleteRelayer(goCtx context.Context,  msg *types.MsgDeleteRelayer) (*types.MsgDeleteRelayerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	if !k.CheckIsRelayer(ctx, msg.Denom, msg.Address) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "relayer not exist")
+	if !k.Keeper.IsRelayer(ctx, msg.Denom, msg.Address) {
+		return nil, types.ErrRelayerNotFound
 	}
 
 	k.RemoveRelayer(ctx, msg.Denom, msg.Address)
@@ -65,7 +60,7 @@ func (k msgServer) DeleteRelayer(goCtx context.Context,  msg *types.MsgDeleteRel
 func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateThreshold) (*types.MsgUpdateThresholdResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
@@ -82,11 +77,47 @@ func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateT
 func (k msgServer) SetProposalLife(goCtx context.Context,  msg *types.MsgSetProposalLife) (*types.MsgSetProposalLifeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	k.Keeper.SetProposalLife(ctx, msg.ProposalLife)
 
 	return &types.MsgSetProposalLifeResponse{}, nil
+}
+
+func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitProposal) (*types.MsgSubmitProposalResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	content := msg.GetContent()
+
+	if !k.Keeper.IsRelayer(ctx, content.GetDenom(), msg.Proposer) {
+		return nil, types.ErrProposerNotRelayer
+	}
+
+	prop, err := k.Keeper.SubmitProposal(ctx, content, msg.Proposer)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId()), Status: prop.Status}
+	if prop.Status != types.StatusApproved {
+		return res, nil
+	}
+
+	rtr := k.Keeper.Router()
+	handler := rtr.GetRoute(prop.ProposalRoute())
+	cacheCtx, writeCache := ctx.CacheContext()
+	if err := handler(cacheCtx, prop.GetContent()); err != nil {
+		return nil, err
+	}
+	// The cached context is created with a new EventManager. However, since
+	// the proposal handler execution was successful, we want to track/keep
+	// any events emitted, so we re-emit to "merge" the events into the
+	// original Context's EventManager.
+	ctx.EventManager().EmitEvents(cacheCtx.EventManager().Events())
+
+	// write state to the underlying multi-store
+	writeCache()
+	return res, nil
 }

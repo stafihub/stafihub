@@ -5,6 +5,6 @@ import (
 )
 
 func (k Keeper) IsAdminOrRelayer(ctx sdk.Context, denom, address string) bool {
-	return k.relayerKeeper.CheckIsRelayer(ctx, denom, address) ||
+	return k.relayerKeeper.IsRelayer(ctx, denom, address) ||
 		k.sudoKeeper.IsAdmin(ctx, address)
 }

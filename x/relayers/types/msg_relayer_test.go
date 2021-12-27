@@ -39,37 +39,6 @@ func TestMsgCreateRelayer_ValidateBasic(t *testing.T) {
 	}
 }
 
-func TestMsgUpdateRelayer_ValidateBasic(t *testing.T) {
-	tests := []struct {
-		name string
-		msg  MsgUpdateRelayer
-		err  error
-	}{
-		{
-			name: "invalid address",
-			msg: MsgUpdateRelayer{
-				Creator: "invalid_address",
-			},
-			err: sdkerrors.ErrInvalidAddress,
-		}, {
-			name: "valid address",
-			msg: MsgUpdateRelayer{
-				Creator: sample.AccAddress(),
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			err := tt.msg.ValidateBasic()
-			if tt.err != nil {
-				require.ErrorIs(t, err, tt.err)
-				return
-			}
-			require.NoError(t, err)
-		})
-	}
-}
-
 func TestMsgDeleteRelayer_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string

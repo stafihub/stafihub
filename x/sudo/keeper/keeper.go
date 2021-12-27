@@ -43,9 +43,9 @@ func (k Keeper) GetAdmin(ctx sdk.Context) sdk.AccAddress {
 	return store.Get(types.AdminPrefix)
 }
 
-func (k Keeper) IsAdmin(ctx sdk.Context, address sdk.AccAddress) bool {
+func (k Keeper) IsAdmin(ctx sdk.Context, address string) bool {
 	admin := k.GetAdmin(ctx)
-	return address.Equals(admin)
+	return admin.String() == address
 }
 
 func (k Keeper) AddDenom(ctx sdk.Context, denom string) {

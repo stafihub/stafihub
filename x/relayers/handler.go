@@ -29,7 +29,7 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetProposalLife:
 					res, err := msgServer.SetProposalLife(sdk.WrapSDKContext(ctx), msg)
 					return sdk.WrapServiceResult(ctx, res, err)
-case *types.MsgSubmitProposal:
+		case *types.MsgSubmitProposal:
 					res, err := msgServer.SubmitProposal(sdk.WrapSDKContext(ctx), msg)
 					return sdk.WrapServiceResult(ctx, res, err)
 // this line is used by starport scaffolding # 1

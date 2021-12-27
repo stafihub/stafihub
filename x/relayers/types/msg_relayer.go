@@ -5,15 +5,14 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgCreateRelayer{}
+var (
+	_ sdk.Msg = &MsgCreateRelayer{}
+	_ sdk.Msg = &MsgDeleteRelayer{}
+)
 
-func NewMsgCreateRelayer(
-    creator string,
-    denom string,
-    address sdk.AccAddress,
-) *MsgCreateRelayer {
+func NewMsgCreateRelayer(creator sdk.AccAddress, denom string, address sdk.AccAddress) *MsgCreateRelayer {
   return &MsgCreateRelayer{
-		Creator : creator,
+		Creator : creator.String(),
 		Denom: denom,
         Address: address.String(),
 	}
@@ -28,10 +27,7 @@ func (msg *MsgCreateRelayer) Type() string {
 }
 
 func (msg *MsgCreateRelayer) GetSigners() []sdk.AccAddress {
-  creator, err := sdk.AccAddressFromBech32(msg.Creator)
-  if err != nil {
-    panic(err)
-  }
+  creator, _ := sdk.AccAddressFromBech32(msg.Creator)
   return []sdk.AccAddress{creator}
 }
 
@@ -41,26 +37,15 @@ func (msg *MsgCreateRelayer) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateRelayer) ValidateBasic() error {
-  _, err := sdk.AccAddressFromBech32(msg.Creator)
-  	if err != nil {
-  		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-  	}
-
-	if msg.Address == "" {
-		return ErrEmptyRelayerAddr
+	if msg.Creator == "" || msg.Address == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
 	}
   return nil
 }
 
-var _ sdk.Msg = &MsgDeleteRelayer{}
-
-func NewMsgDeleteRelayer(
-    creator string,
-    denom string,
-    address sdk.AccAddress,
-) *MsgDeleteRelayer {
+func NewMsgDeleteRelayer(creator sdk.AccAddress, denom string, address sdk.AccAddress) *MsgDeleteRelayer {
   return &MsgDeleteRelayer{
-		Creator: creator,
+		Creator: creator.String(),
 		Denom: denom,
 		Address: address.String(),
 	}
@@ -74,10 +59,7 @@ func (msg *MsgDeleteRelayer) Type() string {
 }
 
 func (msg *MsgDeleteRelayer) GetSigners() []sdk.AccAddress {
-  creator, err := sdk.AccAddressFromBech32(msg.Creator)
-  if err != nil {
-    panic(err)
-  }
+  creator, _ := sdk.AccAddressFromBech32(msg.Creator)
   return []sdk.AccAddress{creator}
 }
 
@@ -87,14 +69,10 @@ func (msg *MsgDeleteRelayer) GetSignBytes() []byte {
 }
 
 func (msg *MsgDeleteRelayer) ValidateBasic() error {
-  _, err := sdk.AccAddressFromBech32(msg.Creator)
-  if err != nil {
-    return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-  }
-
-  if msg.Address == "" {
-	  return ErrEmptyRelayerAddr
-  }
+	if msg.Creator == "" || msg.Address == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
+	}
+	return nil
 
   return nil
 }

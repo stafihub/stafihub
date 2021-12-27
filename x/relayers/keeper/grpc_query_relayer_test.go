@@ -17,56 +17,6 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestRelayerQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.RelayersKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNRelayer(keeper, ctx, 2)
-	for _, tc := range []struct {
-		desc     string
-		request  *types.QueryGetRelayerRequest
-		response *types.QueryGetRelayerResponse
-		err      error
-	}{
-		{
-			desc:     "First",
-			request:  &types.QueryGetRelayerRequest{
-			    Index: msgs[0].Index,
-                
-			},
-			response: &types.QueryGetRelayerResponse{Relayer: msgs[0]},
-		},
-		{
-			desc:     "Second",
-			request:  &types.QueryGetRelayerRequest{
-			    Index: msgs[1].Index,
-                
-			},
-			response: &types.QueryGetRelayerResponse{Relayer: msgs[1]},
-		},
-		{
-			desc:    "KeyNotFound",
-			request: &types.QueryGetRelayerRequest{
-			    Index:strconv.Itoa(100000),
-                
-			},
-			err:     status.Error(codes.InvalidArgument, "not found"),
-		},
-		{
-			desc: "InvalidRequest",
-			err:  status.Error(codes.InvalidArgument, "invalid request"),
-		},
-	} {
-		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.Relayer(wctx, tc.request)
-			if tc.err != nil {
-				require.ErrorIs(t, err, tc.err)
-			} else {
-				require.Equal(t, tc.response, response)
-			}
-		})
-	}
-}
-
 func TestRelayerQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.RelayersKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)

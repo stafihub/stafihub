@@ -6,12 +6,52 @@ import (
 	yaml "gopkg.in/yaml.v2"
 
 	"github.com/cosmos/cosmos-sdk/codec/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/gogo/protobuf/proto"
 )
 
-var _ sdk.Msg = &MsgSubmitProposal{}
+var (
+	_ sdk.Msg = &MsgSetProposalLife{}
+	_ sdk.Msg = &MsgSubmitProposal{}
+)
+
+func NewMsgSetProposalLife(creator sdk.AccAddress, proposalLife int64) *MsgSetProposalLife {
+  return &MsgSetProposalLife{
+		Creator: creator.String(),
+    	ProposalLife: proposalLife,
+	}
+}
+
+func (msg *MsgSetProposalLife) Route() string {
+  return RouterKey
+}
+
+func (msg *MsgSetProposalLife) Type() string {
+  return "SetProposalLife"
+}
+
+func (msg *MsgSetProposalLife) GetSigners() []sdk.AccAddress {
+  creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+  return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSetProposalLife) GetSignBytes() []byte {
+  bz := ModuleCdc.MustMarshalJSON(msg)
+  return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSetProposalLife) ValidateBasic() error {
+  if msg.Creator == "" {
+	  return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+  }
+
+  if msg.ProposalLife < 0 {
+	  return fmt.Errorf("ProposalLife %d should not lt 0", msg.ProposalLife)
+  }
+
+  return nil
+}
 
 func NewMsgSubmitProposal(proposer sdk.AccAddress, content Content) (*MsgSubmitProposal, error) {
 	m := &MsgSubmitProposal{
@@ -25,11 +65,11 @@ func NewMsgSubmitProposal(proposer sdk.AccAddress, content Content) (*MsgSubmitP
 }
 
 func (msg *MsgSubmitProposal) Route() string {
-  return RouterKey
+	return RouterKey
 }
 
 func (msg *MsgSubmitProposal) Type() string {
-  return "SubmitProposal"
+	return "SubmitProposal"
 }
 
 func (msg *MsgSubmitProposal) GetSigners() []sdk.AccAddress {
@@ -38,8 +78,8 @@ func (msg *MsgSubmitProposal) GetSigners() []sdk.AccAddress {
 }
 
 func (msg *MsgSubmitProposal) GetSignBytes() []byte {
-  bz := ModuleCdc.MustMarshalJSON(msg)
-  return sdk.MustSortJSON(bz)
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
 }
 
 // String implements the Stringer interface
@@ -98,3 +138,4 @@ func (m MsgSubmitProposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
 	var content Content
 	return unpacker.UnpackAny(m.Content, &content)
 }
+

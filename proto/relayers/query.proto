@@ -17,11 +17,6 @@ service Query {
 		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/all";
 	}
 
-    // Queries a list of isRelayer items.
-	rpc IsRelayer(QueryIsRelayerRequest) returns (QueryIsRelayerResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}";
-	}
-
     // Queries a list of relayersByDenom items.
 	rpc RelayersByDenom(QueryRelayersByDenomRequest) returns (QueryRelayersByDenomResponse) {
 		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}";
@@ -52,15 +47,6 @@ message QueryAllRelayerRequest {
 message QueryAllRelayerResponse {
 	repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryIsRelayerRequest {
-    string denom = 1;
-    string address = 2;
-}
-
-message QueryIsRelayerResponse {
-    bool flag = 1;
 }
 
 message QueryRelayersByDenomRequest {

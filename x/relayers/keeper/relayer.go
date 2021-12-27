@@ -7,7 +7,6 @@ import (
 	gogotypes "github.com/gogo/protobuf/types"
 )
 
-// SetRelayer set a specific relayer in the store from its index
 func (k Keeper) SetRelayer(ctx sdk.Context, relayer *types.Relayer) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
 	b := k.cdc.MustMarshal(relayer)
@@ -15,11 +14,12 @@ func (k Keeper) SetRelayer(ctx sdk.Context, relayer *types.Relayer) {
 	k.IncRelayerCount(ctx, relayer.Denom)
 }
 
-// CheckIsRelayer returns a relayer from its index
-func (k Keeper) CheckIsRelayer(ctx sdk.Context, denom, address string) bool {
+func (k Keeper) IsRelayer(ctx sdk.Context, denom, address string) bool {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
 
 	b := store.Get([]byte(denom+address))
+	var r types.Relayer
+	k.cdc.MustUnmarshal(b, &r)
 	return b != nil
 }
 
@@ -41,14 +41,11 @@ func (k Keeper) RelayerCount(ctx sdk.Context, denom string) int32 {
 	return intV.GetValue()
 }
 
-
-// RemoveRelayer removes a relayer from the store
 func (k Keeper) RemoveRelayer(ctx sdk.Context, denom, address string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
 	store.Delete([]byte(denom+address))
 }
 
-// GetAllRelayer returns all relayer
 func (k Keeper) GetAllRelayer(ctx sdk.Context) (list []*types.Relayer) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})

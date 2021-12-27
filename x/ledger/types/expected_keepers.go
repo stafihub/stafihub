@@ -6,8 +6,8 @@ import (
 )
 
 type SudoKeeper interface {
-	// Methods imported from sudo should be defined here
 	IsAdmin(ctx sdk.Context, address string) bool
+	IsDenomValid(ctx sdk.Context, denom string) bool
 }
 
 type RateKeeper interface {
@@ -26,6 +26,6 @@ type BankKeeper interface {
 }
 
 type RelayerKeeper interface {
-	CheckIsRelayer(ctx sdk.Context, denom, address string) bool
+	IsRelayer(ctx sdk.Context, denom, address string) bool
 	LastVoter(ctx sdk.Context, denom string) (val *relayertypes.LastVoter, found bool)
 }
