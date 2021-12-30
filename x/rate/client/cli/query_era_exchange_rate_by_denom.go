@@ -14,14 +14,13 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdEraRate() *cobra.Command {
+func CmdEraExchangeRateByDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "era-rate [denom] [era]",
-		Short: "Query era_rate",
-		Args:  cobra.ExactArgs(2),
+		Use:   "era-exchange-rate-by-denom [denom]",
+		Short: "Query EraExchangeRateByDenom",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			 reqDenom := args[0]
-			 reqEra := args[1]
 			
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,15 +29,14 @@ func CmdEraRate() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryEraRateRequest{
+			params := &types.QueryEraExchangeRateByDenomRequest{
 				
                 Denom: reqDenom, 
-                Era: reqEra, 
             }
 
             
 
-			res, err := queryClient.EraRate(cmd.Context(), params)
+			res, err := queryClient.EraExchangeRateByDenom(cmd.Context(), params)
             if err != nil {
                 return err
             }

@@ -11,8 +11,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateRelayer{}, "relayers/CreateRelayer", nil)
 cdc.RegisterConcrete(&MsgDeleteRelayer{}, "relayers/DeleteRelayer", nil)
 cdc.RegisterConcrete(&MsgUpdateThreshold{}, "relayers/UpdateThreshold", nil)
-cdc.RegisterConcrete(&MsgSetProposalLife{}, "relayers/SetProposalLife", nil)
-cdc.RegisterConcrete(&MsgSubmitProposal{}, "relayers/SubmitProposal", nil)
 // this line is used by starport scaffolding # 2
 }
 
@@ -23,12 +21,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 )
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 	&MsgUpdateThreshold{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetProposalLife{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSubmitProposal{},
 )
 // this line is used by starport scaffolding # 3
 

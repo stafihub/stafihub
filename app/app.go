@@ -88,9 +88,6 @@ import (
 
 	"github.com/stafiprotocol/stafihub/docs"
 
-	ratemodule "github.com/stafiprotocol/stafihub/x/rate"
-		ratemodulekeeper "github.com/stafiprotocol/stafihub/x/rate/keeper"
-		ratemoduletypes "github.com/stafiprotocol/stafihub/x/rate/types"
 sudomodule "github.com/stafiprotocol/stafihub/x/sudo"
 		sudomodulekeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
 		sudomoduletypes "github.com/stafiprotocol/stafihub/x/sudo/types"
@@ -100,6 +97,12 @@ relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
 ledgermodule "github.com/stafiprotocol/stafihub/x/ledger"
 		ledgermodulekeeper "github.com/stafiprotocol/stafihub/x/ledger/keeper"
 		ledgermoduletypes "github.com/stafiprotocol/stafihub/x/ledger/types"
+ratemodule "github.com/stafiprotocol/stafihub/x/rate"
+		ratemodulekeeper "github.com/stafiprotocol/stafihub/x/rate/keeper"
+		ratemoduletypes "github.com/stafiprotocol/stafihub/x/rate/types"
+rvotemodule "github.com/stafiprotocol/stafihub/x/rvote"
+		rvotemodulekeeper "github.com/stafiprotocol/stafihub/x/rvote/keeper"
+		rvotemoduletypes "github.com/stafiprotocol/stafihub/x/rvote/types"
 // this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -150,10 +153,11 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		ratemodule.AppModuleBasic{},
 sudomodule.AppModuleBasic{},
 relayersmodule.AppModuleBasic{},
 ledgermodule.AppModuleBasic{},
+ratemodule.AppModuleBasic{},
+rvotemodule.AppModuleBasic{},
 // this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -222,14 +226,15 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-
-		RateKeeper ratemodulekeeper.Keeper
-
 		SudoKeeper sudomodulekeeper.Keeper
 
 		RelayersKeeper relayersmodulekeeper.Keeper
 
 		LedgerKeeper ledgermodulekeeper.Keeper
+
+		RateKeeper ratemodulekeeper.Keeper
+
+		RvoteKeeper rvotemodulekeeper.Keeper
 // this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -263,10 +268,11 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		ratemoduletypes.StoreKey,
 sudomoduletypes.StoreKey,
 relayersmoduletypes.StoreKey,
 ledgermoduletypes.StoreKey,
+ratemoduletypes.StoreKey,
+rvotemoduletypes.StoreKey,
 // this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -365,6 +371,34 @@ ledgermoduletypes.StoreKey,
         &stakingKeeper, govRouter,
     )
 
+		app.SudoKeeper = *sudomodulekeeper.NewKeeper(
+			appCodec,
+			keys[sudomoduletypes.StoreKey],
+			keys[sudomoduletypes.MemStoreKey],
+
+			)
+		sudoModule := sudomodule.NewAppModule(appCodec, app.SudoKeeper)
+
+
+		app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
+			appCodec,
+			keys[relayersmoduletypes.StoreKey],
+			keys[relayersmoduletypes.MemStoreKey],
+
+			app.SudoKeeper,
+)
+		relayersModule := relayersmodule.NewAppModule(appCodec, app.RelayersKeeper)
+
+
+		app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
+			appCodec,
+			keys[ledgermoduletypes.StoreKey],
+			keys[ledgermoduletypes.MemStoreKey],
+
+			app.SudoKeeper,
+)
+		ledgerModule := ledgermodule.NewAppModule(appCodec, app.LedgerKeeper)
+
 
 		app.RateKeeper = *ratemodulekeeper.NewKeeper(
 			appCodec,
@@ -374,33 +408,14 @@ ledgermoduletypes.StoreKey,
 			)
 		rateModule := ratemodule.NewAppModule(appCodec, app.RateKeeper)
 
-		app.SudoKeeper = *sudomodulekeeper.NewKeeper(
+		
+		app.RvoteKeeper = *rvotemodulekeeper.NewKeeper(
 			appCodec,
-			keys[sudomoduletypes.StoreKey],
-			keys[sudomoduletypes.MemStoreKey],
-
+			keys[rvotemoduletypes.StoreKey],
+			keys[rvotemoduletypes.MemStoreKey],
+			
 			)
-		sudoModule := sudomodule.NewAppModule(appCodec, app.SudoKeeper)
-
-		
-		app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
-			appCodec,
-			keys[relayersmoduletypes.StoreKey],
-			keys[relayersmoduletypes.MemStoreKey],
-			
-			app.SudoKeeper,
-)
-		relayersModule := relayersmodule.NewAppModule(appCodec, app.RelayersKeeper)
-
-		
-		app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
-			appCodec,
-			keys[ledgermoduletypes.StoreKey],
-			keys[ledgermoduletypes.MemStoreKey],
-			
-			app.SudoKeeper,
-)
-		ledgerModule := ledgermodule.NewAppModule(appCodec, app.LedgerKeeper)
+		rvoteModule := rvotemodule.NewAppModule(appCodec, app.RvoteKeeper)
 
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -445,6 +460,8 @@ relayersModule,
 sudoModule,
 relayersModule,
 ledgerModule,
+rateModule,
+rvoteModule,
 // this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -479,10 +496,11 @@ ledgerModule,
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
-		ratemoduletypes.ModuleName,
 		sudomoduletypes.ModuleName,
 relayersmoduletypes.ModuleName,
 ledgermoduletypes.ModuleName,
+ratemoduletypes.ModuleName,
+rvotemoduletypes.ModuleName,
 // this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -670,10 +688,11 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
     paramsKeeper.Subspace(ibchost.ModuleName)
-	paramsKeeper.Subspace(ratemoduletypes.ModuleName)
 paramsKeeper.Subspace(sudomoduletypes.ModuleName)
 paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
 paramsKeeper.Subspace(ledgermoduletypes.ModuleName)
+paramsKeeper.Subspace(ratemoduletypes.ModuleName)
+paramsKeeper.Subspace(rvotemoduletypes.ModuleName)
 // this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

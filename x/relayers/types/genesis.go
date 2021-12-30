@@ -12,7 +12,6 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 	    Relayers: []*Relayer{},
 		Thresholds: []*Threshold{},
-		ProposalLife: 0,
 // this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -20,10 +19,6 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	if gs.ProposalLife < 0 {
-		return fmt.Errorf("proposalLife %d is negative", gs.ProposalLife)
-	}
-
 	// Check for duplicated index in relayer
 	relayerDenomMap := make(map[string]struct{})
 

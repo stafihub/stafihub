@@ -12,8 +12,3 @@ message Threshold {
     string denom = 1;
     uint32 value = 2;
 }
-
-message LastVoter {
-    string denom = 1;
-    string voter = 2;
-}

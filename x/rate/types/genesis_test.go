@@ -21,11 +21,55 @@ func TestGenesisState_Validate(t *testing.T) {
         {
             desc:     "valid genesis state",
             genState: &types.GenesisState{
-                // this line is used by starport scaffolding # types/genesis/validField
+                ExchangeRateList: []types.ExchangeRate{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
+EraExchangeRateList: []types.EraExchangeRate{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
+// this line is used by starport scaffolding # types/genesis/validField
             },
             valid:    true,
         },
-        // this line is used by starport scaffolding # types/genesis/testcase
+        {
+	desc:     "duplicated exchangeRate",
+	genState: &types.GenesisState{
+		ExchangeRateList: []types.ExchangeRate{
+			{
+				Index: "0",
+},
+			{
+				Index: "0",
+},
+		},
+	},
+	valid:    false,
+},
+{
+	desc:     "duplicated eraExchangeRate",
+	genState: &types.GenesisState{
+		EraExchangeRateList: []types.EraExchangeRate{
+			{
+				Index: "0",
+},
+			{
+				Index: "0",
+},
+		},
+	},
+	valid:    false,
+},
+// this line is used by starport scaffolding # types/genesis/testcase
     } {
         t.Run(tc.desc, func(t *testing.T) {
             err := tc.genState.Validate()

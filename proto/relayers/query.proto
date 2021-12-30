@@ -4,7 +4,6 @@ package stafiprotocol.stafihub.relayers;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "relayers/relayer.proto";
-import "relayers/proposal.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -30,11 +29,6 @@ service Query {
 	// Queries a list of threshold items.
 	rpc ThresholdAll(QueryAllThresholdRequest) returns (QueryAllThresholdResponse) {
 		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/threshold";
-	}
-
-    // Queries a proposal by index.
-	rpc Proposal(QueryGetProposalRequest) returns (QueryGetProposalResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/proposal/{proposal_id}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -74,14 +68,6 @@ message QueryAllThresholdRequest {
 message QueryAllThresholdResponse {
 	repeated Threshold threshold = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
-message QueryGetProposalRequest {
-	  string proposal_id = 1;
-}
-
-message QueryGetProposalResponse {
-	Proposal proposal = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

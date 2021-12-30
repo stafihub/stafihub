@@ -6,7 +6,7 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -30,22 +30,22 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type QueryRateRequest struct {
+type QueryGetExchangeRateRequest struct {
 	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
 }
 
-func (m *QueryRateRequest) Reset()         { *m = QueryRateRequest{} }
-func (m *QueryRateRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryRateRequest) ProtoMessage()    {}
-func (*QueryRateRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetExchangeRateRequest) Reset()         { *m = QueryGetExchangeRateRequest{} }
+func (m *QueryGetExchangeRateRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetExchangeRateRequest) ProtoMessage()    {}
+func (*QueryGetExchangeRateRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a4d2a6803f5955cc, []int{0}
 }
-func (m *QueryRateRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetExchangeRateRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetExchangeRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRateRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetExchangeRateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,41 +55,41 @@ func (m *QueryRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *QueryRateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRateRequest.Merge(m, src)
+func (m *QueryGetExchangeRateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetExchangeRateRequest.Merge(m, src)
 }
-func (m *QueryRateRequest) XXX_Size() int {
+func (m *QueryGetExchangeRateRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRateRequest.DiscardUnknown(m)
+func (m *QueryGetExchangeRateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetExchangeRateRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRateRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetExchangeRateRequest proto.InternalMessageInfo
 
-func (m *QueryRateRequest) GetDenom() string {
+func (m *QueryGetExchangeRateRequest) GetDenom() string {
 	if m != nil {
 		return m.Denom
 	}
 	return ""
 }
 
-type QueryRateResponse struct {
-	Ratio *github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,1,opt,name=ratio,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"ratio,omitempty"`
+type QueryGetExchangeRateResponse struct {
+	ExchangeRate ExchangeRate `protobuf:"bytes,1,opt,name=exchangeRate,proto3" json:"exchangeRate"`
 }
 
-func (m *QueryRateResponse) Reset()         { *m = QueryRateResponse{} }
-func (m *QueryRateResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryRateResponse) ProtoMessage()    {}
-func (*QueryRateResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGetExchangeRateResponse) Reset()         { *m = QueryGetExchangeRateResponse{} }
+func (m *QueryGetExchangeRateResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetExchangeRateResponse) ProtoMessage()    {}
+func (*QueryGetExchangeRateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a4d2a6803f5955cc, []int{1}
 }
-func (m *QueryRateResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetExchangeRateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetExchangeRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetExchangeRateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -99,35 +99,40 @@ func (m *QueryRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *QueryRateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRateResponse.Merge(m, src)
+func (m *QueryGetExchangeRateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetExchangeRateResponse.Merge(m, src)
 }
-func (m *QueryRateResponse) XXX_Size() int {
+func (m *QueryGetExchangeRateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRateResponse.DiscardUnknown(m)
+func (m *QueryGetExchangeRateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetExchangeRateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRateResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetExchangeRateResponse proto.InternalMessageInfo
 
-type QueryEraRateRequest struct {
-	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
-	Era   string `protobuf:"bytes,2,opt,name=era,proto3" json:"era,omitempty"`
+func (m *QueryGetExchangeRateResponse) GetExchangeRate() ExchangeRate {
+	if m != nil {
+		return m.ExchangeRate
+	}
+	return ExchangeRate{}
 }
 
-func (m *QueryEraRateRequest) Reset()         { *m = QueryEraRateRequest{} }
-func (m *QueryEraRateRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryEraRateRequest) ProtoMessage()    {}
-func (*QueryEraRateRequest) Descriptor() ([]byte, []int) {
+type QueryAllExchangeRateRequest struct {
+}
+
+func (m *QueryAllExchangeRateRequest) Reset()         { *m = QueryAllExchangeRateRequest{} }
+func (m *QueryAllExchangeRateRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllExchangeRateRequest) ProtoMessage()    {}
+func (*QueryAllExchangeRateRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a4d2a6803f5955cc, []int{2}
 }
-func (m *QueryEraRateRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllExchangeRateRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryEraRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllExchangeRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryEraRateRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllExchangeRateRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -137,48 +142,130 @@ func (m *QueryEraRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *QueryEraRateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryEraRateRequest.Merge(m, src)
+func (m *QueryAllExchangeRateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllExchangeRateRequest.Merge(m, src)
 }
-func (m *QueryEraRateRequest) XXX_Size() int {
+func (m *QueryAllExchangeRateRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryEraRateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryEraRateRequest.DiscardUnknown(m)
+func (m *QueryAllExchangeRateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllExchangeRateRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryEraRateRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllExchangeRateRequest proto.InternalMessageInfo
 
-func (m *QueryEraRateRequest) GetDenom() string {
+type QueryAllExchangeRateResponse struct {
+	ExchangeRate []ExchangeRate `protobuf:"bytes,1,rep,name=exchangeRate,proto3" json:"exchangeRate"`
+}
+
+func (m *QueryAllExchangeRateResponse) Reset()         { *m = QueryAllExchangeRateResponse{} }
+func (m *QueryAllExchangeRateResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllExchangeRateResponse) ProtoMessage()    {}
+func (*QueryAllExchangeRateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a4d2a6803f5955cc, []int{3}
+}
+func (m *QueryAllExchangeRateResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllExchangeRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllExchangeRateResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllExchangeRateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllExchangeRateResponse.Merge(m, src)
+}
+func (m *QueryAllExchangeRateResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllExchangeRateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllExchangeRateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllExchangeRateResponse proto.InternalMessageInfo
+
+func (m *QueryAllExchangeRateResponse) GetExchangeRate() []ExchangeRate {
+	if m != nil {
+		return m.ExchangeRate
+	}
+	return nil
+}
+
+type QueryGetEraExchangeRateRequest struct {
+	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Era   uint32 `protobuf:"varint,2,opt,name=era,proto3" json:"era,omitempty"`
+}
+
+func (m *QueryGetEraExchangeRateRequest) Reset()         { *m = QueryGetEraExchangeRateRequest{} }
+func (m *QueryGetEraExchangeRateRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetEraExchangeRateRequest) ProtoMessage()    {}
+func (*QueryGetEraExchangeRateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a4d2a6803f5955cc, []int{4}
+}
+func (m *QueryGetEraExchangeRateRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetEraExchangeRateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetEraExchangeRateRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetEraExchangeRateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetEraExchangeRateRequest.Merge(m, src)
+}
+func (m *QueryGetEraExchangeRateRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetEraExchangeRateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetEraExchangeRateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetEraExchangeRateRequest proto.InternalMessageInfo
+
+func (m *QueryGetEraExchangeRateRequest) GetDenom() string {
 	if m != nil {
 		return m.Denom
 	}
 	return ""
 }
 
-func (m *QueryEraRateRequest) GetEra() string {
+func (m *QueryGetEraExchangeRateRequest) GetEra() uint32 {
 	if m != nil {
 		return m.Era
 	}
-	return ""
+	return 0
 }
 
-type QueryEraRateResponse struct {
-	Ratio *github_com_cosmos_cosmos_sdk_types.Dec `protobuf:"bytes,1,opt,name=ratio,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Dec" json:"ratio,omitempty"`
+type QueryGetEraExchangeRateResponse struct {
+	EraExchangeRate EraExchangeRate `protobuf:"bytes,1,opt,name=eraExchangeRate,proto3" json:"eraExchangeRate"`
 }
 
-func (m *QueryEraRateResponse) Reset()         { *m = QueryEraRateResponse{} }
-func (m *QueryEraRateResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryEraRateResponse) ProtoMessage()    {}
-func (*QueryEraRateResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a4d2a6803f5955cc, []int{3}
+func (m *QueryGetEraExchangeRateResponse) Reset()         { *m = QueryGetEraExchangeRateResponse{} }
+func (m *QueryGetEraExchangeRateResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetEraExchangeRateResponse) ProtoMessage()    {}
+func (*QueryGetEraExchangeRateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a4d2a6803f5955cc, []int{5}
 }
-func (m *QueryEraRateResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetEraExchangeRateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryEraRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetEraExchangeRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryEraRateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetEraExchangeRateResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -188,53 +275,162 @@ func (m *QueryEraRateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *QueryEraRateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryEraRateResponse.Merge(m, src)
+func (m *QueryGetEraExchangeRateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetEraExchangeRateResponse.Merge(m, src)
 }
-func (m *QueryEraRateResponse) XXX_Size() int {
+func (m *QueryGetEraExchangeRateResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryEraRateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryEraRateResponse.DiscardUnknown(m)
+func (m *QueryGetEraExchangeRateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetEraExchangeRateResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryEraRateResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetEraExchangeRateResponse proto.InternalMessageInfo
+
+func (m *QueryGetEraExchangeRateResponse) GetEraExchangeRate() EraExchangeRate {
+	if m != nil {
+		return m.EraExchangeRate
+	}
+	return EraExchangeRate{}
+}
+
+type QueryEraExchangeRateByDenomRequest struct {
+	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+}
+
+func (m *QueryEraExchangeRateByDenomRequest) Reset()         { *m = QueryEraExchangeRateByDenomRequest{} }
+func (m *QueryEraExchangeRateByDenomRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryEraExchangeRateByDenomRequest) ProtoMessage()    {}
+func (*QueryEraExchangeRateByDenomRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a4d2a6803f5955cc, []int{6}
+}
+func (m *QueryEraExchangeRateByDenomRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryEraExchangeRateByDenomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryEraExchangeRateByDenomRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryEraExchangeRateByDenomRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEraExchangeRateByDenomRequest.Merge(m, src)
+}
+func (m *QueryEraExchangeRateByDenomRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryEraExchangeRateByDenomRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEraExchangeRateByDenomRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryEraExchangeRateByDenomRequest proto.InternalMessageInfo
+
+func (m *QueryEraExchangeRateByDenomRequest) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+type QueryEraExchangeRateByDenomResponse struct {
+	EraExchangeRates []EraExchangeRate `protobuf:"bytes,1,rep,name=eraExchangeRates,proto3" json:"eraExchangeRates"`
+}
+
+func (m *QueryEraExchangeRateByDenomResponse) Reset()         { *m = QueryEraExchangeRateByDenomResponse{} }
+func (m *QueryEraExchangeRateByDenomResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryEraExchangeRateByDenomResponse) ProtoMessage()    {}
+func (*QueryEraExchangeRateByDenomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a4d2a6803f5955cc, []int{7}
+}
+func (m *QueryEraExchangeRateByDenomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryEraExchangeRateByDenomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryEraExchangeRateByDenomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryEraExchangeRateByDenomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryEraExchangeRateByDenomResponse.Merge(m, src)
+}
+func (m *QueryEraExchangeRateByDenomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryEraExchangeRateByDenomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryEraExchangeRateByDenomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryEraExchangeRateByDenomResponse proto.InternalMessageInfo
+
+func (m *QueryEraExchangeRateByDenomResponse) GetEraExchangeRates() []EraExchangeRate {
+	if m != nil {
+		return m.EraExchangeRates
+	}
+	return nil
+}
 
 func init() {
-	proto.RegisterType((*QueryRateRequest)(nil), "stafiprotocol.stafihub.rate.QueryRateRequest")
-	proto.RegisterType((*QueryRateResponse)(nil), "stafiprotocol.stafihub.rate.QueryRateResponse")
-	proto.RegisterType((*QueryEraRateRequest)(nil), "stafiprotocol.stafihub.rate.QueryEraRateRequest")
-	proto.RegisterType((*QueryEraRateResponse)(nil), "stafiprotocol.stafihub.rate.QueryEraRateResponse")
+	proto.RegisterType((*QueryGetExchangeRateRequest)(nil), "stafiprotocol.stafihub.rate.QueryGetExchangeRateRequest")
+	proto.RegisterType((*QueryGetExchangeRateResponse)(nil), "stafiprotocol.stafihub.rate.QueryGetExchangeRateResponse")
+	proto.RegisterType((*QueryAllExchangeRateRequest)(nil), "stafiprotocol.stafihub.rate.QueryAllExchangeRateRequest")
+	proto.RegisterType((*QueryAllExchangeRateResponse)(nil), "stafiprotocol.stafihub.rate.QueryAllExchangeRateResponse")
+	proto.RegisterType((*QueryGetEraExchangeRateRequest)(nil), "stafiprotocol.stafihub.rate.QueryGetEraExchangeRateRequest")
+	proto.RegisterType((*QueryGetEraExchangeRateResponse)(nil), "stafiprotocol.stafihub.rate.QueryGetEraExchangeRateResponse")
+	proto.RegisterType((*QueryEraExchangeRateByDenomRequest)(nil), "stafiprotocol.stafihub.rate.QueryEraExchangeRateByDenomRequest")
+	proto.RegisterType((*QueryEraExchangeRateByDenomResponse)(nil), "stafiprotocol.stafihub.rate.QueryEraExchangeRateByDenomResponse")
 }
 
 func init() { proto.RegisterFile("rate/query.proto", fileDescriptor_a4d2a6803f5955cc) }
 
 var fileDescriptor_a4d2a6803f5955cc = []byte{
-	// 372 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x4a, 0x2c, 0x49,
-	0xd5, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x2e, 0x2e,
-	0x49, 0x4c, 0xcb, 0x04, 0xb3, 0x93, 0xf3, 0x73, 0xf4, 0xc0, 0xbc, 0x8c, 0xd2, 0x24, 0x3d, 0x90,
-	0x42, 0x29, 0x91, 0xf4, 0xfc, 0xf4, 0x7c, 0xb0, 0x9c, 0x3e, 0x88, 0x05, 0xd1, 0x22, 0x25, 0x93,
-	0x9e, 0x9f, 0x9f, 0x9e, 0x93, 0xaa, 0x9f, 0x58, 0x90, 0xa9, 0x9f, 0x98, 0x97, 0x97, 0x5f, 0x92,
-	0x58, 0x92, 0x99, 0x9f, 0x57, 0x0c, 0x91, 0x55, 0xd2, 0xe0, 0x12, 0x08, 0x04, 0x99, 0x1f, 0x94,
-	0x58, 0x92, 0x1a, 0x94, 0x5a, 0x58, 0x9a, 0x5a, 0x5c, 0x22, 0x24, 0xc2, 0xc5, 0x9a, 0x92, 0x9a,
-	0x97, 0x9f, 0x2b, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x19, 0x04, 0xe1, 0x28, 0x85, 0x72, 0x09, 0x22,
-	0xa9, 0x2c, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e, 0x15, 0x72, 0xe0, 0x62, 0x2d, 0x02, 0x99, 0x07, 0x51,
-	0xea, 0xa4, 0x75, 0xeb, 0x9e, 0xbc, 0x5a, 0x7a, 0x66, 0x09, 0xc8, 0x49, 0xc9, 0xf9, 0xb9, 0xfa,
-	0xc9, 0xf9, 0xc5, 0xb9, 0xf9, 0xc5, 0x50, 0x4a, 0xb7, 0x38, 0x25, 0x5b, 0xbf, 0xa4, 0xb2, 0x20,
-	0xb5, 0x58, 0xcf, 0x25, 0x35, 0x39, 0x08, 0xa2, 0x51, 0xc9, 0x96, 0x4b, 0x18, 0x6c, 0xac, 0x6b,
-	0x51, 0x22, 0x41, 0x37, 0x08, 0x09, 0x70, 0x31, 0xa7, 0x16, 0x25, 0x4a, 0x30, 0x81, 0xc5, 0x40,
-	0x4c, 0xa5, 0x08, 0x2e, 0x11, 0x54, 0xed, 0xd4, 0x72, 0x98, 0xd1, 0x29, 0x26, 0x2e, 0x56, 0xb0,
-	0xd1, 0x42, 0x93, 0x19, 0xb9, 0x58, 0x40, 0x86, 0x0b, 0xe9, 0xea, 0xe1, 0x09, 0x7e, 0x3d, 0xf4,
-	0x70, 0x94, 0xd2, 0x23, 0x56, 0x39, 0xc4, 0xcd, 0x4a, 0x3a, 0x4d, 0x97, 0x9f, 0x4c, 0x66, 0x52,
-	0x13, 0x52, 0xd1, 0x47, 0xd1, 0xa7, 0x0f, 0xd3, 0xa7, 0x0f, 0x4e, 0x0e, 0xd5, 0xe0, 0xa0, 0xa8,
-	0x15, 0x5a, 0xc5, 0xc8, 0xc5, 0x0e, 0xf5, 0xb5, 0x90, 0x01, 0x61, 0x9b, 0x50, 0xc3, 0x57, 0xca,
-	0x90, 0x04, 0x1d, 0x50, 0xe7, 0x59, 0x81, 0x9d, 0x67, 0x22, 0x64, 0x84, 0xd7, 0x79, 0xa9, 0x10,
-	0x5d, 0x30, 0x67, 0xea, 0x57, 0xa7, 0x16, 0x25, 0xd6, 0x3a, 0x79, 0x9c, 0x78, 0x24, 0xc7, 0x78,
-	0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7,
-	0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x1e, 0x52, 0xac, 0xe0, 0x30, 0xb7, 0x02, 0x62, 0x32, 0x38,
-	0x86, 0x92, 0xd8, 0xc0, 0xf2, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x2e, 0x8b, 0xf6, 0xad,
-	0x1c, 0x03, 0x00, 0x00,
+	// 541 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x93, 0xcf, 0x6b, 0xd4, 0x40,
+	0x14, 0xc7, 0x77, 0x5a, 0x5b, 0x70, 0xac, 0xec, 0x32, 0x14, 0x29, 0x69, 0x4d, 0x4b, 0xbc, 0xb4,
+	0x2a, 0x19, 0xb6, 0x7b, 0xb1, 0x3f, 0x44, 0xbb, 0x2a, 0xf6, 0x6a, 0xbc, 0x89, 0x08, 0xb3, 0xeb,
+	0x33, 0x0d, 0x64, 0x33, 0x69, 0x66, 0x56, 0xba, 0x94, 0x22, 0x08, 0xde, 0x05, 0xff, 0x1a, 0x3d,
+	0x78, 0xee, 0x71, 0xc1, 0x8b, 0x27, 0x29, 0xbb, 0xfe, 0x21, 0x92, 0xc9, 0x6c, 0x49, 0xb6, 0xd9,
+	0x18, 0xe3, 0x25, 0x4c, 0x66, 0xde, 0xfb, 0xbe, 0xef, 0xe7, 0xcd, 0x3c, 0xdc, 0x88, 0x98, 0x04,
+	0x7a, 0xdc, 0x87, 0x68, 0x60, 0x87, 0x11, 0x97, 0x9c, 0xac, 0x0a, 0xc9, 0xde, 0x79, 0x6a, 0xdd,
+	0xe5, 0xbe, 0xad, 0xfe, 0x8e, 0xfa, 0x1d, 0x3b, 0x0e, 0x34, 0xd6, 0x5c, 0xce, 0x5d, 0x1f, 0x28,
+	0x0b, 0x3d, 0xca, 0x82, 0x80, 0x4b, 0x26, 0x3d, 0x1e, 0x88, 0x24, 0xd5, 0xb8, 0xdb, 0xe5, 0xa2,
+	0xc7, 0x05, 0xed, 0x30, 0xa1, 0x35, 0xe9, 0xfb, 0x66, 0x07, 0x24, 0x6b, 0xd2, 0x90, 0xb9, 0x5e,
+	0xa0, 0x82, 0x75, 0x6c, 0x5d, 0x15, 0x8e, 0x3f, 0x7a, 0x63, 0xd9, 0xe5, 0x2e, 0x57, 0x4b, 0x1a,
+	0xaf, 0x92, 0x5d, 0xab, 0x85, 0x57, 0x5f, 0xc4, 0x42, 0xcf, 0x41, 0x3e, 0x3b, 0xe9, 0x1e, 0xb1,
+	0xc0, 0x05, 0x87, 0x49, 0x70, 0xe0, 0xb8, 0x0f, 0x42, 0x92, 0x65, 0xbc, 0xf0, 0x16, 0x02, 0xde,
+	0x5b, 0x41, 0x1b, 0x68, 0xf3, 0xba, 0x93, 0xfc, 0x58, 0x02, 0xaf, 0xe5, 0x27, 0x89, 0x90, 0x07,
+	0x02, 0xc8, 0x4b, 0xbc, 0x04, 0xa9, 0x7d, 0x95, 0x7c, 0x63, 0x7b, 0xcb, 0x2e, 0x20, 0xb7, 0xd3,
+	0x42, 0xed, 0x6b, 0xe7, 0xbf, 0xd6, 0x6b, 0x4e, 0x46, 0xc4, 0xba, 0xad, 0x9d, 0x1e, 0xf8, 0x7e,
+	0x8e, 0xd3, 0x4b, 0x4f, 0x57, 0x8e, 0x67, 0x7a, 0x9a, 0xff, 0x7f, 0x4f, 0x87, 0xd8, 0xbc, 0x6c,
+	0x44, 0xc4, 0x4a, 0x37, 0x90, 0x34, 0xf0, 0x3c, 0x44, 0x6c, 0x65, 0x6e, 0x03, 0x6d, 0xde, 0x74,
+	0xe2, 0xa5, 0xf5, 0x01, 0xaf, 0xcf, 0x54, 0xd2, 0x04, 0xaf, 0x71, 0x1d, 0xb2, 0x47, 0xba, 0xb1,
+	0xf7, 0x8b, 0x21, 0xb2, 0x39, 0x9a, 0x63, 0x5a, 0xca, 0xda, 0xc5, 0x96, 0x32, 0x30, 0x1d, 0x3e,
+	0x78, 0x1a, 0x3b, 0x2e, 0x7e, 0x0f, 0x9f, 0x10, 0xbe, 0x53, 0x98, 0xac, 0x09, 0xde, 0xe0, 0xc6,
+	0x54, 0x59, 0xa1, 0xef, 0xa1, 0x0a, 0xc2, 0x15, 0xad, 0xed, 0x6f, 0x8b, 0x78, 0x41, 0xf9, 0x20,
+	0xdf, 0x11, 0x5e, 0x4a, 0x9f, 0x91, 0x07, 0x85, 0x05, 0x0a, 0x46, 0xc0, 0xd8, 0xa9, 0x90, 0x99,
+	0xf0, 0x5a, 0x3b, 0x1f, 0x7f, 0xfc, 0xfe, 0x32, 0xd7, 0x22, 0x4d, 0x9a, 0x91, 0xa0, 0x13, 0x09,
+	0x35, 0x9e, 0x34, 0xfd, 0xa2, 0xe8, 0xa9, 0xea, 0xe8, 0x19, 0xf9, 0x8a, 0x70, 0x3d, 0xad, 0x79,
+	0xe0, 0xfb, 0x65, 0x18, 0xf2, 0x87, 0xa3, 0x0c, 0xc3, 0x8c, 0xb9, 0xb1, 0x9a, 0x8a, 0xe1, 0x1e,
+	0xd9, 0x2a, 0xcd, 0x40, 0x86, 0xb1, 0xf7, 0xec, 0xdd, 0x90, 0xbd, 0x72, 0x5d, 0xcc, 0x1d, 0x22,
+	0x63, 0xbf, 0x5a, 0xb2, 0x26, 0x68, 0x2b, 0x82, 0x7d, 0xb2, 0x5b, 0x4c, 0x90, 0xcd, 0x9e, 0x5c,
+	0x04, 0x3d, 0x85, 0x88, 0x9d, 0x91, 0x0b, 0x84, 0x6f, 0xe5, 0x3f, 0x6e, 0xf2, 0xe8, 0xef, 0xe6,
+	0x0a, 0x67, 0xca, 0x78, 0x5c, 0x5d, 0x40, 0x13, 0x3e, 0x51, 0x84, 0x0f, 0xc9, 0xde, 0xbf, 0x10,
+	0x6a, 0x91, 0x09, 0x68, 0xfb, 0xf0, 0x7c, 0x64, 0xa2, 0xe1, 0xc8, 0x44, 0x17, 0x23, 0x13, 0x7d,
+	0x1e, 0x9b, 0xb5, 0xe1, 0xd8, 0xac, 0xfd, 0x1c, 0x9b, 0xb5, 0x57, 0xb6, 0xeb, 0xc9, 0xd8, 0x4f,
+	0x97, 0xf7, 0x66, 0x15, 0x38, 0x49, 0x4a, 0xc8, 0x41, 0x08, 0xa2, 0xb3, 0xa8, 0xce, 0x5b, 0x7f,
+	0x02, 0x00, 0x00, 0xff, 0xff, 0xe0, 0x38, 0x3b, 0x55, 0xfc, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -249,10 +445,14 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
-	// Queries a list of rate items.
-	Rate(ctx context.Context, in *QueryRateRequest, opts ...grpc.CallOption) (*QueryRateResponse, error)
-	// Queries a list of eraRate items.
-	EraRate(ctx context.Context, in *QueryEraRateRequest, opts ...grpc.CallOption) (*QueryEraRateResponse, error)
+	// Queries a exchangeRate by index.
+	ExchangeRate(ctx context.Context, in *QueryGetExchangeRateRequest, opts ...grpc.CallOption) (*QueryGetExchangeRateResponse, error)
+	// Queries a list of exchangeRate items.
+	ExchangeRateAll(ctx context.Context, in *QueryAllExchangeRateRequest, opts ...grpc.CallOption) (*QueryAllExchangeRateResponse, error)
+	// Queries a eraExchangeRate by index.
+	EraExchangeRate(ctx context.Context, in *QueryGetEraExchangeRateRequest, opts ...grpc.CallOption) (*QueryGetEraExchangeRateResponse, error)
+	// Queries a list of eraExchangeRateByDenom items.
+	EraExchangeRateByDenom(ctx context.Context, in *QueryEraExchangeRateByDenomRequest, opts ...grpc.CallOption) (*QueryEraExchangeRateByDenomResponse, error)
 }
 
 type queryClient struct {
@@ -263,18 +463,36 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) Rate(ctx context.Context, in *QueryRateRequest, opts ...grpc.CallOption) (*QueryRateResponse, error) {
-	out := new(QueryRateResponse)
-	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rate.Query/Rate", in, out, opts...)
+func (c *queryClient) ExchangeRate(ctx context.Context, in *QueryGetExchangeRateRequest, opts ...grpc.CallOption) (*QueryGetExchangeRateResponse, error) {
+	out := new(QueryGetExchangeRateResponse)
+	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rate.Query/ExchangeRate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) EraRate(ctx context.Context, in *QueryEraRateRequest, opts ...grpc.CallOption) (*QueryEraRateResponse, error) {
-	out := new(QueryEraRateResponse)
-	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rate.Query/EraRate", in, out, opts...)
+func (c *queryClient) ExchangeRateAll(ctx context.Context, in *QueryAllExchangeRateRequest, opts ...grpc.CallOption) (*QueryAllExchangeRateResponse, error) {
+	out := new(QueryAllExchangeRateResponse)
+	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rate.Query/ExchangeRateAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) EraExchangeRate(ctx context.Context, in *QueryGetEraExchangeRateRequest, opts ...grpc.CallOption) (*QueryGetEraExchangeRateResponse, error) {
+	out := new(QueryGetEraExchangeRateResponse)
+	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rate.Query/EraExchangeRate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) EraExchangeRateByDenom(ctx context.Context, in *QueryEraExchangeRateByDenomRequest, opts ...grpc.CallOption) (*QueryEraExchangeRateByDenomResponse, error) {
+	out := new(QueryEraExchangeRateByDenomResponse)
+	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rate.Query/EraExchangeRateByDenom", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -283,59 +501,105 @@ func (c *queryClient) EraRate(ctx context.Context, in *QueryEraRateRequest, opts
 
 // QueryServer is the server API for Query service.
 type QueryServer interface {
-	// Queries a list of rate items.
-	Rate(context.Context, *QueryRateRequest) (*QueryRateResponse, error)
-	// Queries a list of eraRate items.
-	EraRate(context.Context, *QueryEraRateRequest) (*QueryEraRateResponse, error)
+	// Queries a exchangeRate by index.
+	ExchangeRate(context.Context, *QueryGetExchangeRateRequest) (*QueryGetExchangeRateResponse, error)
+	// Queries a list of exchangeRate items.
+	ExchangeRateAll(context.Context, *QueryAllExchangeRateRequest) (*QueryAllExchangeRateResponse, error)
+	// Queries a eraExchangeRate by index.
+	EraExchangeRate(context.Context, *QueryGetEraExchangeRateRequest) (*QueryGetEraExchangeRateResponse, error)
+	// Queries a list of eraExchangeRateByDenom items.
+	EraExchangeRateByDenom(context.Context, *QueryEraExchangeRateByDenomRequest) (*QueryEraExchangeRateByDenomResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) Rate(ctx context.Context, req *QueryRateRequest) (*QueryRateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Rate not implemented")
+func (*UnimplementedQueryServer) ExchangeRate(ctx context.Context, req *QueryGetExchangeRateRequest) (*QueryGetExchangeRateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExchangeRate not implemented")
 }
-func (*UnimplementedQueryServer) EraRate(ctx context.Context, req *QueryEraRateRequest) (*QueryEraRateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EraRate not implemented")
+func (*UnimplementedQueryServer) ExchangeRateAll(ctx context.Context, req *QueryAllExchangeRateRequest) (*QueryAllExchangeRateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExchangeRateAll not implemented")
+}
+func (*UnimplementedQueryServer) EraExchangeRate(ctx context.Context, req *QueryGetEraExchangeRateRequest) (*QueryGetEraExchangeRateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EraExchangeRate not implemented")
+}
+func (*UnimplementedQueryServer) EraExchangeRateByDenom(ctx context.Context, req *QueryEraExchangeRateByDenomRequest) (*QueryEraExchangeRateByDenomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EraExchangeRateByDenom not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func _Query_Rate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRateRequest)
+func _Query_ExchangeRate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetExchangeRateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Rate(ctx, in)
+		return srv.(QueryServer).ExchangeRate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafiprotocol.stafihub.rate.Query/Rate",
+		FullMethod: "/stafiprotocol.stafihub.rate.Query/ExchangeRate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Rate(ctx, req.(*QueryRateRequest))
+		return srv.(QueryServer).ExchangeRate(ctx, req.(*QueryGetExchangeRateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_EraRate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryEraRateRequest)
+func _Query_ExchangeRateAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllExchangeRateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).EraRate(ctx, in)
+		return srv.(QueryServer).ExchangeRateAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafiprotocol.stafihub.rate.Query/EraRate",
+		FullMethod: "/stafiprotocol.stafihub.rate.Query/ExchangeRateAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).EraRate(ctx, req.(*QueryEraRateRequest))
+		return srv.(QueryServer).ExchangeRateAll(ctx, req.(*QueryAllExchangeRateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_EraExchangeRate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetEraExchangeRateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).EraExchangeRate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafiprotocol.stafihub.rate.Query/EraExchangeRate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).EraExchangeRate(ctx, req.(*QueryGetEraExchangeRateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_EraExchangeRateByDenom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryEraExchangeRateByDenomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).EraExchangeRateByDenom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafiprotocol.stafihub.rate.Query/EraExchangeRateByDenom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).EraExchangeRateByDenom(ctx, req.(*QueryEraExchangeRateByDenomRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -345,19 +609,27 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Rate",
-			Handler:    _Query_Rate_Handler,
+			MethodName: "ExchangeRate",
+			Handler:    _Query_ExchangeRate_Handler,
 		},
 		{
-			MethodName: "EraRate",
-			Handler:    _Query_EraRate_Handler,
+			MethodName: "ExchangeRateAll",
+			Handler:    _Query_ExchangeRateAll_Handler,
+		},
+		{
+			MethodName: "EraExchangeRate",
+			Handler:    _Query_EraExchangeRate_Handler,
+		},
+		{
+			MethodName: "EraExchangeRateByDenom",
+			Handler:    _Query_EraExchangeRateByDenom_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "rate/query.proto",
 }
 
-func (m *QueryRateRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetExchangeRateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -367,12 +639,12 @@ func (m *QueryRateRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRateRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetExchangeRateRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetExchangeRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -387,7 +659,7 @@ func (m *QueryRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRateResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetExchangeRateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -397,32 +669,90 @@ func (m *QueryRateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetExchangeRateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetExchangeRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Ratio != nil {
-		{
-			size := m.Ratio.Size()
-			i -= size
-			if _, err := m.Ratio.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-			i = encodeVarintQuery(dAtA, i, uint64(size))
+	{
+		size, err := m.ExchangeRate.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i--
-		dAtA[i] = 0xa
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllExchangeRateRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllExchangeRateRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllExchangeRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllExchangeRateResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllExchangeRateResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllExchangeRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ExchangeRate) > 0 {
+		for iNdEx := len(m.ExchangeRate) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ExchangeRate[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryEraRateRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetEraExchangeRateRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -432,22 +762,20 @@ func (m *QueryEraRateRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryEraRateRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetEraExchangeRateRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryEraRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetEraExchangeRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Era) > 0 {
-		i -= len(m.Era)
-		copy(dAtA[i:], m.Era)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.Era)))
+	if m.Era != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Era))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.Denom) > 0 {
 		i -= len(m.Denom)
@@ -459,7 +787,7 @@ func (m *QueryEraRateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryEraRateResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetEraExchangeRateResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -469,27 +797,92 @@ func (m *QueryEraRateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryEraRateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetEraExchangeRateResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryEraRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetEraExchangeRateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.Ratio != nil {
-		{
-			size := m.Ratio.Size()
-			i -= size
-			if _, err := m.Ratio.MarshalTo(dAtA[i:]); err != nil {
-				return 0, err
-			}
-			i = encodeVarintQuery(dAtA, i, uint64(size))
+	{
+		size, err := m.EraExchangeRate.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryEraExchangeRateByDenomRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryEraExchangeRateByDenomRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryEraExchangeRateByDenomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Denom)))
 		i--
 		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryEraExchangeRateByDenomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryEraExchangeRateByDenomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryEraExchangeRateByDenomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.EraExchangeRates) > 0 {
+		for iNdEx := len(m.EraExchangeRates) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.EraExchangeRates[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
 	}
 	return len(dAtA) - i, nil
 }
@@ -505,7 +898,7 @@ func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *QueryRateRequest) Size() (n int) {
+func (m *QueryGetExchangeRateRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -518,20 +911,42 @@ func (m *QueryRateRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryRateResponse) Size() (n int) {
+func (m *QueryGetExchangeRateResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Ratio != nil {
-		l = m.Ratio.Size()
-		n += 1 + l + sovQuery(uint64(l))
+	l = m.ExchangeRate.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllExchangeRateRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryAllExchangeRateResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.ExchangeRate) > 0 {
+		for _, e := range m.ExchangeRate {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
 	}
 	return n
 }
 
-func (m *QueryEraRateRequest) Size() (n int) {
+func (m *QueryGetEraExchangeRateRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -541,22 +956,47 @@ func (m *QueryEraRateRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	l = len(m.Era)
+	if m.Era != 0 {
+		n += 1 + sovQuery(uint64(m.Era))
+	}
+	return n
+}
+
+func (m *QueryGetEraExchangeRateResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.EraExchangeRate.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryEraExchangeRateByDenomRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryEraRateResponse) Size() (n int) {
+func (m *QueryEraExchangeRateByDenomResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Ratio != nil {
-		l = m.Ratio.Size()
-		n += 1 + l + sovQuery(uint64(l))
+	if len(m.EraExchangeRates) > 0 {
+		for _, e := range m.EraExchangeRates {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
 	}
 	return n
 }
@@ -567,7 +1007,7 @@ func sovQuery(x uint64) (n int) {
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *QueryRateRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetExchangeRateRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -590,10 +1030,10 @@ func (m *QueryRateRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRateRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetExchangeRateRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetExchangeRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -649,7 +1089,7 @@ func (m *QueryRateRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRateResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetExchangeRateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -672,17 +1112,17 @@ func (m *QueryRateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetExchangeRateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetExchangeRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Ratio", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ExchangeRate", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -692,25 +1132,22 @@ func (m *QueryRateResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthQuery
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthQuery
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			var v github_com_cosmos_cosmos_sdk_types.Dec
-			m.Ratio = &v
-			if err := m.Ratio.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ExchangeRate.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -735,7 +1172,7 @@ func (m *QueryRateResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryEraRateRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryAllExchangeRateRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -758,10 +1195,144 @@ func (m *QueryEraRateRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryEraRateRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllExchangeRateRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryEraRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllExchangeRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllExchangeRateResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllExchangeRateResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllExchangeRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ExchangeRate", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ExchangeRate = append(m.ExchangeRate, ExchangeRate{})
+			if err := m.ExchangeRate[len(m.ExchangeRate)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetEraExchangeRateRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetEraExchangeRateRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetEraExchangeRateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -797,10 +1368,10 @@ func (m *QueryEraRateRequest) Unmarshal(dAtA []byte) error {
 			m.Denom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Era", wireType)
 			}
-			var stringLen uint64
+			m.Era = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -810,24 +1381,11 @@ func (m *QueryEraRateRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Era |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Era = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -849,7 +1407,7 @@ func (m *QueryEraRateRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryEraRateResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetEraExchangeRateResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -872,15 +1430,98 @@ func (m *QueryEraRateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryEraRateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetEraExchangeRateResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryEraRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetEraExchangeRateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Ratio", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field EraExchangeRate", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.EraExchangeRate.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryEraExchangeRateByDenomRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryEraExchangeRateByDenomRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryEraExchangeRateByDenomRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -908,9 +1549,89 @@ func (m *QueryEraRateResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			var v github_com_cosmos_cosmos_sdk_types.Dec
-			m.Ratio = &v
-			if err := m.Ratio.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryEraExchangeRateByDenomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryEraExchangeRateByDenomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryEraExchangeRateByDenomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EraExchangeRates", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EraExchangeRates = append(m.EraExchangeRates, EraExchangeRate{})
+			if err := m.EraExchangeRates[len(m.EraExchangeRates)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

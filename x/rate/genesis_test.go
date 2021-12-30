@@ -11,7 +11,23 @@ import (
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
-		// this line is used by starport scaffolding # genesis/test/state
+		ExchangeRateList: []types.ExchangeRate{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
+EraExchangeRateList: []types.EraExchangeRate{
+	{
+		Index: "0",
+},
+	{
+		Index: "1",
+},
+},
+// this line is used by starport scaffolding # genesis/test/state
 	}
 
 	k, ctx := keepertest.RateKeeper(t)
@@ -19,5 +35,9 @@ func TestGenesis(t *testing.T) {
 	got := rate.ExportGenesis(ctx, *k)
 	require.NotNil(t, got)
 
-	// this line is used by starport scaffolding # genesis/test/assert
+	require.Len(t, got.ExchangeRateList, len(genesisState.ExchangeRateList))
+require.Subset(t, genesisState.ExchangeRateList, got.ExchangeRateList)
+require.Len(t, got.EraExchangeRateList, len(genesisState.EraExchangeRateList))
+require.Subset(t, genesisState.EraExchangeRateList, got.EraExchangeRateList)
+// this line is used by starport scaffolding # genesis/test/assert
 }
