@@ -2,14 +2,15 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
+	"github.com/stafiprotocol/stafihub/x/rvote/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
-	threshold, ok := k.GetThreshold(ctx, content.GetDenom())
+	threshold, ok := k.relayerKeeper.GetThreshold(ctx, content.GetDenom())
 	if !ok {
-		return nil, types.ErrThresholdNotFound
+		return nil, relayerstypes.ErrThresholdNotFound
 	}
 
 	curBlock := ctx.BlockHeight()
@@ -28,7 +29,7 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 	}
 
 	if prop.HasVoted(proposer) {
-		return nil, types.ErrAlreadyVoted
+		return nil, relayerstypes.ErrAlreadyVoted
 	}
 
 	if prop.InFavour() {
@@ -40,7 +41,7 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 	if prop.IsExpired(curBlock) {
 		prop.Status = types.StatusExpired
 	} else {
-		total := uint32(k.RelayerCount(ctx, content.GetDenom()))
+		total := uint32(k.relayerKeeper.RelayerCount(ctx, content.GetDenom()))
 		if threshold.Value > total || uint32(len(prop.VotesAgainst)) + threshold.Value > total {
 			prop.Status = types.StatusRejected
 		} else if uint32(len(prop.VotesFor)) > threshold.Value {
@@ -52,18 +53,14 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 	return prop, nil
 }
 
-// SetProposal set a specific proposal in the store from its index
 func (k Keeper) SetProposal(ctx sdk.Context, proposal *types.Proposal) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 	b := k.cdc.MustMarshal(proposal)
 	store.Set(proposal.PropId(), b)
 }
 
-// GetProposal returns a proposal from its index
-func (k Keeper) GetProposal(
-    ctx sdk.Context,
-	id []byte,
-) (val *types.Proposal, found bool) {
+
+func (k Keeper) GetProposal(ctx sdk.Context, id []byte) (val *types.Proposal, found bool) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 
 	b := store.Get(id)
@@ -89,28 +86,6 @@ func (k Keeper) GetAllProposal(ctx sdk.Context) (list []types.Proposal) {
 	}
 
     return
-}
-
-func (k Keeper) SetLastVoter(ctx sdk.Context, denom, voter string) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
-	lv := &types.LastVoter{
-		Denom: denom,
-		Voter: voter,
-	}
-	b := k.cdc.MustMarshal(lv)
-	store.Set([]byte(denom), b)
-}
-
-func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val *types.LastVoter, found bool) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
-
-	b := store.Get([]byte(denom))
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, val)
-	return val, true
 }
 
 

@@ -14,10 +14,7 @@ func (k Keeper) SetThreshold(ctx sdk.Context, threshold *types.Threshold) {
 }
 
 // GetThreshold returns a threshold from its index
-func (k Keeper) GetThreshold(
-    ctx sdk.Context,
-    denom string,
-) (val types.Threshold, found bool) {
+func (k Keeper) GetThreshold(ctx sdk.Context, denom string) (val types.Threshold, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
 
 	b := store.Get([]byte(denom))

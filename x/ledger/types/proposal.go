@@ -2,7 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
 	"github.com/tendermint/tendermint/crypto"
 )
 
@@ -50,7 +50,7 @@ func (p *SetChainEraProposal) InFavour() bool {
 }
 
 func (p *SetChainEraProposal) ValidateBasic() error {
-	err := relayertypes.ValidateAbstract(p)
+	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (p *BondReportProposal) InFavour() bool {
 }
 
 func (p *BondReportProposal) ValidateBasic() error {
-	err := relayertypes.ValidateAbstract(p)
+	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err
 	}
@@ -136,7 +136,7 @@ func (p *BondAndReportActiveProposal) InFavour() bool {
 }
 
 func (p *BondAndReportActiveProposal) ValidateBasic() error {
-	err := relayertypes.ValidateAbstract(p)
+	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err
 	}
@@ -179,7 +179,7 @@ func (p *ActiveReportProposal) InFavour() bool {
 }
 
 func (p *ActiveReportProposal) ValidateBasic() error {
-	err := relayertypes.ValidateAbstract(p)
+	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err
 	}
@@ -220,7 +220,7 @@ func (p *WithdrawReportProposal) InFavour() bool {
 }
 
 func (p *WithdrawReportProposal) ValidateBasic() error {
-	err := relayertypes.ValidateAbstract(p)
+	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err
 	}
@@ -261,7 +261,7 @@ func (p *TransferReportProposal) InFavour() bool {
 }
 
 func (p *TransferReportProposal) ValidateBasic() error {
-	err := relayertypes.ValidateAbstract(p)
+	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err
 	}

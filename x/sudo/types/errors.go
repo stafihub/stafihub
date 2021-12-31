@@ -9,4 +9,5 @@ import (
 // x/sudo module sentinel errors
 var (
 	ErrCreatorNotAdmin = sdkerrors.Register(ModuleName, 1, "creator is not admin error")
+	ErrInvalidDenom = sdkerrors.Register(ModuleName, 2, "invalid denom error")
 )

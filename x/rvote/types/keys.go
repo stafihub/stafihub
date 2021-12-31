@@ -20,7 +20,6 @@ const (
 var (
 	ProposalLifePrefix = []byte{0x01}
 	ProposalPrefix = []byte{0x02}
-	LastVoterPrefix = []byte{0x03}
 )
 
 

@@ -1,9 +1,0 @@
-syntax = "proto3";
-package stafiprotocol.stafihub.rvote;
-
-option go_package = "github.com/stafiprotocol/stafihub/x/rvote/types";
-
-message LastVoter {
-    string denom = 1;
-    string voter = 2;
-}

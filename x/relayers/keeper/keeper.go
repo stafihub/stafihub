@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	"github.com/tendermint/tendermint/libs/log"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -15,11 +16,7 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 
-
         sudoKeeper types.SudoKeeper
-
-		// Proposal router
-		router types.Router
 	}
 )
 
@@ -29,17 +26,14 @@ func NewKeeper(
     memKey sdk.StoreKey,
 
     sudoKeeper types.SudoKeeper,
-	rtr types.Router,
-) *Keeper {
-	rtr.Seal()
 
+) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
 
 		sudoKeeper: sudoKeeper,
-		router: rtr,
 	}
 }
 
@@ -47,23 +41,24 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-// Router returns the gov Keeper's Router
-func (keeper Keeper) Router() types.Router {
-	return keeper.router
+func (k Keeper) SetLastVoter(ctx sdk.Context, denom, voter string) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
+	lv := &types.LastVoter{
+		Denom: denom,
+		Voter: voter,
+	}
+	b := k.cdc.MustMarshal(lv)
+	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) SetProposalLife(ctx sdk.Context, proposalLife int64) {
-	store := ctx.KVStore(k.storeKey)
-	b := k.cdc.MustMarshal(&gogotypes.Int64Value{Value: proposalLife})
-	store.Set(types.ProposalLifePrefix, b)
+func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val *types.LastVoter, found bool) {
+	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
+
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, val)
+	return val, true
 }
-
-func (k Keeper) ProposalLife(ctx sdk.Context) int64 {
-	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.ProposalLifePrefix)
-	intV := gogotypes.Int64Value{}
-	k.cdc.MustUnmarshal(b, &intV)
-
-	return intV.GetValue()
-}
-

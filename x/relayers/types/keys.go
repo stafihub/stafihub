@@ -21,6 +21,7 @@ var (
 	RelayerPrefix      = []byte{0x00}
 	RelayerCountPrefix = []byte{0x01}
 	ThresholdPrefix    = []byte{0x02}
+	LastVoterPrefix = []byte{0x03}
 )
 
 func KeyPrefix(p string) []byte {

@@ -389,6 +389,13 @@ rvotemoduletypes.StoreKey,
 )
 		relayersModule := relayersmodule.NewAppModule(appCodec, app.RelayersKeeper)
 
+	app.RateKeeper = *ratemodulekeeper.NewKeeper(
+		appCodec,
+		keys[ratemoduletypes.StoreKey],
+		keys[ratemoduletypes.MemStoreKey],
+
+	)
+	rateModule := ratemodule.NewAppModule(appCodec, app.RateKeeper)
 
 		app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
 			appCodec,
@@ -396,25 +403,23 @@ rvotemoduletypes.StoreKey,
 			keys[ledgermoduletypes.MemStoreKey],
 
 			app.SudoKeeper,
-)
+			app.RateKeeper,
+			app.BankKeeper,
+			app.RelayersKeeper,
+		)
 		ledgerModule := ledgermodule.NewAppModule(appCodec, app.LedgerKeeper)
 
-
-		app.RateKeeper = *ratemodulekeeper.NewKeeper(
-			appCodec,
-			keys[ratemoduletypes.StoreKey],
-			keys[ratemoduletypes.MemStoreKey],
-
-			)
-		rateModule := ratemodule.NewAppModule(appCodec, app.RateKeeper)
-
-		
+		rvoteRouter := rvotemoduletypes.NewRouter()
+		rvoteRouter.AddRoute(ledgermoduletypes.RouterKey, ledgermodule.NewProposalHandler(app.LedgerKeeper))
 		app.RvoteKeeper = *rvotemodulekeeper.NewKeeper(
 			appCodec,
 			keys[rvotemoduletypes.StoreKey],
 			keys[rvotemoduletypes.MemStoreKey],
-			
-			)
+
+			app.SudoKeeper,
+			app.RelayersKeeper,
+			rvoteRouter,
+		)
 		rvoteModule := rvotemodule.NewAppModule(appCodec, app.RvoteKeeper)
 
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition

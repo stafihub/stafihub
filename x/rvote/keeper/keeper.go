@@ -17,7 +17,9 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 
-
+		sudoKeeper types.SudoKeeper
+		relayerKeeper types.RelayerKeeper
+		router types.Router
 	}
 )
 
@@ -26,14 +28,20 @@ func NewKeeper(
     storeKey,
     memKey sdk.StoreKey,
 
-
+	sudoKeeper types.SudoKeeper,
+	relayerKeeper types.RelayerKeeper,
+	rtr types.Router,
 ) *Keeper {
+	rtr.Seal()
+
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
 
-
+		sudoKeeper: sudoKeeper,
+		relayerKeeper: relayerKeeper,
+		router: rtr,
 	}
 }
 
@@ -54,4 +62,9 @@ func (k Keeper) ProposalLife(ctx sdk.Context) int64 {
 	k.cdc.MustUnmarshal(b, &intV)
 
 	return intV.GetValue()
+}
+
+// Router returns the gov Keeper's Router
+func (keeper Keeper) Router() types.Router {
+	return keeper.router
 }
