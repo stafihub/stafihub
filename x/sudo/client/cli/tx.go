@@ -58,7 +58,6 @@ func CmdUpdateAdmin() *cobra.Command {
 			msg := types.NewMsgUpdateAdmin(
 				clientCtx.GetFromAddress(),
 				argAddress,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -86,7 +85,7 @@ func CmdAddDenom() *cobra.Command {
 			}
 
 			if sdk.ValidateDenom(argDenom) != nil {
-				return nil
+				return types.ErrInvalidDenom
 			}
 
 			msg := types.NewMsgAddDenom(

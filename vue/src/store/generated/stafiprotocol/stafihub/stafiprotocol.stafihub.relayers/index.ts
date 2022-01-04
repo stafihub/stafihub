@@ -4,9 +4,10 @@ import { SpVuexError } from '@starport/vuex'
 
 import { Relayer } from "./module/types/relayers/relayer"
 import { Threshold } from "./module/types/relayers/relayer"
+import { LastVoter } from "./module/types/relayers/relayer"
 
 
-export { Relayer, Threshold };
+export { Relayer, Threshold, LastVoter };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -45,7 +46,6 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				RelayerAll: {},
-				IsRelayer: {},
 				RelayersByDenom: {},
 				Threshold: {},
 				ThresholdAll: {},
@@ -53,6 +53,7 @@ const getDefaultState = () => {
 				_Structure: {
 						Relayer: getStructure(Relayer.fromPartial({})),
 						Threshold: getStructure(Threshold.fromPartial({})),
+						LastVoter: getStructure(LastVoter.fromPartial({})),
 						
 		},
 		_Subscriptions: new Set(),
@@ -85,12 +86,6 @@ export default {
 						(<any> params).query=null
 					}
 			return state.RelayerAll[JSON.stringify(params)] ?? {}
-		},
-				getIsRelayer: (state) => (params = { params: {}}) => {
-					if (!(<any> params).query) {
-						(<any> params).query=null
-					}
-			return state.IsRelayer[JSON.stringify(params)] ?? {}
 		},
 				getRelayersByDenom: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
@@ -170,27 +165,6 @@ export default {
 		 		
 		
 		
-		async QueryIsRelayer({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
-			try {
-				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryIsRelayer( key.denom,  key.address)).data
-				
-					
-				commit('QUERY', { query: 'IsRelayer', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryIsRelayer', payload: { options: { all }, params: {...key},query }})
-				return getters['getIsRelayer']( { params: {...key}, query}) ?? {}
-			} catch (e) {
-				throw new SpVuexError('QueryClient:QueryIsRelayer', 'API Node Unavailable. Could not perform query: ' + e.message)
-				
-			}
-		},
-		
-		
-		
-		
-		 		
-		
-		
 		async QueryRelayersByDenom({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
 			try {
 				const queryClient=await initQueryClient(rootGetters)
@@ -257,18 +231,18 @@ export default {
 		},
 		
 		
-		async sendMsgSetProposalLife({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgDeleteRelayer({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSetProposalLife(value)
+				const msg = await txClient.msgDeleteRelayer(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSetProposalLife:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgDeleteRelayer:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgSetProposalLife:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgDeleteRelayer:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -284,21 +258,6 @@ export default {
 					throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgUpdateThreshold:Send', 'Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
-		async sendMsgDeleteRelayer({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgDeleteRelayer(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgDeleteRelayer:Init', 'Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new SpVuexError('TxClient:MsgDeleteRelayer:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -318,16 +277,16 @@ export default {
 			}
 		},
 		
-		async MsgSetProposalLife({ rootGetters }, { value }) {
+		async MsgDeleteRelayer({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSetProposalLife(value)
+				const msg = await txClient.msgDeleteRelayer(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSetProposalLife:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgDeleteRelayer:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgSetProposalLife:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgDeleteRelayer:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}
@@ -342,20 +301,6 @@ export default {
 					throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgUpdateThreshold:Create', 'Could not create message: ' + e.message)
-					
-				}
-			}
-		},
-		async MsgDeleteRelayer({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgDeleteRelayer(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgDeleteRelayer:Init', 'Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new SpVuexError('TxClient:MsgDeleteRelayer:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}

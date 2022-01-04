@@ -7,7 +7,6 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 	    ExchangeRateList: []ExchangeRate{},
-		EraExchangeRateList: []EraExchangeRate{},
 // this line is used by starport scaffolding # genesis/types/default
 	}
 }

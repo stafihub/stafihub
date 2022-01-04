@@ -21,10 +21,8 @@ var _ types.MsgServer = msgServer{}
 func (k msgServer) UpdateAdmin(goCtx context.Context,  msg *types.MsgUpdateAdmin) (*types.MsgUpdateAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	newAdmin, _ := sdk.AccAddressFromBech32(msg.Address)
-
-	isAdmin := k.IsAdmin(ctx, creator)
+	isAdmin := k.IsAdmin(ctx, msg.Creator)
 	if !isAdmin {
 		return nil, types.ErrCreatorNotAdmin
 	}

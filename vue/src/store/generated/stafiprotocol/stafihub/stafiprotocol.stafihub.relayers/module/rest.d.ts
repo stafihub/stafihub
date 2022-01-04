@@ -3,7 +3,6 @@ export interface ProtobufAny {
 }
 export declare type RelayersMsgCreateRelayerResponse = object;
 export declare type RelayersMsgDeleteRelayerResponse = object;
-export declare type RelayersMsgSetProposalLifeResponse = object;
 export declare type RelayersMsgUpdateThresholdResponse = object;
 export interface RelayersQueryAllRelayerResponse {
     relayers?: RelayersRelayer[];
@@ -33,9 +32,6 @@ export interface RelayersQueryAllThresholdResponse {
 }
 export interface RelayersQueryGetThresholdResponse {
     threshold?: RelayersThreshold;
-}
-export interface RelayersQueryIsRelayerResponse {
-    flag?: boolean;
 }
 export interface RelayersQueryRelayersByDenomResponse {
     relayers?: RelayersRelayer[];
@@ -190,15 +186,6 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         "pagination.countTotal"?: boolean;
         "pagination.reverse"?: boolean;
     }, params?: RequestParams) => Promise<HttpResponse<RelayersQueryAllRelayerResponse, RpcStatus>>;
-    /**
-     * No description
-     *
-     * @tags Query
-     * @name QueryIsRelayer
-     * @summary Queries a list of isRelayer items.
-     * @request GET:/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}
-     */
-    queryIsRelayer: (denom: string, address: string, params?: RequestParams) => Promise<HttpResponse<RelayersQueryIsRelayerResponse, RpcStatus>>;
     /**
      * No description
      *

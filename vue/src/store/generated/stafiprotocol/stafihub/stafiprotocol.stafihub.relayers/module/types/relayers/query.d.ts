@@ -9,13 +9,6 @@ export interface QueryAllRelayerResponse {
     relayers: Relayer[];
     pagination: PageResponse | undefined;
 }
-export interface QueryIsRelayerRequest {
-    denom: string;
-    address: string;
-}
-export interface QueryIsRelayerResponse {
-    flag: boolean;
-}
 export interface QueryRelayersByDenomRequest {
     denom: string;
     pagination: PageRequest | undefined;
@@ -50,20 +43,6 @@ export declare const QueryAllRelayerResponse: {
     fromJSON(object: any): QueryAllRelayerResponse;
     toJSON(message: QueryAllRelayerResponse): unknown;
     fromPartial(object: DeepPartial<QueryAllRelayerResponse>): QueryAllRelayerResponse;
-};
-export declare const QueryIsRelayerRequest: {
-    encode(message: QueryIsRelayerRequest, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): QueryIsRelayerRequest;
-    fromJSON(object: any): QueryIsRelayerRequest;
-    toJSON(message: QueryIsRelayerRequest): unknown;
-    fromPartial(object: DeepPartial<QueryIsRelayerRequest>): QueryIsRelayerRequest;
-};
-export declare const QueryIsRelayerResponse: {
-    encode(message: QueryIsRelayerResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): QueryIsRelayerResponse;
-    fromJSON(object: any): QueryIsRelayerResponse;
-    toJSON(message: QueryIsRelayerResponse): unknown;
-    fromPartial(object: DeepPartial<QueryIsRelayerResponse>): QueryIsRelayerResponse;
 };
 export declare const QueryRelayersByDenomRequest: {
     encode(message: QueryRelayersByDenomRequest, writer?: Writer): Writer;
@@ -111,8 +90,6 @@ export declare const QueryAllThresholdResponse: {
 export interface Query {
     /** Queries a list of relayer items. */
     RelayerAll(request: QueryAllRelayerRequest): Promise<QueryAllRelayerResponse>;
-    /** Queries a list of isRelayer items. */
-    IsRelayer(request: QueryIsRelayerRequest): Promise<QueryIsRelayerResponse>;
     /** Queries a list of relayersByDenom items. */
     RelayersByDenom(request: QueryRelayersByDenomRequest): Promise<QueryRelayersByDenomResponse>;
     /** Queries a threshold by denom. */
@@ -124,7 +101,6 @@ export declare class QueryClientImpl implements Query {
     private readonly rpc;
     constructor(rpc: Rpc);
     RelayerAll(request: QueryAllRelayerRequest): Promise<QueryAllRelayerResponse>;
-    IsRelayer(request: QueryIsRelayerRequest): Promise<QueryIsRelayerResponse>;
     RelayersByDenom(request: QueryRelayersByDenomRequest): Promise<QueryRelayersByDenomResponse>;
     Threshold(request: QueryGetThresholdRequest): Promise<QueryGetThresholdResponse>;
     ThresholdAll(request: QueryAllThresholdRequest): Promise<QueryAllThresholdResponse>;

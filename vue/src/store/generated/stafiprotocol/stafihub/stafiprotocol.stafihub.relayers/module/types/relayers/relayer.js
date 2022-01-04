@@ -141,3 +141,73 @@ export const Threshold = {
         return message;
     }
 };
+const baseLastVoter = { denom: '', voter: '' };
+export const LastVoter = {
+    encode(message, writer = Writer.create()) {
+        if (message.denom !== '') {
+            writer.uint32(10).string(message.denom);
+        }
+        if (message.voter !== '') {
+            writer.uint32(18).string(message.voter);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseLastVoter };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.denom = reader.string();
+                    break;
+                case 2:
+                    message.voter = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseLastVoter };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.voter !== undefined && object.voter !== null) {
+            message.voter = String(object.voter);
+        }
+        else {
+            message.voter = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.voter !== undefined && (obj.voter = message.voter);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseLastVoter };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.voter !== undefined && object.voter !== null) {
+            message.voter = object.voter;
+        }
+        else {
+            message.voter = '';
+        }
+        return message;
+    }
+};

@@ -10,6 +10,13 @@ export interface MsgUpdateAdmin {
 
 export interface MsgUpdateAdminResponse {}
 
+export interface MsgAddDenom {
+  creator: string
+  denom: string
+}
+
+export interface MsgAddDenomResponse {}
+
 const baseMsgUpdateAdmin: object = { creator: '', address: '' }
 
 export const MsgUpdateAdmin = {
@@ -120,10 +127,121 @@ export const MsgUpdateAdminResponse = {
   }
 }
 
+const baseMsgAddDenom: object = { creator: '', denom: '' }
+
+export const MsgAddDenom = {
+  encode(message: MsgAddDenom, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
+    if (message.denom !== '') {
+      writer.uint32(18).string(message.denom)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAddDenom {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgAddDenom } as MsgAddDenom
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string()
+          break
+        case 2:
+          message.denom = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): MsgAddDenom {
+    const message = { ...baseMsgAddDenom } as MsgAddDenom
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom)
+    } else {
+      message.denom = ''
+    }
+    return message
+  },
+
+  toJSON(message: MsgAddDenom): unknown {
+    const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
+    message.denom !== undefined && (obj.denom = message.denom)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<MsgAddDenom>): MsgAddDenom {
+    const message = { ...baseMsgAddDenom } as MsgAddDenom
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom
+    } else {
+      message.denom = ''
+    }
+    return message
+  }
+}
+
+const baseMsgAddDenomResponse: object = {}
+
+export const MsgAddDenomResponse = {
+  encode(_: MsgAddDenomResponse, writer: Writer = Writer.create()): Writer {
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAddDenomResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgAddDenomResponse } as MsgAddDenomResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(_: any): MsgAddDenomResponse {
+    const message = { ...baseMsgAddDenomResponse } as MsgAddDenomResponse
+    return message
+  },
+
+  toJSON(_: MsgAddDenomResponse): unknown {
+    const obj: any = {}
+    return obj
+  },
+
+  fromPartial(_: DeepPartial<MsgAddDenomResponse>): MsgAddDenomResponse {
+    const message = { ...baseMsgAddDenomResponse } as MsgAddDenomResponse
+    return message
+  }
+}
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UpdateAdmin(request: MsgUpdateAdmin): Promise<MsgUpdateAdminResponse>
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  AddDenom(request: MsgAddDenom): Promise<MsgAddDenomResponse>
 }
 
 export class MsgClientImpl implements Msg {
@@ -135,6 +253,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateAdmin.encode(request).finish()
     const promise = this.rpc.request('stafiprotocol.stafihub.sudo.Msg', 'UpdateAdmin', data)
     return promise.then((data) => MsgUpdateAdminResponse.decode(new Reader(data)))
+  }
+
+  AddDenom(request: MsgAddDenom): Promise<MsgAddDenomResponse> {
+    const data = MsgAddDenom.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.sudo.Msg', 'AddDenom', data)
+    return promise.then((data) => MsgAddDenomResponse.decode(new Reader(data)))
   }
 }
 

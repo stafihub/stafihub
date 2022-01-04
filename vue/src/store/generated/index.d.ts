@@ -10,7 +10,9 @@ declare const _default: {
     CosmosCosmosSdkCosmosStakingV1Beta1: (store: any) => void;
     CosmosCosmosSdkCosmosVestingV1Beta1: (store: any) => void;
     CosmosIbcGoIbcApplicationsTransferV1: (store: any) => void;
+    StafiprotocolStafihubStafiprotocolStafihubLedger: (store: any) => void;
     StafiprotocolStafihubStafiprotocolStafihubRelayers: (store: any) => void;
+    StafiprotocolStafihubStafiprotocolStafihubRvote: (store: any) => void;
     StafiprotocolStafihubStafiprotocolStafihubSudo: (store: any) => void;
 };
 export default _default;

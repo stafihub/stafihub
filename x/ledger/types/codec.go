@@ -5,7 +5,7 @@ import (
     cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
-	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
@@ -60,23 +60,22 @@ registry.RegisterImplementations((*sdk.Msg)(nil),
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetReceiver{},
 	)
-registry.RegisterImplementations((*relayertypes.Content)(nil),
+registry.RegisterImplementations((*rvotetypes.Content)(nil),
 	&SetChainEraProposal{},
 )
-registry.RegisterImplementations((*relayertypes.Content)(nil),
+registry.RegisterImplementations((*rvotetypes.Content)(nil),
 	&ActiveReportProposal{},
 )
-
-registry.RegisterImplementations((*relayertypes.Content)(nil),
+registry.RegisterImplementations((*rvotetypes.Content)(nil),
 	&BondReportProposal{},
 )
-registry.RegisterImplementations((*relayertypes.Content)(nil),
+registry.RegisterImplementations((*rvotetypes.Content)(nil),
 	&BondAndReportActiveProposal{},
 )
-registry.RegisterImplementations((*relayertypes.Content)(nil),
+registry.RegisterImplementations((*rvotetypes.Content)(nil),
 	&WithdrawReportProposal{},
 )
-registry.RegisterImplementations((*relayertypes.Content)(nil),
+registry.RegisterImplementations((*rvotetypes.Content)(nil),
 	&TransferReportProposal{},
 )
 // this line is used by starport scaffolding # 3

@@ -6,6 +6,12 @@ export interface MsgUpdateAdmin {
 }
 export interface MsgUpdateAdminResponse {
 }
+export interface MsgAddDenom {
+    creator: string;
+    denom: string;
+}
+export interface MsgAddDenomResponse {
+}
 export declare const MsgUpdateAdmin: {
     encode(message: MsgUpdateAdmin, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgUpdateAdmin;
@@ -20,15 +26,31 @@ export declare const MsgUpdateAdminResponse: {
     toJSON(_: MsgUpdateAdminResponse): unknown;
     fromPartial(_: DeepPartial<MsgUpdateAdminResponse>): MsgUpdateAdminResponse;
 };
+export declare const MsgAddDenom: {
+    encode(message: MsgAddDenom, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgAddDenom;
+    fromJSON(object: any): MsgAddDenom;
+    toJSON(message: MsgAddDenom): unknown;
+    fromPartial(object: DeepPartial<MsgAddDenom>): MsgAddDenom;
+};
+export declare const MsgAddDenomResponse: {
+    encode(_: MsgAddDenomResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgAddDenomResponse;
+    fromJSON(_: any): MsgAddDenomResponse;
+    toJSON(_: MsgAddDenomResponse): unknown;
+    fromPartial(_: DeepPartial<MsgAddDenomResponse>): MsgAddDenomResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     UpdateAdmin(request: MsgUpdateAdmin): Promise<MsgUpdateAdminResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    AddDenom(request: MsgAddDenom): Promise<MsgAddDenomResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
     UpdateAdmin(request: MsgUpdateAdmin): Promise<MsgUpdateAdminResponse>;
+    AddDenom(request: MsgAddDenom): Promise<MsgAddDenomResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

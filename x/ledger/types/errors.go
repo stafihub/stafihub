@@ -24,5 +24,5 @@ var (
 	ErrRateIsNone = sdkerrors.Register(ModuleName, 14, "rate is none error")
 	ErrStateNotActiveReported = sdkerrors.Register(ModuleName, 15, "state not active reported error")
 	ErrStateNotTransferable = sdkerrors.Register(ModuleName, 16, "state not transferable error")
-	ErrTransferReported = sdkerrors.Register(ModuleName, 5, "transfer reported error")
+	ErrTransferReported = sdkerrors.Register(ModuleName, 17, "transfer reported error")
 )

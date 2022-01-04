@@ -47,8 +47,7 @@ func CmdAdmin() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryAdminRequest{
-			}
+			params := &types.QueryAdminRequest{}
 
 			res, err := queryClient.Admin(cmd.Context(), params)
 			if err != nil {
@@ -78,11 +77,7 @@ func CmdAllDenoms() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllDenomsRequest{
-
-			}
-
-
+			params := &types.QueryAllDenomsRequest{}
 
 			res, err := queryClient.AllDenoms(cmd.Context(), params)
 			if err != nil {

@@ -7,9 +7,13 @@ export interface RpcStatus {
     message?: string;
     details?: ProtobufAny[];
 }
+export declare type SudoMsgAddDenomResponse = object;
 export declare type SudoMsgUpdateAdminResponse = object;
 export interface SudoQueryAdminResponse {
     address?: string;
+}
+export interface SudoQueryAllDenomsResponse {
+    denoms?: string[];
 }
 export declare type QueryParamsType = Record<string | number, any>;
 export declare type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
@@ -78,5 +82,14 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @request GET:/stafiprotocol/stafihub/sudo/admin
      */
     queryAdmin: (params?: RequestParams) => Promise<HttpResponse<SudoQueryAdminResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryAllDenoms
+     * @summary Queries a list of allDenoms items.
+     * @request GET:/stafiprotocol/stafihub/sudo/allDenoms
+     */
+    queryAllDenoms: (params?: RequestParams) => Promise<HttpResponse<SudoQueryAllDenomsResponse, RpcStatus>>;
 }
 export {};

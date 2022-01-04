@@ -155,20 +155,6 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
-         * @name QueryIsRelayer
-         * @summary Queries a list of isRelayer items.
-         * @request GET:/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}
-         */
-        this.queryIsRelayer = (denom, address, params = {}) => this.request({
-            path: `/stafiprotocol/stafihub/relayers/is_relayer/${denom}/${address}`,
-            method: "GET",
-            format: "json",
-            ...params,
-        });
-        /**
-         * No description
-         *
-         * @tags Query
          * @name QueryRelayersByDenom
          * @summary Queries a list of relayersByDenom items.
          * @request GET:/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}

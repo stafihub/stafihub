@@ -35,7 +35,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCreateRelayer())
 	cmd.AddCommand(CmdDeleteRelayer())
 	cmd.AddCommand(CmdUpdateThreshold())
-	cmd.AddCommand(CmdSetProposalLife())
 // this line is used by starport scaffolding # 1
 
 	return cmd
@@ -104,38 +103,6 @@ func CmdDeleteRelayer() *cobra.Command {
 				clientCtx.GetFromAddress(),
 				argDenom,
 				relAddr,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdSetProposalLife() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "set-proposal-life [proposal-life]",
-		Short: "Broadcast message set_proposal_life",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			value, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return err
-			}
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgSetProposalLife(
-				clientCtx.GetFromAddress(),
-				int64(value),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

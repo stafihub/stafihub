@@ -150,5 +150,19 @@ export class Api extends HttpClient {
             format: "json",
             ...params,
         });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryAllDenoms
+         * @summary Queries a list of allDenoms items.
+         * @request GET:/stafiprotocol/stafihub/sudo/allDenoms
+         */
+        this.queryAllDenoms = (params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/sudo/allDenoms`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
     }
 }

@@ -2,6 +2,8 @@ package types
 
 import (
 "fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // DefaultIndex is the default capability global index
@@ -23,6 +25,10 @@ func (gs GenesisState) Validate() error {
 	relayerDenomMap := make(map[string]struct{})
 
 	for _, elem := range gs.Relayers {
+		if sdk.ValidateDenom(elem.Denom) != nil {
+			return fmt.Errorf("invalid denom %s", elem.Denom)
+		}
+
 		key := elem.Denom+elem.Address
 		if _, ok := relayerDenomMap[key]; ok {
 			return fmt.Errorf("duplicated denom %s and address %s for relayer", elem.Denom, elem.Address)
@@ -33,6 +39,10 @@ func (gs GenesisState) Validate() error {
 	thresholdDenomMap := make(map[string]struct{})
 
 	for _, elem := range gs.Thresholds {
+		if sdk.ValidateDenom(elem.Denom) != nil {
+			return fmt.Errorf("invalid denom %s", elem.Denom)
+		}
+
 		if _, ok := thresholdDenomMap[elem.Denom]; ok {
 			return fmt.Errorf("duplicated denom %s for threshold", elem.Denom)
 		}

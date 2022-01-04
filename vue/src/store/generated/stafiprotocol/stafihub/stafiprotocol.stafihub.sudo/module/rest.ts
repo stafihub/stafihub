@@ -20,10 +20,16 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export type SudoMsgAddDenomResponse = object;
+
 export type SudoMsgUpdateAdminResponse = object;
 
 export interface SudoQueryAdminResponse {
   address?: string;
+}
+
+export interface SudoQueryAllDenomsResponse {
+  denoms?: string[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -233,6 +239,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryAdmin = (params: RequestParams = {}) =>
     this.request<SudoQueryAdminResponse, RpcStatus>({
       path: `/stafiprotocol/stafihub/sudo/admin`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAllDenoms
+   * @summary Queries a list of allDenoms items.
+   * @request GET:/stafiprotocol/stafihub/sudo/allDenoms
+   */
+  queryAllDenoms = (params: RequestParams = {}) =>
+    this.request<SudoQueryAllDenomsResponse, RpcStatus>({
+      path: `/stafiprotocol/stafihub/sudo/allDenoms`,
       method: "GET",
       format: "json",
       ...params,

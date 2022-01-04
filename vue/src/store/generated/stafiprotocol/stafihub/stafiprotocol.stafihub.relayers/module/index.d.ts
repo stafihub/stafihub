@@ -1,9 +1,8 @@
 import { StdFee } from "@cosmjs/launchpad";
 import { OfflineSigner, EncodeObject } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgSetProposalLife } from "./types/relayers/tx";
-import { MsgUpdateThreshold } from "./types/relayers/tx";
 import { MsgDeleteRelayer } from "./types/relayers/tx";
+import { MsgUpdateThreshold } from "./types/relayers/tx";
 import { MsgCreateRelayer } from "./types/relayers/tx";
 export declare const MissingWalletError: Error;
 interface TxClientOptions {
@@ -15,9 +14,8 @@ interface SignAndBroadcastOptions {
 }
 declare const txClient: (wallet: OfflineSigner, { addr: addr }?: TxClientOptions) => Promise<{
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }?: SignAndBroadcastOptions) => Promise<import("@cosmjs/stargate").BroadcastTxResponse>;
-    msgSetProposalLife: (data: MsgSetProposalLife) => EncodeObject;
-    msgUpdateThreshold: (data: MsgUpdateThreshold) => EncodeObject;
     msgDeleteRelayer: (data: MsgDeleteRelayer) => EncodeObject;
+    msgUpdateThreshold: (data: MsgUpdateThreshold) => EncodeObject;
     msgCreateRelayer: (data: MsgCreateRelayer) => EncodeObject;
 }>;
 interface QueryClientOptions {

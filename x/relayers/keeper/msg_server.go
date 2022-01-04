@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"encoding/hex"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
@@ -72,18 +71,4 @@ func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateT
 	k.SetThreshold(ctx, &threshold)
 
 	return &types.MsgUpdateThresholdResponse{}, nil
-}
-
-func (k msgServer) SetProposalLife(goCtx context.Context,  msg *types.MsgSetProposalLife) (*types.MsgSetProposalLifeResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-
-
-	k.Keeper.SetProposalLife(ctx, msg.ProposalLife)
-
-	return &types.MsgSetProposalLifeResponse{}, nil
-}
-
-func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitProposal) (*types.MsgSubmitProposalResponse, error) {
-
 }

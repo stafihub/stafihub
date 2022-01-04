@@ -1,12 +1,11 @@
-import { Writer, Reader } from 'protobufjs/minimal';
 import { Relayer, Threshold } from '../relayers/relayer';
+import { Writer, Reader } from 'protobufjs/minimal';
 export declare const protobufPackage = "stafiprotocol.stafihub.relayers";
 /** GenesisState defines the relayers module's genesis state. */
 export interface GenesisState {
     relayers: Relayer[];
-    thresholds: Threshold[];
     /** this line is used by starport scaffolding # genesis/proto/state */
-    proposalLife: number;
+    thresholds: Threshold[];
 }
 export declare const GenesisState: {
     encode(message: GenesisState, writer?: Writer): Writer;

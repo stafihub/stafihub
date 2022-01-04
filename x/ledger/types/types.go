@@ -4,10 +4,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-const (
-	ShotIdLength = 32
-)
-
 func NewBondPipeline(denom, pool string) BondPipeline {
 	return BondPipeline{
 		Denom: denom,

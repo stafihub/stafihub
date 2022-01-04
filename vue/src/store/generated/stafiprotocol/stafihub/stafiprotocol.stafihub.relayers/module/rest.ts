@@ -17,8 +17,6 @@ export type RelayersMsgCreateRelayerResponse = object;
 
 export type RelayersMsgDeleteRelayerResponse = object;
 
-export type RelayersMsgSetProposalLifeResponse = object;
-
 export type RelayersMsgUpdateThresholdResponse = object;
 
 export interface RelayersQueryAllRelayerResponse {
@@ -53,10 +51,6 @@ export interface RelayersQueryAllThresholdResponse {
 
 export interface RelayersQueryGetThresholdResponse {
   threshold?: RelayersThreshold;
-}
-
-export interface RelayersQueryIsRelayerResponse {
-  flag?: boolean;
 }
 
 export interface RelayersQueryRelayersByDenomResponse {
@@ -370,22 +364,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       path: `/stafiprotocol/stafihub/relayers/all`,
       method: "GET",
       query: query,
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryIsRelayer
-   * @summary Queries a list of isRelayer items.
-   * @request GET:/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}
-   */
-  queryIsRelayer = (denom: string, address: string, params: RequestParams = {}) =>
-    this.request<RelayersQueryIsRelayerResponse, RpcStatus>({
-      path: `/stafiprotocol/stafihub/relayers/is_relayer/${denom}/${address}`,
-      method: "GET",
       format: "json",
       ...params,
     });

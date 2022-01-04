@@ -2,9 +2,9 @@ package cli
 
 import (
     "strconv"
-	
 
-	
+
+
 	"github.com/spf13/cobra"
 
     "github.com/cosmos/cosmos-sdk/client"
@@ -21,7 +21,7 @@ func CmdEraExchangeRateByDenom() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			 reqDenom := args[0]
-			
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -30,11 +30,8 @@ func CmdEraExchangeRateByDenom() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryEraExchangeRateByDenomRequest{
-				
-                Denom: reqDenom, 
+                Denom: reqDenom,
             }
-
-            
 
 			res, err := queryClient.EraExchangeRateByDenom(cmd.Context(), params)
             if err != nil {

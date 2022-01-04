@@ -11,7 +11,9 @@ import CosmosCosmosSdkCosmosSlashingV1Beta1 from './cosmos/cosmos-sdk/cosmos.sla
 import CosmosCosmosSdkCosmosStakingV1Beta1 from './cosmos/cosmos-sdk/cosmos.staking.v1beta1'
 import CosmosCosmosSdkCosmosVestingV1Beta1 from './cosmos/cosmos-sdk/cosmos.vesting.v1beta1'
 import CosmosIbcGoIbcApplicationsTransferV1 from './cosmos/ibc-go/ibc.applications.transfer.v1'
+import StafiprotocolStafihubStafiprotocolStafihubLedger from './stafiprotocol/stafihub/stafiprotocol.stafihub.ledger'
 import StafiprotocolStafihubStafiprotocolStafihubRelayers from './stafiprotocol/stafihub/stafiprotocol.stafihub.relayers'
+import StafiprotocolStafihubStafiprotocolStafihubRvote from './stafiprotocol/stafihub/stafiprotocol.stafihub.rvote'
 import StafiprotocolStafihubStafiprotocolStafihubSudo from './stafiprotocol/stafihub/stafiprotocol.stafihub.sudo'
 
 
@@ -27,7 +29,9 @@ export default {
   CosmosCosmosSdkCosmosStakingV1Beta1: load(CosmosCosmosSdkCosmosStakingV1Beta1, 'cosmos.staking.v1beta1'),
   CosmosCosmosSdkCosmosVestingV1Beta1: load(CosmosCosmosSdkCosmosVestingV1Beta1, 'cosmos.vesting.v1beta1'),
   CosmosIbcGoIbcApplicationsTransferV1: load(CosmosIbcGoIbcApplicationsTransferV1, 'ibc.applications.transfer.v1'),
+  StafiprotocolStafihubStafiprotocolStafihubLedger: load(StafiprotocolStafihubStafiprotocolStafihubLedger, 'stafiprotocol.stafihub.ledger'),
   StafiprotocolStafihubStafiprotocolStafihubRelayers: load(StafiprotocolStafihubStafiprotocolStafihubRelayers, 'stafiprotocol.stafihub.relayers'),
+  StafiprotocolStafihubStafiprotocolStafihubRvote: load(StafiprotocolStafihubStafiprotocolStafihubRvote, 'stafiprotocol.stafihub.rvote'),
   StafiprotocolStafihubStafiprotocolStafihubSudo: load(StafiprotocolStafihubStafiprotocolStafihubSudo, 'stafiprotocol.stafihub.sudo'),
   
 }

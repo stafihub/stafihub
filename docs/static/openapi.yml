@@ -12621,47 +12621,6 @@ paths:
           type: boolean
       tags:
         - Query
-  '/stafiprotocol/stafihub/relayers/is_relayer/{denom}/{address}':
-    get:
-      summary: Queries a list of isRelayer items.
-      operationId: StafiprotocolStafihubRelayersIsRelayer
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              flag:
-                type: boolean
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-        - name: address
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}':
     get:
       summary: Queries a list of relayersByDenom items.
@@ -12962,6 +12921,40 @@ paths:
             properties:
               address:
                 type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafiprotocol/stafihub/sudo/allDenoms:
+    get:
+      summary: Queries a list of allDenoms items.
+      operationId: StafiprotocolStafihubSudoAllDenoms
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              denoms:
+                type: array
+                items:
+                  type: string
         default:
           description: An unexpected error response.
           schema:
@@ -20296,11 +20289,29 @@ definitions:
       and
 
       freezing clients
+  stafiprotocol.stafihub.ledger.MsgAddNewPoolResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgRemovePoolResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetChainBondingDurationResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetCommissionResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetEraUnbondLimitResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetInitBondResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetLeastBondResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetPoolDetailResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.MsgSetReceiverResponse:
+    type: object
   stafiprotocol.stafihub.relayers.MsgCreateRelayerResponse:
     type: object
   stafiprotocol.stafihub.relayers.MsgDeleteRelayerResponse:
-    type: object
-  stafiprotocol.stafihub.relayers.MsgSetProposalLifeResponse:
     type: object
   stafiprotocol.stafihub.relayers.MsgUpdateThresholdResponse:
     type: object
@@ -20390,11 +20401,6 @@ definitions:
           value:
             type: integer
             format: int64
-  stafiprotocol.stafihub.relayers.QueryIsRelayerResponse:
-    type: object
-    properties:
-      flag:
-        type: boolean
   stafiprotocol.stafihub.relayers.QueryRelayersByDenomResponse:
     type: object
     properties:
@@ -20447,6 +20453,33 @@ definitions:
       value:
         type: integer
         format: int64
+  stafiprotocol.stafihub.rvote.MsgSetProposalLifeResponse:
+    type: object
+  stafiprotocol.stafihub.rvote.MsgSubmitProposalResponse:
+    type: object
+    properties:
+      propId:
+        type: string
+      status:
+        type: string
+        enum:
+          - PROPOSAL_STATUS_INITIATED
+          - PROPOSAL_STATUS_APPROVED
+          - PROPOSAL_STATUS_REJECTED
+          - PROPOSAL_STATUS_EXPIRED
+        default: PROPOSAL_STATUS_INITIATED
+        description: ProposalStatus enumerates the valid statuses of a proposal.
+  stafiprotocol.stafihub.rvote.ProposalStatus:
+    type: string
+    enum:
+      - PROPOSAL_STATUS_INITIATED
+      - PROPOSAL_STATUS_APPROVED
+      - PROPOSAL_STATUS_REJECTED
+      - PROPOSAL_STATUS_EXPIRED
+    default: PROPOSAL_STATUS_INITIATED
+    description: ProposalStatus enumerates the valid statuses of a proposal.
+  stafiprotocol.stafihub.sudo.MsgAddDenomResponse:
+    type: object
   stafiprotocol.stafihub.sudo.MsgUpdateAdminResponse:
     type: object
   stafiprotocol.stafihub.sudo.QueryAdminResponse:
@@ -20454,3 +20487,10 @@ definitions:
     properties:
       address:
         type: string
+  stafiprotocol.stafihub.sudo.QueryAllDenomsResponse:
+    type: object
+    properties:
+      denoms:
+        type: array
+        items:
+          type: string

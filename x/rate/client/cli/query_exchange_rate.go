@@ -2,11 +2,11 @@ package cli
 
 import (
     "context"
-	
 
-	
+
+
     "github.com/spf13/cobra"
-    
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
     "github.com/stafiprotocol/stafihub/x/rate/types"
@@ -19,15 +19,9 @@ func CmdListExchangeRate() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
             clientCtx := client.GetClientContextFromCmd(cmd)
 
-            pageReq, err := client.ReadPageRequest(cmd.Flags())
-            if err != nil {
-                return err
-            }
-
             queryClient := types.NewQueryClient(clientCtx)
 
             params := &types.QueryAllExchangeRateRequest{
-                Pagination: pageReq,
             }
 
             res, err := queryClient.ExchangeRateAll(context.Background(), params)
@@ -47,7 +41,7 @@ func CmdListExchangeRate() *cobra.Command {
 
 func CmdShowExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-exchange-rate [index]",
+		Use:   "show-exchange-rate [denom]",
 		Short: "shows a ExchangeRate",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -55,11 +49,8 @@ func CmdShowExchangeRate() *cobra.Command {
 
             queryClient := types.NewQueryClient(clientCtx)
 
-             argIndex := args[0]
-            
             params := &types.QueryGetExchangeRateRequest{
-                Index: argIndex,
-                
+				args[0],
             }
 
             res, err := queryClient.ExchangeRate(context.Background(), params)
