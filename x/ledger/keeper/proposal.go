@@ -10,10 +10,6 @@ import (
 
 
 func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context,  p *types.SetChainEraProposal) error {
-	//if !k.IsAdminOrRelayer(ctx, msg.Denom, msg.Creator) {
-	//	return types.ErrNeitherRelayerNorAdmin
-	//}
-
 	eraShot := k.CurrentEraSnapShots(ctx, p.Denom)
 	if len(eraShot.ShotIds) != 0 {
 		return types.ErrEraNotContinuable
@@ -59,10 +55,6 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context,  p *types.SetChainEr
 }
 
 func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportProposal) error {
-	//if !k.IsAdminOrRelayer(ctx, msg.Denom, msg.Creator) {
-	//	return nil, types.ErrNeitherRelayerNorAdmin
-	//}
-
 	shot, ok := k.SnapShot(ctx, p.ShotId)
 	if !ok {
 		return types.ErrSnapShotNotFound
@@ -98,10 +90,6 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 }
 
 func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.BondAndReportActiveProposal) error {
-	if !k.IsAdminOrRelayer(ctx, p.Denom, p.Proposer) {
-		return types.ErrNeitherRelayerNorAdmin
-	}
-
 	shot, ok := k.SnapShot(ctx, p.ShotId)
 	if !ok {
 		return types.ErrSnapShotNotFound
@@ -111,7 +99,8 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 		return types.ErrStateNotEraUpdated
 	}
 
-	if k.rateKeeper.GetRate(ctx, shot.Denom) == nil {
+	_, ok = k.rateKeeper.GetExchangeRate(ctx, shot.Denom)
+	if !ok {
 		return types.ErrRateIsNone
 	}
 
@@ -195,7 +184,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 
 	if len(shots) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
-		k.rateKeeper.SetRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		k.SetRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
 	k.SetEraSnapShot(ctx, shot.Era, types.EraSnapShot{Denom: shot.Denom, ShotIds: shots})
@@ -217,10 +206,6 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 }
 
 func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveReportProposal) error {
-	//if !k.IsAdminOrRelayer(ctx, p.Denom, p.Creator) {
-	//	return nil, types.ErrNeitherRelayerNorAdmin
-	//}
-
 	shot, ok := k.SnapShot(ctx, p.ShotId)
 	if !ok {
 		return types.ErrSnapShotNotFound
@@ -290,7 +275,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 
 	if len(shots) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
-		k.rateKeeper.SetRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		k.SetRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
 	k.SetEraSnapShot(ctx, shot.Era, types.EraSnapShot{Denom: shot.Denom, ShotIds: shots})
@@ -312,15 +297,48 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 }
 
 func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.WithdrawReportProposal) error {
-	// TODO: Handling the message
-	_ = ctx
+	shot, ok := k.SnapShot(ctx, p.ShotId)
+	if !ok {
+		return types.ErrSnapShotNotFound
+	}
+
+	if shot.BondState != types.ActiveReported {
+		return types.ErrStateNotActiveReported
+	}
+
+	shot.UpdateState(types.WithdrawReported)
+	k.SetSnapShot(ctx, p.ShotId, shot)
 
 	return nil
 }
 
 func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context,  p *types.TransferReportProposal) error {
-	// TODO: Handling the message
-	_ = ctx
+	shot, ok := k.SnapShot(ctx, p.ShotId)
+	if !ok {
+		return types.ErrSnapShotNotFound
+	}
+
+	if shot.BondState != types.ActiveReported && shot.BondState != types.WithdrawReported {
+		return types.ErrStateNotTransferable
+	}
+
+	currentEraShots := k.CurrentEraSnapShots(ctx, shot.Denom)
+	newCurrentEraShots := types.NewEraSnapShot(shot.Denom)
+	found := false
+	for _, id := range currentEraShots.ShotIds {
+		if bytes.Equal(id, p.ShotId) {
+			found = true
+		} else {
+			newCurrentEraShots.ShotIds = append(newCurrentEraShots.ShotIds, id)
+		}
+	}
+	if !found {
+		return types.ErrTransferReported
+	}
+
+	shot.UpdateState(types.TransferReported)
+	k.SetSnapShot(ctx, p.ShotId, shot)
+	k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
 
 	return nil
 }

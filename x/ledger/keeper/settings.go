@@ -46,7 +46,6 @@ func (k Keeper) EraUnbondLimit(ctx sdk.Context, denom string) (val *types.EraUnb
 }
 
 func (k Keeper) SetInitBond(ctx sdk.Context, denom, pool string, amount sdk.Int, receiver sdk.AccAddress) error {
-	// todo use cacheContext
 	_, found := k.TryFindPool(ctx, denom, pool, types.PoolPrefix)
 	if !found {
 		return types.ErrPoolNotFound
@@ -71,9 +70,7 @@ func (k Keeper) SetInitBond(ctx sdk.Context, denom, pool string, amount sdk.Int,
 		return err
 	}
 
-	if k.rateKeeper.GetRate(ctx, denom) == nil {
-		k.rateKeeper.SetRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
-	}
+	k.SetRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
 
 	pipe := types.NewBondPipeline(denom, pool)
 	k.AddBondedPool(ctx, bpool)
@@ -401,6 +398,15 @@ func (k Keeper) GetPoolByDenom(ctx sdk.Context, denom string) (val *types.Pool, 
 
 	k.cdc.MustUnmarshal(b, val)
 	return val, true
+}
+
+func (k Keeper) SetRate(ctx sdk.Context, denom string, total, rtotal sdk.Int)  {
+	dec := sdk.OneDec()
+	if total.Int64() != 0 && rtotal.Int64() != 0 {
+		dec = dec.MulInt(rtotal).QuoInt(total)
+	}
+
+	k.rateKeeper.SetExchangeRate(ctx, denom, dec)
 }
 
 

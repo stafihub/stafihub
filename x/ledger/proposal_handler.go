@@ -1,7 +1,7 @@
 package ledger
 
 import (
-	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/ledger/keeper"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
@@ -9,8 +9,8 @@ import (
 )
 
 // NewParamChangeProposalHandler creates a new governance Handler for a ParamChangeProposal
-func NewProposalHandler(k keeper.Keeper) relayertypes.Handler {
-	return func(ctx sdk.Context, content relayertypes.Content) error {
+func NewProposalHandler(k keeper.Keeper) rvotetypes.Handler {
+	return func(ctx sdk.Context, content rvotetypes.Content) error {
 		switch c := content.(type) {
 		case *types.SetChainEraProposal:
 			return k.ProcessSetChainEraProposal(ctx, c)

@@ -11,7 +11,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
-	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -35,7 +35,7 @@ func CmdSetChainEra() *cobra.Command {
 
 			from := clientCtx.GetFromAddress()
 			content := types.NewSetChainEraProposal(from, argDenom, uint32(argEra))
-			msg, err := relayertypes.NewMsgSubmitProposal(from, content)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
 			if err != nil {
 				return err
 			}
@@ -75,7 +75,7 @@ func CmdBondReport() *cobra.Command {
 
 			from := clientCtx.GetFromAddress()
 			content := types.NewBondReportProposal(from, argDenom, argShotId, types.BondAction(argAction))
-			msg, err := relayertypes.NewMsgSubmitProposal(from, content)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
 			if err != nil {
 				return err
 			}
@@ -124,7 +124,7 @@ func CmdBondAndReportActive() *cobra.Command {
 
 			from := clientCtx.GetFromAddress()
 			content := types.NewBondAndReportActiveProposal(from, argDenom, argShotId, types.BondAction(argAction), argStaked, argUnstaked)
-			msg, err := relayertypes.NewMsgSubmitProposal(from, content)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
 			if err != nil {
 				return err
 			}
@@ -168,7 +168,7 @@ func CmdActiveReport() *cobra.Command {
 
 			from := clientCtx.GetFromAddress()
 			content := types.NewActiveReportProposal(from, argDenom, argShotId, argStaked, argUnstaked)
-			msg, err := relayertypes.NewMsgSubmitProposal(from, content)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
 			if err != nil {
 				return err
 			}
@@ -192,22 +192,27 @@ func CmdWithdrawReport() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId := args[1]
+			argShotId, err := hex.DecodeString(args[1])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgWithdrawReport(
-				clientCtx.GetFromAddress().String(),
-				argDenom,
-				argShotId,
+			from := clientCtx.GetFromAddress()
+			content := types.NewWithdrawReportProposal(from, argDenom, argShotId)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
+			if err != nil {
+				return err
+			}
 
-			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
+
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
@@ -224,19 +229,23 @@ func CmdTransferReport() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId := args[1]
+			argShotId, err := hex.DecodeString(args[1])
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgTransferReport(
-				clientCtx.GetFromAddress().String(),
-				argDenom,
-				argShotId,
+			from := clientCtx.GetFromAddress()
+			content := types.NewTransferReportProposal(from, argDenom, argShotId)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
+			if err != nil {
+				return err
+			}
 
-			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

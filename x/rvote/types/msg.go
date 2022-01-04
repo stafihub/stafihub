@@ -120,11 +120,6 @@ func (m *MsgSubmitProposal) SetContent(content Content) error {
 	return nil
 }
 
-func (m *MsgSubmitProposal) GetProposer() sdk.AccAddress {
-	proposer, _ := sdk.AccAddressFromBech32(m.Proposer)
-	return proposer
-}
-
 func (m *MsgSubmitProposal) GetContent() Content {
 	content, ok := m.Content.GetCachedValue().(Content)
 	if !ok {
