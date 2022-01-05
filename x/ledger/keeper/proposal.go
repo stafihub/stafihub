@@ -2,8 +2,10 @@ package keeper
 
 import (
 	"bytes"
+	"encoding/hex"
+	"strconv"
 
-    "github.com/stafiprotocol/stafihub/x/ledger/types"
+	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
 )
@@ -15,7 +17,8 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context,  p *types.SetChainEr
 		return types.ErrEraNotContinuable
 	}
 
-	if _, ok := k.relayerKeeper.LastVoter(ctx, p.Denom); !ok {
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	if !ok {
 		return types.ErrLastVoterNobody
 	}
 
@@ -41,15 +44,22 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context,  p *types.SetChainEr
 			shotId := crypto.Sha256(bsnap)
 			eraShot.ShotIds = append(eraShot.ShotIds, shotId)
 			k.SetSnapShot(ctx, shotId, bondShot)
-			//k.Keeper.AddCurrentEraSnapShot(ctx, msg.GetDenom, shotId)
-			// todo add event
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(
+					types.EventTypeEraPoolUpdated,
+					sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+					sdk.NewAttribute(types.AttributeKeyLastEra, strconv.FormatUint(uint64(ce.Era), 10)),
+					sdk.NewAttribute(types.AttributeKeyCurrentEra, strconv.FormatUint(uint64(p.Era), 10)),
+					sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(shotId)),
+					sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+				),
+			)
 		}
 	}
 
 	k.SetEraSnapShot(ctx, p.Era, eraShot)
 	k.SetCurrentEraSnapShot(ctx, eraShot)
 	k.SetChainEra(ctx, p.Denom, p.Era)
-	// todo add event
 
 	return nil
 }
@@ -58,6 +68,15 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 	shot, ok := k.SnapShot(ctx, p.ShotId)
 	if !ok {
 		return types.ErrSnapShotNotFound
+	}
+
+	if shot.BondState != types.EraUpdated {
+		return types.ErrStateNotEraUpdated
+	}
+
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	if !ok {
+		return types.ErrLastVoterNobody
 	}
 
 	pipe, _ := k.BondPipeLine(ctx, shot.Denom, shot.Pool)
@@ -84,7 +103,14 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 	k.SetBondPipeline(ctx, pipe)
 	shot.UpdateState(types.BondReported)
 	k.SetSnapShot(ctx, p.ShotId, shot)
-	// todo emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeBondReported,
+			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+			sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+		),
+	)
 
 	return nil
 }
@@ -97,6 +123,11 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 
 	if shot.BondState != types.EraUpdated {
 		return types.ErrStateNotEraUpdated
+	}
+
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	if !ok {
+		return types.ErrLastVoterNobody
 	}
 
 	_, ok = k.rateKeeper.GetExchangeRate(ctx, shot.Denom)
@@ -194,11 +225,17 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 	_, ok = k.PoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
 	if ok {
 		shot.UpdateState(types.ActiveReported)
-		// todo event
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeActiveReported,
+				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+				sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+			),
+		)
 	} else {
 		shot.UpdateState(types.WithdrawSkipped)
 		k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
-		// todo event
 	}
 	k.SetSnapShot(ctx, p.ShotId, shot)
 
@@ -213,6 +250,11 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 
 	if shot.BondState != types.BondReported {
 		return types.ErrStateNotBondReported
+	}
+
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	if !ok {
+		return types.ErrLastVoterNobody
 	}
 
 	receiver := k.Receiver(ctx)
@@ -285,11 +327,17 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	_, ok = k.PoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
 	if ok {
 		shot.UpdateState(types.ActiveReported)
-		// todo event
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeActiveReported,
+				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+				sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+			),
+		)
 	} else {
 		shot.UpdateState(types.WithdrawSkipped)
 		k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
-		// todo event
 	}
 	k.SetSnapShot(ctx, p.ShotId, shot)
 
@@ -306,8 +354,22 @@ func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.Withdraw
 		return types.ErrStateNotActiveReported
 	}
 
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	if !ok {
+		return types.ErrLastVoterNobody
+	}
+
 	shot.UpdateState(types.WithdrawReported)
 	k.SetSnapShot(ctx, p.ShotId, shot)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeWithdrawReported,
+			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+			sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+		),
+	)
 
 	return nil
 }
@@ -320,6 +382,11 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context,  p *types.Transfe
 
 	if shot.BondState != types.ActiveReported && shot.BondState != types.WithdrawReported {
 		return types.ErrStateNotTransferable
+	}
+
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	if !ok {
+		return types.ErrLastVoterNobody
 	}
 
 	currentEraShots := k.CurrentEraSnapShots(ctx, shot.Denom)
@@ -339,6 +406,15 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context,  p *types.Transfe
 	shot.UpdateState(types.TransferReported)
 	k.SetSnapShot(ctx, p.ShotId, shot)
 	k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeTransferReported,
+			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+			sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+		),
+	)
 
 	return nil
 }

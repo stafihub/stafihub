@@ -15,6 +15,6 @@ type RelayerKeeper interface {
 	GetThreshold(ctx sdk.Context, denom string) (val relayerstypes.Threshold, found bool)
 	RelayerCount(ctx sdk.Context, denom string) int32
 	SetLastVoter(ctx sdk.Context, denom, voter string)
-	LastVoter(ctx sdk.Context, denom string) (val *relayerstypes.LastVoter, found bool)
+	LastVoter(ctx sdk.Context, denom string) (val relayerstypes.LastVoter, found bool)
 }
 

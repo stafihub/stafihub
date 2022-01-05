@@ -28,5 +28,5 @@ type BankKeeper interface {
 
 type RelayerKeeper interface {
 	IsRelayer(ctx sdk.Context, denom, address string) bool
-	LastVoter(ctx sdk.Context, denom string) (val *relayertypes.LastVoter, found bool)
+	LastVoter(ctx sdk.Context, denom string) (val relayertypes.LastVoter, found bool)
 }

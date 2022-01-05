@@ -15,7 +15,20 @@ const (
 	TransferReportProposalType = "TransferReportProposal"
 )
 
-//todo add init() to register proposal types
+func init() {
+	rvotetypes.RegisterProposalType(SetChainEraProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&SetChainEraProposal{}, "ledger/SetChainEraProposal")
+	rvotetypes.RegisterProposalType(BondReportProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&BondReportProposal{}, "ledger/BondReportProposal")
+	rvotetypes.RegisterProposalType(BondAndReportActiveProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&BondAndReportActiveProposal{}, "ledger/BondAndReportActiveProposal")
+	rvotetypes.RegisterProposalType(ActiveReportProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&ActiveReportProposal{}, "ledger/ActiveReportProposal")
+	rvotetypes.RegisterProposalType(WithdrawReportProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&WithdrawReportProposal{}, "ledger/WithdrawReportProposal")
+	rvotetypes.RegisterProposalType(TransferReportProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&TransferReportProposal{}, "ledger/TransferReportProposal")
+}
 
 func NewSetChainEraProposal(proposer sdk.AccAddress, denom string, era uint32) *SetChainEraProposal {
 	p := &SetChainEraProposal{

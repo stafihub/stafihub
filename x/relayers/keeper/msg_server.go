@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
@@ -38,6 +39,14 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 	}
 
 	k.SetRelayer(ctx, relayer)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRelayerAdded,
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyRelayer, msg.Address),
+		),
+	)
 	return &types.MsgCreateRelayerResponse{}, nil
 }
 
@@ -53,6 +62,14 @@ func (k msgServer) DeleteRelayer(goCtx context.Context,  msg *types.MsgDeleteRel
 	}
 
 	k.RemoveRelayer(ctx, msg.Denom, msg.Address)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRelayerRemoved,
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyRelayer, msg.Address),
+		),
+	)
 	return &types.MsgDeleteRelayerResponse{}, nil
 }
 
@@ -63,12 +80,23 @@ func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateT
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
+	lastTh := uint32(0)
+	if last, ok := k.GetThreshold(ctx, msg.Denom); ok {
+		lastTh = last.Value
+	}
+
 	var threshold = types.Threshold{
 		Denom: msg.Denom,
 		Value: msg.Value,
 	}
 
 	k.SetThreshold(ctx, &threshold)
-
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeThresholdUpdated,
+			sdk.NewAttribute(types.AttributeKeyLastThreshold, strconv.FormatUint(uint64(lastTh), 10)),
+			sdk.NewAttribute(types.AttributeKeyCurrentThreshold, strconv.FormatUint(uint64(msg.Value), 10)),
+		),
+	)
 	return &types.MsgUpdateThresholdResponse{}, nil
 }

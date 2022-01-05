@@ -2,13 +2,13 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgDeleteRelayer } from "./types/relayers/tx";
 import { MsgUpdateThreshold } from "./types/relayers/tx";
 import { MsgCreateRelayer } from "./types/relayers/tx";
+import { MsgDeleteRelayer } from "./types/relayers/tx";
 const types = [
-    ["/stafiprotocol.stafihub.relayers.MsgDeleteRelayer", MsgDeleteRelayer],
     ["/stafiprotocol.stafihub.relayers.MsgUpdateThreshold", MsgUpdateThreshold],
     ["/stafiprotocol.stafihub.relayers.MsgCreateRelayer", MsgCreateRelayer],
+    ["/stafiprotocol.stafihub.relayers.MsgDeleteRelayer", MsgDeleteRelayer],
 ];
 export const MissingWalletError = new Error("wallet is required");
 const registry = new Registry(types);
@@ -23,9 +23,9 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     const { address } = (await wallet.getAccounts())[0];
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
-        msgDeleteRelayer: (data) => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgDeleteRelayer", value: data }),
         msgUpdateThreshold: (data) => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgUpdateThreshold", value: data }),
         msgCreateRelayer: (data) => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgCreateRelayer", value: data }),
+        msgDeleteRelayer: (data) => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgDeleteRelayer", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {

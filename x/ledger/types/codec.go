@@ -17,13 +17,13 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetPoolDetail{}, "ledger/SetPoolDetail", nil)
 	cdc.RegisterConcrete(&MsgSetLeastBond{}, "ledger/SetLeastBond", nil)
 	cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
-	cdc.RegisterConcrete(&SetChainEraProposal{}, "ledger/SetChainEraProposal", nil)
 	cdc.RegisterConcrete(&MsgSetCommission{}, "ledger/SetCommission", nil)
 	cdc.RegisterConcrete(&MsgSetReceiver{}, "ledger/SetReceiver", nil)
-	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
 
+	cdc.RegisterConcrete(&SetChainEraProposal{}, "ledger/SetChainEraProposal", nil)
 	cdc.RegisterConcrete(&BondReportProposal{}, "ledger/BondReportProposal", nil)
 	cdc.RegisterConcrete(&BondAndReportActiveProposal{}, "ledger/BondAndReportActiveProposal", nil)
+	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
 	cdc.RegisterConcrete(&WithdrawReportProposal{}, "ledger/WithdrawReportProposal", nil)
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
 // this line is used by starport scaffolding # 2
@@ -31,53 +31,28 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgAddNewPool{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgRemovePool{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetEraUnbondLimit{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetInitBond{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetChainBondingDuration{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetPoolDetail{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetLeastBond{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgClearCurrentEraSnapShots{},
-)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddNewPool{},
+		&MsgRemovePool{},
+		&MsgSetEraUnbondLimit{},
+		&MsgSetInitBond{},
+		&MsgSetChainBondingDuration{},
+		&MsgSetPoolDetail{},
+		&MsgSetLeastBond{},
+		&MsgClearCurrentEraSnapShots{},
 		&MsgSetCommission{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetReceiver{},
 	)
-registry.RegisterImplementations((*rvotetypes.Content)(nil),
-	&SetChainEraProposal{},
-)
-registry.RegisterImplementations((*rvotetypes.Content)(nil),
-	&ActiveReportProposal{},
-)
-registry.RegisterImplementations((*rvotetypes.Content)(nil),
-	&BondReportProposal{},
-)
-registry.RegisterImplementations((*rvotetypes.Content)(nil),
-	&BondAndReportActiveProposal{},
-)
-registry.RegisterImplementations((*rvotetypes.Content)(nil),
-	&WithdrawReportProposal{},
-)
-registry.RegisterImplementations((*rvotetypes.Content)(nil),
-	&TransferReportProposal{},
-)
+
+	registry.RegisterImplementations(
+		(*rvotetypes.Content)(nil),
+		&SetChainEraProposal{},
+		&BondReportProposal{},
+		&BondAndReportActiveProposal{},
+		&ActiveReportProposal{},
+		&WithdrawReportProposal{},
+		&TransferReportProposal{},
+	)
+
 // this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

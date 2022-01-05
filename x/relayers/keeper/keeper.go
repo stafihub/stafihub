@@ -43,15 +43,15 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) SetLastVoter(ctx sdk.Context, denom, voter string) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
-	lv := &types.LastVoter{
+	lv := types.LastVoter{
 		Denom: denom,
 		Voter: voter,
 	}
-	b := k.cdc.MustMarshal(lv)
+	b := k.cdc.MustMarshal(&lv)
 	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val *types.LastVoter, found bool) {
+func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val types.LastVoter, found bool) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
 
 	b := store.Get([]byte(denom))
@@ -59,6 +59,6 @@ func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val *types.LastVoter, 
 		return val, false
 	}
 
-	k.cdc.MustUnmarshal(b, val)
+	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
