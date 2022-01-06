@@ -130,7 +130,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 		return types.ErrLastVoterNobody
 	}
 
-	_, ok = k.rateKeeper.GetExchangeRate(ctx, shot.Denom)
+	_, ok = k.GetExchangeRate(ctx, shot.Denom)
 	if !ok {
 		return types.ErrRateIsNone
 	}
@@ -192,7 +192,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 	if diff.GT(sdk.NewInt(0)) {
 		commission := k.Commission(ctx)
 		fee := commission.MulInt(diff).TruncateInt()
-		rfee := k.rateKeeper.TokenToRtoken(ctx, shot.Denom, fee)
+		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
 		coin := sdk.NewCoin(shot.Denom, rfee)
 		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
 			return err
@@ -215,7 +215,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 
 	if len(shots) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
-		k.SetRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
 	k.SetEraSnapShot(ctx, shot.Era, types.EraSnapShot{Denom: shot.Denom, ShotIds: shots})
@@ -292,7 +292,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	if diff.GT(sdk.NewInt(0)) {
 		commission := k.Commission(ctx)
 		fee := commission.MulInt(diff).TruncateInt()
-		rfee := k.rateKeeper.TokenToRtoken(ctx, shot.Denom, fee)
+		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
 		coin := sdk.NewCoin(shot.Denom, rfee)
 		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
 			return err
@@ -317,7 +317,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 
 	if len(shots) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
-		k.SetRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
 	k.SetEraSnapShot(ctx, shot.Era, types.EraSnapShot{Denom: shot.Denom, ShotIds: shots})

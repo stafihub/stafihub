@@ -1,7 +1,9 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.ledger;
 
-//import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
+import "ledger/ledger.proto";
+import "google/api/annotations.proto";
 //import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
 
@@ -9,7 +11,58 @@ option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
 
 // Query defines the gRPC querier service.
 service Query {
+// Queries a list of getExchangeRate items.
+	rpc GetExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/exchangerate/{denom}";
+	}
+
+// Queries a list of exchangeRateAll items.
+	rpc ExchangeRateAll(QueryExchangeRateAllRequest) returns (QueryExchangeRateAllResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/exchangeRateAll";
+	}
+
+// Queries a list of getEraExchangeRate items.
+	rpc GetEraExchangeRate(QueryGetEraExchangeRateRequest) returns (QueryGetEraExchangeRateResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/EraExchangeRate/{denom}/{era}";
+	}
+
+// Queries a list of eraExchangeRatesByDenom items.
+	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
+	}
     // this line is used by starport scaffolding # 2
+}
+
+message QueryGetExchangeRateRequest {
+  string denom = 1;
+}
+
+message QueryGetExchangeRateResponse {
+    ExchangeRate exchangeRate = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryExchangeRateAllRequest {
+}
+
+message QueryExchangeRateAllResponse {
+    repeated ExchangeRate exchangeRates = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetEraExchangeRateRequest {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message QueryGetEraExchangeRateResponse {
+    EraExchangeRate eraExchangeRate = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryEraExchangeRatesByDenomRequest {
+  string denom = 1;
+}
+
+message QueryEraExchangeRatesByDenomResponse {
+    repeated EraExchangeRate eraExchangeRates = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

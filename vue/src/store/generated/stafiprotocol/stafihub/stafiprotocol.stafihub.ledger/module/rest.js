@@ -134,4 +134,63 @@ export class HttpClient {
  * @version version not set
  */
 export class Api extends HttpClient {
+    constructor() {
+        super(...arguments);
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryGetEraExchangeRate
+         * @summary Queries a list of getEraExchangeRate items.
+         * @request GET:/stafiprotocol/stafihub/ledger/EraExchangeRate/{denom}/{era}
+         */
+        this.queryGetEraExchangeRate = (denom, era, params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/ledger/EraExchangeRate/${denom}/${era}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryEraExchangeRatesByDenom
+         * @summary Queries a list of eraExchangeRatesByDenom items.
+         * @request GET:/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}
+         */
+        this.queryEraExchangeRatesByDenom = (denom, params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/${denom}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryExchangeRateAll
+         * @summary Queries a list of exchangeRateAll items.
+         * @request GET:/stafiprotocol/stafihub/ledger/exchangeRateAll
+         */
+        this.queryExchangeRateAll = (params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/ledger/exchangeRateAll`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryGetExchangeRate
+         * @summary Queries a list of getExchangeRate items.
+         * @request GET:/stafiprotocol/stafihub/ledger/exchangerate/{denom}
+         */
+        this.queryGetExchangeRate = (denom, params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/ledger/exchangerate/${denom}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+    }
 }

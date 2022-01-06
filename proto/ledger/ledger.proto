@@ -103,5 +103,16 @@ message Unbonding {
     string recipient = 3;
 }
 
+message ExchangeRate {
+    string denom = 1;
+    string value = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+}
+
+message EraExchangeRate {
+  string denom = 1;
+  uint32 era = 2;
+  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+}
+
 
 

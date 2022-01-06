@@ -91,6 +91,15 @@ export interface Unbonding {
     amount: string;
     recipient: string;
 }
+export interface ExchangeRate {
+    denom: string;
+    value: string;
+}
+export interface EraExchangeRate {
+    denom: string;
+    era: number;
+    value: string;
+}
 export declare const ChainEra: {
     encode(message: ChainEra, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): ChainEra;
@@ -188,6 +197,20 @@ export declare const Unbonding: {
     fromJSON(object: any): Unbonding;
     toJSON(message: Unbonding): unknown;
     fromPartial(object: DeepPartial<Unbonding>): Unbonding;
+};
+export declare const ExchangeRate: {
+    encode(message: ExchangeRate, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): ExchangeRate;
+    fromJSON(object: any): ExchangeRate;
+    toJSON(message: ExchangeRate): unknown;
+    fromPartial(object: DeepPartial<ExchangeRate>): ExchangeRate;
+};
+export declare const EraExchangeRate: {
+    encode(message: EraExchangeRate, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): EraExchangeRate;
+    fromJSON(object: any): EraExchangeRate;
+    toJSON(message: EraExchangeRate): unknown;
+    fromPartial(object: DeepPartial<EraExchangeRate>): EraExchangeRate;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

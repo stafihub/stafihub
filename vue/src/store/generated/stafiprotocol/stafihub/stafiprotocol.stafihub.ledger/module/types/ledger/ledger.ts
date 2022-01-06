@@ -191,6 +191,17 @@ export interface Unbonding {
   recipient: string
 }
 
+export interface ExchangeRate {
+  denom: string
+  value: string
+}
+
+export interface EraExchangeRate {
+  denom: string
+  era: number
+  value: string
+}
+
 const baseChainEra: object = { denom: '', era: 0 }
 
 export const ChainEra = {
@@ -1432,6 +1443,167 @@ export const Unbonding = {
       message.recipient = object.recipient
     } else {
       message.recipient = ''
+    }
+    return message
+  }
+}
+
+const baseExchangeRate: object = { denom: '', value: '' }
+
+export const ExchangeRate = {
+  encode(message: ExchangeRate, writer: Writer = Writer.create()): Writer {
+    if (message.denom !== '') {
+      writer.uint32(10).string(message.denom)
+    }
+    if (message.value !== '') {
+      writer.uint32(18).string(message.value)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): ExchangeRate {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseExchangeRate } as ExchangeRate
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.denom = reader.string()
+          break
+        case 2:
+          message.value = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): ExchangeRate {
+    const message = { ...baseExchangeRate } as ExchangeRate
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom)
+    } else {
+      message.denom = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value)
+    } else {
+      message.value = ''
+    }
+    return message
+  },
+
+  toJSON(message: ExchangeRate): unknown {
+    const obj: any = {}
+    message.denom !== undefined && (obj.denom = message.denom)
+    message.value !== undefined && (obj.value = message.value)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<ExchangeRate>): ExchangeRate {
+    const message = { ...baseExchangeRate } as ExchangeRate
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom
+    } else {
+      message.denom = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value
+    } else {
+      message.value = ''
+    }
+    return message
+  }
+}
+
+const baseEraExchangeRate: object = { denom: '', era: 0, value: '' }
+
+export const EraExchangeRate = {
+  encode(message: EraExchangeRate, writer: Writer = Writer.create()): Writer {
+    if (message.denom !== '') {
+      writer.uint32(10).string(message.denom)
+    }
+    if (message.era !== 0) {
+      writer.uint32(16).uint32(message.era)
+    }
+    if (message.value !== '') {
+      writer.uint32(26).string(message.value)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): EraExchangeRate {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseEraExchangeRate } as EraExchangeRate
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.denom = reader.string()
+          break
+        case 2:
+          message.era = reader.uint32()
+          break
+        case 3:
+          message.value = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): EraExchangeRate {
+    const message = { ...baseEraExchangeRate } as EraExchangeRate
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom)
+    } else {
+      message.denom = ''
+    }
+    if (object.era !== undefined && object.era !== null) {
+      message.era = Number(object.era)
+    } else {
+      message.era = 0
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value)
+    } else {
+      message.value = ''
+    }
+    return message
+  },
+
+  toJSON(message: EraExchangeRate): unknown {
+    const obj: any = {}
+    message.denom !== undefined && (obj.denom = message.denom)
+    message.era !== undefined && (obj.era = message.era)
+    message.value !== undefined && (obj.value = message.value)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<EraExchangeRate>): EraExchangeRate {
+    const message = { ...baseEraExchangeRate } as EraExchangeRate
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom
+    } else {
+      message.denom = ''
+    }
+    if (object.era !== undefined && object.era !== null) {
+      message.era = object.era
+    } else {
+      message.era = 0
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value
+    } else {
+      message.value = ''
     }
     return message
   }

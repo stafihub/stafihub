@@ -1340,6 +1340,165 @@ export const Unbonding = {
         return message;
     }
 };
+const baseExchangeRate = { denom: '', value: '' };
+export const ExchangeRate = {
+    encode(message, writer = Writer.create()) {
+        if (message.denom !== '') {
+            writer.uint32(10).string(message.denom);
+        }
+        if (message.value !== '') {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseExchangeRate };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.denom = reader.string();
+                    break;
+                case 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseExchangeRate };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = String(object.value);
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseExchangeRate };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = object.value;
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    }
+};
+const baseEraExchangeRate = { denom: '', era: 0, value: '' };
+export const EraExchangeRate = {
+    encode(message, writer = Writer.create()) {
+        if (message.denom !== '') {
+            writer.uint32(10).string(message.denom);
+        }
+        if (message.era !== 0) {
+            writer.uint32(16).uint32(message.era);
+        }
+        if (message.value !== '') {
+            writer.uint32(26).string(message.value);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseEraExchangeRate };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.denom = reader.string();
+                    break;
+                case 2:
+                    message.era = reader.uint32();
+                    break;
+                case 3:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseEraExchangeRate };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.era !== undefined && object.era !== null) {
+            message.era = Number(object.era);
+        }
+        else {
+            message.era = 0;
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = String(object.value);
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.era !== undefined && (obj.era = message.era);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseEraExchangeRate };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.era !== undefined && object.era !== null) {
+            message.era = object.era;
+        }
+        else {
+            message.era = 0;
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = object.value;
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    }
+};
 var globalThis = (() => {
     if (typeof globalThis !== 'undefined')
         return globalThis;

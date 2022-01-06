@@ -35,6 +35,8 @@ var (
 	ReceiverPrefix = []byte{0x0c}
 	TotalExpectedActivePrefix = []byte{0x0d}
 	PoolUnbondPrefix = []byte{0x0e}
+	ExchangeRateKeyPrefix = []byte{0x0f}
+	EraExchangeRateKeyPrefix = []byte{0x10}
 )
 
 func KeyPrefix(p string) []byte {

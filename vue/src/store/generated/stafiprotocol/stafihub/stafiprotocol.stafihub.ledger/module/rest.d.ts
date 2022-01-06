@@ -1,3 +1,13 @@
+export interface LedgerEraExchangeRate {
+    denom?: string;
+    /** @format int64 */
+    era?: number;
+    value?: string;
+}
+export interface LedgerExchangeRate {
+    denom?: string;
+    value?: string;
+}
 export declare type LedgerMsgAddNewPoolResponse = object;
 export declare type LedgerMsgClearCurrentEraSnapShotsResponse = object;
 export declare type LedgerMsgRemovePoolResponse = object;
@@ -8,6 +18,18 @@ export declare type LedgerMsgSetInitBondResponse = object;
 export declare type LedgerMsgSetLeastBondResponse = object;
 export declare type LedgerMsgSetPoolDetailResponse = object;
 export declare type LedgerMsgSetReceiverResponse = object;
+export interface LedgerQueryEraExchangeRatesByDenomResponse {
+    eraExchangeRates?: LedgerEraExchangeRate[];
+}
+export interface LedgerQueryExchangeRateAllResponse {
+    exchangeRates?: LedgerExchangeRate[];
+}
+export interface LedgerQueryGetEraExchangeRateResponse {
+    eraExchangeRate?: LedgerEraExchangeRate;
+}
+export interface LedgerQueryGetExchangeRateResponse {
+    exchangeRate?: LedgerExchangeRate;
+}
 export interface ProtobufAny {
     "@type"?: string;
 }
@@ -75,5 +97,41 @@ export declare class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryGetEraExchangeRate
+     * @summary Queries a list of getEraExchangeRate items.
+     * @request GET:/stafiprotocol/stafihub/ledger/EraExchangeRate/{denom}/{era}
+     */
+    queryGetEraExchangeRate: (denom: string, era: number, params?: RequestParams) => Promise<HttpResponse<LedgerQueryGetEraExchangeRateResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryEraExchangeRatesByDenom
+     * @summary Queries a list of eraExchangeRatesByDenom items.
+     * @request GET:/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}
+     */
+    queryEraExchangeRatesByDenom: (denom: string, params?: RequestParams) => Promise<HttpResponse<LedgerQueryEraExchangeRatesByDenomResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryExchangeRateAll
+     * @summary Queries a list of exchangeRateAll items.
+     * @request GET:/stafiprotocol/stafihub/ledger/exchangeRateAll
+     */
+    queryExchangeRateAll: (params?: RequestParams) => Promise<HttpResponse<LedgerQueryExchangeRateAllResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryGetExchangeRate
+     * @summary Queries a list of getExchangeRate items.
+     * @request GET:/stafiprotocol/stafihub/ledger/exchangerate/{denom}
+     */
+    queryGetExchangeRate: (denom: string, params?: RequestParams) => Promise<HttpResponse<LedgerQueryGetExchangeRateResponse, RpcStatus>>;
 }
 export {};

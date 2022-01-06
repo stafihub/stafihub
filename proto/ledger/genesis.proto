@@ -1,11 +1,15 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.ledger;
 
+import "gogoproto/gogo.proto";
+import "ledger/ledger.proto";
+
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
 
 // GenesisState defines the ledger module's genesis state.
 message GenesisState {
+    repeated ExchangeRate exchangeRateList = 1 [(gogoproto.nullable) = false];
     // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -19,13 +19,13 @@ import (
 	"github.com/stafiprotocol/stafihub/x/ledger/keeper"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	"github.com/stafiprotocol/stafihub/x/ledger/client/cli"
-	
+
 )
 
 var (
 	_ module.AppModule      = AppModule{}
 	_ module.AppModuleBasic = AppModuleBasic{}
-	
+
 )
 
 // ----------------------------------------------------------------------------
@@ -131,7 +131,7 @@ func (am AppModule) LegacyQuerierHandler(legacyQuerierCdc *codec.LegacyAmino) sd
 // RegisterServices registers a GRPC query service to respond to the
 // module-specific GRPC queries.
 func (am AppModule) RegisterServices(cfg module.Configurator) {
-    types.RegisterQueryServer(cfg.QueryServer(), am.keeper)
+    types.RegisterQueryServer(cfg.QueryServer(), keeper.Querier{am.keeper})
 }
 
 // RegisterInvariants registers the capability module's invariants.

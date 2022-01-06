@@ -2,19 +2,12 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	exchangeratetypes "github.com/stafiprotocol/stafihub/x/exchangerate/types"
 	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
 	IsDenomValid(ctx sdk.Context, denom string) bool
-}
-
-type RateKeeper interface {
-	TokenToRtoken(ctx sdk.Context, denom string, balance sdk.Int) sdk.Int
-	GetExchangeRate(ctx sdk.Context, denom string) (val exchangeratetypes.ExchangeRate, found bool)
-	SetExchangeRate(ctx sdk.Context, denom string, rate sdk.Dec)
 }
 
 // BankKeeper defines the contract needed to be fulfilled for banking and supply

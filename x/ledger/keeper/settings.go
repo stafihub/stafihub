@@ -56,7 +56,7 @@ func (k Keeper) SetInitBond(ctx sdk.Context, denom, pool string, amount sdk.Int,
 		return types.ErrRepeatInitBond
 	}
 
-	rbalance := k.rateKeeper.TokenToRtoken(ctx, denom, amount)
+	rbalance := k.TokenToRtoken(ctx, denom, amount)
 	rcoins := sdk.Coins{
 		sdk.NewCoin(denom, rbalance),
 	}
@@ -70,7 +70,7 @@ func (k Keeper) SetInitBond(ctx sdk.Context, denom, pool string, amount sdk.Int,
 		return err
 	}
 
-	k.SetRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
+	k.SetExchangeRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
 
 	pipe := types.NewBondPipeline(denom, pool)
 	k.AddBondedPool(ctx, bpool)
@@ -398,15 +398,6 @@ func (k Keeper) GetPoolByDenom(ctx sdk.Context, denom string) (val *types.Pool, 
 
 	k.cdc.MustUnmarshal(b, val)
 	return val, true
-}
-
-func (k Keeper) SetRate(ctx sdk.Context, denom string, total, rtotal sdk.Int)  {
-	dec := sdk.OneDec()
-	if total.Int64() != 0 && rtotal.Int64() != 0 {
-		dec = dec.MulInt(rtotal).QuoInt(total)
-	}
-
-	k.rateKeeper.SetExchangeRate(ctx, denom, dec)
 }
 
 
