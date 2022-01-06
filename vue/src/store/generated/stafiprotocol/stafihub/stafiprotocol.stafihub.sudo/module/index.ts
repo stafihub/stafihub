@@ -4,13 +4,13 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUpdateAdmin } from "./types/sudo/tx";
 import { MsgAddDenom } from "./types/sudo/tx";
+import { MsgUpdateAdmin } from "./types/sudo/tx";
 
 
 const types = [
-  ["/stafiprotocol.stafihub.sudo.MsgUpdateAdmin", MsgUpdateAdmin],
   ["/stafiprotocol.stafihub.sudo.MsgAddDenom", MsgAddDenom],
+  ["/stafiprotocol.stafihub.sudo.MsgUpdateAdmin", MsgUpdateAdmin],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -39,8 +39,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgUpdateAdmin: (data: MsgUpdateAdmin): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.sudo.MsgUpdateAdmin", value: data }),
     msgAddDenom: (data: MsgAddDenom): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.sudo.MsgAddDenom", value: data }),
+    msgUpdateAdmin: (data: MsgUpdateAdmin): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.sudo.MsgUpdateAdmin", value: data }),
     
   };
 };
