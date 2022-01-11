@@ -19,6 +19,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
 	cdc.RegisterConcrete(&MsgSetCommission{}, "ledger/SetCommission", nil)
 	cdc.RegisterConcrete(&MsgSetReceiver{}, "ledger/SetReceiver", nil)
+	cdc.RegisterConcrete(&MsgSetUnbondFee{}, "ledger/SetUnbondFee", nil)
+	cdc.RegisterConcrete(&MsgLiquidityUnbond{}, "ledger/LiquidityUnbond", nil)
+	cdc.RegisterConcrete(&MsgSetUnbondCommission{}, "ledger/SetUnbondCommission", nil)
 
 	cdc.RegisterConcrete(&SetChainEraProposal{}, "ledger/SetChainEraProposal", nil)
 	cdc.RegisterConcrete(&BondReportProposal{}, "ledger/BondReportProposal", nil)
@@ -26,6 +29,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
 	cdc.RegisterConcrete(&WithdrawReportProposal{}, "ledger/WithdrawReportProposal", nil)
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
+	cdc.RegisterConcrete(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal", nil)
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -51,8 +56,8 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&ActiveReportProposal{},
 		&WithdrawReportProposal{},
 		&TransferReportProposal{},
+		&ExecuteBondProposal{},
 	)
-
 // this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

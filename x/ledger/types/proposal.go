@@ -13,6 +13,7 @@ const (
 	ActiveReportProposalType = "ActiveReportProposal"
 	WithdrawReportProposalType = "WithdrawReportProposal"
 	TransferReportProposalType = "TransferReportProposal"
+	ExecuteBondProposalType = "ExecuteBondProposal"
 )
 
 func init() {
@@ -28,6 +29,8 @@ func init() {
 	rvotetypes.RegisterProposalTypeCodec(&WithdrawReportProposal{}, "ledger/WithdrawReportProposal")
 	rvotetypes.RegisterProposalType(TransferReportProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&TransferReportProposal{}, "ledger/TransferReportProposal")
+	rvotetypes.RegisterProposalType(ExecuteBondProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal")
 }
 
 func NewSetChainEraProposal(proposer sdk.AccAddress, denom string, era uint32) *SetChainEraProposal {
@@ -274,6 +277,49 @@ func (p *TransferReportProposal) InFavour() bool {
 }
 
 func (p *TransferReportProposal) ValidateBasic() error {
+	err := rvotetypes.ValidateAbstract(p)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func NewExecuteBondProposal(
+	proposer sdk.AccAddress, denom string, bonder sdk.AccAddress,
+	pool string, blockhash string, txhash string, amount sdk.Int) *ExecuteBondProposal {
+	p := &ExecuteBondProposal{
+		Denom: denom,
+		Bonder: bonder.String(),
+		Pool: pool,
+		Blockhash: blockhash,
+		Txhash: txhash,
+		Amount: amount,
+	}
+
+	p.setPropId()
+	p.Proposer = proposer.String()
+	return p
+}
+
+func (p *ExecuteBondProposal) setPropId() {
+	b, err := p.Marshal()
+	if err != nil {
+		panic(err)
+	}
+
+	p.PropId = crypto.Sha256(b)
+}
+
+func (p *ExecuteBondProposal) ProposalRoute() string {
+	return ModuleName
+}
+
+func (p *ExecuteBondProposal) ProposalType() string {
+	return TransferReportProposalType
+}
+
+func (p *ExecuteBondProposal) ValidateBasic() error {
 	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err

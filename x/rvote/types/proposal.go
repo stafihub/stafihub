@@ -55,14 +55,6 @@ func (p *Proposal) ProposalRoute() string {
 	return content.ProposalRoute()
 }
 
-func (p *Proposal) InFavour() bool {
-	content := p.GetContent()
-	if content == nil {
-		return false
-	}
-	return content.InFavour()
-}
-
 // UnpackInterfaces implements UnpackInterfacesMessage.UnpackInterfaces
 func (p *Proposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
 	var content Content

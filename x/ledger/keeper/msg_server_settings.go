@@ -14,10 +14,11 @@ func (k msgServer) AddNewPool(goCtx context.Context,  msg *types.MsgAddNewPool) 
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if err := k.Keeper.AddPool(ctx, msg.Denom, msg.Addr); err != nil {
-		return nil, err
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
 	}
 
+	k.Keeper.AddPool(ctx, msg.Denom, msg.Addr)
 	return &types.MsgAddNewPoolResponse{}, nil
 }
 
@@ -28,17 +29,19 @@ func (k msgServer) RemovePool(goCtx context.Context,  msg *types.MsgRemovePool) 
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	pool, ok := k.Keeper.TryFindPool(ctx, msg.Denom, msg.Addr, types.PoolPrefix)
-	if !ok {
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
+	}
+
+	if !k.IsPoolExist(ctx, msg.Denom, msg.Addr) {
 		return nil, types.ErrPoolNotFound
 	}
 
-    bpool, ok := k.Keeper.TryFindPool(ctx, msg.Denom, msg.Addr, types.BondedPoolPrefix)
-    if !ok {
+	if !k.IsBondedPoolExist(ctx, msg.Denom, msg.Addr) {
 		return nil, types.ErrPoolNotBonded
 	}
 
-	pipe, ok := k.Keeper.BondPipeLine(ctx, msg.Denom, msg.Addr)
+	pipe, ok := k.Keeper.GetBondPipeLine(ctx, msg.Denom, msg.Addr)
 	if !ok {
 		return nil, types.ErrBondPipelineNotFound
 	}
@@ -48,11 +51,8 @@ func (k msgServer) RemovePool(goCtx context.Context,  msg *types.MsgRemovePool) 
 		return nil, types.ErrActiveAlreadySet
 	}
 
-	delete(pool.Addrs, msg.Addr)
-	delete(bpool.Addrs, msg.Addr)
-
-	k.Keeper.SetPool(ctx, pool, types.PoolPrefix)
-	k.Keeper.SetPool(ctx, bpool, types.BondedPoolPrefix)
+	k.Keeper.RemovePool(ctx, msg.Denom, msg.Addr)
+	k.Keeper.RemoveBondedPool(ctx, msg.Denom, msg.Addr)
 
 	return &types.MsgRemovePoolResponse{}, nil
 }
@@ -62,6 +62,10 @@ func (k msgServer) SetEraUnbondLimit(goCtx context.Context,  msg *types.MsgSetEr
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
 	}
 
 	k.Keeper.SetEraUnbondLimit(ctx, msg.Denom, msg.Limit)
@@ -76,10 +80,36 @@ func (k msgServer) SetInitBond(goCtx context.Context,  msg *types.MsgSetInitBond
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	rec, _ := sdk.AccAddressFromBech32(msg.Receiver)
-	if err := k.Keeper.SetInitBond(ctx, msg.Denom, msg.Pool, msg.Amount, rec); err != nil {
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
+	}
+
+	if !k.IsPoolExist(ctx, msg.Denom, msg.Pool) {
+		return nil, types.ErrPoolNotFound
+	}
+
+	if k.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
+		return nil, types.ErrRepeatInitBond
+	}
+
+	rbalance := k.TokenToRtoken(ctx, msg.Denom, msg.Amount)
+	rcoins := sdk.Coins{
+		sdk.NewCoin(msg.Denom, rbalance),
+	}
+
+	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
 		return nil, err
 	}
+
+	rec, _ := sdk.AccAddressFromBech32(msg.Receiver)
+	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rec, rcoins)
+	if err != nil {
+		return nil, err
+	}
+
+	k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
+	k.AddBondedPool(ctx, msg.Denom, msg.Pool)
+	k.SetBondPipeline(ctx, types.NewBondPipeline(msg.Denom, msg.Pool))
 
 	return &types.MsgSetInitBondResponse{}, nil
 }
@@ -91,6 +121,10 @@ func (k msgServer) SetChainBondingDuration(goCtx context.Context,  msg *types.Ms
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
+	}
+
 	k.Keeper.SetChainBondingDuration(ctx, msg.Denom, msg.Era)
 	return &types.MsgSetChainBondingDurationResponse{}, nil
 }
@@ -100,6 +134,10 @@ func (k msgServer) SetPoolDetail(goCtx context.Context,  msg *types.MsgSetPoolDe
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
 	}
 
 	k.Keeper.SetPoolDetail(ctx, msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold)
@@ -114,6 +152,10 @@ func (k msgServer) SetLeastBond(goCtx context.Context,  msg *types.MsgSetLeastBo
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
+	}
+
 	k.Keeper.SetLeastBond(ctx, msg.Denom, msg.Amount)
 
 	return &types.MsgSetLeastBondResponse{}, nil
@@ -124,6 +166,10 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context,  msg *types.M
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
 	}
 
 	k.Keeper.ClearCurrentEraSnapShots(ctx, msg.Denom)
@@ -153,4 +199,31 @@ func (k msgServer) SetReceiver(goCtx context.Context,  msg *types.MsgSetReceiver
 	k.Keeper.SetReceiver(ctx, receiver)
 
 	return &types.MsgSetReceiverResponse{}, nil
+}
+
+func (k msgServer) SetUnbondFee(goCtx context.Context,  msg *types.MsgSetUnbondFee) (*types.MsgSetUnbondFeeResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
+		return nil, sudoTypes.ErrInvalidDenom
+	}
+
+	k.Keeper.SetUnbondFee(ctx, msg.Denom, msg.Value)
+	return &types.MsgSetUnbondFeeResponse{}, nil
+}
+
+func (k msgServer) SetUnbondCommission(goCtx context.Context,  msg *types.MsgSetUnbondCommission) (*types.MsgSetUnbondCommissionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	k.Keeper.SetUnbondCommission(ctx, msg.Commission)
+
+	return &types.MsgSetUnbondCommissionResponse{}, nil
 }

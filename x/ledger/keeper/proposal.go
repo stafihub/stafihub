@@ -22,7 +22,10 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context,  p *types.SetChainEr
 		return types.ErrLastVoterNobody
 	}
 
-	ce := k.ChainEra(ctx, p.Denom)
+	ce, ok := k.GetChainEra(ctx, p.Denom)
+	if !ok {
+		ce = types.NewChainEra(p.Denom)
+	}
 	if ce.Era != 0 && ce.Era + 1 != p.Era {
 		return types.ErrEraSkipped
 	}
@@ -34,7 +37,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context,  p *types.SetChainEr
 				continue
 			}
 
-			pipe, _ := k.BondPipeLine(ctx, p.Denom, addr)
+			pipe, _ := k.GetBondPipeLine(ctx, p.Denom, addr)
 			bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
 			bsnap, err := bondShot.Marshal()
 			if err != nil {
@@ -79,7 +82,7 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 		return types.ErrLastVoterNobody
 	}
 
-	pipe, _ := k.BondPipeLine(ctx, shot.Denom, shot.Pool)
+	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
 	switch p.Action {
 	case types.BondOnly:
 		// todo safety check
@@ -135,7 +138,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 		return types.ErrRateIsNone
 	}
 
-	pipe, _ := k.BondPipeLine(ctx, shot.Denom, shot.Pool)
+	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	switch p.Action {
 	case types.BondOnly:
@@ -157,7 +160,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 		}
 	}
 
-	receiver := k.Receiver(ctx)
+	receiver := k.GetReceiver(ctx)
 	if receiver == nil {
 		return types.ErrNoReceiver
 	}
@@ -222,7 +225,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
-	_, ok = k.PoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
+	_, ok = k.GetPoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
 	if ok {
 		shot.UpdateState(types.ActiveReported)
 		ctx.EventManager().EmitEvent(
@@ -257,7 +260,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		return types.ErrLastVoterNobody
 	}
 
-	receiver := k.Receiver(ctx)
+	receiver := k.GetReceiver(ctx)
 	if receiver == nil {
 		return types.ErrNoReceiver
 	}
@@ -303,7 +306,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		}
 	}
 
-	pipe, _ := k.BondPipeLine(ctx, shot.Denom, shot.Pool)
+	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	totalExpectedActive :=  k.TotalExpectedActive(ctx, shot.Denom, shot.Era).Add(pipe.Chunk.Active)
@@ -324,7 +327,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
-	_, ok = k.PoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
+	_, ok = k.GetPoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
 	if ok {
 		shot.UpdateState(types.ActiveReported)
 		ctx.EventManager().EmitEvent(
@@ -415,6 +418,37 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context,  p *types.Transfe
 			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 		),
 	)
+
+	return nil
+}
+
+func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context,  p *types.ExecuteBondProposal) error {
+	newBr := types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Blockhash, p.Txhash, p.Amount)
+	oldBr, ok := k.GetBondRecord(ctx, newBr.BondId())
+	if ok && oldBr.Executed {
+		return nil
+	}
+
+	pipe, _ := k.GetBondPipeLine(ctx, p.Denom, p.Pool)
+	pipe.Chunk.Active = pipe.Chunk.Active.Add(p.Amount)
+	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Amount)
+
+	rbalance := k.TokenToRtoken(ctx, p.Denom, p.Amount)
+	rcoins := sdk.Coins{
+		sdk.NewCoin(p.Denom, rbalance),
+	}
+	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
+		return err
+	}
+
+	bonder, _ := sdk.AccAddressFromBech32(p.Bonder)
+	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins)
+	if err != nil {
+		return err
+	}
+
+	k.SetBondPipeline(ctx, pipe)
+	// todo add event and safety check
 
 	return nil
 }

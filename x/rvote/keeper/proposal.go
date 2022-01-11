@@ -19,8 +19,7 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 		prop = &types.Proposal{
 			Status: types.StatusInitiated,
 			StartBlock: curBlock,
-			VotesFor: make([]string, 0),
-			VotesAgainst: make([]string, 0),
+			Voted: []string{proposer},
 		}
 		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
 		if err := prop.SetContent(content); err != nil {
@@ -32,19 +31,10 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 		return nil, relayerstypes.ErrAlreadyVoted
 	}
 
-	if prop.InFavour() {
-		prop.VotesFor = append(prop.VotesFor, proposer)
-	} else {
-		prop.VotesAgainst = append(prop.VotesAgainst, proposer)
-	}
-
 	if prop.IsExpired(curBlock) {
 		prop.Status = types.StatusExpired
 	} else {
-		total := uint32(k.relayerKeeper.RelayerCount(ctx, content.GetDenom()))
-		if threshold.Value > total || uint32(len(prop.VotesAgainst)) + threshold.Value > total {
-			prop.Status = types.StatusRejected
-		} else if uint32(len(prop.VotesFor)) > threshold.Value {
+		if uint32(len(prop.Voted)) > threshold.Value {
 			prop.Status = types.StatusApproved
 		}
 	}

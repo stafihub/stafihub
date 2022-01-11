@@ -257,3 +257,47 @@ func CmdTransferReport() *cobra.Command {
 
 	return cmd
 }
+
+func CmdExecuteBondProposal() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "execute-bond [denom] [bonder] [shot-id]",
+		Short: "Broadcast message transfer_report",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argDenom := args[0]
+			argBonder, err := sdk.AccAddressFromBech32(args[1])
+			if err != nil {
+				return err
+			}
+			argPool := args[2]
+			argBlockhash := args[3]
+			argTxHash := args[4]
+			argAmount, ok := sdk.NewIntFromString(args[5])
+			if !ok {
+				return fmt.Errorf("cast amount %s into Int error", args[5])
+			}
+
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			from := clientCtx.GetFromAddress()
+			content := types.NewExecuteBondProposal(from, argDenom, argBonder, argPool, argBlockhash, argTxHash, argAmount)
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
+			if err != nil {
+				return err
+			}
+
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}

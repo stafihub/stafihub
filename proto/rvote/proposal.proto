@@ -15,10 +15,9 @@ message Proposal {
 
   google.protobuf.Any content = 1 [(cosmos_proto.accepts_interface) = "Content"];
   ProposalStatus status = 2 [(gogoproto.moretags) = "yaml:\"prop_status\""];
-  repeated string votesFor = 3 [(gogoproto.moretags) = "yaml:\"votes_for\""];
-  repeated string votesAgainst = 4 [(gogoproto.moretags) = "yaml:\"votes_against\""];
-  int64 startBlock = 5 [(gogoproto.moretags) = "yaml:\"start_block\""];
-  int64 expireBlock = 6 [(gogoproto.moretags) = "yaml:\"expire_block\""];
+  repeated string voted = 3 [(gogoproto.moretags) = "yaml:\"voted\""];
+  int64 startBlock = 4 [(gogoproto.moretags) = "yaml:\"start_block\""];
+  int64 expireBlock = 5 [(gogoproto.moretags) = "yaml:\"expire_block\""];
 }
 
 // ProposalStatus enumerates the valid statuses of a proposal.
@@ -27,6 +26,5 @@ enum ProposalStatus {
 
   PROPOSAL_STATUS_INITIATED = 0 [(gogoproto.enumvalue_customname) = "StatusInitiated"];
   PROPOSAL_STATUS_APPROVED = 1 [(gogoproto.enumvalue_customname) = "StatusApproved"];
-  PROPOSAL_STATUS_REJECTED = 2 [(gogoproto.enumvalue_customname) = "StatusRejected"];
-  PROPOSAL_STATUS_EXPIRED = 3 [(gogoproto.enumvalue_customname) = "StatusExpired"];
+  PROPOSAL_STATUS_EXPIRED = 2 [(gogoproto.enumvalue_customname) = "StatusExpired"];
 }

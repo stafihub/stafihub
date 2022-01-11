@@ -357,3 +357,71 @@ func CmdSetReceiver() *cobra.Command {
 
 	return cmd
 }
+
+func CmdSetUnbondFee() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "set-unbond-fee [denom] [value]",
+		Short: "Broadcast message set_unbond_fee",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argDenom := args[0]
+			argValue, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSetUnbondFee(
+				clientCtx.GetFromAddress(),
+				argDenom,
+				argValue,
+
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdSetUnbondCommission() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "set-unbond-commission [commission]",
+		Short: "Broadcast message set_unbond_commission",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argCommission, err := sdk.NewDecFromStr(args[0])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSetUnbondCommission(
+				clientCtx.GetFromAddress(),
+				argCommission,
+
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}

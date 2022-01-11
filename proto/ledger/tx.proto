@@ -18,6 +18,9 @@ service Msg {
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
   rpc SetCommission(MsgSetCommission) returns (MsgSetCommissionResponse);
   rpc SetReceiver(MsgSetReceiver) returns (MsgSetReceiverResponse);
+  rpc SetUnbondFee(MsgSetUnbondFee) returns (MsgSetUnbondFeeResponse);
+  rpc LiquidityUnbond(MsgLiquidityUnbond) returns (MsgLiquidityUnbondResponse);
+  rpc SetUnbondCommission(MsgSetUnbondCommission) returns (MsgSetUnbondCommissionResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -110,6 +113,34 @@ message MsgSetReceiver {
 }
 
 message MsgSetReceiverResponse {
+}
+
+message MsgSetUnbondFee {
+  string creator = 1;
+  string denom = 2;
+  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgSetUnbondFeeResponse {
+}
+
+message MsgLiquidityUnbond {
+  string creator = 1;
+  string denom = 2;
+  string pool = 3;
+  string value = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string recipient = 5;
+}
+
+message MsgLiquidityUnbondResponse {
+}
+
+message MsgSetUnbondCommission {
+  string creator = 1;
+  string commission = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+}
+
+message MsgSetUnbondCommissionResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

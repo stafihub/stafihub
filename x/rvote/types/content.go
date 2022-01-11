@@ -21,7 +21,6 @@ type Content interface {
 	GetDenom() string
 	ProposalRoute() string
 	ProposalType() string
-	InFavour() bool
 	ValidateBasic() error
 	String() string
 }

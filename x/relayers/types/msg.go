@@ -74,8 +74,6 @@ func (msg *MsgDeleteRelayer) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
 	}
 	return nil
-
-  return nil
 }
 
 func NewMsgUpdateThreshold(creator sdk.AccAddress, denom string, value uint32) *MsgUpdateThreshold {

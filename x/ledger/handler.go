@@ -47,6 +47,15 @@ case *types.MsgSetCommission:
 case *types.MsgSetReceiver:
 					res, err := msgServer.SetReceiver(sdk.WrapSDKContext(ctx), msg)
 					return sdk.WrapServiceResult(ctx, res, err)
+case *types.MsgSetUnbondFee:
+					res, err := msgServer.SetUnbondFee(sdk.WrapSDKContext(ctx), msg)
+					return sdk.WrapServiceResult(ctx, res, err)
+case *types.MsgLiquidityUnbond:
+					res, err := msgServer.LiquidityUnbond(sdk.WrapSDKContext(ctx), msg)
+					return sdk.WrapServiceResult(ctx, res, err)
+case *types.MsgSetUnbondCommission:
+					res, err := msgServer.SetUnbondCommission(sdk.WrapSDKContext(ctx), msg)
+					return sdk.WrapServiceResult(ctx, res, err)
 // this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)

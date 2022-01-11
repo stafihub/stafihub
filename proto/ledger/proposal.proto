@@ -53,3 +53,14 @@ message TransferReportProposal {
     bytes shotId = 3;
     bytes propId = 4;
 }
+
+message ExecuteBondProposal {
+    string proposer = 1;
+    string denom = 2;
+    string bonder = 3;
+    string pool = 4;
+    string blockhash = 5;
+    string txhash = 6;
+    string amount = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    bytes propId = 8;
+}

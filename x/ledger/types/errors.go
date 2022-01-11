@@ -25,4 +25,7 @@ var (
 	ErrStateNotActiveReported = sdkerrors.Register(ModuleName, 15, "state not active reported error")
 	ErrStateNotTransferable = sdkerrors.Register(ModuleName, 16, "state not transferable error")
 	ErrTransferReported = sdkerrors.Register(ModuleName, 17, "transfer reported error")
+	ErrChainEraNotFound = sdkerrors.Register(ModuleName, 18, "chain era not found error")
+	ErrBondingDurationNotSet = sdkerrors.Register(ModuleName, 19, "bonding duration not set error")
+	ErrPoolLimitReached = sdkerrors.Register(ModuleName, 20, "pool limit reached error")
 )

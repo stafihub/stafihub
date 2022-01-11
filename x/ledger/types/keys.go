@@ -16,7 +16,7 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_ledger"
 
-
+	DefaultDenom = "Fis"
 )
 
 var (
@@ -37,6 +37,10 @@ var (
 	PoolUnbondPrefix = []byte{0x0e}
 	ExchangeRateKeyPrefix = []byte{0x0f}
 	EraExchangeRateKeyPrefix = []byte{0x10}
+	UnbondFeePrefix = []byte{0x11}
+	UnbondCommissionPrefix = []byte{0x12}
+	AccountUnbondPrefix = []byte{0x13}
+	BondRecordPrefix = []byte{0x14}
 )
 
 func KeyPrefix(p string) []byte {

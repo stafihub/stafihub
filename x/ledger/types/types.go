@@ -4,6 +4,45 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+func NewPool(denom string) Pool {
+	return Pool{
+		Denom: denom,
+		Addrs: map[string]bool{},
+	}
+}
+
+func NewChainEra(denom string) ChainEra {
+	return ChainEra{
+		Denom: denom,
+		Era: 0,
+	}
+}
+
+func NewAccountUnbond(denom, unbonder string, chunks []UserUnlockChunk) AccountUnbond {
+	return AccountUnbond{
+		Unbonder: unbonder,
+		Denom: denom,
+		Chunks: chunks,
+	}
+}
+
+func NewPoolUnbond(denom, pool string, era uint32, unbondings []Unbonding) PoolUnbond {
+	return PoolUnbond{
+		Denom: denom,
+		Pool: pool,
+		Era: era,
+		Unbondings: unbondings,
+	}
+}
+
+func NewUnbonding(unbonder, recipient string, amount sdk.Int) Unbonding {
+	return Unbonding{
+		Unbonder: unbonder,
+		Amount: amount,
+		Recipient: recipient,
+	}
+}
+
 func NewBondPipeline(denom, pool string) BondPipeline {
 	return BondPipeline{
 		Denom: denom,
@@ -33,6 +72,28 @@ func NewEraSnapShot(denom string) EraSnapShot {
 		ShotIds: [][]byte{},
 	}
 }
+
+func NewBondRecord(denom, bonder, pool, blockhash, txhash string, amount sdk.Int) BondRecord {
+	return BondRecord{
+		Denom: denom,
+		Bonder: bonder,
+		Pool: pool,
+		Blockhash: blockhash,
+		Txhash: txhash,
+		Amount: amount,
+		Executed: false,
+	}
+}
+
+func (br *BondRecord) BondId() []byte {
+	b, err := br.Marshal()
+	if err != nil {
+		panic(err)
+	}
+
+	return b
+}
+
 
 func (bss BondSnapshot) UpdateState(state PoolBondState) {
 	// todo need to test if the change was kept

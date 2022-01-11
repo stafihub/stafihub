@@ -17,6 +17,9 @@ var (
 	_ sdk.Msg = &MsgClearCurrentEraSnapShots{}
 	_ sdk.Msg = &MsgSetCommission{}
 	_ sdk.Msg = &MsgSetReceiver{}
+	_ sdk.Msg = &MsgSetUnbondCommission{}
+	_ sdk.Msg = &MsgLiquidityUnbond{}
+	_ sdk.Msg = &MsgSetUnbondFee{}
 )
 
 func NewMsgAddNewPool(creator sdk.AccAddress, denom string, addr string) *MsgAddNewPool {
@@ -36,10 +39,7 @@ func (msg *MsgAddNewPool) Type() string {
 }
 
 func (msg *MsgAddNewPool) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -49,10 +49,10 @@ func (msg *MsgAddNewPool) GetSignBytes() []byte {
 }
 
 func (msg *MsgAddNewPool) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+
 	return nil
 }
 
@@ -73,10 +73,7 @@ func (msg *MsgRemovePool) Type() string {
 }
 
 func (msg *MsgRemovePool) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -86,10 +83,10 @@ func (msg *MsgRemovePool) GetSignBytes() []byte {
 }
 
 func (msg *MsgRemovePool) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+
 	return nil
 }
 
@@ -110,10 +107,7 @@ func (msg *MsgSetEraUnbondLimit) Type() string {
 }
 
 func (msg *MsgSetEraUnbondLimit) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -123,10 +117,10 @@ func (msg *MsgSetEraUnbondLimit) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+
 	return nil
 }
 
@@ -149,10 +143,7 @@ func (msg *MsgSetInitBond) Type() string {
 }
 
 func (msg *MsgSetInitBond) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -162,14 +153,8 @@ func (msg *MsgSetInitBond) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetInitBond) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-
-	_, err = sdk.AccAddressFromBech32(msg.Receiver)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
+	if msg.Creator == "" || msg.Receiver == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Receiver)
 	}
 	return nil
 }
@@ -191,10 +176,7 @@ func (msg *MsgSetChainBondingDuration) Type() string {
 }
 
 func (msg *MsgSetChainBondingDuration) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -204,10 +186,10 @@ func (msg *MsgSetChainBondingDuration) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetChainBondingDuration) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+
 	return nil
 }
 
@@ -230,10 +212,7 @@ func (msg *MsgSetPoolDetail) Type() string {
 }
 
 func (msg *MsgSetPoolDetail) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -243,9 +222,8 @@ func (msg *MsgSetPoolDetail) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetPoolDetail) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
 	if len(msg.SubAccounts) != 0 {
@@ -276,10 +254,7 @@ func (msg *MsgSetLeastBond) Type() string {
 }
 
 func (msg *MsgSetLeastBond) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -289,10 +264,10 @@ func (msg *MsgSetLeastBond) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetLeastBond) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+
 	return nil
 }
 
@@ -312,10 +287,7 @@ func (msg *MsgClearCurrentEraSnapShots) Type() string {
 }
 
 func (msg *MsgClearCurrentEraSnapShots) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -325,10 +297,10 @@ func (msg *MsgClearCurrentEraSnapShots) GetSignBytes() []byte {
 }
 
 func (msg *MsgClearCurrentEraSnapShots) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+
 	return nil
 }
 
@@ -348,10 +320,7 @@ func (msg *MsgSetCommission) Type() string {
 }
 
 func (msg *MsgSetCommission) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -361,9 +330,8 @@ func (msg *MsgSetCommission) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetCommission) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
 	if msg.Commission.GT(sdk.OneDec()) {
@@ -388,10 +356,7 @@ func (msg *MsgSetReceiver) Type() string {
 }
 
 func (msg *MsgSetReceiver) GetSigners() []sdk.AccAddress {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		panic(err)
-	}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
@@ -401,14 +366,118 @@ func (msg *MsgSetReceiver) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetReceiver) ValidateBasic() error {
-	_, err := sdk.AccAddressFromBech32(msg.Creator)
-	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	if msg.Creator == "" || msg.Receiver == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Receiver)
+	}
+	return nil
+}
+
+func NewMsgSetUnbondCommission(creator sdk.AccAddress, commission sdk.Dec) *MsgSetUnbondCommission {
+	return &MsgSetUnbondCommission{
+		Creator: creator.String(),
+		Commission: commission,
+	}
+}
+
+func (msg *MsgSetUnbondCommission) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSetUnbondCommission) Type() string {
+	return "SetUnbondCommission"
+}
+
+func (msg *MsgSetUnbondCommission) GetSigners() []sdk.AccAddress {
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSetUnbondCommission) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSetUnbondCommission) ValidateBasic() error {
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Receiver == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "empty receiver address (%s)", err)
+	if msg.Commission.GT(sdk.OneDec()) {
+		return fmt.Errorf("rate %s bigger than oneDec", msg.Commission.String())
 	}
+	return nil
+}
+
+func NewMsgLiquidityUnbond(creator sdk.AccAddress, denom string, pool string, value sdk.Int, recipient string) *MsgLiquidityUnbond {
+	return &MsgLiquidityUnbond{
+		Creator: creator.String(),
+		Denom: denom,
+		Pool: pool,
+		Value: value,
+		Recipient: recipient,
+	}
+}
+
+func (msg *MsgLiquidityUnbond) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgLiquidityUnbond) Type() string {
+	return "LiquidityUnbond"
+}
+
+func (msg *MsgLiquidityUnbond) GetSigners() []sdk.AccAddress {
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgLiquidityUnbond) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgLiquidityUnbond) ValidateBasic() error {
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
+	if msg.Value.LTE(sdk.ZeroInt()) {
+		return fmt.Errorf("unbond value %s less than zeroInt", msg.Value.String())
+	}
+	return nil
+}
+
+func NewMsgSetUnbondFee(creator sdk.AccAddress, denom string, value sdk.Coin) *MsgSetUnbondFee {
+	return &MsgSetUnbondFee{
+		Creator: creator.String(),
+		Denom: denom,
+		Value: value,
+	}
+}
+
+func (msg *MsgSetUnbondFee) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSetUnbondFee) Type() string {
+	return "SetUnbondFee"
+}
+
+func (msg *MsgSetUnbondFee) GetSigners() []sdk.AccAddress {
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSetUnbondFee) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSetUnbondFee) ValidateBasic() error {
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
 	return nil
 }
 

@@ -24,6 +24,8 @@ func NewProposalHandler(k keeper.Keeper) rvotetypes.Handler {
 			return k.ProcessWithdrawReportProposal(ctx, c)
 		case *types.TransferReportProposal:
 			return k.ProcessTransferReportProposal(ctx, c)
+		case *types.ExecuteBondProposal:
+			return k.ProcessExecuteBondProposal(ctx, c)
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized param proposal content type: %T", c)
 		}
