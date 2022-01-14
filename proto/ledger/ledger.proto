@@ -109,8 +109,7 @@ message EraExchangeRate {
 }
 
 message UnbondFee {
-    string denom = 1;
-    string value = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+    string value = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message Unbonding {
@@ -139,5 +138,4 @@ message BondRecord {
     string blockhash = 4;
     string txhash = 5;
     string amount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-    bool executed = 7;
 }

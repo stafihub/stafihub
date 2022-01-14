@@ -334,8 +334,12 @@ func (msg *MsgSetCommission) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.GT(sdk.OneDec()) {
-		return fmt.Errorf("rate %s bigger than oneDec", msg.Commission.String())
+	if msg.Commission.LT(sdk.ZeroDec()) {
+		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
+	}
+
+	if msg.Commission.GTE(sdk.OneDec()) {
+		return fmt.Errorf("commission %s bigger than oneDec", msg.Commission.String())
 	}
 	return nil
 }
@@ -402,16 +406,20 @@ func (msg *MsgSetUnbondCommission) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.GT(sdk.OneDec()) {
-		return fmt.Errorf("rate %s bigger than oneDec", msg.Commission.String())
+	if msg.Commission.LT(sdk.ZeroDec()) {
+		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
 	}
+
+	if msg.Commission.GTE(sdk.OneDec()) {
+		return fmt.Errorf("commission %s bigger than oneDec", msg.Commission.String())
+	}
+
 	return nil
 }
 
-func NewMsgLiquidityUnbond(creator sdk.AccAddress, denom string, pool string, value sdk.Int, recipient string) *MsgLiquidityUnbond {
+func NewMsgLiquidityUnbond(creator sdk.AccAddress, pool string, value sdk.Coin, recipient string) *MsgLiquidityUnbond {
 	return &MsgLiquidityUnbond{
 		Creator: creator.String(),
-		Denom: denom,
 		Pool: pool,
 		Value: value,
 		Recipient: recipient,

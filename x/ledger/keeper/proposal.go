@@ -85,7 +85,6 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
 	switch p.Action {
 	case types.BondOnly:
-		// todo safety check
 		pipe.Chunk.Bond = pipe.Chunk.Bond.Sub(shot.Chunk.Bond)
 	case types.UnbondOnly:
 		pipe.Chunk.Unbond = pipe.Chunk.Unbond.Sub(shot.Chunk.Unbond)
@@ -142,7 +141,6 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context,  p *types.Bo
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	switch p.Action {
 	case types.BondOnly:
-		// todo safety check
 		pipe.Chunk.Bond = pipe.Chunk.Bond.Sub(shot.Chunk.Bond)
 	case types.UnbondOnly:
 		pipe.Chunk.Unbond = pipe.Chunk.Unbond.Sub(shot.Chunk.Unbond)
@@ -423,11 +421,11 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context,  p *types.Transfe
 }
 
 func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context,  p *types.ExecuteBondProposal) error {
-	newBr := types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Blockhash, p.Txhash, p.Amount)
-	oldBr, ok := k.GetBondRecord(ctx, newBr.BondId())
-	if ok && oldBr.Executed {
-		return nil
+	br, ok := k.GetBondRecord(ctx, p.Denom, p.Blockhash, p.Txhash)
+	if ok {
+		return types.ErrBondRepeated
 	}
+	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Blockhash, p.Txhash, p.Amount)
 
 	pipe, _ := k.GetBondPipeLine(ctx, p.Denom, p.Pool)
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(p.Amount)
@@ -438,17 +436,29 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context,  p *types.ExecuteBon
 		sdk.NewCoin(p.Denom, rbalance),
 	}
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
-		return err
+		panic(err)
 	}
 
 	bonder, _ := sdk.AccAddressFromBech32(p.Bonder)
-	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins)
-	if err != nil {
-		return err
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins); err != nil {
+		panic(err)
 	}
 
+	k.SetBondRecord(ctx, br)
 	k.SetBondPipeline(ctx, pipe)
-	// todo add event and safety check
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeBondExecuted,
+			sdk.NewAttribute(types.AttributeKeyDenom, br.Denom),
+			sdk.NewAttribute(types.AttributeKeyBonder, br.Bonder),
+			sdk.NewAttribute(types.AttributeKeyPool, br.Pool),
+			sdk.NewAttribute(types.AttributeKeyBlockhash, br.Blockhash),
+			sdk.NewAttribute(types.AttributeKeyTxhash, br.Txhash),
+			sdk.NewAttribute(types.AttributeKeyBalance, br.Amount.String()),
+			sdk.NewAttribute(types.AttributeKeyRbalance, rbalance.String()),
+		),
+	)
 
 	return nil
 }

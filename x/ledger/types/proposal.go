@@ -325,6 +325,10 @@ func (p *ExecuteBondProposal) ValidateBasic() error {
 		return err
 	}
 
+	if p.Bonder == "" {
+		return ErrInvalidBonder
+	}
+
 	return nil
 }
 

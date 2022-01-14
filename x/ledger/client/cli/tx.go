@@ -65,13 +65,12 @@ func CmdLiquidityUnbond() *cobra.Command {
 		Short: "Broadcast message liquidity_unbond",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argPool := args[1]
-			argValue, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("cast value %s into Int error", args[2])
+			argPool := args[0]
+			argValue, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
 			}
-			argRecipient := args[3]
+			argRecipient := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -80,11 +79,9 @@ func CmdLiquidityUnbond() *cobra.Command {
 
 			msg := types.NewMsgLiquidityUnbond(
 				clientCtx.GetFromAddress(),
-				argDenom,
 				argPool,
 				argValue,
 				argRecipient,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

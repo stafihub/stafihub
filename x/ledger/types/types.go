@@ -81,19 +81,8 @@ func NewBondRecord(denom, bonder, pool, blockhash, txhash string, amount sdk.Int
 		Blockhash: blockhash,
 		Txhash: txhash,
 		Amount: amount,
-		Executed: false,
 	}
 }
-
-func (br *BondRecord) BondId() []byte {
-	b, err := br.Marshal()
-	if err != nil {
-		panic(err)
-	}
-
-	return b
-}
-
 
 func (bss BondSnapshot) UpdateState(state PoolBondState) {
 	// todo need to test if the change was kept

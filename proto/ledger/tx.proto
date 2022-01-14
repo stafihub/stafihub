@@ -126,10 +126,9 @@ message MsgSetUnbondFeeResponse {
 
 message MsgLiquidityUnbond {
   string creator = 1;
-  string denom = 2;
-  string pool = 3;
-  string value = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string recipient = 5;
+  string pool = 2;
+  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  string recipient = 4;
 }
 
 message MsgLiquidityUnbondResponse {

@@ -28,4 +28,7 @@ var (
 	ErrChainEraNotFound = sdkerrors.Register(ModuleName, 18, "chain era not found error")
 	ErrBondingDurationNotSet = sdkerrors.Register(ModuleName, 19, "bonding duration not set error")
 	ErrPoolLimitReached = sdkerrors.Register(ModuleName, 20, "pool limit reached error")
+	ErrBondRepeated = sdkerrors.Register(ModuleName, 21, "bond repeated error")
+	ErrInvalidBonder = sdkerrors.Register(ModuleName, 22, "invalid bonder error")
+	ErrCommissionTooBig = sdkerrors.Register(ModuleName, 23, "commission too big error")
 )

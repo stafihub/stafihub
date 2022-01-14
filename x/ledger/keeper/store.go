@@ -308,26 +308,6 @@ func (k Keeper) GetChainEra(ctx sdk.Context, denom string) (val types.ChainEra, 
 	return val, true
 }
 
-//func (k Keeper) TryFindPool(ctx sdk.Context, denom, addr string, pref []byte) (val *types.Pool, found bool) {
-//	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), pref)
-//
-//	b := store.Get([]byte(denom))
-//	if b == nil {
-//		return &types.Pool{
-//			Denom: denom,
-//			Addrs: map[string]bool{addr: true},
-//		}, false
-//	}
-//
-//	k.cdc.MustUnmarshal(b, val)
-//	if _, ok := val.Addrs[addr]; ok {
-//		return val, true
-//	}
-//
-//	val.Addrs[addr] = true
-//	return val, false
-//}
-
 func (k Keeper) SetCommission(ctx sdk.Context, commission sdk.Dec) {
 	store := ctx.KVStore(k.storeKey)
 	b, _ := commission.Marshal()
@@ -489,12 +469,12 @@ func (k Keeper) GetAccountUnbond(ctx sdk.Context, denom, unbonder string) (val t
 func (k Keeper) SetBondRecord(ctx sdk.Context, br types.BondRecord) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
 	b := k.cdc.MustMarshal(&br)
-	store.Set(br.BondId(), b)
+	store.Set([]byte(br.Denom+br.Blockhash+br.Txhash), b)
 }
 
-func (k Keeper) GetBondRecord(ctx sdk.Context, bondId []byte) (val types.BondRecord, found bool) {
+func (k Keeper) GetBondRecord(ctx sdk.Context, denom, blockhash, txhash string) (val types.BondRecord, found bool) {
 	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
-	b := store.Get(bondId)
+	b := store.Get([]byte(denom+blockhash+txhash))
 	if b == nil {
 		return val, false
 	}
