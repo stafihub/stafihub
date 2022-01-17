@@ -370,6 +370,7 @@ rvotemoduletypes.StoreKey,
 			keys[sudomoduletypes.StoreKey],
 			keys[sudomoduletypes.MemStoreKey],
 
+			app.BankKeeper,
 			)
 
 		app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(

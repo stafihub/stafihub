@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/version"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -18,7 +20,7 @@ var (
 )
 
 const (
-	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+	FlagMetadata     = "metadata"
 )
 
 
@@ -73,33 +75,67 @@ func CmdUpdateAdmin() *cobra.Command {
 
 func CmdAddDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-denom [denom]",
-		Short: "Broadcast message add_denom",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
+		Use:   "add-denom",
+		Short: "Broadcast message add_denom with an denom_metadata",
+		Long: strings.TrimSpace(
+			fmt.Sprintf(`Broadcast message add_denom with an denom_metadata which can be given through a metadata JSON file.
 
+Example:
+$ %s tx sudo add-denom --metadata="path/to/metadata.json" --from mykey
+
+Where metadata.json could be like this:
+
+{
+	"description": "The native staking token of the StaFiHub.",
+	"denom_units": [
+        {
+			"denom": "ufis",
+          	"exponent": 0,
+          	"aliases": [
+            	"microfis"
+          	]
+        },
+        {
+          "denom": "mfis",
+          "exponent": 3,
+          "aliases": [
+            "millifis"
+          ]
+        },
+        {
+          "denom": "fis",
+          "exponent": 6,
+          "aliases": []
+        }
+      ],
+      "base": "ufis",
+      "display": "fis",
+      "name": "",
+      "symbol": ""
+    }
+`, version.AppName),
+	),
+		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			if sdk.ValidateDenom(argDenom) != nil {
-				return types.ErrInvalidDenom
+			md, err := parseMetadataFlags(cmd.Flags())
+			if err != nil {
+				return fmt.Errorf("failed to parse metadata: %w", err)
 			}
 
-			msg := types.NewMsgAddDenom(
-				clientCtx.GetFromAddress(),
-				argDenom,
-			)
-
-			if err := msg.ValidateBasic(); err != nil {
+			if err := md.Validate(); err != nil {
 				return err
 			}
+
+			msg := types.NewMsgAddDenom(clientCtx.GetFromAddress(), *md)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 
+	cmd.Flags().String(FlagMetadata, "", "Metadata file path")
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd

@@ -5,6 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	sudoTypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 func (k msgServer) AddNewPool(goCtx context.Context,  msg *types.MsgAddNewPool) (*types.MsgAddNewPoolResponse, error) {
@@ -14,9 +15,14 @@ func (k msgServer) AddNewPool(goCtx context.Context,  msg *types.MsgAddNewPool) 
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
+
+	//if !k.bankKeeper.HasDenomMetaData(ctx, msg.Denom) {
+	//	return nil, banktypes.ErrDenomMetadataNotFound
+	//}
 
 	k.Keeper.AddPool(ctx, msg.Denom, msg.Addr)
 	return &types.MsgAddNewPoolResponse{}, nil
@@ -29,8 +35,9 @@ func (k msgServer) RemovePool(goCtx context.Context,  msg *types.MsgRemovePool) 
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	if !k.IsPoolExist(ctx, msg.Denom, msg.Addr) {
@@ -64,8 +71,9 @@ func (k msgServer) SetEraUnbondLimit(goCtx context.Context,  msg *types.MsgSetEr
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	k.Keeper.SetEraUnbondLimit(ctx, msg.Denom, msg.Limit)
@@ -80,8 +88,9 @@ func (k msgServer) SetInitBond(goCtx context.Context,  msg *types.MsgSetInitBond
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	if !k.IsPoolExist(ctx, msg.Denom, msg.Pool) {
@@ -121,8 +130,9 @@ func (k msgServer) SetChainBondingDuration(goCtx context.Context,  msg *types.Ms
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	k.Keeper.SetChainBondingDuration(ctx, msg.Denom, msg.Era)
@@ -136,8 +146,9 @@ func (k msgServer) SetPoolDetail(goCtx context.Context,  msg *types.MsgSetPoolDe
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	k.Keeper.SetPoolDetail(ctx, msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold)
@@ -152,8 +163,9 @@ func (k msgServer) SetLeastBond(goCtx context.Context,  msg *types.MsgSetLeastBo
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	k.Keeper.SetLeastBond(ctx, msg.Denom, msg.Amount)
@@ -168,8 +180,9 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context,  msg *types.M
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	k.Keeper.ClearCurrentEraSnapShots(ctx, msg.Denom)
@@ -208,11 +221,12 @@ func (k msgServer) SetUnbondFee(goCtx context.Context,  msg *types.MsgSetUnbondF
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if !k.sudoKeeper.IsDenomValid(ctx, msg.Denom) {
-		return nil, sudoTypes.ErrInvalidDenom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	k.Keeper.SetUnbondFee(ctx, msg.Denom, msg.Value)
+	k.Keeper.SetUnbondFee(ctx, msg.Value)
 	return &types.MsgSetUnbondFeeResponse{}, nil
 }
 

@@ -1,6 +1,9 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.sudo;
 
+import "gogoproto/gogo.proto";
+import "cosmos/bank/v1beta1/bank.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
@@ -22,7 +25,7 @@ message MsgUpdateAdminResponse {
 
 message MsgAddDenom {
   string creator = 1;
-  string denom = 2;
+  cosmos.bank.v1beta1.Metadata Metadata = 2 [(gogoproto.nullable) = false];
 }
 
 message MsgAddDenomResponse {

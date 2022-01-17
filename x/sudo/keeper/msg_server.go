@@ -50,6 +50,15 @@ func (k msgServer) AddDenom(goCtx context.Context,  msg *types.MsgAddDenom) (*ty
 		return nil, types.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.AddDenom(ctx, msg.Denom)
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Metadata.Base)
+	if ok {
+		return nil, types.ErrDenomAlreadyExist
+	}
+
+	//if k.bankKeeper.HasDenomMetaData(ctx, msg.Metadata.Base) {
+	//	return nil, types.ErrDenomAlreadyExist
+	//}
+
+	k.bankKeeper.SetDenomMetaData(ctx, msg.Metadata)
 	return &types.MsgAddDenomResponse{}, nil
 }
