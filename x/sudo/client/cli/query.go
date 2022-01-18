@@ -27,7 +27,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdAdmin())
-	cmd.AddCommand(CmdAllDenoms())
 
 // this line is used by starport scaffolding # 1
 
@@ -49,36 +48,6 @@ func CmdAdmin() *cobra.Command {
 			params := &types.QueryAdminRequest{}
 
 			res, err := queryClient.Admin(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdAllDenoms() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "all-denoms",
-		Short: "Query all_denoms",
-		Args:  cobra.ExactArgs(0),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-
-			params := &types.QueryAllDenomsRequest{}
-
-			res, err := queryClient.AllDenoms(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

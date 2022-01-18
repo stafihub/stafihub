@@ -21,12 +21,3 @@ func (k Keeper) Admin(goCtx context.Context,  req *types.QueryAdminRequest) (*ty
 
 	return &types.QueryAdminResponse{Address: admin.String()}, nil
 }
-
-func (k Keeper) AllDenoms(goCtx context.Context,  req *types.QueryAllDenomsRequest) (*types.QueryAllDenomsResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	return &types.QueryAllDenomsResponse{Denoms: k.GetAllDenoms(ctx)}, nil
-}

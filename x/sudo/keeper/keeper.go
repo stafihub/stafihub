@@ -53,39 +53,3 @@ func (k Keeper) IsAdmin(ctx sdk.Context, address string) bool {
 	return admin.String() == address
 }
 
-func (k Keeper) AddDenom(ctx sdk.Context, denom string) {
-	store := ctx.KVStore(k.storeKey)
-	sym := k.GetSymbol(ctx)
-	sym.Denoms[denom] = true
-	b := k.cdc.MustMarshal(&sym)
-	store.Set(types.SymbolPrefix, b)
-}
-
-func (k Keeper) GetSymbol(ctx sdk.Context) (val types.Symbol) {
-	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.SymbolPrefix)
-	if b == nil {
-		return types.Symbol{Denoms: map[string]bool{}}
-	}
-	k.cdc.MustUnmarshal(b, &val)
-	return
-}
-
-func (k Keeper) GetAllDenoms(ctx sdk.Context) []string {
-	sym := k.GetSymbol(ctx)
-	denoms := make([]string, 0)
-	for denom, ok := range sym.Denoms {
-		if ok {
-			denoms = append(denoms, denom)
-		}
-	}
-
-	return denoms
-}
-
-func (k Keeper) IsDenomValid(ctx sdk.Context, denom string) bool {
-	sym := k.GetSymbol(ctx)
-	_, ok := sym.Denoms[denom]
-	return ok
-}
-

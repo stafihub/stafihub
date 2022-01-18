@@ -9,6 +9,5 @@ option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
 // GenesisState defines the sudo module's genesis state.
 message GenesisState {
     string admin = 1 [(gogoproto.moretags) = "yaml:\"admin\""];
-    repeated string denoms = 2 [(gogoproto.moretags) = "yaml:\"denoms\"", (gogoproto.nullable) = false];
     // this line is used by starport scaffolding # genesis/proto/state
 }
