@@ -1,4 +1,5 @@
 import { Reader, Writer } from 'protobufjs/minimal';
+import { Metadata } from '../cosmos/bank/v1beta1/bank';
 export declare const protobufPackage = "stafiprotocol.stafihub.sudo";
 export interface MsgUpdateAdmin {
     creator: string;
@@ -8,7 +9,7 @@ export interface MsgUpdateAdminResponse {
 }
 export interface MsgAddDenom {
     creator: string;
-    denom: string;
+    Metadata: Metadata | undefined;
 }
 export interface MsgAddDenomResponse {
 }

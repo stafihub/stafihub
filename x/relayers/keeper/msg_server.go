@@ -7,6 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 type msgServer struct {
@@ -26,6 +27,11 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
+	}
+
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	// Check if the value already exists
@@ -78,6 +84,11 @@ func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateT
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
+	}
+
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	lastTh := uint32(0)

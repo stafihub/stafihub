@@ -449,7 +449,7 @@ func (msg *MsgLiquidityUnbond) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Value.LTE(sdk.ZeroInt()) {
+	if msg.Value.Amount.LTE(sdk.ZeroInt()) {
 		return fmt.Errorf("unbond value %s less than zeroInt", msg.Value.String())
 	}
 	return nil

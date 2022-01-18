@@ -5,8 +5,7 @@ export declare const protobufPackage = "stafiprotocol.stafihub.rvote";
 export declare enum ProposalStatus {
     PROPOSAL_STATUS_INITIATED = 0,
     PROPOSAL_STATUS_APPROVED = 1,
-    PROPOSAL_STATUS_REJECTED = 2,
-    PROPOSAL_STATUS_EXPIRED = 3,
+    PROPOSAL_STATUS_EXPIRED = 2,
     UNRECOGNIZED = -1
 }
 export declare function proposalStatusFromJSON(object: any): ProposalStatus;
@@ -14,8 +13,7 @@ export declare function proposalStatusToJSON(object: ProposalStatus): string;
 export interface Proposal {
     content: Any | undefined;
     status: ProposalStatus;
-    votesFor: string[];
-    votesAgainst: string[];
+    voted: string[];
     startBlock: number;
     expireBlock: number;
 }

@@ -2,9 +2,8 @@ import { Writer, Reader } from 'protobufjs/minimal';
 export declare const protobufPackage = "stafiprotocol.stafihub.sudo";
 /** GenesisState defines the sudo module's genesis state. */
 export interface GenesisState {
-    admin: string;
     /** this line is used by starport scaffolding # genesis/proto/state */
-    denoms: string[];
+    admin: string;
 }
 export declare const GenesisState: {
     encode(message: GenesisState, writer?: Writer): Writer;

@@ -26,6 +26,8 @@ export type LedgerMsgAddNewPoolResponse = object;
 
 export type LedgerMsgClearCurrentEraSnapShotsResponse = object;
 
+export type LedgerMsgLiquidityUnbondResponse = object;
+
 export type LedgerMsgRemovePoolResponse = object;
 
 export type LedgerMsgSetChainBondingDurationResponse = object;
@@ -41,6 +43,10 @@ export type LedgerMsgSetLeastBondResponse = object;
 export type LedgerMsgSetPoolDetailResponse = object;
 
 export type LedgerMsgSetReceiverResponse = object;
+
+export type LedgerMsgSetUnbondCommissionResponse = object;
+
+export type LedgerMsgSetUnbondFeeResponse = object;
 
 export interface LedgerQueryEraExchangeRatesByDenomResponse {
   eraExchangeRates?: LedgerEraExchangeRate[];

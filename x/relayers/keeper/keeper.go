@@ -17,6 +17,7 @@ type (
 		memKey   sdk.StoreKey
 
         sudoKeeper types.SudoKeeper
+		bankKeeper types.BankKeeper
 	}
 )
 
@@ -26,7 +27,7 @@ func NewKeeper(
     memKey sdk.StoreKey,
 
     sudoKeeper types.SudoKeeper,
-
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
@@ -34,6 +35,7 @@ func NewKeeper(
 		memKey:   memKey,
 
 		sudoKeeper: sudoKeeper,
+		bankKeeper: bankKeeper,
 	}
 }
 

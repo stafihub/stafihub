@@ -1236,6 +1236,369 @@ export const MsgSetReceiverResponse = {
         return message;
     }
 };
+const baseMsgSetUnbondFee = { creator: '', denom: '', value: '' };
+export const MsgSetUnbondFee = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== '') {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.denom !== '') {
+            writer.uint32(18).string(message.denom);
+        }
+        if (message.value !== '') {
+            writer.uint32(26).string(message.value);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgSetUnbondFee };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.denom = reader.string();
+                    break;
+                case 3:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgSetUnbondFee };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = String(object.value);
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgSetUnbondFee };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = object.value;
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    }
+};
+const baseMsgSetUnbondFeeResponse = {};
+export const MsgSetUnbondFeeResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgSetUnbondFeeResponse };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = { ...baseMsgSetUnbondFeeResponse };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = { ...baseMsgSetUnbondFeeResponse };
+        return message;
+    }
+};
+const baseMsgLiquidityUnbond = { creator: '', pool: '', value: '', recipient: '' };
+export const MsgLiquidityUnbond = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== '') {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.pool !== '') {
+            writer.uint32(18).string(message.pool);
+        }
+        if (message.value !== '') {
+            writer.uint32(26).string(message.value);
+        }
+        if (message.recipient !== '') {
+            writer.uint32(34).string(message.recipient);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgLiquidityUnbond };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.pool = reader.string();
+                    break;
+                case 3:
+                    message.value = reader.string();
+                    break;
+                case 4:
+                    message.recipient = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgLiquidityUnbond };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = String(object.pool);
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = String(object.value);
+        }
+        else {
+            message.value = '';
+        }
+        if (object.recipient !== undefined && object.recipient !== null) {
+            message.recipient = String(object.recipient);
+        }
+        else {
+            message.recipient = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.pool !== undefined && (obj.pool = message.pool);
+        message.value !== undefined && (obj.value = message.value);
+        message.recipient !== undefined && (obj.recipient = message.recipient);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgLiquidityUnbond };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = object.pool;
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = object.value;
+        }
+        else {
+            message.value = '';
+        }
+        if (object.recipient !== undefined && object.recipient !== null) {
+            message.recipient = object.recipient;
+        }
+        else {
+            message.recipient = '';
+        }
+        return message;
+    }
+};
+const baseMsgLiquidityUnbondResponse = {};
+export const MsgLiquidityUnbondResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgLiquidityUnbondResponse };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = { ...baseMsgLiquidityUnbondResponse };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = { ...baseMsgLiquidityUnbondResponse };
+        return message;
+    }
+};
+const baseMsgSetUnbondCommission = { creator: '', commission: '' };
+export const MsgSetUnbondCommission = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== '') {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.commission !== '') {
+            writer.uint32(18).string(message.commission);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgSetUnbondCommission };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.commission = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgSetUnbondCommission };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.commission !== undefined && object.commission !== null) {
+            message.commission = String(object.commission);
+        }
+        else {
+            message.commission = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.commission !== undefined && (obj.commission = message.commission);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgSetUnbondCommission };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.commission !== undefined && object.commission !== null) {
+            message.commission = object.commission;
+        }
+        else {
+            message.commission = '';
+        }
+        return message;
+    }
+};
+const baseMsgSetUnbondCommissionResponse = {};
+export const MsgSetUnbondCommissionResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgSetUnbondCommissionResponse };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = { ...baseMsgSetUnbondCommissionResponse };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = { ...baseMsgSetUnbondCommissionResponse };
+        return message;
+    }
+};
 export class MsgClientImpl {
     constructor(rpc) {
         this.rpc = rpc;
@@ -1289,5 +1652,20 @@ export class MsgClientImpl {
         const data = MsgSetReceiver.encode(request).finish();
         const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetReceiver', data);
         return promise.then((data) => MsgSetReceiverResponse.decode(new Reader(data)));
+    }
+    SetUnbondFee(request) {
+        const data = MsgSetUnbondFee.encode(request).finish();
+        const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetUnbondFee', data);
+        return promise.then((data) => MsgSetUnbondFeeResponse.decode(new Reader(data)));
+    }
+    LiquidityUnbond(request) {
+        const data = MsgLiquidityUnbond.encode(request).finish();
+        const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'LiquidityUnbond', data);
+        return promise.then((data) => MsgLiquidityUnbondResponse.decode(new Reader(data)));
+    }
+    SetUnbondCommission(request) {
+        const data = MsgSetUnbondCommission.encode(request).finish();
+        const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetUnbondCommission', data);
+        return promise.then((data) => MsgSetUnbondCommissionResponse.decode(new Reader(data)));
     }
 }

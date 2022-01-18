@@ -84,6 +84,30 @@ export interface MsgSetReceiver {
 
 export interface MsgSetReceiverResponse {}
 
+export interface MsgSetUnbondFee {
+  creator: string
+  denom: string
+  value: string
+}
+
+export interface MsgSetUnbondFeeResponse {}
+
+export interface MsgLiquidityUnbond {
+  creator: string
+  pool: string
+  value: string
+  recipient: string
+}
+
+export interface MsgLiquidityUnbondResponse {}
+
+export interface MsgSetUnbondCommission {
+  creator: string
+  commission: string
+}
+
+export interface MsgSetUnbondCommissionResponse {}
+
 const baseMsgAddNewPool: object = { creator: '', denom: '', addr: '' }
 
 export const MsgAddNewPool = {
@@ -1378,6 +1402,387 @@ export const MsgSetReceiverResponse = {
   }
 }
 
+const baseMsgSetUnbondFee: object = { creator: '', denom: '', value: '' }
+
+export const MsgSetUnbondFee = {
+  encode(message: MsgSetUnbondFee, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
+    if (message.denom !== '') {
+      writer.uint32(18).string(message.denom)
+    }
+    if (message.value !== '') {
+      writer.uint32(26).string(message.value)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondFee {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgSetUnbondFee } as MsgSetUnbondFee
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string()
+          break
+        case 2:
+          message.denom = reader.string()
+          break
+        case 3:
+          message.value = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): MsgSetUnbondFee {
+    const message = { ...baseMsgSetUnbondFee } as MsgSetUnbondFee
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom)
+    } else {
+      message.denom = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value)
+    } else {
+      message.value = ''
+    }
+    return message
+  },
+
+  toJSON(message: MsgSetUnbondFee): unknown {
+    const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
+    message.denom !== undefined && (obj.denom = message.denom)
+    message.value !== undefined && (obj.value = message.value)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<MsgSetUnbondFee>): MsgSetUnbondFee {
+    const message = { ...baseMsgSetUnbondFee } as MsgSetUnbondFee
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom
+    } else {
+      message.denom = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value
+    } else {
+      message.value = ''
+    }
+    return message
+  }
+}
+
+const baseMsgSetUnbondFeeResponse: object = {}
+
+export const MsgSetUnbondFeeResponse = {
+  encode(_: MsgSetUnbondFeeResponse, writer: Writer = Writer.create()): Writer {
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondFeeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgSetUnbondFeeResponse } as MsgSetUnbondFeeResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(_: any): MsgSetUnbondFeeResponse {
+    const message = { ...baseMsgSetUnbondFeeResponse } as MsgSetUnbondFeeResponse
+    return message
+  },
+
+  toJSON(_: MsgSetUnbondFeeResponse): unknown {
+    const obj: any = {}
+    return obj
+  },
+
+  fromPartial(_: DeepPartial<MsgSetUnbondFeeResponse>): MsgSetUnbondFeeResponse {
+    const message = { ...baseMsgSetUnbondFeeResponse } as MsgSetUnbondFeeResponse
+    return message
+  }
+}
+
+const baseMsgLiquidityUnbond: object = { creator: '', pool: '', value: '', recipient: '' }
+
+export const MsgLiquidityUnbond = {
+  encode(message: MsgLiquidityUnbond, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
+    if (message.pool !== '') {
+      writer.uint32(18).string(message.pool)
+    }
+    if (message.value !== '') {
+      writer.uint32(26).string(message.value)
+    }
+    if (message.recipient !== '') {
+      writer.uint32(34).string(message.recipient)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgLiquidityUnbond {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgLiquidityUnbond } as MsgLiquidityUnbond
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string()
+          break
+        case 2:
+          message.pool = reader.string()
+          break
+        case 3:
+          message.value = reader.string()
+          break
+        case 4:
+          message.recipient = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): MsgLiquidityUnbond {
+    const message = { ...baseMsgLiquidityUnbond } as MsgLiquidityUnbond
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
+    if (object.pool !== undefined && object.pool !== null) {
+      message.pool = String(object.pool)
+    } else {
+      message.pool = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value)
+    } else {
+      message.value = ''
+    }
+    if (object.recipient !== undefined && object.recipient !== null) {
+      message.recipient = String(object.recipient)
+    } else {
+      message.recipient = ''
+    }
+    return message
+  },
+
+  toJSON(message: MsgLiquidityUnbond): unknown {
+    const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
+    message.pool !== undefined && (obj.pool = message.pool)
+    message.value !== undefined && (obj.value = message.value)
+    message.recipient !== undefined && (obj.recipient = message.recipient)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<MsgLiquidityUnbond>): MsgLiquidityUnbond {
+    const message = { ...baseMsgLiquidityUnbond } as MsgLiquidityUnbond
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
+    if (object.pool !== undefined && object.pool !== null) {
+      message.pool = object.pool
+    } else {
+      message.pool = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value
+    } else {
+      message.value = ''
+    }
+    if (object.recipient !== undefined && object.recipient !== null) {
+      message.recipient = object.recipient
+    } else {
+      message.recipient = ''
+    }
+    return message
+  }
+}
+
+const baseMsgLiquidityUnbondResponse: object = {}
+
+export const MsgLiquidityUnbondResponse = {
+  encode(_: MsgLiquidityUnbondResponse, writer: Writer = Writer.create()): Writer {
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgLiquidityUnbondResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgLiquidityUnbondResponse } as MsgLiquidityUnbondResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(_: any): MsgLiquidityUnbondResponse {
+    const message = { ...baseMsgLiquidityUnbondResponse } as MsgLiquidityUnbondResponse
+    return message
+  },
+
+  toJSON(_: MsgLiquidityUnbondResponse): unknown {
+    const obj: any = {}
+    return obj
+  },
+
+  fromPartial(_: DeepPartial<MsgLiquidityUnbondResponse>): MsgLiquidityUnbondResponse {
+    const message = { ...baseMsgLiquidityUnbondResponse } as MsgLiquidityUnbondResponse
+    return message
+  }
+}
+
+const baseMsgSetUnbondCommission: object = { creator: '', commission: '' }
+
+export const MsgSetUnbondCommission = {
+  encode(message: MsgSetUnbondCommission, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== '') {
+      writer.uint32(10).string(message.creator)
+    }
+    if (message.commission !== '') {
+      writer.uint32(18).string(message.commission)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondCommission {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgSetUnbondCommission } as MsgSetUnbondCommission
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string()
+          break
+        case 2:
+          message.commission = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): MsgSetUnbondCommission {
+    const message = { ...baseMsgSetUnbondCommission } as MsgSetUnbondCommission
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
+    if (object.commission !== undefined && object.commission !== null) {
+      message.commission = String(object.commission)
+    } else {
+      message.commission = ''
+    }
+    return message
+  },
+
+  toJSON(message: MsgSetUnbondCommission): unknown {
+    const obj: any = {}
+    message.creator !== undefined && (obj.creator = message.creator)
+    message.commission !== undefined && (obj.commission = message.commission)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<MsgSetUnbondCommission>): MsgSetUnbondCommission {
+    const message = { ...baseMsgSetUnbondCommission } as MsgSetUnbondCommission
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
+    }
+    if (object.commission !== undefined && object.commission !== null) {
+      message.commission = object.commission
+    } else {
+      message.commission = ''
+    }
+    return message
+  }
+}
+
+const baseMsgSetUnbondCommissionResponse: object = {}
+
+export const MsgSetUnbondCommissionResponse = {
+  encode(_: MsgSetUnbondCommissionResponse, writer: Writer = Writer.create()): Writer {
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondCommissionResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseMsgSetUnbondCommissionResponse } as MsgSetUnbondCommissionResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(_: any): MsgSetUnbondCommissionResponse {
+    const message = { ...baseMsgSetUnbondCommissionResponse } as MsgSetUnbondCommissionResponse
+    return message
+  },
+
+  toJSON(_: MsgSetUnbondCommissionResponse): unknown {
+    const obj: any = {}
+    return obj
+  },
+
+  fromPartial(_: DeepPartial<MsgSetUnbondCommissionResponse>): MsgSetUnbondCommissionResponse {
+    const message = { ...baseMsgSetUnbondCommissionResponse } as MsgSetUnbondCommissionResponse
+    return message
+  }
+}
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddNewPool(request: MsgAddNewPool): Promise<MsgAddNewPoolResponse>
@@ -1389,8 +1794,11 @@ export interface Msg {
   SetLeastBond(request: MsgSetLeastBond): Promise<MsgSetLeastBondResponse>
   ClearCurrentEraSnapShots(request: MsgClearCurrentEraSnapShots): Promise<MsgClearCurrentEraSnapShotsResponse>
   SetCommission(request: MsgSetCommission): Promise<MsgSetCommissionResponse>
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   SetReceiver(request: MsgSetReceiver): Promise<MsgSetReceiverResponse>
+  SetUnbondFee(request: MsgSetUnbondFee): Promise<MsgSetUnbondFeeResponse>
+  LiquidityUnbond(request: MsgLiquidityUnbond): Promise<MsgLiquidityUnbondResponse>
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  SetUnbondCommission(request: MsgSetUnbondCommission): Promise<MsgSetUnbondCommissionResponse>
 }
 
 export class MsgClientImpl implements Msg {
@@ -1456,6 +1864,24 @@ export class MsgClientImpl implements Msg {
     const data = MsgSetReceiver.encode(request).finish()
     const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetReceiver', data)
     return promise.then((data) => MsgSetReceiverResponse.decode(new Reader(data)))
+  }
+
+  SetUnbondFee(request: MsgSetUnbondFee): Promise<MsgSetUnbondFeeResponse> {
+    const data = MsgSetUnbondFee.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetUnbondFee', data)
+    return promise.then((data) => MsgSetUnbondFeeResponse.decode(new Reader(data)))
+  }
+
+  LiquidityUnbond(request: MsgLiquidityUnbond): Promise<MsgLiquidityUnbondResponse> {
+    const data = MsgLiquidityUnbond.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'LiquidityUnbond', data)
+    return promise.then((data) => MsgLiquidityUnbondResponse.decode(new Reader(data)))
+  }
+
+  SetUnbondCommission(request: MsgSetUnbondCommission): Promise<MsgSetUnbondCommissionResponse> {
+    const data = MsgSetUnbondCommission.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetUnbondCommission', data)
+    return promise.then((data) => MsgSetUnbondCommissionResponse.decode(new Reader(data)))
   }
 }
 

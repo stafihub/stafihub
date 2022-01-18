@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Reader, Writer } from 'protobufjs/minimal';
+import { Metadata } from '../cosmos/bank/v1beta1/bank';
 export const protobufPackage = 'stafiprotocol.stafihub.sudo';
 const baseMsgUpdateAdmin = { creator: '', address: '' };
 export const MsgUpdateAdmin = {
@@ -103,14 +104,14 @@ export const MsgUpdateAdminResponse = {
         return message;
     }
 };
-const baseMsgAddDenom = { creator: '', denom: '' };
+const baseMsgAddDenom = { creator: '' };
 export const MsgAddDenom = {
     encode(message, writer = Writer.create()) {
         if (message.creator !== '') {
             writer.uint32(10).string(message.creator);
         }
-        if (message.denom !== '') {
-            writer.uint32(18).string(message.denom);
+        if (message.Metadata !== undefined) {
+            Metadata.encode(message.Metadata, writer.uint32(18).fork()).ldelim();
         }
         return writer;
     },
@@ -125,7 +126,7 @@ export const MsgAddDenom = {
                     message.creator = reader.string();
                     break;
                 case 2:
-                    message.denom = reader.string();
+                    message.Metadata = Metadata.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -142,18 +143,18 @@ export const MsgAddDenom = {
         else {
             message.creator = '';
         }
-        if (object.denom !== undefined && object.denom !== null) {
-            message.denom = String(object.denom);
+        if (object.Metadata !== undefined && object.Metadata !== null) {
+            message.Metadata = Metadata.fromJSON(object.Metadata);
         }
         else {
-            message.denom = '';
+            message.Metadata = undefined;
         }
         return message;
     },
     toJSON(message) {
         const obj = {};
         message.creator !== undefined && (obj.creator = message.creator);
-        message.denom !== undefined && (obj.denom = message.denom);
+        message.Metadata !== undefined && (obj.Metadata = message.Metadata ? Metadata.toJSON(message.Metadata) : undefined);
         return obj;
     },
     fromPartial(object) {
@@ -164,11 +165,11 @@ export const MsgAddDenom = {
         else {
             message.creator = '';
         }
-        if (object.denom !== undefined && object.denom !== null) {
-            message.denom = object.denom;
+        if (object.Metadata !== undefined && object.Metadata !== null) {
+            message.Metadata = Metadata.fromPartial(object.Metadata);
         }
         else {
-            message.denom = '';
+            message.Metadata = undefined;
         }
         return message;
     }

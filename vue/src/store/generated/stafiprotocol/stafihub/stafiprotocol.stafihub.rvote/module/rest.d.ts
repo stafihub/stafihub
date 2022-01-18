@@ -132,7 +132,6 @@ export interface RvoteMsgSubmitProposalResponse {
 export declare enum RvoteProposalStatus {
     PROPOSAL_STATUS_INITIATED = "PROPOSAL_STATUS_INITIATED",
     PROPOSAL_STATUS_APPROVED = "PROPOSAL_STATUS_APPROVED",
-    PROPOSAL_STATUS_REJECTED = "PROPOSAL_STATUS_REJECTED",
     PROPOSAL_STATUS_EXPIRED = "PROPOSAL_STATUS_EXPIRED"
 }
 export declare type QueryParamsType = Record<string | number, any>;

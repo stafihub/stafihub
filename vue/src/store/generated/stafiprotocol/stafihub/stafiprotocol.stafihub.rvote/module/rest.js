@@ -15,7 +15,6 @@ export var RvoteProposalStatus;
 (function (RvoteProposalStatus) {
     RvoteProposalStatus["PROPOSAL_STATUS_INITIATED"] = "PROPOSAL_STATUS_INITIATED";
     RvoteProposalStatus["PROPOSAL_STATUS_APPROVED"] = "PROPOSAL_STATUS_APPROVED";
-    RvoteProposalStatus["PROPOSAL_STATUS_REJECTED"] = "PROPOSAL_STATUS_REJECTED";
     RvoteProposalStatus["PROPOSAL_STATUS_EXPIRED"] = "PROPOSAL_STATUS_EXPIRED";
 })(RvoteProposalStatus || (RvoteProposalStatus = {}));
 export var ContentType;

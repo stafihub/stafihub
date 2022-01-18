@@ -7,7 +7,6 @@ import (
 
 type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
-	IsDenomValid(ctx sdk.Context, denom string) bool
 }
 
 type RelayerKeeper interface {

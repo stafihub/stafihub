@@ -4,14 +4,14 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreateRelayer } from "./types/relayers/tx";
 import { MsgUpdateThreshold } from "./types/relayers/tx";
+import { MsgCreateRelayer } from "./types/relayers/tx";
 import { MsgDeleteRelayer } from "./types/relayers/tx";
 
 
 const types = [
-  ["/stafiprotocol.stafihub.relayers.MsgCreateRelayer", MsgCreateRelayer],
   ["/stafiprotocol.stafihub.relayers.MsgUpdateThreshold", MsgUpdateThreshold],
+  ["/stafiprotocol.stafihub.relayers.MsgCreateRelayer", MsgCreateRelayer],
   ["/stafiprotocol.stafihub.relayers.MsgDeleteRelayer", MsgDeleteRelayer],
   
 ];
@@ -41,8 +41,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgCreateRelayer: (data: MsgCreateRelayer): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgCreateRelayer", value: data }),
     msgUpdateThreshold: (data: MsgUpdateThreshold): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgUpdateThreshold", value: data }),
+    msgCreateRelayer: (data: MsgCreateRelayer): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgCreateRelayer", value: data }),
     msgDeleteRelayer: (data: MsgDeleteRelayer): EncodeObject => ({ typeUrl: "/stafiprotocol.stafihub.relayers.MsgDeleteRelayer", value: data }),
     
   };

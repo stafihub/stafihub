@@ -86,11 +86,6 @@ export interface BondSnapshot {
     lastVoter: string;
     bondState: PoolBondState;
 }
-export interface Unbonding {
-    unbonder: string;
-    amount: string;
-    recipient: string;
-}
 export interface ExchangeRate {
     denom: string;
     value: string;
@@ -99,6 +94,33 @@ export interface EraExchangeRate {
     denom: string;
     era: number;
     value: string;
+}
+export interface UnbondFee {
+    value: string;
+}
+export interface Unbonding {
+    unbonder: string;
+    amount: string;
+    recipient: string;
+}
+export interface UserUnlockChunk {
+    pool: string;
+    unlockEra: number;
+    value: string;
+    recipient: string;
+}
+export interface AccountUnbond {
+    unbonder: string;
+    denom: string;
+    chunks: UserUnlockChunk[];
+}
+export interface BondRecord {
+    denom: string;
+    bonder: string;
+    pool: string;
+    blockhash: string;
+    txhash: string;
+    amount: string;
 }
 export declare const ChainEra: {
     encode(message: ChainEra, writer?: Writer): Writer;
@@ -191,13 +213,6 @@ export declare const BondSnapshot: {
     toJSON(message: BondSnapshot): unknown;
     fromPartial(object: DeepPartial<BondSnapshot>): BondSnapshot;
 };
-export declare const Unbonding: {
-    encode(message: Unbonding, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): Unbonding;
-    fromJSON(object: any): Unbonding;
-    toJSON(message: Unbonding): unknown;
-    fromPartial(object: DeepPartial<Unbonding>): Unbonding;
-};
 export declare const ExchangeRate: {
     encode(message: ExchangeRate, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): ExchangeRate;
@@ -211,6 +226,41 @@ export declare const EraExchangeRate: {
     fromJSON(object: any): EraExchangeRate;
     toJSON(message: EraExchangeRate): unknown;
     fromPartial(object: DeepPartial<EraExchangeRate>): EraExchangeRate;
+};
+export declare const UnbondFee: {
+    encode(message: UnbondFee, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): UnbondFee;
+    fromJSON(object: any): UnbondFee;
+    toJSON(message: UnbondFee): unknown;
+    fromPartial(object: DeepPartial<UnbondFee>): UnbondFee;
+};
+export declare const Unbonding: {
+    encode(message: Unbonding, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): Unbonding;
+    fromJSON(object: any): Unbonding;
+    toJSON(message: Unbonding): unknown;
+    fromPartial(object: DeepPartial<Unbonding>): Unbonding;
+};
+export declare const UserUnlockChunk: {
+    encode(message: UserUnlockChunk, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): UserUnlockChunk;
+    fromJSON(object: any): UserUnlockChunk;
+    toJSON(message: UserUnlockChunk): unknown;
+    fromPartial(object: DeepPartial<UserUnlockChunk>): UserUnlockChunk;
+};
+export declare const AccountUnbond: {
+    encode(message: AccountUnbond, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): AccountUnbond;
+    fromJSON(object: any): AccountUnbond;
+    toJSON(message: AccountUnbond): unknown;
+    fromPartial(object: DeepPartial<AccountUnbond>): AccountUnbond;
+};
+export declare const BondRecord: {
+    encode(message: BondRecord, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): BondRecord;
+    fromJSON(object: any): BondRecord;
+    toJSON(message: BondRecord): unknown;
+    fromPartial(object: DeepPartial<BondRecord>): BondRecord;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

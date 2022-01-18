@@ -731,6 +731,187 @@ export const TransferReportProposal = {
         return message;
     }
 };
+const baseExecuteBondProposal = { proposer: '', denom: '', bonder: '', pool: '', blockhash: '', txhash: '', amount: '' };
+export const ExecuteBondProposal = {
+    encode(message, writer = Writer.create()) {
+        if (message.proposer !== '') {
+            writer.uint32(10).string(message.proposer);
+        }
+        if (message.denom !== '') {
+            writer.uint32(18).string(message.denom);
+        }
+        if (message.bonder !== '') {
+            writer.uint32(26).string(message.bonder);
+        }
+        if (message.pool !== '') {
+            writer.uint32(34).string(message.pool);
+        }
+        if (message.blockhash !== '') {
+            writer.uint32(42).string(message.blockhash);
+        }
+        if (message.txhash !== '') {
+            writer.uint32(50).string(message.txhash);
+        }
+        if (message.amount !== '') {
+            writer.uint32(58).string(message.amount);
+        }
+        if (message.propId.length !== 0) {
+            writer.uint32(66).bytes(message.propId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseExecuteBondProposal };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.proposer = reader.string();
+                    break;
+                case 2:
+                    message.denom = reader.string();
+                    break;
+                case 3:
+                    message.bonder = reader.string();
+                    break;
+                case 4:
+                    message.pool = reader.string();
+                    break;
+                case 5:
+                    message.blockhash = reader.string();
+                    break;
+                case 6:
+                    message.txhash = reader.string();
+                    break;
+                case 7:
+                    message.amount = reader.string();
+                    break;
+                case 8:
+                    message.propId = reader.bytes();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseExecuteBondProposal };
+        if (object.proposer !== undefined && object.proposer !== null) {
+            message.proposer = String(object.proposer);
+        }
+        else {
+            message.proposer = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.bonder !== undefined && object.bonder !== null) {
+            message.bonder = String(object.bonder);
+        }
+        else {
+            message.bonder = '';
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = String(object.pool);
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.blockhash !== undefined && object.blockhash !== null) {
+            message.blockhash = String(object.blockhash);
+        }
+        else {
+            message.blockhash = '';
+        }
+        if (object.txhash !== undefined && object.txhash !== null) {
+            message.txhash = String(object.txhash);
+        }
+        else {
+            message.txhash = '';
+        }
+        if (object.amount !== undefined && object.amount !== null) {
+            message.amount = String(object.amount);
+        }
+        else {
+            message.amount = '';
+        }
+        if (object.propId !== undefined && object.propId !== null) {
+            message.propId = bytesFromBase64(object.propId);
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.proposer !== undefined && (obj.proposer = message.proposer);
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.bonder !== undefined && (obj.bonder = message.bonder);
+        message.pool !== undefined && (obj.pool = message.pool);
+        message.blockhash !== undefined && (obj.blockhash = message.blockhash);
+        message.txhash !== undefined && (obj.txhash = message.txhash);
+        message.amount !== undefined && (obj.amount = message.amount);
+        message.propId !== undefined && (obj.propId = base64FromBytes(message.propId !== undefined ? message.propId : new Uint8Array()));
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseExecuteBondProposal };
+        if (object.proposer !== undefined && object.proposer !== null) {
+            message.proposer = object.proposer;
+        }
+        else {
+            message.proposer = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.bonder !== undefined && object.bonder !== null) {
+            message.bonder = object.bonder;
+        }
+        else {
+            message.bonder = '';
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = object.pool;
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.blockhash !== undefined && object.blockhash !== null) {
+            message.blockhash = object.blockhash;
+        }
+        else {
+            message.blockhash = '';
+        }
+        if (object.txhash !== undefined && object.txhash !== null) {
+            message.txhash = object.txhash;
+        }
+        else {
+            message.txhash = '';
+        }
+        if (object.amount !== undefined && object.amount !== null) {
+            message.amount = object.amount;
+        }
+        else {
+            message.amount = '';
+        }
+        if (object.propId !== undefined && object.propId !== null) {
+            message.propId = object.propId;
+        }
+        else {
+            message.propId = new Uint8Array();
+        }
+        return message;
+    }
+};
 var globalThis = (() => {
     if (typeof globalThis !== 'undefined')
         return globalThis;

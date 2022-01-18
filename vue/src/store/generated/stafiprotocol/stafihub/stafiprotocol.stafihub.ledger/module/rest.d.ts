@@ -10,6 +10,7 @@ export interface LedgerExchangeRate {
 }
 export declare type LedgerMsgAddNewPoolResponse = object;
 export declare type LedgerMsgClearCurrentEraSnapShotsResponse = object;
+export declare type LedgerMsgLiquidityUnbondResponse = object;
 export declare type LedgerMsgRemovePoolResponse = object;
 export declare type LedgerMsgSetChainBondingDurationResponse = object;
 export declare type LedgerMsgSetCommissionResponse = object;
@@ -18,6 +19,8 @@ export declare type LedgerMsgSetInitBondResponse = object;
 export declare type LedgerMsgSetLeastBondResponse = object;
 export declare type LedgerMsgSetPoolDetailResponse = object;
 export declare type LedgerMsgSetReceiverResponse = object;
+export declare type LedgerMsgSetUnbondCommissionResponse = object;
+export declare type LedgerMsgSetUnbondFeeResponse = object;
 export interface LedgerQueryEraExchangeRatesByDenomResponse {
     eraExchangeRates?: LedgerEraExchangeRate[];
 }

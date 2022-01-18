@@ -379,6 +379,7 @@ rvotemoduletypes.StoreKey,
 			keys[relayersmoduletypes.MemStoreKey],
 
 			app.SudoKeeper,
+			app.BankKeeper,
 		)
 
 		app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(

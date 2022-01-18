@@ -9,8 +9,7 @@ export const protobufPackage = 'stafiprotocol.stafihub.rvote'
 export enum ProposalStatus {
   PROPOSAL_STATUS_INITIATED = 0,
   PROPOSAL_STATUS_APPROVED = 1,
-  PROPOSAL_STATUS_REJECTED = 2,
-  PROPOSAL_STATUS_EXPIRED = 3,
+  PROPOSAL_STATUS_EXPIRED = 2,
   UNRECOGNIZED = -1
 }
 
@@ -23,9 +22,6 @@ export function proposalStatusFromJSON(object: any): ProposalStatus {
     case 'PROPOSAL_STATUS_APPROVED':
       return ProposalStatus.PROPOSAL_STATUS_APPROVED
     case 2:
-    case 'PROPOSAL_STATUS_REJECTED':
-      return ProposalStatus.PROPOSAL_STATUS_REJECTED
-    case 3:
     case 'PROPOSAL_STATUS_EXPIRED':
       return ProposalStatus.PROPOSAL_STATUS_EXPIRED
     case -1:
@@ -41,8 +37,6 @@ export function proposalStatusToJSON(object: ProposalStatus): string {
       return 'PROPOSAL_STATUS_INITIATED'
     case ProposalStatus.PROPOSAL_STATUS_APPROVED:
       return 'PROPOSAL_STATUS_APPROVED'
-    case ProposalStatus.PROPOSAL_STATUS_REJECTED:
-      return 'PROPOSAL_STATUS_REJECTED'
     case ProposalStatus.PROPOSAL_STATUS_EXPIRED:
       return 'PROPOSAL_STATUS_EXPIRED'
     default:
@@ -53,13 +47,12 @@ export function proposalStatusToJSON(object: ProposalStatus): string {
 export interface Proposal {
   content: Any | undefined
   status: ProposalStatus
-  votesFor: string[]
-  votesAgainst: string[]
+  voted: string[]
   startBlock: number
   expireBlock: number
 }
 
-const baseProposal: object = { status: 0, votesFor: '', votesAgainst: '', startBlock: 0, expireBlock: 0 }
+const baseProposal: object = { status: 0, voted: '', startBlock: 0, expireBlock: 0 }
 
 export const Proposal = {
   encode(message: Proposal, writer: Writer = Writer.create()): Writer {
@@ -69,17 +62,14 @@ export const Proposal = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status)
     }
-    for (const v of message.votesFor) {
+    for (const v of message.voted) {
       writer.uint32(26).string(v!)
     }
-    for (const v of message.votesAgainst) {
-      writer.uint32(34).string(v!)
-    }
     if (message.startBlock !== 0) {
-      writer.uint32(40).int64(message.startBlock)
+      writer.uint32(32).int64(message.startBlock)
     }
     if (message.expireBlock !== 0) {
-      writer.uint32(48).int64(message.expireBlock)
+      writer.uint32(40).int64(message.expireBlock)
     }
     return writer
   },
@@ -88,8 +78,7 @@ export const Proposal = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
     const message = { ...baseProposal } as Proposal
-    message.votesFor = []
-    message.votesAgainst = []
+    message.voted = []
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -100,15 +89,12 @@ export const Proposal = {
           message.status = reader.int32() as any
           break
         case 3:
-          message.votesFor.push(reader.string())
+          message.voted.push(reader.string())
           break
         case 4:
-          message.votesAgainst.push(reader.string())
-          break
-        case 5:
           message.startBlock = longToNumber(reader.int64() as Long)
           break
-        case 6:
+        case 5:
           message.expireBlock = longToNumber(reader.int64() as Long)
           break
         default:
@@ -121,8 +107,7 @@ export const Proposal = {
 
   fromJSON(object: any): Proposal {
     const message = { ...baseProposal } as Proposal
-    message.votesFor = []
-    message.votesAgainst = []
+    message.voted = []
     if (object.content !== undefined && object.content !== null) {
       message.content = Any.fromJSON(object.content)
     } else {
@@ -133,14 +118,9 @@ export const Proposal = {
     } else {
       message.status = 0
     }
-    if (object.votesFor !== undefined && object.votesFor !== null) {
-      for (const e of object.votesFor) {
-        message.votesFor.push(String(e))
-      }
-    }
-    if (object.votesAgainst !== undefined && object.votesAgainst !== null) {
-      for (const e of object.votesAgainst) {
-        message.votesAgainst.push(String(e))
+    if (object.voted !== undefined && object.voted !== null) {
+      for (const e of object.voted) {
+        message.voted.push(String(e))
       }
     }
     if (object.startBlock !== undefined && object.startBlock !== null) {
@@ -160,15 +140,10 @@ export const Proposal = {
     const obj: any = {}
     message.content !== undefined && (obj.content = message.content ? Any.toJSON(message.content) : undefined)
     message.status !== undefined && (obj.status = proposalStatusToJSON(message.status))
-    if (message.votesFor) {
-      obj.votesFor = message.votesFor.map((e) => e)
+    if (message.voted) {
+      obj.voted = message.voted.map((e) => e)
     } else {
-      obj.votesFor = []
-    }
-    if (message.votesAgainst) {
-      obj.votesAgainst = message.votesAgainst.map((e) => e)
-    } else {
-      obj.votesAgainst = []
+      obj.voted = []
     }
     message.startBlock !== undefined && (obj.startBlock = message.startBlock)
     message.expireBlock !== undefined && (obj.expireBlock = message.expireBlock)
@@ -177,8 +152,7 @@ export const Proposal = {
 
   fromPartial(object: DeepPartial<Proposal>): Proposal {
     const message = { ...baseProposal } as Proposal
-    message.votesFor = []
-    message.votesAgainst = []
+    message.voted = []
     if (object.content !== undefined && object.content !== null) {
       message.content = Any.fromPartial(object.content)
     } else {
@@ -189,14 +163,9 @@ export const Proposal = {
     } else {
       message.status = 0
     }
-    if (object.votesFor !== undefined && object.votesFor !== null) {
-      for (const e of object.votesFor) {
-        message.votesFor.push(e)
-      }
-    }
-    if (object.votesAgainst !== undefined && object.votesAgainst !== null) {
-      for (const e of object.votesAgainst) {
-        message.votesAgainst.push(e)
+    if (object.voted !== undefined && object.voted !== null) {
+      for (const e of object.voted) {
+        message.voted.push(e)
       }
     }
     if (object.startBlock !== undefined && object.startBlock !== null) {

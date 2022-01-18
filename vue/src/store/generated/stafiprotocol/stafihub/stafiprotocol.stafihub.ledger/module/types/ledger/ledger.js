@@ -1251,95 +1251,6 @@ export const BondSnapshot = {
         return message;
     }
 };
-const baseUnbonding = { unbonder: '', amount: '', recipient: '' };
-export const Unbonding = {
-    encode(message, writer = Writer.create()) {
-        if (message.unbonder !== '') {
-            writer.uint32(10).string(message.unbonder);
-        }
-        if (message.amount !== '') {
-            writer.uint32(18).string(message.amount);
-        }
-        if (message.recipient !== '') {
-            writer.uint32(26).string(message.recipient);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof Uint8Array ? new Reader(input) : input;
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseUnbonding };
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    message.unbonder = reader.string();
-                    break;
-                case 2:
-                    message.amount = reader.string();
-                    break;
-                case 3:
-                    message.recipient = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-            }
-        }
-        return message;
-    },
-    fromJSON(object) {
-        const message = { ...baseUnbonding };
-        if (object.unbonder !== undefined && object.unbonder !== null) {
-            message.unbonder = String(object.unbonder);
-        }
-        else {
-            message.unbonder = '';
-        }
-        if (object.amount !== undefined && object.amount !== null) {
-            message.amount = String(object.amount);
-        }
-        else {
-            message.amount = '';
-        }
-        if (object.recipient !== undefined && object.recipient !== null) {
-            message.recipient = String(object.recipient);
-        }
-        else {
-            message.recipient = '';
-        }
-        return message;
-    },
-    toJSON(message) {
-        const obj = {};
-        message.unbonder !== undefined && (obj.unbonder = message.unbonder);
-        message.amount !== undefined && (obj.amount = message.amount);
-        message.recipient !== undefined && (obj.recipient = message.recipient);
-        return obj;
-    },
-    fromPartial(object) {
-        const message = { ...baseUnbonding };
-        if (object.unbonder !== undefined && object.unbonder !== null) {
-            message.unbonder = object.unbonder;
-        }
-        else {
-            message.unbonder = '';
-        }
-        if (object.amount !== undefined && object.amount !== null) {
-            message.amount = object.amount;
-        }
-        else {
-            message.amount = '';
-        }
-        if (object.recipient !== undefined && object.recipient !== null) {
-            message.recipient = object.recipient;
-        }
-        else {
-            message.recipient = '';
-        }
-        return message;
-    }
-};
 const baseExchangeRate = { denom: '', value: '' };
 export const ExchangeRate = {
     encode(message, writer = Writer.create()) {
@@ -1495,6 +1406,495 @@ export const EraExchangeRate = {
         }
         else {
             message.value = '';
+        }
+        return message;
+    }
+};
+const baseUnbondFee = { value: '' };
+export const UnbondFee = {
+    encode(message, writer = Writer.create()) {
+        if (message.value !== '') {
+            writer.uint32(10).string(message.value);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUnbondFee };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.value = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseUnbondFee };
+        if (object.value !== undefined && object.value !== null) {
+            message.value = String(object.value);
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.value !== undefined && (obj.value = message.value);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseUnbondFee };
+        if (object.value !== undefined && object.value !== null) {
+            message.value = object.value;
+        }
+        else {
+            message.value = '';
+        }
+        return message;
+    }
+};
+const baseUnbonding = { unbonder: '', amount: '', recipient: '' };
+export const Unbonding = {
+    encode(message, writer = Writer.create()) {
+        if (message.unbonder !== '') {
+            writer.uint32(10).string(message.unbonder);
+        }
+        if (message.amount !== '') {
+            writer.uint32(18).string(message.amount);
+        }
+        if (message.recipient !== '') {
+            writer.uint32(26).string(message.recipient);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUnbonding };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.unbonder = reader.string();
+                    break;
+                case 2:
+                    message.amount = reader.string();
+                    break;
+                case 3:
+                    message.recipient = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseUnbonding };
+        if (object.unbonder !== undefined && object.unbonder !== null) {
+            message.unbonder = String(object.unbonder);
+        }
+        else {
+            message.unbonder = '';
+        }
+        if (object.amount !== undefined && object.amount !== null) {
+            message.amount = String(object.amount);
+        }
+        else {
+            message.amount = '';
+        }
+        if (object.recipient !== undefined && object.recipient !== null) {
+            message.recipient = String(object.recipient);
+        }
+        else {
+            message.recipient = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.unbonder !== undefined && (obj.unbonder = message.unbonder);
+        message.amount !== undefined && (obj.amount = message.amount);
+        message.recipient !== undefined && (obj.recipient = message.recipient);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseUnbonding };
+        if (object.unbonder !== undefined && object.unbonder !== null) {
+            message.unbonder = object.unbonder;
+        }
+        else {
+            message.unbonder = '';
+        }
+        if (object.amount !== undefined && object.amount !== null) {
+            message.amount = object.amount;
+        }
+        else {
+            message.amount = '';
+        }
+        if (object.recipient !== undefined && object.recipient !== null) {
+            message.recipient = object.recipient;
+        }
+        else {
+            message.recipient = '';
+        }
+        return message;
+    }
+};
+const baseUserUnlockChunk = { pool: '', unlockEra: 0, value: '', recipient: '' };
+export const UserUnlockChunk = {
+    encode(message, writer = Writer.create()) {
+        if (message.pool !== '') {
+            writer.uint32(10).string(message.pool);
+        }
+        if (message.unlockEra !== 0) {
+            writer.uint32(16).uint32(message.unlockEra);
+        }
+        if (message.value !== '') {
+            writer.uint32(26).string(message.value);
+        }
+        if (message.recipient !== '') {
+            writer.uint32(34).string(message.recipient);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseUserUnlockChunk };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.pool = reader.string();
+                    break;
+                case 2:
+                    message.unlockEra = reader.uint32();
+                    break;
+                case 3:
+                    message.value = reader.string();
+                    break;
+                case 4:
+                    message.recipient = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseUserUnlockChunk };
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = String(object.pool);
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.unlockEra !== undefined && object.unlockEra !== null) {
+            message.unlockEra = Number(object.unlockEra);
+        }
+        else {
+            message.unlockEra = 0;
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = String(object.value);
+        }
+        else {
+            message.value = '';
+        }
+        if (object.recipient !== undefined && object.recipient !== null) {
+            message.recipient = String(object.recipient);
+        }
+        else {
+            message.recipient = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.pool !== undefined && (obj.pool = message.pool);
+        message.unlockEra !== undefined && (obj.unlockEra = message.unlockEra);
+        message.value !== undefined && (obj.value = message.value);
+        message.recipient !== undefined && (obj.recipient = message.recipient);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseUserUnlockChunk };
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = object.pool;
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.unlockEra !== undefined && object.unlockEra !== null) {
+            message.unlockEra = object.unlockEra;
+        }
+        else {
+            message.unlockEra = 0;
+        }
+        if (object.value !== undefined && object.value !== null) {
+            message.value = object.value;
+        }
+        else {
+            message.value = '';
+        }
+        if (object.recipient !== undefined && object.recipient !== null) {
+            message.recipient = object.recipient;
+        }
+        else {
+            message.recipient = '';
+        }
+        return message;
+    }
+};
+const baseAccountUnbond = { unbonder: '', denom: '' };
+export const AccountUnbond = {
+    encode(message, writer = Writer.create()) {
+        if (message.unbonder !== '') {
+            writer.uint32(10).string(message.unbonder);
+        }
+        if (message.denom !== '') {
+            writer.uint32(18).string(message.denom);
+        }
+        for (const v of message.chunks) {
+            UserUnlockChunk.encode(v, writer.uint32(26).fork()).ldelim();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseAccountUnbond };
+        message.chunks = [];
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.unbonder = reader.string();
+                    break;
+                case 2:
+                    message.denom = reader.string();
+                    break;
+                case 3:
+                    message.chunks.push(UserUnlockChunk.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseAccountUnbond };
+        message.chunks = [];
+        if (object.unbonder !== undefined && object.unbonder !== null) {
+            message.unbonder = String(object.unbonder);
+        }
+        else {
+            message.unbonder = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.chunks !== undefined && object.chunks !== null) {
+            for (const e of object.chunks) {
+                message.chunks.push(UserUnlockChunk.fromJSON(e));
+            }
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.unbonder !== undefined && (obj.unbonder = message.unbonder);
+        message.denom !== undefined && (obj.denom = message.denom);
+        if (message.chunks) {
+            obj.chunks = message.chunks.map((e) => (e ? UserUnlockChunk.toJSON(e) : undefined));
+        }
+        else {
+            obj.chunks = [];
+        }
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseAccountUnbond };
+        message.chunks = [];
+        if (object.unbonder !== undefined && object.unbonder !== null) {
+            message.unbonder = object.unbonder;
+        }
+        else {
+            message.unbonder = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.chunks !== undefined && object.chunks !== null) {
+            for (const e of object.chunks) {
+                message.chunks.push(UserUnlockChunk.fromPartial(e));
+            }
+        }
+        return message;
+    }
+};
+const baseBondRecord = { denom: '', bonder: '', pool: '', blockhash: '', txhash: '', amount: '' };
+export const BondRecord = {
+    encode(message, writer = Writer.create()) {
+        if (message.denom !== '') {
+            writer.uint32(10).string(message.denom);
+        }
+        if (message.bonder !== '') {
+            writer.uint32(18).string(message.bonder);
+        }
+        if (message.pool !== '') {
+            writer.uint32(26).string(message.pool);
+        }
+        if (message.blockhash !== '') {
+            writer.uint32(34).string(message.blockhash);
+        }
+        if (message.txhash !== '') {
+            writer.uint32(42).string(message.txhash);
+        }
+        if (message.amount !== '') {
+            writer.uint32(50).string(message.amount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseBondRecord };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.denom = reader.string();
+                    break;
+                case 2:
+                    message.bonder = reader.string();
+                    break;
+                case 3:
+                    message.pool = reader.string();
+                    break;
+                case 4:
+                    message.blockhash = reader.string();
+                    break;
+                case 5:
+                    message.txhash = reader.string();
+                    break;
+                case 6:
+                    message.amount = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseBondRecord };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.bonder !== undefined && object.bonder !== null) {
+            message.bonder = String(object.bonder);
+        }
+        else {
+            message.bonder = '';
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = String(object.pool);
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.blockhash !== undefined && object.blockhash !== null) {
+            message.blockhash = String(object.blockhash);
+        }
+        else {
+            message.blockhash = '';
+        }
+        if (object.txhash !== undefined && object.txhash !== null) {
+            message.txhash = String(object.txhash);
+        }
+        else {
+            message.txhash = '';
+        }
+        if (object.amount !== undefined && object.amount !== null) {
+            message.amount = String(object.amount);
+        }
+        else {
+            message.amount = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.bonder !== undefined && (obj.bonder = message.bonder);
+        message.pool !== undefined && (obj.pool = message.pool);
+        message.blockhash !== undefined && (obj.blockhash = message.blockhash);
+        message.txhash !== undefined && (obj.txhash = message.txhash);
+        message.amount !== undefined && (obj.amount = message.amount);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseBondRecord };
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.bonder !== undefined && object.bonder !== null) {
+            message.bonder = object.bonder;
+        }
+        else {
+            message.bonder = '';
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = object.pool;
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.blockhash !== undefined && object.blockhash !== null) {
+            message.blockhash = object.blockhash;
+        }
+        else {
+            message.blockhash = '';
+        }
+        if (object.txhash !== undefined && object.txhash !== null) {
+            message.txhash = object.txhash;
+        }
+        else {
+            message.txhash = '';
+        }
+        if (object.amount !== undefined && object.amount !== null) {
+            message.amount = object.amount;
+        }
+        else {
+            message.amount = '';
         }
         return message;
     }

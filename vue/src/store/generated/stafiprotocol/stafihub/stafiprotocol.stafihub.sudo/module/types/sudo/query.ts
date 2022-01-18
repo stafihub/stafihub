@@ -9,12 +9,6 @@ export interface QueryAdminResponse {
   address: string
 }
 
-export interface QueryAllDenomsRequest {}
-
-export interface QueryAllDenomsResponse {
-  denoms: string[]
-}
-
 const baseQueryAdminRequest: object = {}
 
 export const QueryAdminRequest = {
@@ -108,112 +102,10 @@ export const QueryAdminResponse = {
   }
 }
 
-const baseQueryAllDenomsRequest: object = {}
-
-export const QueryAllDenomsRequest = {
-  encode(_: QueryAllDenomsRequest, writer: Writer = Writer.create()): Writer {
-    return writer
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): QueryAllDenomsRequest {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryAllDenomsRequest } as QueryAllDenomsRequest
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(_: any): QueryAllDenomsRequest {
-    const message = { ...baseQueryAllDenomsRequest } as QueryAllDenomsRequest
-    return message
-  },
-
-  toJSON(_: QueryAllDenomsRequest): unknown {
-    const obj: any = {}
-    return obj
-  },
-
-  fromPartial(_: DeepPartial<QueryAllDenomsRequest>): QueryAllDenomsRequest {
-    const message = { ...baseQueryAllDenomsRequest } as QueryAllDenomsRequest
-    return message
-  }
-}
-
-const baseQueryAllDenomsResponse: object = { denoms: '' }
-
-export const QueryAllDenomsResponse = {
-  encode(message: QueryAllDenomsResponse, writer: Writer = Writer.create()): Writer {
-    for (const v of message.denoms) {
-      writer.uint32(10).string(v!)
-    }
-    return writer
-  },
-
-  decode(input: Reader | Uint8Array, length?: number): QueryAllDenomsResponse {
-    const reader = input instanceof Uint8Array ? new Reader(input) : input
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryAllDenomsResponse } as QueryAllDenomsResponse
-    message.denoms = []
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.denoms.push(reader.string())
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): QueryAllDenomsResponse {
-    const message = { ...baseQueryAllDenomsResponse } as QueryAllDenomsResponse
-    message.denoms = []
-    if (object.denoms !== undefined && object.denoms !== null) {
-      for (const e of object.denoms) {
-        message.denoms.push(String(e))
-      }
-    }
-    return message
-  },
-
-  toJSON(message: QueryAllDenomsResponse): unknown {
-    const obj: any = {}
-    if (message.denoms) {
-      obj.denoms = message.denoms.map((e) => e)
-    } else {
-      obj.denoms = []
-    }
-    return obj
-  },
-
-  fromPartial(object: DeepPartial<QueryAllDenomsResponse>): QueryAllDenomsResponse {
-    const message = { ...baseQueryAllDenomsResponse } as QueryAllDenomsResponse
-    message.denoms = []
-    if (object.denoms !== undefined && object.denoms !== null) {
-      for (const e of object.denoms) {
-        message.denoms.push(e)
-      }
-    }
-    return message
-  }
-}
-
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Queries a list of admin items. */
   Admin(request: QueryAdminRequest): Promise<QueryAdminResponse>
-  /** Queries a list of allDenoms items. */
-  AllDenoms(request: QueryAllDenomsRequest): Promise<QueryAllDenomsResponse>
 }
 
 export class QueryClientImpl implements Query {
@@ -225,12 +117,6 @@ export class QueryClientImpl implements Query {
     const data = QueryAdminRequest.encode(request).finish()
     const promise = this.rpc.request('stafiprotocol.stafihub.sudo.Query', 'Admin', data)
     return promise.then((data) => QueryAdminResponse.decode(new Reader(data)))
-  }
-
-  AllDenoms(request: QueryAllDenomsRequest): Promise<QueryAllDenomsResponse> {
-    const data = QueryAllDenomsRequest.encode(request).finish()
-    const promise = this.rpc.request('stafiprotocol.stafihub.sudo.Query', 'AllDenoms', data)
-    return promise.then((data) => QueryAllDenomsResponse.decode(new Reader(data)))
   }
 }
 

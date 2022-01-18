@@ -71,6 +71,27 @@ export interface MsgSetReceiver {
 }
 export interface MsgSetReceiverResponse {
 }
+export interface MsgSetUnbondFee {
+    creator: string;
+    denom: string;
+    value: string;
+}
+export interface MsgSetUnbondFeeResponse {
+}
+export interface MsgLiquidityUnbond {
+    creator: string;
+    pool: string;
+    value: string;
+    recipient: string;
+}
+export interface MsgLiquidityUnbondResponse {
+}
+export interface MsgSetUnbondCommission {
+    creator: string;
+    commission: string;
+}
+export interface MsgSetUnbondCommissionResponse {
+}
 export declare const MsgAddNewPool: {
     encode(message: MsgAddNewPool, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgAddNewPool;
@@ -211,6 +232,48 @@ export declare const MsgSetReceiverResponse: {
     toJSON(_: MsgSetReceiverResponse): unknown;
     fromPartial(_: DeepPartial<MsgSetReceiverResponse>): MsgSetReceiverResponse;
 };
+export declare const MsgSetUnbondFee: {
+    encode(message: MsgSetUnbondFee, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondFee;
+    fromJSON(object: any): MsgSetUnbondFee;
+    toJSON(message: MsgSetUnbondFee): unknown;
+    fromPartial(object: DeepPartial<MsgSetUnbondFee>): MsgSetUnbondFee;
+};
+export declare const MsgSetUnbondFeeResponse: {
+    encode(_: MsgSetUnbondFeeResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondFeeResponse;
+    fromJSON(_: any): MsgSetUnbondFeeResponse;
+    toJSON(_: MsgSetUnbondFeeResponse): unknown;
+    fromPartial(_: DeepPartial<MsgSetUnbondFeeResponse>): MsgSetUnbondFeeResponse;
+};
+export declare const MsgLiquidityUnbond: {
+    encode(message: MsgLiquidityUnbond, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgLiquidityUnbond;
+    fromJSON(object: any): MsgLiquidityUnbond;
+    toJSON(message: MsgLiquidityUnbond): unknown;
+    fromPartial(object: DeepPartial<MsgLiquidityUnbond>): MsgLiquidityUnbond;
+};
+export declare const MsgLiquidityUnbondResponse: {
+    encode(_: MsgLiquidityUnbondResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgLiquidityUnbondResponse;
+    fromJSON(_: any): MsgLiquidityUnbondResponse;
+    toJSON(_: MsgLiquidityUnbondResponse): unknown;
+    fromPartial(_: DeepPartial<MsgLiquidityUnbondResponse>): MsgLiquidityUnbondResponse;
+};
+export declare const MsgSetUnbondCommission: {
+    encode(message: MsgSetUnbondCommission, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondCommission;
+    fromJSON(object: any): MsgSetUnbondCommission;
+    toJSON(message: MsgSetUnbondCommission): unknown;
+    fromPartial(object: DeepPartial<MsgSetUnbondCommission>): MsgSetUnbondCommission;
+};
+export declare const MsgSetUnbondCommissionResponse: {
+    encode(_: MsgSetUnbondCommissionResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSetUnbondCommissionResponse;
+    fromJSON(_: any): MsgSetUnbondCommissionResponse;
+    toJSON(_: MsgSetUnbondCommissionResponse): unknown;
+    fromPartial(_: DeepPartial<MsgSetUnbondCommissionResponse>): MsgSetUnbondCommissionResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     AddNewPool(request: MsgAddNewPool): Promise<MsgAddNewPoolResponse>;
@@ -222,8 +285,11 @@ export interface Msg {
     SetLeastBond(request: MsgSetLeastBond): Promise<MsgSetLeastBondResponse>;
     ClearCurrentEraSnapShots(request: MsgClearCurrentEraSnapShots): Promise<MsgClearCurrentEraSnapShotsResponse>;
     SetCommission(request: MsgSetCommission): Promise<MsgSetCommissionResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     SetReceiver(request: MsgSetReceiver): Promise<MsgSetReceiverResponse>;
+    SetUnbondFee(request: MsgSetUnbondFee): Promise<MsgSetUnbondFeeResponse>;
+    LiquidityUnbond(request: MsgLiquidityUnbond): Promise<MsgLiquidityUnbondResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    SetUnbondCommission(request: MsgSetUnbondCommission): Promise<MsgSetUnbondCommissionResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -238,6 +304,9 @@ export declare class MsgClientImpl implements Msg {
     ClearCurrentEraSnapShots(request: MsgClearCurrentEraSnapShots): Promise<MsgClearCurrentEraSnapShotsResponse>;
     SetCommission(request: MsgSetCommission): Promise<MsgSetCommissionResponse>;
     SetReceiver(request: MsgSetReceiver): Promise<MsgSetReceiverResponse>;
+    SetUnbondFee(request: MsgSetUnbondFee): Promise<MsgSetUnbondFeeResponse>;
+    LiquidityUnbond(request: MsgLiquidityUnbond): Promise<MsgLiquidityUnbondResponse>;
+    SetUnbondCommission(request: MsgSetUnbondCommission): Promise<MsgSetUnbondCommissionResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

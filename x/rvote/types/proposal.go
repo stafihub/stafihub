@@ -62,13 +62,7 @@ func (p *Proposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
 }
 
 func (p *Proposal) HasVoted(proposer string) bool {
-	for _, v := range p.VotesFor {
-		if v == proposer {
-			return true
-		}
-	}
-
-	for _, v := range p.VotesAgainst {
+	for _, v := range p.Voted {
 		if v == proposer {
 			return true
 		}

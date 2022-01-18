@@ -43,6 +43,16 @@ export interface TransferReportProposal {
     shotId: Uint8Array;
     propId: Uint8Array;
 }
+export interface ExecuteBondProposal {
+    proposer: string;
+    denom: string;
+    bonder: string;
+    pool: string;
+    blockhash: string;
+    txhash: string;
+    amount: string;
+    propId: Uint8Array;
+}
 export declare const SetChainEraProposal: {
     encode(message: SetChainEraProposal, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): SetChainEraProposal;
@@ -84,6 +94,13 @@ export declare const TransferReportProposal: {
     fromJSON(object: any): TransferReportProposal;
     toJSON(message: TransferReportProposal): unknown;
     fromPartial(object: DeepPartial<TransferReportProposal>): TransferReportProposal;
+};
+export declare const ExecuteBondProposal: {
+    encode(message: ExecuteBondProposal, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): ExecuteBondProposal;
+    fromJSON(object: any): ExecuteBondProposal;
+    toJSON(message: ExecuteBondProposal): unknown;
+    fromPartial(object: DeepPartial<ExecuteBondProposal>): ExecuteBondProposal;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

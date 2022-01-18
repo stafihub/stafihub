@@ -1,8 +1,6 @@
 import { txClient, queryClient, MissingWalletError } from './module';
 // @ts-ignore
 import { SpVuexError } from '@starport/vuex';
-import { Symbol } from "./module/types/sudo/sudo";
-export { Symbol };
 async function initTxClient(vuexGetters) {
     return await txClient(vuexGetters['common/wallet/signer'], {
         addr: vuexGetters['common/env/apiTendermint']
@@ -37,10 +35,7 @@ function getStructure(template) {
 const getDefaultState = () => {
     return {
         Admin: {},
-        AllDenoms: {},
-        _Structure: {
-            Symbol: getStructure(Symbol.fromPartial({})),
-        },
+        _Structure: {},
         _Subscriptions: new Set(),
     };
 };
@@ -69,12 +64,6 @@ export default {
                 params.query = null;
             }
             return state.Admin[JSON.stringify(params)] ?? {};
-        },
-        getAllDenoms: (state) => (params = { params: {} }) => {
-            if (!params.query) {
-                params.query = null;
-            }
-            return state.AllDenoms[JSON.stringify(params)] ?? {};
         },
         getTypeStructure: (state) => (type) => {
             return state._Structure[type].fields;
@@ -118,17 +107,21 @@ export default {
                 throw new SpVuexError('QueryClient:QueryAdmin', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
-        async QueryAllDenoms({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+        async sendMsgUpdateAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
-                const queryClient = await initQueryClient(rootGetters);
-                let value = (await queryClient.queryAllDenoms()).data;
-                commit('QUERY', { query: 'AllDenoms', key: { params: { ...key }, query }, value });
-                if (subscribe)
-                    commit('SUBSCRIBE', { action: 'QueryAllDenoms', payload: { options: { all }, params: { ...key }, query } });
-                return getters['getAllDenoms']({ params: { ...key }, query }) ?? {};
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgUpdateAdmin(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
-                throw new SpVuexError('QueryClient:QueryAllDenoms', 'API Node Unavailable. Could not perform query: ' + e.message);
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgUpdateAdmin:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgUpdateAdmin:Send', 'Could not broadcast Tx: ' + e.message);
+                }
             }
         },
         async sendMsgAddDenom({ rootGetters }, { value, fee = [], memo = '' }) {
@@ -148,20 +141,18 @@ export default {
                 }
             }
         },
-        async sendMsgUpdateAdmin({ rootGetters }, { value, fee = [], memo = '' }) {
+        async MsgUpdateAdmin({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgUpdateAdmin(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
+                return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
                     throw new SpVuexError('TxClient:MsgUpdateAdmin:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgUpdateAdmin:Send', 'Could not broadcast Tx: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgUpdateAdmin:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
@@ -177,21 +168,6 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgAddDenom:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
-        async MsgUpdateAdmin({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgUpdateAdmin(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgUpdateAdmin:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgUpdateAdmin:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
