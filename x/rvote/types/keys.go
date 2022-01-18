@@ -10,8 +10,8 @@ const (
 	// RouterKey is the message route for slashing
 	RouterKey = ModuleName
 
-    // QuerierRoute defines the module's query routing key
-    QuerierRoute = ModuleName
+	// QuerierRoute defines the module's query routing key
+	QuerierRoute = ModuleName
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_rvote"
@@ -19,10 +19,9 @@ const (
 
 var (
 	ProposalLifePrefix = []byte{0x01}
-	ProposalPrefix = []byte{0x02}
+	ProposalPrefix     = []byte{0x02}
 )
 
-
 func KeyPrefix(p string) []byte {
-    return []byte(p)
+	return []byte(p)
 }

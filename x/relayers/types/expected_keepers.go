@@ -7,7 +7,6 @@ import (
 
 type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
-
 }
 
 type BankKeeper interface {

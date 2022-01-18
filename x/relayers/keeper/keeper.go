@@ -16,17 +16,17 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 
-        sudoKeeper types.SudoKeeper
+		sudoKeeper types.SudoKeeper
 		bankKeeper types.BankKeeper
 	}
 )
 
 func NewKeeper(
-    cdc codec.BinaryCodec,
-    storeKey,
-    memKey sdk.StoreKey,
+	cdc codec.BinaryCodec,
+	storeKey,
+	memKey sdk.StoreKey,
 
-    sudoKeeper types.SudoKeeper,
+	sudoKeeper types.SudoKeeper,
 	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
@@ -44,7 +44,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 func (k Keeper) SetLastVoter(ctx sdk.Context, denom, voter string) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
 	lv := types.LastVoter{
 		Denom: denom,
 		Voter: voter,
@@ -54,7 +54,7 @@ func (k Keeper) SetLastVoter(ctx sdk.Context, denom, voter string) {
 }
 
 func (k Keeper) LastVoter(ctx sdk.Context, denom string) (val types.LastVoter, found bool) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
 
 	b := store.Get([]byte(denom))
 	if b == nil {

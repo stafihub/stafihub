@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
 	"github.com/stafiprotocol/stafihub/x/relayers/keeper"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,7 +18,7 @@ func createNRelayer(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Relay
 	items := make([]types.Relayer, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
-        
+
 		keeper.SetRelayer(ctx, items[i])
 	}
 	return items
@@ -29,8 +29,7 @@ func TestRelayerGet(t *testing.T) {
 	items := createNRelayer(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetRelayer(ctx,
-		    item.Index,
-            
+			item.Index,
 		)
 		require.True(t, found)
 		require.Equal(t, item, rst)
@@ -41,12 +40,10 @@ func TestRelayerRemove(t *testing.T) {
 	items := createNRelayer(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveRelayer(ctx,
-		    item.Index,
-            
+			item.Index,
 		)
 		_, found := keeper.GetRelayer(ctx,
-		    item.Index,
-            
+			item.Index,
 		)
 		require.False(t, found)
 	}

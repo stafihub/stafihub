@@ -11,7 +11,7 @@ import (
 
 var _ types.QueryServer = Keeper{}
 
-func (k Keeper) Admin(goCtx context.Context,  req *types.QueryAdminRequest) (*types.QueryAdminResponse, error) {
+func (k Keeper) Admin(goCtx context.Context, req *types.QueryAdminRequest) (*types.QueryAdminResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

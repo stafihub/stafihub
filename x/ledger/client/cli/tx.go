@@ -10,8 +10,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafiprotocol/stafihub/x/ledger/types"
 )
 
 var (
@@ -21,7 +21,6 @@ var (
 const (
 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
 )
-
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -53,8 +52,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSetUnbondCommission())
 	cmd.AddCommand(CmdLiquidityUnbond())
 
-
-// this line is used by starport scaffolding # 1
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }

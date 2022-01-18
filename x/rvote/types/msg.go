@@ -6,8 +6,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 
 	"github.com/cosmos/cosmos-sdk/codec/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/gogo/protobuf/proto"
 )
 
@@ -18,7 +18,7 @@ var (
 
 func NewMsgSetProposalLife(creator sdk.AccAddress, proposalLife int64) *MsgSetProposalLife {
 	return &MsgSetProposalLife{
-		Creator: creator.String(),
+		Creator:      creator.String(),
 		ProposalLife: proposalLife,
 	}
 }
@@ -133,4 +133,3 @@ func (m MsgSubmitProposal) UnpackInterfaces(unpacker types.AnyUnpacker) error {
 	var content Content
 	return unpacker.UnpackAny(m.Content, &content)
 }
-

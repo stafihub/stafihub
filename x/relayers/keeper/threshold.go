@@ -1,14 +1,14 @@
 package keeper
 
 import (
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 )
 
 // SetThreshold set a specific threshold in the store from its denom
 func (k Keeper) SetThreshold(ctx sdk.Context, threshold *types.Threshold) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
 	b := k.cdc.MustMarshal(threshold)
 	store.Set([]byte(threshold.Denom), b)
 }
@@ -28,7 +28,7 @@ func (k Keeper) GetThreshold(ctx sdk.Context, denom string) (val types.Threshold
 
 // GetAllThreshold returns all threshold
 func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []*types.Threshold) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -36,8 +36,8 @@ func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []*types.Threshold) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Threshold
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-        list = append(list, &val)
+		list = append(list, &val)
 	}
 
-    return
+	return
 }

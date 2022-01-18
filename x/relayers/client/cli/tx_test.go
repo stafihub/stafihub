@@ -2,7 +2,7 @@ package cli_test
 
 import (
 	"fmt"
-    "strconv"
+	"strconv"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -23,9 +23,9 @@ func TestCreateRelayer(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{ "xyz",  "xyz", }
+	fields := []string{"xyz", "xyz"}
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idIndex string
 
 		args []string
@@ -48,7 +48,6 @@ func TestCreateRelayer(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
 				tc.idIndex,
-
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)
@@ -71,7 +70,7 @@ func TestDeleteRelayer(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{ "xyz",  "xyz", }
+	fields := []string{"xyz", "xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -80,7 +79,6 @@ func TestDeleteRelayer(t *testing.T) {
 	}
 	args := []string{
 		"0",
-
 	}
 	args = append(args, fields...)
 	args = append(args, common...)
@@ -88,7 +86,7 @@ func TestDeleteRelayer(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idIndex string
 
 		args []string
@@ -96,13 +94,13 @@ func TestDeleteRelayer(t *testing.T) {
 		err  error
 	}{
 		{
-			desc: "valid",
+			desc:    "valid",
 			idIndex: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc: "key not found",
+			desc:    "key not found",
 			idIndex: strconv.Itoa(100000),
 
 			args: common,
@@ -113,7 +111,6 @@ func TestDeleteRelayer(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
 				tc.idIndex,
-
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdDeleteRelayer(), args)
@@ -134,7 +131,7 @@ func TestUpdateThreshold(t *testing.T) {
 	val := net.Validators[0]
 	ctx := val.ClientCtx
 
-	fields := []string{ "xyz",  "xyz", }
+	fields := []string{"xyz", "xyz"}
 	common := []string{
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
@@ -143,7 +140,6 @@ func TestUpdateThreshold(t *testing.T) {
 	}
 	args := []string{
 		"0",
-
 	}
 	args = append(args, fields...)
 	args = append(args, common...)
@@ -151,7 +147,7 @@ func TestUpdateThreshold(t *testing.T) {
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idIndex string
 
 		args []string
@@ -159,13 +155,13 @@ func TestUpdateThreshold(t *testing.T) {
 		err  error
 	}{
 		{
-			desc: "valid",
+			desc:    "valid",
 			idIndex: strconv.Itoa(0),
 
 			args: common,
 		},
 		{
-			desc: "key not found",
+			desc:    "key not found",
 			idIndex: strconv.Itoa(100000),
 
 			args: common,
@@ -176,7 +172,6 @@ func TestUpdateThreshold(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
 				tc.idIndex,
-
 			}
 			args = append(args, fields...)
 			args = append(args, tc.args...)

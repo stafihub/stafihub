@@ -3,8 +3,8 @@ package types
 import (
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec/types"
-	yaml "gopkg.in/yaml.v2"
 	"github.com/gogo/protobuf/proto"
+	yaml "gopkg.in/yaml.v2"
 )
 
 func (p *Proposal) SetContent(content Content) error {

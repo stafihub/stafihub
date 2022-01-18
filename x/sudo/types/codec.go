@@ -2,15 +2,15 @@ package types
 
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
-    cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateAdmin{}, "sudo/UpdateAdmin", nil)
-cdc.RegisterConcrete(&MsgAddDenom{}, "sudo/AddDenom", nil)
-// this line is used by starport scaffolding # 2
+	cdc.RegisterConcrete(&MsgAddDenom{}, "sudo/AddDenom", nil)
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -18,12 +18,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgUpdateAdmin{},
 		&MsgAddDenom{},
 	)
-// this line is used by starport scaffolding # 3
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
 
 var (
-	amino = codec.NewLegacyAmino()
+	amino     = codec.NewLegacyAmino()
 	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )

@@ -23,19 +23,19 @@ var (
 )
 
 func NewMsgAddNewPool(creator sdk.AccAddress, denom string, addr string) *MsgAddNewPool {
-  return &MsgAddNewPool{
+	return &MsgAddNewPool{
 		Creator: creator.String(),
-    Denom: denom,
-    Addr: addr,
+		Denom:   denom,
+		Addr:    addr,
 	}
 }
 
 func (msg *MsgAddNewPool) Route() string {
-  return RouterKey
+	return RouterKey
 }
 
 func (msg *MsgAddNewPool) Type() string {
-  return "AddNewPool"
+	return "AddNewPool"
 }
 
 func (msg *MsgAddNewPool) GetSigners() []sdk.AccAddress {
@@ -44,8 +44,8 @@ func (msg *MsgAddNewPool) GetSigners() []sdk.AccAddress {
 }
 
 func (msg *MsgAddNewPool) GetSignBytes() []byte {
-  bz := ModuleCdc.MustMarshalJSON(msg)
-  return sdk.MustSortJSON(bz)
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
 }
 
 func (msg *MsgAddNewPool) ValidateBasic() error {
@@ -59,8 +59,8 @@ func (msg *MsgAddNewPool) ValidateBasic() error {
 func NewMsgRemovePool(creator sdk.AccAddress, denom string, addr string) *MsgRemovePool {
 	return &MsgRemovePool{
 		Creator: creator.String(),
-		Denom: denom,
-		Addr: addr,
+		Denom:   denom,
+		Addr:    addr,
 	}
 }
 
@@ -93,8 +93,8 @@ func (msg *MsgRemovePool) ValidateBasic() error {
 func NewMsgSetEraUnbondLimit(creator sdk.AccAddress, denom string, limit uint32) *MsgSetEraUnbondLimit {
 	return &MsgSetEraUnbondLimit{
 		Creator: creator.String(),
-		Denom: denom,
-		Limit: limit,
+		Denom:   denom,
+		Limit:   limit,
 	}
 }
 
@@ -126,10 +126,10 @@ func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
 
 func NewMsgSetInitBond(creator sdk.AccAddress, denom string, pool string, amount sdk.Int, receiver sdk.AccAddress) *MsgSetInitBond {
 	return &MsgSetInitBond{
-		Creator: creator.String(),
-		Denom: denom,
-		Pool: pool,
-		Amount: amount,
+		Creator:  creator.String(),
+		Denom:    denom,
+		Pool:     pool,
+		Amount:   amount,
 		Receiver: receiver.String(),
 	}
 }
@@ -162,8 +162,8 @@ func (msg *MsgSetInitBond) ValidateBasic() error {
 func NewMsgSetChainBondingDuration(creator sdk.AccAddress, denom string, era uint32) *MsgSetChainBondingDuration {
 	return &MsgSetChainBondingDuration{
 		Creator: creator.String(),
-		Denom: denom,
-		Era: era,
+		Denom:   denom,
+		Era:     era,
 	}
 }
 
@@ -195,11 +195,11 @@ func (msg *MsgSetChainBondingDuration) ValidateBasic() error {
 
 func NewMsgSetPoolDetail(creator sdk.AccAddress, denom string, pool string, subAccounts []string, threshold uint32) *MsgSetPoolDetail {
 	return &MsgSetPoolDetail{
-		Creator: creator.String(),
-		Denom: denom,
-		Pool: pool,
+		Creator:     creator.String(),
+		Denom:       denom,
+		Pool:        pool,
 		SubAccounts: subAccounts,
-		Threshold: threshold,
+		Threshold:   threshold,
 	}
 }
 
@@ -240,8 +240,8 @@ func (msg *MsgSetPoolDetail) ValidateBasic() error {
 func NewMsgSetLeastBond(creator sdk.AccAddress, denom string, amount sdk.Int) *MsgSetLeastBond {
 	return &MsgSetLeastBond{
 		Creator: creator.String(),
-		Denom: denom,
-		Amount: amount,
+		Denom:   denom,
+		Amount:  amount,
 	}
 }
 
@@ -274,7 +274,7 @@ func (msg *MsgSetLeastBond) ValidateBasic() error {
 func NewMsgClearCurrentEraSnapShots(creator sdk.AccAddress, denom string) *MsgClearCurrentEraSnapShots {
 	return &MsgClearCurrentEraSnapShots{
 		Creator: creator.String(),
-		Denom: denom,
+		Denom:   denom,
 	}
 }
 
@@ -306,7 +306,7 @@ func (msg *MsgClearCurrentEraSnapShots) ValidateBasic() error {
 
 func NewMsgSetCommission(creator sdk.AccAddress, commission sdk.Dec) *MsgSetCommission {
 	return &MsgSetCommission{
-		Creator: creator.String(),
+		Creator:    creator.String(),
 		Commission: commission,
 	}
 }
@@ -346,7 +346,7 @@ func (msg *MsgSetCommission) ValidateBasic() error {
 
 func NewMsgSetReceiver(creator sdk.AccAddress, receiver sdk.AccAddress) *MsgSetReceiver {
 	return &MsgSetReceiver{
-		Creator: creator.String(),
+		Creator:  creator.String(),
 		Receiver: receiver.String(),
 	}
 }
@@ -378,7 +378,7 @@ func (msg *MsgSetReceiver) ValidateBasic() error {
 
 func NewMsgSetUnbondCommission(creator sdk.AccAddress, commission sdk.Dec) *MsgSetUnbondCommission {
 	return &MsgSetUnbondCommission{
-		Creator: creator.String(),
+		Creator:    creator.String(),
 		Commission: commission,
 	}
 }
@@ -419,9 +419,9 @@ func (msg *MsgSetUnbondCommission) ValidateBasic() error {
 
 func NewMsgLiquidityUnbond(creator sdk.AccAddress, pool string, value sdk.Coin, recipient string) *MsgLiquidityUnbond {
 	return &MsgLiquidityUnbond{
-		Creator: creator.String(),
-		Pool: pool,
-		Value: value,
+		Creator:   creator.String(),
+		Pool:      pool,
+		Value:     value,
 		Recipient: recipient,
 	}
 }
@@ -458,8 +458,8 @@ func (msg *MsgLiquidityUnbond) ValidateBasic() error {
 func NewMsgSetUnbondFee(creator sdk.AccAddress, denom string, value sdk.Coin) *MsgSetUnbondFee {
 	return &MsgSetUnbondFee{
 		Creator: creator.String(),
-		Denom: denom,
-		Value: value,
+		Denom:   denom,
+		Value:   value,
 	}
 }
 
@@ -488,5 +488,3 @@ func (msg *MsgSetUnbondFee) ValidateBasic() error {
 
 	return nil
 }
-
-

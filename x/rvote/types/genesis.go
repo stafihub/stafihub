@@ -1,7 +1,7 @@
 package types
 
 import (
-// this line is used by starport scaffolding # genesis/types/import
+	// this line is used by starport scaffolding # genesis/types/import
 	"fmt"
 )
 
@@ -12,7 +12,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		ProposalLife: 0,
-	    // this line is used by starport scaffolding # genesis/types/default
+		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
 
@@ -22,7 +22,7 @@ func (gs GenesisState) Validate() error {
 	if gs.ProposalLife < 0 {
 		return fmt.Errorf("proposalLife %d is negative", gs.ProposalLife)
 	}
-    // this line is used by starport scaffolding # genesis/types/validate
+	// this line is used by starport scaffolding # genesis/types/validate
 
 	return nil
 }

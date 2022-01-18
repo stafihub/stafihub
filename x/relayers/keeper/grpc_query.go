@@ -41,7 +41,7 @@ func (k Keeper) RelayerAll(c context.Context, req *types.QueryAllRelayerRequest)
 	return &types.QueryAllRelayerResponse{Relayers: relayers, Pagination: pageRes}, nil
 }
 
-func (k Keeper) RelayersByDenom(c context.Context,  req *types.QueryRelayersByDenomRequest) (*types.QueryRelayersByDenomResponse, error) {
+func (k Keeper) RelayersByDenom(c context.Context, req *types.QueryRelayersByDenomRequest) (*types.QueryRelayersByDenomResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
 	"github.com/stafiprotocol/stafihub/x/relayers/keeper"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,7 +18,7 @@ func createNThreshold(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Thr
 	items := make([]types.Threshold, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
-        
+
 		keeper.SetThreshold(ctx, items[i])
 	}
 	return items
@@ -29,8 +29,7 @@ func TestThresholdGet(t *testing.T) {
 	items := createNThreshold(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetThreshold(ctx,
-		    item.Index,
-            
+			item.Index,
 		)
 		require.True(t, found)
 		require.Equal(t, item, rst)
@@ -41,12 +40,10 @@ func TestThresholdRemove(t *testing.T) {
 	items := createNThreshold(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveThreshold(ctx,
-		    item.Index,
-            
+			item.Index,
 		)
 		_, found := keeper.GetThreshold(ctx,
-		    item.Index,
-            
+			item.Index,
 		)
 		require.False(t, found)
 	}

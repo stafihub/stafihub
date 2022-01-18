@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	SetChainEraProposalType = "SetChainEraProposal"
-	BondReportProposalType = "BondReportProposal"
+	SetChainEraProposalType         = "SetChainEraProposal"
+	BondReportProposalType          = "BondReportProposal"
 	BondAndReportActiveProposalType = "BondAndReportActiveProposal"
-	ActiveReportProposalType = "ActiveReportProposal"
-	WithdrawReportProposalType = "WithdrawReportProposal"
-	TransferReportProposalType = "TransferReportProposal"
-	ExecuteBondProposalType = "ExecuteBondProposal"
+	ActiveReportProposalType        = "ActiveReportProposal"
+	WithdrawReportProposalType      = "WithdrawReportProposal"
+	TransferReportProposalType      = "TransferReportProposal"
+	ExecuteBondProposalType         = "ExecuteBondProposal"
 )
 
 func init() {
@@ -36,7 +36,7 @@ func init() {
 func NewSetChainEraProposal(proposer sdk.AccAddress, denom string, era uint32) *SetChainEraProposal {
 	p := &SetChainEraProposal{
 		Denom: denom,
-		Era: era,
+		Era:   era,
 	}
 
 	p.setPropId()
@@ -76,7 +76,7 @@ func (p *SetChainEraProposal) ValidateBasic() error {
 
 func NewBondReportProposal(proposer sdk.AccAddress, denom string, shotId []byte, action BondAction) *BondReportProposal {
 	p := &BondReportProposal{
-		Denom: denom,
+		Denom:  denom,
 		ShotId: shotId,
 		Action: action,
 	}
@@ -118,10 +118,10 @@ func (p *BondReportProposal) ValidateBasic() error {
 
 func NewBondAndReportActiveProposal(proposer sdk.AccAddress, denom string, shotId []byte, action BondAction, staked, unstaked sdk.Int) *BondAndReportActiveProposal {
 	p := &BondAndReportActiveProposal{
-		Denom: denom,
-		ShotId: shotId,
-		Action: action,
-		Staked: staked,
+		Denom:    denom,
+		ShotId:   shotId,
+		Action:   action,
+		Staked:   staked,
 		Unstaked: unstaked,
 	}
 
@@ -162,9 +162,9 @@ func (p *BondAndReportActiveProposal) ValidateBasic() error {
 
 func NewActiveReportProposal(proposer sdk.AccAddress, denom string, shotId []byte, staked, unstaked sdk.Int) *ActiveReportProposal {
 	p := &ActiveReportProposal{
-		Denom: denom,
-		ShotId: shotId,
-		Staked: staked,
+		Denom:    denom,
+		ShotId:   shotId,
+		Staked:   staked,
 		Unstaked: unstaked,
 	}
 
@@ -205,7 +205,7 @@ func (p *ActiveReportProposal) ValidateBasic() error {
 
 func NewWithdrawReportProposal(proposer sdk.AccAddress, denom string, shotId []byte) *WithdrawReportProposal {
 	p := &WithdrawReportProposal{
-		Denom: denom,
+		Denom:  denom,
 		ShotId: shotId,
 	}
 
@@ -246,7 +246,7 @@ func (p *WithdrawReportProposal) ValidateBasic() error {
 
 func NewTransferReportProposal(proposer sdk.AccAddress, denom string, shotId []byte) *TransferReportProposal {
 	p := &TransferReportProposal{
-		Denom: denom,
+		Denom:  denom,
 		ShotId: shotId,
 	}
 
@@ -289,12 +289,12 @@ func NewExecuteBondProposal(
 	proposer sdk.AccAddress, denom string, bonder sdk.AccAddress,
 	pool string, blockhash string, txhash string, amount sdk.Int) *ExecuteBondProposal {
 	p := &ExecuteBondProposal{
-		Denom: denom,
-		Bonder: bonder.String(),
-		Pool: pool,
+		Denom:     denom,
+		Bonder:    bonder.String(),
+		Pool:      pool,
 		Blockhash: blockhash,
-		Txhash: txhash,
-		Amount: amount,
+		Txhash:    txhash,
+		Amount:    amount,
 	}
 
 	p.setPropId()
@@ -331,11 +331,3 @@ func (p *ExecuteBondProposal) ValidateBasic() error {
 
 	return nil
 }
-
-
-
-
-
-
-
-

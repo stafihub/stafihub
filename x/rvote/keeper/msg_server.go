@@ -21,7 +21,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (k msgServer) SetProposalLife(goCtx context.Context,  msg *types.MsgSetProposalLife) (*types.MsgSetProposalLifeResponse, error) {
+func (k msgServer) SetProposalLife(goCtx context.Context, msg *types.MsgSetProposalLife) (*types.MsgSetProposalLifeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -33,7 +33,7 @@ func (k msgServer) SetProposalLife(goCtx context.Context,  msg *types.MsgSetProp
 	return &types.MsgSetProposalLifeResponse{}, nil
 }
 
-func (k msgServer) SubmitProposal(goCtx context.Context,  msg *types.MsgSubmitProposal) (*types.MsgSubmitProposalResponse, error) {
+func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitProposal) (*types.MsgSubmitProposalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	content := msg.GetContent()

@@ -20,9 +20,9 @@ type (
 )
 
 func NewKeeper(
-    cdc codec.BinaryCodec,
-    storeKey,
-    memKey sdk.StoreKey,
+	cdc codec.BinaryCodec,
+	storeKey,
+	memKey sdk.StoreKey,
 	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
@@ -52,4 +52,3 @@ func (k Keeper) IsAdmin(ctx sdk.Context, address string) bool {
 	admin := k.GetAdmin(ctx)
 	return admin.String() == address
 }
-

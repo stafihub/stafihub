@@ -14,31 +14,31 @@ func NewPool(denom string) Pool {
 func NewChainEra(denom string) ChainEra {
 	return ChainEra{
 		Denom: denom,
-		Era: 0,
+		Era:   0,
 	}
 }
 
 func NewAccountUnbond(denom, unbonder string, chunks []UserUnlockChunk) AccountUnbond {
 	return AccountUnbond{
 		Unbonder: unbonder,
-		Denom: denom,
-		Chunks: chunks,
+		Denom:    denom,
+		Chunks:   chunks,
 	}
 }
 
 func NewPoolUnbond(denom, pool string, era uint32, unbondings []Unbonding) PoolUnbond {
 	return PoolUnbond{
-		Denom: denom,
-		Pool: pool,
-		Era: era,
+		Denom:      denom,
+		Pool:       pool,
+		Era:        era,
 		Unbondings: unbondings,
 	}
 }
 
 func NewUnbonding(unbonder, recipient string, amount sdk.Int) Unbonding {
 	return Unbonding{
-		Unbonder: unbonder,
-		Amount: amount,
+		Unbonder:  unbonder,
+		Amount:    amount,
 		Recipient: recipient,
 	}
 }
@@ -46,9 +46,9 @@ func NewUnbonding(unbonder, recipient string, amount sdk.Int) Unbonding {
 func NewBondPipeline(denom, pool string) BondPipeline {
 	return BondPipeline{
 		Denom: denom,
-		Pool: pool,
+		Pool:  pool,
 		Chunk: LinkChunk{
-			Bond: SdkNewInt(),
+			Bond:   SdkNewInt(),
 			Unbond: SdkNewInt(),
 			Active: SdkNewInt(),
 		},
@@ -57,10 +57,10 @@ func NewBondPipeline(denom, pool string) BondPipeline {
 
 func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk, voter string) BondSnapshot {
 	return BondSnapshot{
-		Denom: denom,
-		Pool: pool,
-		Era: era,
-		Chunk: chunk,
+		Denom:     denom,
+		Pool:      pool,
+		Era:       era,
+		Chunk:     chunk,
 		LastVoter: voter,
 		BondState: EraUpdated,
 	}
@@ -68,19 +68,19 @@ func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk, voter stri
 
 func NewEraSnapShot(denom string) EraSnapShot {
 	return EraSnapShot{
-		Denom: denom,
+		Denom:   denom,
 		ShotIds: [][]byte{},
 	}
 }
 
 func NewBondRecord(denom, bonder, pool, blockhash, txhash string, amount sdk.Int) BondRecord {
 	return BondRecord{
-		Denom: denom,
-		Bonder: bonder,
-		Pool: pool,
+		Denom:     denom,
+		Bonder:    bonder,
+		Pool:      pool,
 		Blockhash: blockhash,
-		Txhash: txhash,
-		Amount: amount,
+		Txhash:    txhash,
+		Amount:    amount,
 	}
 }
 

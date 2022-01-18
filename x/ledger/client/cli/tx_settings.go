@@ -7,11 +7,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-    "github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafiprotocol/stafihub/x/ledger/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -22,8 +22,8 @@ func CmdAddNewPool() *cobra.Command {
 		Short: "Broadcast message add_new_pool",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-      		 argDenom := args[0]
-      		 argAddr := args[1]
+			argDenom := args[0]
+			argAddr := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -44,7 +44,7 @@ func CmdAddNewPool() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
 
 func CmdRemovePool() *cobra.Command {
@@ -65,7 +65,6 @@ func CmdRemovePool() *cobra.Command {
 				clientCtx.GetFromAddress(),
 				argDenom,
 				argAddr,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -279,7 +278,6 @@ func CmdClearCurrentEraSnapShots() *cobra.Command {
 			msg := types.NewMsgClearCurrentEraSnapShots(
 				clientCtx.GetFromAddress(),
 				argDenom,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -344,7 +342,6 @@ func CmdSetReceiver() *cobra.Command {
 			msg := types.NewMsgSetReceiver(
 				clientCtx.GetFromAddress(),
 				argReceiver,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -379,7 +376,6 @@ func CmdSetUnbondFee() *cobra.Command {
 				clientCtx.GetFromAddress(),
 				argDenom,
 				argValue,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -412,7 +408,6 @@ func CmdSetUnbondCommission() *cobra.Command {
 			msg := types.NewMsgSetUnbondCommission(
 				clientCtx.GetFromAddress(),
 				argCommission,
-
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

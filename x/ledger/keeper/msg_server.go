@@ -3,9 +3,9 @@ package keeper
 import (
 	"context"
 
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stafiprotocol/stafihub/x/ledger/types"
 )
 
 type msgServer struct {
@@ -20,7 +20,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (k msgServer) LiquidityUnbond(goCtx context.Context,  msg *types.MsgLiquidityUnbond) (*types.MsgLiquidityUnbondResponse, error) {
+func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidityUnbond) (*types.MsgLiquidityUnbondResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	denom := msg.Value.Denom
 	ce, ok := k.Keeper.GetChainEra(ctx, denom)
@@ -78,7 +78,6 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context,  msg *types.MsgLiquidi
 		}
 		poolUnbonds.Unbondings = append(poolUnbonds.Unbondings, unbonding)
 	}
-
 
 	unbondFee, ok := k.Keeper.GetUnbondFee(ctx, denom)
 	if ok && unbondFee.Value.IsPositive() {

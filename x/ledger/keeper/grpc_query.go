@@ -15,7 +15,7 @@ type Querier struct {
 
 var _ types.QueryServer = Querier{}
 
-func (q Querier) GetExchangeRate(goCtx context.Context,  req *types.QueryGetExchangeRateRequest) (*types.QueryGetExchangeRateResponse, error) {
+func (q Querier) GetExchangeRate(goCtx context.Context, req *types.QueryGetExchangeRateRequest) (*types.QueryGetExchangeRateResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -29,7 +29,7 @@ func (q Querier) GetExchangeRate(goCtx context.Context,  req *types.QueryGetExch
 	return &types.QueryGetExchangeRateResponse{ExchangeRate: val}, nil
 }
 
-func (q Querier) ExchangeRateAll(goCtx context.Context,  req *types.QueryExchangeRateAllRequest) (*types.QueryExchangeRateAllResponse, error) {
+func (q Querier) ExchangeRateAll(goCtx context.Context, req *types.QueryExchangeRateAllRequest) (*types.QueryExchangeRateAllResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -40,7 +40,7 @@ func (q Querier) ExchangeRateAll(goCtx context.Context,  req *types.QueryExchang
 	return &types.QueryExchangeRateAllResponse{ExchangeRates: exchangeRates}, nil
 }
 
-func (q Querier) GetEraExchangeRate(goCtx context.Context,  req *types.QueryGetEraExchangeRateRequest) (*types.QueryGetEraExchangeRateResponse, error) {
+func (q Querier) GetEraExchangeRate(goCtx context.Context, req *types.QueryGetEraExchangeRateRequest) (*types.QueryGetEraExchangeRateResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -54,7 +54,7 @@ func (q Querier) GetEraExchangeRate(goCtx context.Context,  req *types.QueryGetE
 	return &types.QueryGetEraExchangeRateResponse{EraExchangeRate: val}, nil
 }
 
-func (q Querier) EraExchangeRatesByDenom(goCtx context.Context,  req *types.QueryEraExchangeRatesByDenomRequest) (*types.QueryEraExchangeRatesByDenomResponse, error) {
+func (q Querier) EraExchangeRatesByDenom(goCtx context.Context, req *types.QueryEraExchangeRatesByDenomRequest) (*types.QueryEraExchangeRatesByDenomResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

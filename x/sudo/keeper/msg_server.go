@@ -19,7 +19,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (k msgServer) UpdateAdmin(goCtx context.Context,  msg *types.MsgUpdateAdmin) (*types.MsgUpdateAdminResponse, error) {
+func (k msgServer) UpdateAdmin(goCtx context.Context, msg *types.MsgUpdateAdmin) (*types.MsgUpdateAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	lastAdmin := k.GetAdmin(ctx).String()
@@ -42,7 +42,7 @@ func (k msgServer) UpdateAdmin(goCtx context.Context,  msg *types.MsgUpdateAdmin
 	return &types.MsgUpdateAdminResponse{}, nil
 }
 
-func (k msgServer) AddDenom(goCtx context.Context,  msg *types.MsgAddDenom) (*types.MsgAddDenomResponse, error) {
+func (k msgServer) AddDenom(goCtx context.Context, msg *types.MsgAddDenom) (*types.MsgAddDenomResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	isAdmin := k.IsAdmin(ctx, msg.Creator)

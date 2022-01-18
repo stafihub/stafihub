@@ -1,10 +1,10 @@
 package keeper
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/rvote/types"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	"github.com/stafiprotocol/stafihub/x/rvote/types"
 )
 
 func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
@@ -17,9 +17,9 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 	prop, ok := k.GetProposal(ctx, content.GetPropId())
 	if !ok {
 		prop = &types.Proposal{
-			Status: types.StatusInitiated,
+			Status:     types.StatusInitiated,
 			StartBlock: curBlock,
-			Voted: []string{proposer},
+			Voted:      []string{proposer},
 		}
 		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
 		if err := prop.SetContent(content); err != nil {
@@ -44,19 +44,18 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 }
 
 func (k Keeper) SetProposal(ctx sdk.Context, proposal *types.Proposal) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 	b := k.cdc.MustMarshal(proposal)
 	store.Set(proposal.PropId(), b)
 }
 
-
 func (k Keeper) GetProposal(ctx sdk.Context, id []byte) (val *types.Proposal, found bool) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 
 	b := store.Get(id)
-    if b == nil {
-        return val, false
-    }
+	if b == nil {
+		return val, false
+	}
 
 	k.cdc.MustUnmarshal(b, val)
 	return val, true
@@ -64,7 +63,7 @@ func (k Keeper) GetProposal(ctx sdk.Context, id []byte) (val *types.Proposal, fo
 
 // GetAllProposal returns all proposal
 func (k Keeper) GetAllProposal(ctx sdk.Context) (list []types.Proposal) {
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
@@ -72,10 +71,8 @@ func (k Keeper) GetAllProposal(ctx sdk.Context) (list []types.Proposal) {
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.Proposal
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-        list = append(list, val)
+		list = append(list, val)
 	}
 
-    return
+	return
 }
-
-

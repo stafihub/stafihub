@@ -14,7 +14,7 @@ import (
 
 	"github.com/stafiprotocol/stafihub/testutil/network"
 	"github.com/stafiprotocol/stafihub/x/relayers/client/cli"
-    "github.com/stafiprotocol/stafihub/x/relayers/types"
+	"github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 // Prevent strconv unused error
@@ -24,11 +24,10 @@ func networkWithRelayerObjects(t *testing.T, n int) (*network.Network, []types.R
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
-    require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
+	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		state.Relayers = append(state.Relayers, types.Relayer{
-		})
+		state.Relayers = append(state.Relayers, types.Relayer{})
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
@@ -101,7 +100,7 @@ func TestShowThreshold(t *testing.T) {
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc string
+		desc    string
 		idIndex string
 
 		args []string
@@ -109,14 +108,14 @@ func TestShowThreshold(t *testing.T) {
 		obj  types.Threshold
 	}{
 		{
-			desc: "found",
+			desc:    "found",
 			idIndex: objs[0].Index,
 
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc: "not found",
+			desc:    "not found",
 			idIndex: strconv.Itoa(100000),
 
 			args: common,
@@ -127,7 +126,6 @@ func TestShowThreshold(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
 				tc.idIndex,
-
 			}
 			args = append(args, tc.args...)
 			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowThreshold(), args)

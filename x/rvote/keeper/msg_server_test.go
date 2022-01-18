@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-    "github.com/stafiprotocol/stafihub/x/rvote/types"
-    "github.com/stafiprotocol/stafihub/x/rvote/keeper"
-    keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
+	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
+	"github.com/stafiprotocol/stafihub/x/rvote/keeper"
+	"github.com/stafiprotocol/stafihub/x/rvote/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

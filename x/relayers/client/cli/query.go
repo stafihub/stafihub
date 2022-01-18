@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/spf13/cobra"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/spf13/cobra"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
@@ -26,7 +26,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdListThreshold())
 	cmd.AddCommand(CmdShowThreshold())
-// this line is used by starport scaffolding # 1
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }
@@ -149,7 +149,6 @@ func CmdShowThreshold() *cobra.Command {
 
 			params := &types.QueryGetThresholdRequest{
 				Denom: args[0],
-
 			}
 
 			res, err := queryClient.Threshold(context.Background(), params)

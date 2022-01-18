@@ -3,12 +3,12 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
 	sudoTypes "github.com/stafiprotocol/stafihub/x/sudo/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
-func (k msgServer) AddNewPool(goCtx context.Context,  msg *types.MsgAddNewPool) (*types.MsgAddNewPoolResponse, error) {
+func (k msgServer) AddNewPool(goCtx context.Context, msg *types.MsgAddNewPool) (*types.MsgAddNewPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -28,7 +28,7 @@ func (k msgServer) AddNewPool(goCtx context.Context,  msg *types.MsgAddNewPool) 
 	return &types.MsgAddNewPoolResponse{}, nil
 }
 
-func (k msgServer) RemovePool(goCtx context.Context,  msg *types.MsgRemovePool) (*types.MsgRemovePoolResponse, error) {
+func (k msgServer) RemovePool(goCtx context.Context, msg *types.MsgRemovePool) (*types.MsgRemovePoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -64,7 +64,7 @@ func (k msgServer) RemovePool(goCtx context.Context,  msg *types.MsgRemovePool) 
 	return &types.MsgRemovePoolResponse{}, nil
 }
 
-func (k msgServer) SetEraUnbondLimit(goCtx context.Context,  msg *types.MsgSetEraUnbondLimit) (*types.MsgSetEraUnbondLimitResponse, error) {
+func (k msgServer) SetEraUnbondLimit(goCtx context.Context, msg *types.MsgSetEraUnbondLimit) (*types.MsgSetEraUnbondLimitResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -81,7 +81,7 @@ func (k msgServer) SetEraUnbondLimit(goCtx context.Context,  msg *types.MsgSetEr
 	return &types.MsgSetEraUnbondLimitResponse{}, nil
 }
 
-func (k msgServer) SetInitBond(goCtx context.Context,  msg *types.MsgSetInitBond) (*types.MsgSetInitBondResponse, error) {
+func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond) (*types.MsgSetInitBondResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -123,7 +123,7 @@ func (k msgServer) SetInitBond(goCtx context.Context,  msg *types.MsgSetInitBond
 	return &types.MsgSetInitBondResponse{}, nil
 }
 
-func (k msgServer) SetChainBondingDuration(goCtx context.Context,  msg *types.MsgSetChainBondingDuration) (*types.MsgSetChainBondingDurationResponse, error) {
+func (k msgServer) SetChainBondingDuration(goCtx context.Context, msg *types.MsgSetChainBondingDuration) (*types.MsgSetChainBondingDurationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -139,7 +139,7 @@ func (k msgServer) SetChainBondingDuration(goCtx context.Context,  msg *types.Ms
 	return &types.MsgSetChainBondingDurationResponse{}, nil
 }
 
-func (k msgServer) SetPoolDetail(goCtx context.Context,  msg *types.MsgSetPoolDetail) (*types.MsgSetPoolDetailResponse, error) {
+func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDetail) (*types.MsgSetPoolDetailResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -156,7 +156,7 @@ func (k msgServer) SetPoolDetail(goCtx context.Context,  msg *types.MsgSetPoolDe
 	return &types.MsgSetPoolDetailResponse{}, nil
 }
 
-func (k msgServer) SetLeastBond(goCtx context.Context,  msg *types.MsgSetLeastBond) (*types.MsgSetLeastBondResponse, error) {
+func (k msgServer) SetLeastBond(goCtx context.Context, msg *types.MsgSetLeastBond) (*types.MsgSetLeastBondResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -173,7 +173,7 @@ func (k msgServer) SetLeastBond(goCtx context.Context,  msg *types.MsgSetLeastBo
 	return &types.MsgSetLeastBondResponse{}, nil
 }
 
-func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context,  msg *types.MsgClearCurrentEraSnapShots) (*types.MsgClearCurrentEraSnapShotsResponse, error) {
+func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context, msg *types.MsgClearCurrentEraSnapShots) (*types.MsgClearCurrentEraSnapShotsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -190,7 +190,7 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context,  msg *types.M
 	return &types.MsgClearCurrentEraSnapShotsResponse{}, nil
 }
 
-func (k msgServer) SetCommission(goCtx context.Context,  msg *types.MsgSetCommission) (*types.MsgSetCommissionResponse, error) {
+func (k msgServer) SetCommission(goCtx context.Context, msg *types.MsgSetCommission) (*types.MsgSetCommissionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -201,7 +201,7 @@ func (k msgServer) SetCommission(goCtx context.Context,  msg *types.MsgSetCommis
 	return &types.MsgSetCommissionResponse{}, nil
 }
 
-func (k msgServer) SetReceiver(goCtx context.Context,  msg *types.MsgSetReceiver) (*types.MsgSetReceiverResponse, error) {
+func (k msgServer) SetReceiver(goCtx context.Context, msg *types.MsgSetReceiver) (*types.MsgSetReceiverResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -214,7 +214,7 @@ func (k msgServer) SetReceiver(goCtx context.Context,  msg *types.MsgSetReceiver
 	return &types.MsgSetReceiverResponse{}, nil
 }
 
-func (k msgServer) SetUnbondFee(goCtx context.Context,  msg *types.MsgSetUnbondFee) (*types.MsgSetUnbondFeeResponse, error) {
+func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFee) (*types.MsgSetUnbondFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -230,7 +230,7 @@ func (k msgServer) SetUnbondFee(goCtx context.Context,  msg *types.MsgSetUnbondF
 	return &types.MsgSetUnbondFeeResponse{}, nil
 }
 
-func (k msgServer) SetUnbondCommission(goCtx context.Context,  msg *types.MsgSetUnbondCommission) (*types.MsgSetUnbondCommissionResponse, error) {
+func (k msgServer) SetUnbondCommission(goCtx context.Context, msg *types.MsgSetUnbondCommission) (*types.MsgSetUnbondCommissionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {

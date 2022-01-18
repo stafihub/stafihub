@@ -20,9 +20,8 @@ var (
 )
 
 const (
-	FlagMetadata     = "metadata"
+	FlagMetadata = "metadata"
 )
-
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -35,8 +34,8 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdUpdateAdmin())
-cmd.AddCommand(CmdAddDenom())
-// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdAddDenom())
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }
@@ -114,7 +113,7 @@ Where metadata.json could be like this:
       "symbol": ""
     }
 `, version.AppName),
-	),
+		),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

@@ -5,9 +5,9 @@ import (
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 type msgServer struct {
@@ -22,7 +22,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRelayer) (*types.MsgCreateRelayerResponse, error) {
+func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRelayer) (*types.MsgCreateRelayerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -40,7 +40,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 	}
 
 	var relayer = &types.Relayer{
-		Denom: msg.Denom,
+		Denom:   msg.Denom,
 		Address: msg.Address,
 	}
 
@@ -56,7 +56,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context,  msg *types.MsgCreateRel
 	return &types.MsgCreateRelayerResponse{}, nil
 }
 
-func (k msgServer) DeleteRelayer(goCtx context.Context,  msg *types.MsgDeleteRelayer) (*types.MsgDeleteRelayerResponse, error) {
+func (k msgServer) DeleteRelayer(goCtx context.Context, msg *types.MsgDeleteRelayer) (*types.MsgDeleteRelayerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -79,7 +79,7 @@ func (k msgServer) DeleteRelayer(goCtx context.Context,  msg *types.MsgDeleteRel
 	return &types.MsgDeleteRelayerResponse{}, nil
 }
 
-func (k msgServer) UpdateThreshold(goCtx context.Context,  msg *types.MsgUpdateThreshold) (*types.MsgUpdateThresholdResponse, error) {
+func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateThreshold) (*types.MsgUpdateThresholdResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {

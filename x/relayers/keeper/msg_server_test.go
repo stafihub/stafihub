@@ -6,10 +6,10 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-    "github.com/stafiprotocol/stafihub/x/relayers/types"
-    "github.com/stafiprotocol/stafihub/x/relayers/keeper"
-    keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
+	"github.com/stafiprotocol/stafihub/x/relayers/keeper"
+	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,13 +26,11 @@ func TestRelayerMsgServerCreate(t *testing.T) {
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateRelayer{Creator: creator,
 			Index: strconv.Itoa(i),
-
 		}
 		_, err := srv.CreateRelayer(wctx, expected)
 		require.NoError(t, err)
 		rst, found := k.GetRelayer(ctx,
 			expected.Index,
-
 		)
 		require.True(t, found)
 		require.Equal(t, expected.Creator, rst.Creator)
@@ -48,27 +46,24 @@ func TestRelayerMsgServerDelete(t *testing.T) {
 		err     error
 	}{
 		{
-			desc:    "Completed",
+			desc: "Completed",
 			request: &types.MsgDeleteRelayer{Creator: creator,
 				Index: strconv.Itoa(0),
-
 			},
 		},
 		{
-			desc:    "Unauthorized",
+			desc: "Unauthorized",
 			request: &types.MsgDeleteRelayer{Creator: "B",
 				Index: strconv.Itoa(0),
-
 			},
-			err:     sdkerrors.ErrUnauthorized,
+			err: sdkerrors.ErrUnauthorized,
 		},
 		{
-			desc:    "KeyNotFound",
+			desc: "KeyNotFound",
 			request: &types.MsgDeleteRelayer{Creator: creator,
 				Index: strconv.Itoa(100000),
-
 			},
-			err:     sdkerrors.ErrKeyNotFound,
+			err: sdkerrors.ErrKeyNotFound,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -78,7 +73,6 @@ func TestRelayerMsgServerDelete(t *testing.T) {
 
 			_, err := srv.CreateRelayer(wctx, &types.MsgCreateRelayer{Creator: creator,
 				Index: strconv.Itoa(0),
-
 			})
 			require.NoError(t, err)
 			_, err = srv.DeleteRelayer(wctx, tc.request)
@@ -88,7 +82,6 @@ func TestRelayerMsgServerDelete(t *testing.T) {
 				require.NoError(t, err)
 				_, found := k.GetRelayer(ctx,
 					tc.request.Index,
-
 				)
 				require.False(t, found)
 			}
@@ -105,27 +98,24 @@ func TestThresholdMsgServerUpdate(t *testing.T) {
 		err     error
 	}{
 		{
-			desc:    "Completed",
+			desc: "Completed",
 			request: &types.MsgUpdateThreshold{Creator: creator,
 				Index: strconv.Itoa(0),
-
 			},
 		},
 		{
-			desc:    "Unauthorized",
+			desc: "Unauthorized",
 			request: &types.MsgUpdateThreshold{Creator: "B",
 				Index: strconv.Itoa(0),
-
 			},
-			err:     sdkerrors.ErrUnauthorized,
+			err: sdkerrors.ErrUnauthorized,
 		},
 		{
-			desc:    "KeyNotFound",
+			desc: "KeyNotFound",
 			request: &types.MsgUpdateThreshold{Creator: creator,
 				Index: strconv.Itoa(100000),
-
 			},
-			err:     sdkerrors.ErrKeyNotFound,
+			err: sdkerrors.ErrKeyNotFound,
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -134,7 +124,6 @@ func TestThresholdMsgServerUpdate(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateThreshold{Creator: creator,
 				Index: strconv.Itoa(0),
-
 			}
 			_, err := srv.CreateThreshold(wctx, expected)
 			require.NoError(t, err)
@@ -146,7 +135,6 @@ func TestThresholdMsgServerUpdate(t *testing.T) {
 				require.NoError(t, err)
 				rst, found := k.GetThreshold(ctx,
 					expected.Index,
-
 				)
 				require.True(t, found)
 				require.Equal(t, expected.Creator, rst.Creator)

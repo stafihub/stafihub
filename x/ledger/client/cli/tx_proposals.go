@@ -277,7 +277,6 @@ func CmdExecuteBondProposal() *cobra.Command {
 				return fmt.Errorf("cast amount %s into Int error", args[5])
 			}
 
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

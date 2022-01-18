@@ -16,4 +16,3 @@ type RelayerKeeper interface {
 	SetLastVoter(ctx sdk.Context, denom, voter string)
 	LastVoter(ctx sdk.Context, denom string) (val relayerstypes.LastVoter, found bool)
 }
-

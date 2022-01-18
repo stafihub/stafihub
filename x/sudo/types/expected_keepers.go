@@ -10,4 +10,3 @@ type BankKeeper interface {
 	GetDenomMetaData(ctx sdk.Context, denom string) (banktypes.Metadata, bool)
 	SetDenomMetaData(ctx sdk.Context, denomMetaData banktypes.Metadata)
 }
-

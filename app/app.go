@@ -88,19 +88,19 @@ import (
 
 	"github.com/stafiprotocol/stafihub/docs"
 
-sudomodule "github.com/stafiprotocol/stafihub/x/sudo"
-		sudomodulekeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
-		sudomoduletypes "github.com/stafiprotocol/stafihub/x/sudo/types"
-relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
-		relayersmodulekeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
-		relayersmoduletypes "github.com/stafiprotocol/stafihub/x/relayers/types"
-ledgermodule "github.com/stafiprotocol/stafihub/x/ledger"
-		ledgermodulekeeper "github.com/stafiprotocol/stafihub/x/ledger/keeper"
-		ledgermoduletypes "github.com/stafiprotocol/stafihub/x/ledger/types"
-rvotemodule "github.com/stafiprotocol/stafihub/x/rvote"
-		rvotemodulekeeper "github.com/stafiprotocol/stafihub/x/rvote/keeper"
-		rvotemoduletypes "github.com/stafiprotocol/stafihub/x/rvote/types"
-// this line is used by starport scaffolding # stargate/app/moduleImport
+	ledgermodule "github.com/stafiprotocol/stafihub/x/ledger"
+	ledgermodulekeeper "github.com/stafiprotocol/stafihub/x/ledger/keeper"
+	ledgermoduletypes "github.com/stafiprotocol/stafihub/x/ledger/types"
+	relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
+	relayersmodulekeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
+	relayersmoduletypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	rvotemodule "github.com/stafiprotocol/stafihub/x/rvote"
+	rvotemodulekeeper "github.com/stafiprotocol/stafihub/x/rvote/keeper"
+	rvotemoduletypes "github.com/stafiprotocol/stafihub/x/rvote/types"
+	sudomodule "github.com/stafiprotocol/stafihub/x/sudo"
+	sudomodulekeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
+	sudomoduletypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
@@ -150,11 +150,11 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-sudomodule.AppModuleBasic{},
-relayersmodule.AppModuleBasic{},
-ledgermodule.AppModuleBasic{},
-rvotemodule.AppModuleBasic{},
-// this line is used by starport scaffolding # stargate/app/moduleBasic
+		sudomodule.AppModuleBasic{},
+		relayersmodule.AppModuleBasic{},
+		ledgermodule.AppModuleBasic{},
+		rvotemodule.AppModuleBasic{},
+		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
 	// module account permissions
@@ -222,14 +222,14 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-		SudoKeeper sudomodulekeeper.Keeper
+	SudoKeeper sudomodulekeeper.Keeper
 
-		RelayersKeeper relayersmodulekeeper.Keeper
+	RelayersKeeper relayersmodulekeeper.Keeper
 
-		LedgerKeeper ledgermodulekeeper.Keeper
+	LedgerKeeper ledgermodulekeeper.Keeper
 
-		RvoteKeeper rvotemodulekeeper.Keeper
-// this line is used by starport scaffolding # stargate/app/keeperDeclaration
+	RvoteKeeper rvotemodulekeeper.Keeper
+	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
 	mm *module.Manager
@@ -262,12 +262,12 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-sudomoduletypes.StoreKey,
-relayersmoduletypes.StoreKey,
-ledgermoduletypes.StoreKey,
-rvotemoduletypes.StoreKey,
+		sudomoduletypes.StoreKey,
+		relayersmoduletypes.StoreKey,
+		ledgermoduletypes.StoreKey,
+		rvotemoduletypes.StoreKey,
 
-// this line is used by starport scaffolding # stargate/app/storeKey
+		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -335,7 +335,7 @@ rvotemoduletypes.StoreKey,
 	// Create IBC Keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
-    )
+	)
 
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
@@ -360,57 +360,57 @@ rvotemoduletypes.StoreKey,
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-    app.GovKeeper = govkeeper.NewKeeper(
-        appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
-        &stakingKeeper, govRouter,
-    )
+	app.GovKeeper = govkeeper.NewKeeper(
+		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
+		&stakingKeeper, govRouter,
+	)
 
-		app.SudoKeeper = *sudomodulekeeper.NewKeeper(
-			appCodec,
-			keys[sudomoduletypes.StoreKey],
-			keys[sudomoduletypes.MemStoreKey],
+	app.SudoKeeper = *sudomodulekeeper.NewKeeper(
+		appCodec,
+		keys[sudomoduletypes.StoreKey],
+		keys[sudomoduletypes.MemStoreKey],
 
-			app.BankKeeper,
-			)
+		app.BankKeeper,
+	)
 
-		app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
-			appCodec,
-			keys[relayersmoduletypes.StoreKey],
-			keys[relayersmoduletypes.MemStoreKey],
+	app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
+		appCodec,
+		keys[relayersmoduletypes.StoreKey],
+		keys[relayersmoduletypes.MemStoreKey],
 
-			app.SudoKeeper,
-			app.BankKeeper,
-		)
+		app.SudoKeeper,
+		app.BankKeeper,
+	)
 
-		app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
-			appCodec,
-			keys[ledgermoduletypes.StoreKey],
-			keys[ledgermoduletypes.MemStoreKey],
+	app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
+		appCodec,
+		keys[ledgermoduletypes.StoreKey],
+		keys[ledgermoduletypes.MemStoreKey],
 
-			app.SudoKeeper,
-			app.BankKeeper,
-			app.RelayersKeeper,
-		)
+		app.SudoKeeper,
+		app.BankKeeper,
+		app.RelayersKeeper,
+	)
 
-		rvoteRouter := rvotemoduletypes.NewRouter()
-		rvoteRouter.AddRoute(ledgermoduletypes.RouterKey, ledgermodule.NewProposalHandler(app.LedgerKeeper))
-		app.RvoteKeeper = *rvotemodulekeeper.NewKeeper(
-			appCodec,
-			keys[rvotemoduletypes.StoreKey],
-			keys[rvotemoduletypes.MemStoreKey],
+	rvoteRouter := rvotemoduletypes.NewRouter()
+	rvoteRouter.AddRoute(ledgermoduletypes.RouterKey, ledgermodule.NewProposalHandler(app.LedgerKeeper))
+	app.RvoteKeeper = *rvotemodulekeeper.NewKeeper(
+		appCodec,
+		keys[rvotemoduletypes.StoreKey],
+		keys[rvotemoduletypes.MemStoreKey],
 
-			app.SudoKeeper,
-			app.RelayersKeeper,
-			rvoteRouter,
-		)
+		app.SudoKeeper,
+		app.RelayersKeeper,
+		rvoteRouter,
+	)
 
-		// this line is used by starport scaffolding # stargate/app/keeperDefinition
+	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
-    // Create static IBC router, add transfer route, then set and seal it
+	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
-    ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
-    // this line is used by starport scaffolding # ibc/app/router
-    app.IBCKeeper.SetRouter(ibcRouter)
+	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
+	// this line is used by starport scaffolding # ibc/app/router
+	app.IBCKeeper.SetRouter(ibcRouter)
 
 	/****  Module Options ****/
 
@@ -447,7 +447,7 @@ rvotemoduletypes.StoreKey,
 		ledgermodule.NewAppModule(appCodec, app.LedgerKeeper),
 		rvotemodule.NewAppModule(appCodec, app.RvoteKeeper),
 
-// this line is used by starport scaffolding # stargate/app/appModule
+		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -482,11 +482,11 @@ rvotemoduletypes.StoreKey,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		sudomoduletypes.ModuleName,
-relayersmoduletypes.ModuleName,
-ledgermoduletypes.ModuleName,
-rvotemoduletypes.ModuleName,
+		relayersmoduletypes.ModuleName,
+		ledgermoduletypes.ModuleName,
+		rvotemoduletypes.ModuleName,
 
-// this line is used by starport scaffolding # stargate/app/initGenesis
+		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -550,7 +550,7 @@ func (app *App) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.Res
 	if err := tmjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
 	}
-    app.UpgradeKeeper.SetModuleVersionMap(ctx, app.mm.GetVersionMap())
+	app.UpgradeKeeper.SetModuleVersionMap(ctx, app.mm.GetVersionMap())
 	return app.mm.InitGenesis(ctx, app.appCodec, genesisState)
 }
 
@@ -629,15 +629,15 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 	// Register new tx routes from grpc-gateway.
 	authtx.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 	// Register new tendermint queries routes from grpc-gateway.
-    tmservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
+	tmservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
 	// Register legacy and grpc-gateway routes for all modules.
 	ModuleBasics.RegisterRESTRoutes(clientCtx, apiSvr.Router)
 	ModuleBasics.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
-    // register app's OpenAPI routes.
-    apiSvr.Router.Handle("/static/openapi.yml", http.FileServer(http.FS(docs.Docs)))
-    apiSvr.Router.HandleFunc("/", openapiconsole.Handler(Name, "/static/openapi.yml"))
+	// register app's OpenAPI routes.
+	apiSvr.Router.Handle("/static/openapi.yml", http.FileServer(http.FS(docs.Docs)))
+	apiSvr.Router.HandleFunc("/", openapiconsole.Handler(Name, "/static/openapi.yml"))
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
@@ -672,13 +672,13 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
-    paramsKeeper.Subspace(ibchost.ModuleName)
-paramsKeeper.Subspace(sudomoduletypes.ModuleName)
-paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
-paramsKeeper.Subspace(ledgermoduletypes.ModuleName)
-paramsKeeper.Subspace(rvotemoduletypes.ModuleName)
+	paramsKeeper.Subspace(ibchost.ModuleName)
+	paramsKeeper.Subspace(sudomoduletypes.ModuleName)
+	paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
+	paramsKeeper.Subspace(ledgermoduletypes.ModuleName)
+	paramsKeeper.Subspace(rvotemoduletypes.ModuleName)
 
-// this line is used by starport scaffolding # stargate/app/paramSubspace
+	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
 }

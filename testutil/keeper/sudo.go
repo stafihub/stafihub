@@ -3,13 +3,13 @@ package keeper
 import (
 	"testing"
 
-	"github.com/stafiprotocol/stafihub/x/sudo/keeper"
-	"github.com/stafiprotocol/stafihub/x/sudo/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafiprotocol/stafihub/x/sudo/keeper"
+	"github.com/stafiprotocol/stafihub/x/sudo/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -28,9 +28,9 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 	registry := codectypes.NewInterfaceRegistry()
 	k := keeper.NewKeeper(
-	    codec.NewProtoCodec(registry),
-	    storeKey,
-	    memStoreKey,
+		codec.NewProtoCodec(registry),
+		storeKey,
+		memStoreKey,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

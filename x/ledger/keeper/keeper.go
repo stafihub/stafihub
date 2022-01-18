@@ -18,18 +18,18 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 
-        sudoKeeper types.SudoKeeper
-		bankKeeper types.BankKeeper
+		sudoKeeper    types.SudoKeeper
+		bankKeeper    types.BankKeeper
 		relayerKeeper types.RelayerKeeper
 	}
 )
 
 func NewKeeper(
-    cdc codec.BinaryCodec,
-    storeKey,
-    memKey sdk.StoreKey,
+	cdc codec.BinaryCodec,
+	storeKey,
+	memKey sdk.StoreKey,
 
-    sudoKeeper types.SudoKeeper,
+	sudoKeeper types.SudoKeeper,
 	bankKeeper types.BankKeeper,
 	relayerKeeper types.RelayerKeeper,
 ) *Keeper {
@@ -38,8 +38,8 @@ func NewKeeper(
 		storeKey: storeKey,
 		memKey:   memKey,
 
-		sudoKeeper: sudoKeeper,
-		bankKeeper: bankKeeper,
+		sudoKeeper:    sudoKeeper,
+		bankKeeper:    bankKeeper,
 		relayerKeeper: relayerKeeper,
 	}
 }
@@ -48,13 +48,13 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) SetExchangeRate(ctx sdk.Context, denom string, total, rtotal sdk.Int)  {
+func (k Keeper) SetExchangeRate(ctx sdk.Context, denom string, total, rtotal sdk.Int) {
 	dec := sdk.OneDec()
 	if total.Int64() != 0 && rtotal.Int64() != 0 {
 		dec = dec.MulInt(rtotal).QuoInt(total)
 	}
 
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), types.ExchangeRateKeyPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ExchangeRateKeyPrefix)
 	e := types.ExchangeRate{
 		Denom: denom,
 		Value: dec,
@@ -93,23 +93,23 @@ func (k Keeper) GetAllExchangeRate(ctx sdk.Context) (list []types.ExchangeRate) 
 
 func (k Keeper) SetEraExchangeRate(ctx sdk.Context, denom string, era uint32, rate sdk.Dec) {
 	pre := append(types.EraExchangeRateKeyPrefix, types.KeyPrefix(denom)...)
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), pre)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), pre)
 	e := types.EraExchangeRate{
 		Denom: denom,
-		Era: era,
+		Era:   era,
 		Value: rate,
 	}
 	b := k.cdc.MustMarshal(&e)
 
-	bera:= make([]byte, 4)
+	bera := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bera, era)
 	store.Set(bera, b)
 }
 
 func (k Keeper) GetEraExchangeRate(ctx sdk.Context, denom string, era uint32) (val types.EraExchangeRate, found bool) {
 	pre := append(types.EraExchangeRateKeyPrefix, types.KeyPrefix(denom)...)
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), pre)
-	bera:= make([]byte, 4)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), pre)
+	bera := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bera, era)
 	b := store.Get(bera)
 	if b == nil {
@@ -123,7 +123,7 @@ func (k Keeper) GetEraExchangeRate(ctx sdk.Context, denom string, era uint32) (v
 // GetAllEraExchangeRate returns all eraExchangeRate
 func (k Keeper) GetEraExchangeRateByDenom(ctx sdk.Context, denom string) (list []types.EraExchangeRate) {
 	pre := append(types.EraExchangeRateKeyPrefix, types.KeyPrefix(denom)...)
-	store :=  prefix.NewStore(ctx.KVStore(k.storeKey), pre)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), pre)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()

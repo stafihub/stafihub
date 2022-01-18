@@ -12,40 +12,40 @@ var (
 )
 
 func NewMsgUpdateAdmin(creator sdk.AccAddress, address sdk.AccAddress) *MsgUpdateAdmin {
-  return &MsgUpdateAdmin{
+	return &MsgUpdateAdmin{
 		Creator: creator.String(),
-    	Address: address.String(),
+		Address: address.String(),
 	}
 }
 
 func (msg *MsgUpdateAdmin) Route() string {
-  return RouterKey
+	return RouterKey
 }
 
 func (msg *MsgUpdateAdmin) Type() string {
-  return "UpdateAdmin"
+	return "UpdateAdmin"
 }
 
 func (msg *MsgUpdateAdmin) GetSigners() []sdk.AccAddress {
-  creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-  return []sdk.AccAddress{creator}
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	return []sdk.AccAddress{creator}
 }
 
 func (msg *MsgUpdateAdmin) GetSignBytes() []byte {
-  bz := ModuleCdc.MustMarshalJSON(msg)
-  return sdk.MustSortJSON(bz)
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
 }
 
 func (msg *MsgUpdateAdmin) ValidateBasic() error {
-  if msg.Creator == "" || msg.Address == "" {
-	  return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
-  }
-  return nil
+	if msg.Creator == "" || msg.Address == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
+	}
+	return nil
 }
 
 func NewMsgAddDenom(creator sdk.AccAddress, metadata banktypes.Metadata) *MsgAddDenom {
 	return &MsgAddDenom{
-		Creator: creator.String(),
+		Creator:  creator.String(),
 		Metadata: metadata,
 	}
 }
@@ -74,4 +74,3 @@ func (msg *MsgAddDenom) ValidateBasic() error {
 	}
 	return nil
 }
-

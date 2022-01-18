@@ -1,7 +1,7 @@
 package types
 
 import (
-// this line is used by starport scaffolding # genesis/types/import
+	// this line is used by starport scaffolding # genesis/types/import
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -14,14 +14,14 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Admin: "fis1xrhhus43kjhqdccee7aqnuukh8ugv09affsg84",
-	    // this line is used by starport scaffolding # genesis/types/default
+		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
 
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-    // this line is used by starport scaffolding # genesis/types/validate
+	// this line is used by starport scaffolding # genesis/types/validate
 	_, err := sdk.AccAddressFromBech32(gs.Admin)
 	if err != nil {
 		return fmt.Errorf("invalid admin address %s", gs.Admin)

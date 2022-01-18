@@ -9,7 +9,7 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-    // this line is used by starport scaffolding # genesis/module/init
+	// this line is used by starport scaffolding # genesis/module/init
 	admin, err := sdk.AccAddressFromBech32(genState.Admin)
 	if err != nil {
 		panic(err)
@@ -22,7 +22,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Admin = k.GetAdmin(ctx).String()
 
-    // this line is used by starport scaffolding # genesis/module/export
+	// this line is used by starport scaffolding # genesis/module/export
 
-    return genesis
+	return genesis
 }

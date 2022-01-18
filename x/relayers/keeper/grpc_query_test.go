@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-    "strconv"
+	"strconv"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
+	"github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 // Prevent strconv unused error
@@ -74,28 +74,25 @@ func TestThresholdQuerySingle(t *testing.T) {
 		err      error
 	}{
 		{
-			desc:     "First",
-			request:  &types.QueryGetThresholdRequest{
+			desc: "First",
+			request: &types.QueryGetThresholdRequest{
 				Index: msgs[0].Index,
-
 			},
 			response: &types.QueryGetThresholdResponse{Threshold: msgs[0]},
 		},
 		{
-			desc:     "Second",
-			request:  &types.QueryGetThresholdRequest{
+			desc: "Second",
+			request: &types.QueryGetThresholdRequest{
 				Index: msgs[1].Index,
-
 			},
 			response: &types.QueryGetThresholdResponse{Threshold: msgs[1]},
 		},
 		{
-			desc:    "KeyNotFound",
+			desc: "KeyNotFound",
 			request: &types.QueryGetThresholdRequest{
-				Index:strconv.Itoa(100000),
-
+				Index: strconv.Itoa(100000),
 			},
-			err:     status.Error(codes.InvalidArgument, "not found"),
+			err: status.Error(codes.InvalidArgument, "not found"),
 		},
 		{
 			desc: "InvalidRequest",

@@ -7,8 +7,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/rvote/types"
 	gogotypes "github.com/gogo/protobuf/types"
+	"github.com/stafiprotocol/stafihub/x/rvote/types"
 )
 
 type (
@@ -17,16 +17,16 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 
-		sudoKeeper types.SudoKeeper
+		sudoKeeper    types.SudoKeeper
 		relayerKeeper types.RelayerKeeper
-		router types.Router
+		router        types.Router
 	}
 )
 
 func NewKeeper(
-    cdc codec.BinaryCodec,
-    storeKey,
-    memKey sdk.StoreKey,
+	cdc codec.BinaryCodec,
+	storeKey,
+	memKey sdk.StoreKey,
 
 	sudoKeeper types.SudoKeeper,
 	relayerKeeper types.RelayerKeeper,
@@ -39,9 +39,9 @@ func NewKeeper(
 		storeKey: storeKey,
 		memKey:   memKey,
 
-		sudoKeeper: sudoKeeper,
+		sudoKeeper:    sudoKeeper,
 		relayerKeeper: relayerKeeper,
-		router: rtr,
+		router:        rtr,
 	}
 }
 

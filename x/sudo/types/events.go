@@ -4,6 +4,6 @@ package types
 const (
 	EventTypeAdminUpdated = "admin_updated"
 
-	AttributeKeyLastAdmin = "last_admin"
+	AttributeKeyLastAdmin    = "last_admin"
 	AttributeKeyCurrentAdmin = "current_admin"
 )
