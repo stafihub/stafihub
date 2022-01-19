@@ -15,52 +15,202 @@ type Querier struct {
 
 var _ types.QueryServer = Querier{}
 
-func (q Querier) GetExchangeRate(goCtx context.Context, req *types.QueryGetExchangeRateRequest) (*types.QueryGetExchangeRateResponse, error) {
+func (q Querier) GetCurrentEraSnapshot(goCtx context.Context,  req *types.QueryGetCurrentEraSnapshotRequest) (*types.QueryGetCurrentEraSnapshotResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	val, found := q.Keeper.GetExchangeRate(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
-	}
+	shot := q.Keeper.CurrentEraSnapshots(ctx, req.Denom)
 
-	return &types.QueryGetExchangeRateResponse{ExchangeRate: val}, nil
+	return &types.QueryGetCurrentEraSnapshotResponse{ShotIds: shot.ShotIds}, nil
 }
 
-func (q Querier) ExchangeRateAll(goCtx context.Context, req *types.QueryExchangeRateAllRequest) (*types.QueryExchangeRateAllResponse, error) {
+func (q Querier) PoolsByDenom(goCtx context.Context,  req *types.QueryPoolsByDenomRequest) (*types.QueryPoolsByDenomResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	exchangeRates := q.GetAllExchangeRate(ctx)
+	pool, ok := q.GetPool(ctx, req.Denom)
+	if !ok {
+		return &types.QueryPoolsByDenomResponse{}, nil
+	}
 
-	return &types.QueryExchangeRateAllResponse{ExchangeRates: exchangeRates}, nil
+	addrs := make([]string, 0)
+	for addr, _ := range pool.Addrs {
+		addrs = append(addrs, addr)
+	}
+	return &types.QueryPoolsByDenomResponse{Addrs: addrs}, nil
 }
 
-func (q Querier) GetEraExchangeRate(goCtx context.Context, req *types.QueryGetEraExchangeRateRequest) (*types.QueryGetEraExchangeRateResponse, error) {
+func (q Querier) BondedPoolsByDenom(goCtx context.Context,  req *types.QueryBondedPoolsByDenomRequest) (*types.QueryBondedPoolsByDenomResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	val, found := q.Keeper.GetEraExchangeRate(ctx, req.Denom, req.Era)
-	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+	bondedPool, ok := q.GetBondedPool(ctx, req.Denom)
+	if !ok {
+		return &types.QueryBondedPoolsByDenomResponse{}, nil
 	}
 
-	return &types.QueryGetEraExchangeRateResponse{EraExchangeRate: val}, nil
+	addrs := make([]string, 0)
+	for addr, _ := range bondedPool.Addrs {
+		addrs = append(addrs, addr)
+	}
+
+	return &types.QueryBondedPoolsByDenomResponse{Addrs: addrs}, nil
 }
 
-func (q Querier) EraExchangeRatesByDenom(goCtx context.Context, req *types.QueryEraExchangeRatesByDenomRequest) (*types.QueryEraExchangeRatesByDenomResponse, error) {
+func (q Querier) GetPoolDetail(goCtx context.Context,  req *types.QueryGetPoolDetailRequest) (*types.QueryGetPoolDetailResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	eers := q.GetEraExchangeRateByDenom(ctx, req.Denom)
+	detail, ok := q.Keeper.GetPoolDetail(ctx, req.Denom, req.Pool)
+	if !ok {
+		return &types.QueryGetPoolDetailResponse{}, nil
+	}
 
-	return &types.QueryEraExchangeRatesByDenomResponse{EraExchangeRates: eers}, nil
+	return &types.QueryGetPoolDetailResponse{Detail: detail}, nil
+}
+
+func (q Querier) GetChainEra(goCtx context.Context,  req *types.QueryGetChainEraRequest) (*types.QueryGetChainEraResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	ce, ok := q.Keeper.GetChainEra(ctx, req.Denom)
+	if !ok {
+		return &types.QueryGetChainEraResponse{}, nil
+	}
+
+	return &types.QueryGetChainEraResponse{Era: ce.Era}, nil
+}
+
+func (q Querier) GetChainBondingDuration(goCtx context.Context,  req *types.QueryGetChainBondingDurationRequest) (*types.QueryGetChainBondingDurationResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	cbd, ok := q.Keeper.GetChainBondingDuration(ctx, req.Denom)
+	if !ok {
+		return &types.QueryGetChainBondingDurationResponse{}, nil
+	}
+
+	return &types.QueryGetChainBondingDurationResponse{Era: cbd.Era}, nil
+}
+
+func (q Querier) GetReceiver(goCtx context.Context,  req *types.QueryGetReceiverRequest) (*types.QueryGetReceiverResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	rec := q.Keeper.GetReceiver(ctx)
+	if rec == nil {
+		return &types.QueryGetReceiverResponse{}, nil
+	}
+
+	return &types.QueryGetReceiverResponse{Receiver: rec.String()}, nil
+}
+
+func (q Querier) GetCommission(goCtx context.Context,  req *types.QueryGetCommissionRequest) (*types.QueryGetCommissionResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	cms := q.Keeper.Commission(ctx)
+
+	return &types.QueryGetCommissionResponse{Commission: cms.String()}, nil
+}
+
+func (q Querier) GetUnbondFee(goCtx context.Context,  req *types.QueryGetUnbondFeeRequest) (*types.QueryGetUnbondFeeResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	fee, ok := q.Keeper.GetUnbondFee(ctx)
+	if !ok {
+		return &types.QueryGetUnbondFeeResponse{}, nil
+	}
+
+	return &types.QueryGetUnbondFeeResponse{Fee: fee}, nil
+}
+
+func (q Querier) GetUnbondCommission(goCtx context.Context,  req *types.QueryGetUnbondCommissionRequest) (*types.QueryGetUnbondCommissionResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	cms := q.Keeper.GetUnbondCommission(ctx)
+
+	return &types.QueryGetUnbondCommissionResponse{Commission: cms.String()}, nil
+}
+
+func (q Querier) GetLeastBond(goCtx context.Context,  req *types.QueryGetLeastBondRequest) (*types.QueryGetLeastBondResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	lb, ok := q.Keeper.LeastBond(ctx, req.Denom)
+	if !ok {
+		return &types.QueryGetLeastBondResponse{}, nil
+	}
+
+	return &types.QueryGetLeastBondResponse{LeastBond: lb}, nil
+}
+
+func (q Querier) GetEraUnbondLimit(goCtx context.Context,  req *types.QueryGetEraUnbondLimitRequest) (*types.QueryGetEraUnbondLimitResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	eul, ok := q.Keeper.GetEraUnbondLimit(ctx, req.Denom)
+	if !ok {
+		return &types.QueryGetEraUnbondLimitResponse{}, nil
+	}
+
+	return &types.QueryGetEraUnbondLimitResponse{Limit: eul.Limit}, nil
+}
+
+func (q Querier) GetBondPipeLine(goCtx context.Context,  req *types.QueryGetBondPipeLineRequest) (*types.QueryGetBondPipeLineResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	pipe, _ := q.Keeper.GetBondPipeLine(ctx, req.Denom, req.Pool)
+	return &types.QueryGetBondPipeLineResponse{Pipeline: pipe}, nil
+}
+
+func (q Querier) GetEraSnapshot(goCtx context.Context,  req *types.QueryGetEraSnapshotRequest) (*types.QueryGetEraSnapshotResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	shot := q.Keeper.EraSnapshot(ctx, req.Denom, req.Era)
+
+	return &types.QueryGetEraSnapshotResponse{ShotIds: shot.ShotIds}, nil
+}
+
+func (q Querier) GetSnapshot(goCtx context.Context,  req *types.QueryGetSnapshotRequest) (*types.QueryGetSnapshotResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	shot, _ := q.Keeper.SnapShot(ctx, req.ShotId)
+
+	return &types.QueryGetSnapshotResponse{Shot: shot}, nil
 }

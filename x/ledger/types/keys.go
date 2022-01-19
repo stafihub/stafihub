@@ -26,11 +26,11 @@ var (
 	ChainBondingDurationPrefix = []byte{0x03}
 	PoolDetailPrefix           = []byte{0x04}
 	LeastBondPrefix            = []byte{0x05}
-	SnapShotPrefix             = []byte{0x06}
-	CurrentEraSnapShotPrefix   = []byte{0x07}
+	SnapshotPrefix             = []byte{0x06}
+	CurrentEraSnapshotPrefix   = []byte{0x07}
 	BondPipelinePrefix         = []byte{0x08}
 	ChainEraPrefix             = []byte{0x09}
-	EraSnapShotPrefix          = []byte{0x0a}
+	EraSnapshotPrefix          = []byte{0x0a}
 	CommissionPrefix           = []byte{0x0b}
 	ReceiverPrefix             = []byte{0x0c}
 	TotalExpectedActivePrefix  = []byte{0x0d}

@@ -30,7 +30,82 @@ service Query {
 	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
 		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
 	}
-    // this line is used by starport scaffolding # 2
+// Queries a list of poolsByDenom items.
+	rpc PoolsByDenom(QueryPoolsByDenomRequest) returns (QueryPoolsByDenomResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/poolsByDenom/{denom}";
+	}
+
+// Queries a list of bondedPoolsByDenom items.
+	rpc BondedPoolsByDenom(QueryBondedPoolsByDenomRequest) returns (QueryBondedPoolsByDenomResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/bondedPoolsByDenom/{denom}";
+	}
+
+// Queries a list of getPoolDetail items.
+	rpc GetPoolDetail(QueryGetPoolDetailRequest) returns (QueryGetPoolDetailResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getPoolDetail/{denom}/{pool}";
+	}
+
+// Queries a list of getChainEra items.
+	rpc GetChainEra(QueryGetChainEraRequest) returns (QueryGetChainEraResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getChainEra/{denom}";
+	}
+
+// Queries a list of getCurrentEraSnapshot items.
+	rpc GetCurrentEraSnapshot(QueryGetCurrentEraSnapshotRequest) returns (QueryGetCurrentEraSnapshotResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getCurrentEraSnapshot/{denom}";
+	}
+
+// Queries a list of getReceiver items.
+	rpc GetReceiver(QueryGetReceiverRequest) returns (QueryGetReceiverResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getReceiver";
+	}
+
+// Queries a list of getCommission items.
+	rpc GetCommission(QueryGetCommissionRequest) returns (QueryGetCommissionResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getCommission";
+	}
+
+// Queries a list of getChainBondingDuration items.
+	rpc GetChainBondingDuration(QueryGetChainBondingDurationRequest) returns (QueryGetChainBondingDurationResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getChainBondingDuration";
+	}
+
+// Queries a list of getUnbondFee items.
+	rpc GetUnbondFee(QueryGetUnbondFeeRequest) returns (QueryGetUnbondFeeResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getUnbondFee";
+	}
+
+// Queries a list of getUnbondCommission items.
+	rpc GetUnbondCommission(QueryGetUnbondCommissionRequest) returns (QueryGetUnbondCommissionResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getUnbondCommission";
+	}
+
+// Queries a list of getLeastBond items.
+	rpc GetLeastBond(QueryGetLeastBondRequest) returns (QueryGetLeastBondResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getLeastBond";
+	}
+
+// Queries a list of getEraUnbondLimit items.
+	rpc GetEraUnbondLimit(QueryGetEraUnbondLimitRequest) returns (QueryGetEraUnbondLimitResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getEraUnbondLimit";
+	}
+
+// Queries a list of getBondPipeLine items.
+	rpc GetBondPipeLine(QueryGetBondPipeLineRequest) returns (QueryGetBondPipeLineResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondPipeLine";
+	}
+
+// Queries a list of getEraSnapshot items.
+	rpc GetEraSnapshot(QueryGetEraSnapshotRequest) returns (QueryGetEraSnapshotResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getEraSnapshot";
+	}
+
+// Queries a list of getSnapshot items.
+	rpc GetSnapshot(QueryGetSnapshotRequest) returns (QueryGetSnapshotResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getSnapshot";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 message QueryGetExchangeRateRequest {
@@ -63,6 +138,125 @@ message QueryEraExchangeRatesByDenomRequest {
 
 message QueryEraExchangeRatesByDenomResponse {
     repeated EraExchangeRate eraExchangeRates = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryPoolsByDenomRequest {
+  string denom = 1;
+}
+
+message QueryPoolsByDenomResponse {
+  repeated string addrs = 1;
+}
+
+message QueryBondedPoolsByDenomRequest {
+  string denom = 1;
+}
+
+message QueryBondedPoolsByDenomResponse {
+  repeated string addrs = 1;
+}
+
+message QueryGetPoolDetailRequest {
+  string denom = 1;
+  string pool = 2;
+}
+
+message QueryGetPoolDetailResponse {
+  PoolDetail detail = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetChainEraRequest {
+  string denom = 1;
+}
+
+message QueryGetChainEraResponse {
+  uint32 era = 1;
+}
+
+message QueryGetCurrentEraSnapshotRequest {
+  string denom = 1;
+}
+
+message QueryGetCurrentEraSnapshotResponse {
+  repeated bytes shotIds = 1;
+}
+
+message QueryGetReceiverRequest {
+}
+
+message QueryGetReceiverResponse {
+  string receiver = 1;
+}
+
+message QueryGetCommissionRequest {
+}
+
+message QueryGetCommissionResponse {
+  string commission = 1;
+}
+
+message QueryGetChainBondingDurationRequest {
+  string denom = 1;
+}
+
+message QueryGetChainBondingDurationResponse {
+  uint32 era = 1;
+}
+
+message QueryGetUnbondFeeRequest {
+}
+
+message QueryGetUnbondFeeResponse {
+  UnbondFee fee = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetUnbondCommissionRequest {
+}
+
+message QueryGetUnbondCommissionResponse {
+  string commission = 1;
+}
+
+message QueryGetLeastBondRequest {
+  string denom = 1;
+}
+
+message QueryGetLeastBondResponse {
+  LeastBond leastBond = 1;
+}
+
+message QueryGetEraUnbondLimitRequest {
+  string denom = 1;
+}
+
+message QueryGetEraUnbondLimitResponse {
+  uint32 limit = 1;
+}
+
+message QueryGetBondPipeLineRequest {
+  string denom = 1;
+  string pool = 2;
+}
+
+message QueryGetBondPipeLineResponse {
+  BondPipeline pipeline = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetEraSnapshotRequest {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message QueryGetEraSnapshotResponse {
+  repeated bytes shotIds = 1;
+}
+
+message QueryGetSnapshotRequest {
+  bytes shotId = 1;
+}
+
+message QueryGetSnapshotResponse {
+  BondSnapshot shot = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

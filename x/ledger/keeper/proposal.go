@@ -29,13 +29,9 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 		return types.ErrEraSkipped
 	}
 
-	bpool, ok := k.GetBondedPoolByDenom(ctx, p.Denom)
+	bpool, ok := k.GetBondedPool(ctx, p.Denom)
 	if ok {
-		for addr, ok1 := range bpool.Addrs {
-			if !ok1 {
-				continue
-			}
-
+		for addr, _ := range bpool.Addrs {
 			pipe, _ := k.GetBondPipeLine(ctx, p.Denom, addr)
 			bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
 			bsnap, err := bondShot.Marshal()

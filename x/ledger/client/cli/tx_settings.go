@@ -361,8 +361,7 @@ func CmdSetUnbondFee() *cobra.Command {
 		Short: "Broadcast message set_unbond_fee",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argValue, err := sdk.ParseCoinNormalized(args[1])
+			argValue, err := sdk.ParseCoinNormalized(args[0])
 			if err != nil {
 				return err
 			}
@@ -374,7 +373,6 @@ func CmdSetUnbondFee() *cobra.Command {
 
 			msg := types.NewMsgSetUnbondFee(
 				clientCtx.GetFromAddress(),
-				argDenom,
 				argValue,
 			)
 			if err := msg.ValidateBasic(); err != nil {

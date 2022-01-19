@@ -66,8 +66,8 @@ func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk, voter stri
 	}
 }
 
-func NewEraSnapShot(denom string) EraSnapShot {
-	return EraSnapShot{
+func NewEraSnapshot(denom string) EraSnapshot {
+	return EraSnapshot{
 		Denom:   denom,
 		ShotIds: [][]byte{},
 	}

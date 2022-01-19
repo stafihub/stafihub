@@ -42,14 +42,14 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdClearCurrentEraSnapShots())
 	cmd.AddCommand(CmdSetCommission())
 	cmd.AddCommand(CmdSetReceiver())
+	cmd.AddCommand(CmdSetUnbondFee())
+	cmd.AddCommand(CmdSetUnbondCommission())
 	cmd.AddCommand(CmdSetChainEra())
 	cmd.AddCommand(CmdActiveReport())
 	cmd.AddCommand(CmdBondReport())
 	cmd.AddCommand(CmdBondAndReportActive())
 	cmd.AddCommand(CmdWithdrawReport())
 	cmd.AddCommand(CmdTransferReport())
-	cmd.AddCommand(CmdSetUnbondFee())
-	cmd.AddCommand(CmdSetUnbondCommission())
 	cmd.AddCommand(CmdLiquidityUnbond())
 
 	// this line is used by starport scaffolding # 1

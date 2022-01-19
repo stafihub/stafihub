@@ -79,10 +79,15 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		poolUnbonds.Unbondings = append(poolUnbonds.Unbondings, unbonding)
 	}
 
-	unbondFee, ok := k.Keeper.GetUnbondFee(ctx, denom)
+	unbondFee, ok := k.Keeper.GetUnbondFee(ctx)
 	if ok && unbondFee.Value.IsPositive() {
+		feeBal := k.bankKeeper.GetBalance(ctx, unbonder, unbondFee.Value.Denom)
+		if feeBal.IsLT(unbondFee.Value) {
+			return nil, sdkerrors.ErrInsufficientFunds
+		}
+
 		if err := k.bankKeeper.SendCoins(ctx, unbonder, receiver, sdk.Coins{unbondFee.Value}); err != nil {
-			return nil, err
+			panic(err)
 		}
 	}
 

@@ -32,7 +32,7 @@ message BondPipeline {
     LinkChunk chunk = 3 [(gogoproto.nullable) = false];
 }
 
-message EraSnapShot {
+message EraSnapshot {
     string denom = 1;
     repeated bytes shotIds = 3;
 }

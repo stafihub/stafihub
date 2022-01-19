@@ -107,13 +107,12 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 	}
 
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	rec, _ := sdk.AccAddressFromBech32(msg.Receiver)
-	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rec, rcoins)
-	if err != nil {
-		return nil, err
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rec, rcoins); err != nil {
+		panic(err)
 	}
 
 	k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
@@ -221,7 +220,7 @@ func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFe
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Value.Denom)
 	if !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
