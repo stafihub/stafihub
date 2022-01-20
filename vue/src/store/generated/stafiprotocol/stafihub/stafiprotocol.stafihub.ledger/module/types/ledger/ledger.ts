@@ -141,7 +141,7 @@ export interface BondPipeline {
   chunk: LinkChunk | undefined
 }
 
-export interface EraSnapShot {
+export interface EraSnapshot {
   denom: string
   shotIds: Uint8Array[]
 }
@@ -707,10 +707,10 @@ export const BondPipeline = {
   }
 }
 
-const baseEraSnapShot: object = { denom: '' }
+const baseEraSnapshot: object = { denom: '' }
 
-export const EraSnapShot = {
-  encode(message: EraSnapShot, writer: Writer = Writer.create()): Writer {
+export const EraSnapshot = {
+  encode(message: EraSnapshot, writer: Writer = Writer.create()): Writer {
     if (message.denom !== '') {
       writer.uint32(10).string(message.denom)
     }
@@ -720,10 +720,10 @@ export const EraSnapShot = {
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): EraSnapShot {
+  decode(input: Reader | Uint8Array, length?: number): EraSnapshot {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseEraSnapShot } as EraSnapShot
+    const message = { ...baseEraSnapshot } as EraSnapshot
     message.shotIds = []
     while (reader.pos < end) {
       const tag = reader.uint32()
@@ -742,8 +742,8 @@ export const EraSnapShot = {
     return message
   },
 
-  fromJSON(object: any): EraSnapShot {
-    const message = { ...baseEraSnapShot } as EraSnapShot
+  fromJSON(object: any): EraSnapshot {
+    const message = { ...baseEraSnapshot } as EraSnapshot
     message.shotIds = []
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
@@ -758,7 +758,7 @@ export const EraSnapShot = {
     return message
   },
 
-  toJSON(message: EraSnapShot): unknown {
+  toJSON(message: EraSnapshot): unknown {
     const obj: any = {}
     message.denom !== undefined && (obj.denom = message.denom)
     if (message.shotIds) {
@@ -769,8 +769,8 @@ export const EraSnapShot = {
     return obj
   },
 
-  fromPartial(object: DeepPartial<EraSnapShot>): EraSnapShot {
-    const message = { ...baseEraSnapShot } as EraSnapShot
+  fromPartial(object: DeepPartial<EraSnapshot>): EraSnapshot {
+    const message = { ...baseEraSnapshot } as EraSnapshot
     message.shotIds = []
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom

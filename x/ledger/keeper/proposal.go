@@ -11,7 +11,7 @@ import (
 )
 
 func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEraProposal) error {
-	eraShot := k.CurrentEraSnapShots(ctx, p.Denom)
+	eraShot := k.CurrentEraSnapshots(ctx, p.Denom)
 	if len(eraShot.ShotIds) != 0 {
 		return types.ErrEraNotContinuable
 	}
@@ -41,7 +41,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 
 			shotId := crypto.Sha256(bsnap)
 			eraShot.ShotIds = append(eraShot.ShotIds, shotId)
-			k.SetSnapShot(ctx, shotId, bondShot)
+			k.SetSnapshot(ctx, shotId, bondShot)
 			ctx.EventManager().EmitEvent(
 				sdk.NewEvent(
 					types.EventTypeEraPoolUpdated,
@@ -55,17 +55,17 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 		}
 	}
 
-	k.SetEraSnapShot(ctx, p.Era, eraShot)
-	k.SetCurrentEraSnapShot(ctx, eraShot)
+	k.SetEraSnapshot(ctx, p.Era, eraShot)
+	k.SetCurrentEraSnapshot(ctx, eraShot)
 	k.SetChainEra(ctx, p.Denom, p.Era)
 
 	return nil
 }
 
 func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportProposal) error {
-	shot, ok := k.SnapShot(ctx, p.ShotId)
+	shot, ok := k.Snapshot(ctx, p.ShotId)
 	if !ok {
-		return types.ErrSnapShotNotFound
+		return types.ErrSnapshotNotFound
 	}
 
 	if shot.BondState != types.EraUpdated {
@@ -99,7 +99,7 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 
 	k.SetBondPipeline(ctx, pipe)
 	shot.UpdateState(types.BondReported)
-	k.SetSnapShot(ctx, p.ShotId, shot)
+	k.SetSnapshot(ctx, p.ShotId, shot)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeBondReported,
@@ -113,9 +113,9 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 }
 
 func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.BondAndReportActiveProposal) error {
-	shot, ok := k.SnapShot(ctx, p.ShotId)
+	shot, ok := k.Snapshot(ctx, p.ShotId)
 	if !ok {
-		return types.ErrSnapShotNotFound
+		return types.ErrSnapshotNotFound
 	}
 
 	if shot.BondState != types.EraUpdated {
@@ -158,7 +158,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		return types.ErrNoReceiver
 	}
 
-	eraShots := k.EraSnapShot(ctx, shot.Denom, shot.Era)
+	eraShots := k.EraSnapshot(ctx, shot.Denom, shot.Era)
 	found := false
 	for _, id := range eraShots.ShotIds {
 		if bytes.Equal(id, p.ShotId) {
@@ -169,8 +169,8 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		return types.ErrActiveAlreadySet
 	}
 
-	currentEraShots := k.CurrentEraSnapShots(ctx, shot.Denom)
-	newCurrentEraShots := types.EraSnapShot{Denom: shot.Denom, ShotIds: make([][]byte, 0)}
+	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
+	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([][]byte, 0)}
 	found = false
 	for _, id := range currentEraShots.ShotIds {
 		if bytes.Equal(id, p.ShotId) {
@@ -214,7 +214,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
-	k.SetEraSnapShot(ctx, shot.Era, types.EraSnapShot{Denom: shot.Denom, ShotIds: shots})
+	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shots})
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
@@ -231,17 +231,17 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		)
 	} else {
 		shot.UpdateState(types.WithdrawSkipped)
-		k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
+		k.SetCurrentEraSnapshot(ctx, newCurrentEraShots)
 	}
-	k.SetSnapShot(ctx, p.ShotId, shot)
+	k.SetSnapshot(ctx, p.ShotId, shot)
 
 	return nil
 }
 
 func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveReportProposal) error {
-	shot, ok := k.SnapShot(ctx, p.ShotId)
+	shot, ok := k.Snapshot(ctx, p.ShotId)
 	if !ok {
-		return types.ErrSnapShotNotFound
+		return types.ErrSnapshotNotFound
 	}
 
 	if shot.BondState != types.BondReported {
@@ -258,7 +258,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		return types.ErrNoReceiver
 	}
 
-	eraShots := k.EraSnapShot(ctx, shot.Denom, shot.Era)
+	eraShots := k.EraSnapshot(ctx, shot.Denom, shot.Era)
 	found := false
 	for _, id := range eraShots.ShotIds {
 		if bytes.Equal(id, p.ShotId) {
@@ -269,8 +269,8 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		return types.ErrActiveAlreadySet
 	}
 
-	currentEraShots := k.CurrentEraSnapShots(ctx, shot.Denom)
-	newCurrentEraShots := types.EraSnapShot{Denom: shot.Denom, ShotIds: make([][]byte, 0)}
+	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
+	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([][]byte, 0)}
 	found = false
 	for _, id := range currentEraShots.ShotIds {
 		if bytes.Equal(id, p.ShotId) {
@@ -316,7 +316,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
-	k.SetEraSnapShot(ctx, shot.Era, types.EraSnapShot{Denom: shot.Denom, ShotIds: shots})
+	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shots})
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
@@ -333,17 +333,17 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		)
 	} else {
 		shot.UpdateState(types.WithdrawSkipped)
-		k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
+		k.SetCurrentEraSnapshot(ctx, newCurrentEraShots)
 	}
-	k.SetSnapShot(ctx, p.ShotId, shot)
+	k.SetSnapshot(ctx, p.ShotId, shot)
 
 	return nil
 }
 
 func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.WithdrawReportProposal) error {
-	shot, ok := k.SnapShot(ctx, p.ShotId)
+	shot, ok := k.Snapshot(ctx, p.ShotId)
 	if !ok {
-		return types.ErrSnapShotNotFound
+		return types.ErrSnapshotNotFound
 	}
 
 	if shot.BondState != types.ActiveReported {
@@ -356,7 +356,7 @@ func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.Withdraw
 	}
 
 	shot.UpdateState(types.WithdrawReported)
-	k.SetSnapShot(ctx, p.ShotId, shot)
+	k.SetSnapshot(ctx, p.ShotId, shot)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
@@ -371,9 +371,9 @@ func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.Withdraw
 }
 
 func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.TransferReportProposal) error {
-	shot, ok := k.SnapShot(ctx, p.ShotId)
+	shot, ok := k.Snapshot(ctx, p.ShotId)
 	if !ok {
-		return types.ErrSnapShotNotFound
+		return types.ErrSnapshotNotFound
 	}
 
 	if shot.BondState != types.ActiveReported && shot.BondState != types.WithdrawReported {
@@ -385,8 +385,8 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 		return types.ErrLastVoterNobody
 	}
 
-	currentEraShots := k.CurrentEraSnapShots(ctx, shot.Denom)
-	newCurrentEraShots := types.NewEraSnapShot(shot.Denom)
+	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
+	newCurrentEraShots := types.NewEraSnapshot(shot.Denom)
 	found := false
 	for _, id := range currentEraShots.ShotIds {
 		if bytes.Equal(id, p.ShotId) {
@@ -400,8 +400,8 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 	}
 
 	shot.UpdateState(types.TransferReported)
-	k.SetSnapShot(ctx, p.ShotId, shot)
-	k.SetCurrentEraSnapShot(ctx, newCurrentEraShots)
+	k.SetSnapshot(ctx, p.ShotId, shot)
+	k.SetCurrentEraSnapshot(ctx, newCurrentEraShots)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

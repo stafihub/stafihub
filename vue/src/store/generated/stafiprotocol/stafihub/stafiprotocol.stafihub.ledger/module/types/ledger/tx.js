@@ -1236,17 +1236,14 @@ export const MsgSetReceiverResponse = {
         return message;
     }
 };
-const baseMsgSetUnbondFee = { creator: '', denom: '', value: '' };
+const baseMsgSetUnbondFee = { creator: '', value: '' };
 export const MsgSetUnbondFee = {
     encode(message, writer = Writer.create()) {
         if (message.creator !== '') {
             writer.uint32(10).string(message.creator);
         }
-        if (message.denom !== '') {
-            writer.uint32(18).string(message.denom);
-        }
         if (message.value !== '') {
-            writer.uint32(26).string(message.value);
+            writer.uint32(18).string(message.value);
         }
         return writer;
     },
@@ -1261,9 +1258,6 @@ export const MsgSetUnbondFee = {
                     message.creator = reader.string();
                     break;
                 case 2:
-                    message.denom = reader.string();
-                    break;
-                case 3:
                     message.value = reader.string();
                     break;
                 default:
@@ -1281,12 +1275,6 @@ export const MsgSetUnbondFee = {
         else {
             message.creator = '';
         }
-        if (object.denom !== undefined && object.denom !== null) {
-            message.denom = String(object.denom);
-        }
-        else {
-            message.denom = '';
-        }
         if (object.value !== undefined && object.value !== null) {
             message.value = String(object.value);
         }
@@ -1298,7 +1286,6 @@ export const MsgSetUnbondFee = {
     toJSON(message) {
         const obj = {};
         message.creator !== undefined && (obj.creator = message.creator);
-        message.denom !== undefined && (obj.denom = message.denom);
         message.value !== undefined && (obj.value = message.value);
         return obj;
     },
@@ -1309,12 +1296,6 @@ export const MsgSetUnbondFee = {
         }
         else {
             message.creator = '';
-        }
-        if (object.denom !== undefined && object.denom !== null) {
-            message.denom = object.denom;
-        }
-        else {
-            message.denom = '';
         }
         if (object.value !== undefined && object.value !== null) {
             message.value = object.value;

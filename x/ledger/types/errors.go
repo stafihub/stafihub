@@ -18,7 +18,7 @@ var (
 	ErrLastVoterNobody        = sdkerrors.Register(ModuleName, 8, "last era nobody error")
 	ErrEraSkipped             = sdkerrors.Register(ModuleName, 9, "era skipped error")
 	ErrNoReceiver             = sdkerrors.Register(ModuleName, 10, "no receiver error")
-	ErrSnapShotNotFound       = sdkerrors.Register(ModuleName, 11, "snapshot not found error")
+	ErrSnapshotNotFound       = sdkerrors.Register(ModuleName, 11, "snapshot not found error")
 	ErrStateNotBondReported   = sdkerrors.Register(ModuleName, 12, "state not bond reported error")
 	ErrStateNotEraUpdated     = sdkerrors.Register(ModuleName, 13, "state not era updated error")
 	ErrRateIsNone             = sdkerrors.Register(ModuleName, 14, "rate is none error")

@@ -73,7 +73,6 @@ export interface MsgSetReceiverResponse {
 }
 export interface MsgSetUnbondFee {
     creator: string;
-    denom: string;
     value: string;
 }
 export interface MsgSetUnbondFeeResponse {

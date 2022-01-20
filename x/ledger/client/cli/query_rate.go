@@ -26,8 +26,7 @@ func CmdListExchangeRate() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryExchangeRateAllRequest{
-			}
+			params := &types.QueryExchangeRateAllRequest{}
 
 			res, err := queryClient.ExchangeRateAll(context.Background(), params)
 			if err != nil {
@@ -140,4 +139,3 @@ func CmdEraExchangeRateByDenom() *cobra.Command {
 
 	return cmd
 }
-

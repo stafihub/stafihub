@@ -231,13 +231,13 @@ func (k Keeper) ClearCurrentEraSnapshots(ctx sdk.Context, denom string) {
 	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) SetSnapShot(ctx sdk.Context, shotId []byte, shot types.BondSnapshot) {
+func (k Keeper) SetSnapshot(ctx sdk.Context, shotId []byte, shot types.BondSnapshot) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SnapshotPrefix)
 	b := k.cdc.MustMarshal(&shot)
 	store.Set(shotId, b)
 }
 
-func (k Keeper) SnapShot(ctx sdk.Context, shotId []byte) (val types.BondSnapshot, found bool) {
+func (k Keeper) Snapshot(ctx sdk.Context, shotId []byte) (val types.BondSnapshot, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SnapshotPrefix)
 
 	b := store.Get(shotId)

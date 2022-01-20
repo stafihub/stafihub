@@ -184,7 +184,7 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context, msg *types.Ms
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	k.Keeper.ClearCurrentEraSnapShots(ctx, msg.Denom)
+	k.Keeper.ClearCurrentEraSnapshots(ctx, msg.Denom)
 
 	return &types.MsgClearCurrentEraSnapShotsResponse{}, nil
 }

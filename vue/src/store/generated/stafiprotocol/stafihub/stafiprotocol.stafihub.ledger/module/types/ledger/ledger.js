@@ -572,8 +572,8 @@ export const BondPipeline = {
         return message;
     }
 };
-const baseEraSnapShot = { denom: '' };
-export const EraSnapShot = {
+const baseEraSnapshot = { denom: '' };
+export const EraSnapshot = {
     encode(message, writer = Writer.create()) {
         if (message.denom !== '') {
             writer.uint32(10).string(message.denom);
@@ -586,7 +586,7 @@ export const EraSnapShot = {
     decode(input, length) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = { ...baseEraSnapShot };
+        const message = { ...baseEraSnapshot };
         message.shotIds = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
@@ -605,7 +605,7 @@ export const EraSnapShot = {
         return message;
     },
     fromJSON(object) {
-        const message = { ...baseEraSnapShot };
+        const message = { ...baseEraSnapshot };
         message.shotIds = [];
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = String(object.denom);
@@ -632,7 +632,7 @@ export const EraSnapShot = {
         return obj;
     },
     fromPartial(object) {
-        const message = { ...baseEraSnapShot };
+        const message = { ...baseEraSnapshot };
         message.shotIds = [];
         if (object.denom !== undefined && object.denom !== null) {
             message.denom = object.denom;

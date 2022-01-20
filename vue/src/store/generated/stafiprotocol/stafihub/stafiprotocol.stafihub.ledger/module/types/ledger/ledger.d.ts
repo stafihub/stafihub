@@ -49,7 +49,7 @@ export interface BondPipeline {
     pool: string;
     chunk: LinkChunk | undefined;
 }
-export interface EraSnapShot {
+export interface EraSnapshot {
     denom: string;
     shotIds: Uint8Array[];
 }
@@ -164,12 +164,12 @@ export declare const BondPipeline: {
     toJSON(message: BondPipeline): unknown;
     fromPartial(object: DeepPartial<BondPipeline>): BondPipeline;
 };
-export declare const EraSnapShot: {
-    encode(message: EraSnapShot, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): EraSnapShot;
-    fromJSON(object: any): EraSnapShot;
-    toJSON(message: EraSnapShot): unknown;
-    fromPartial(object: DeepPartial<EraSnapShot>): EraSnapShot;
+export declare const EraSnapshot: {
+    encode(message: EraSnapshot, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): EraSnapshot;
+    fromJSON(object: any): EraSnapshot;
+    toJSON(message: EraSnapshot): unknown;
+    fromPartial(object: DeepPartial<EraSnapshot>): EraSnapshot;
 };
 export declare const PoolUnbond: {
     encode(message: PoolUnbond, writer?: Writer): Writer;

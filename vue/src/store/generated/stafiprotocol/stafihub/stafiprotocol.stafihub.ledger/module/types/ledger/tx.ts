@@ -86,7 +86,6 @@ export interface MsgSetReceiverResponse {}
 
 export interface MsgSetUnbondFee {
   creator: string
-  denom: string
   value: string
 }
 
@@ -1402,18 +1401,15 @@ export const MsgSetReceiverResponse = {
   }
 }
 
-const baseMsgSetUnbondFee: object = { creator: '', denom: '', value: '' }
+const baseMsgSetUnbondFee: object = { creator: '', value: '' }
 
 export const MsgSetUnbondFee = {
   encode(message: MsgSetUnbondFee, writer: Writer = Writer.create()): Writer {
     if (message.creator !== '') {
       writer.uint32(10).string(message.creator)
     }
-    if (message.denom !== '') {
-      writer.uint32(18).string(message.denom)
-    }
     if (message.value !== '') {
-      writer.uint32(26).string(message.value)
+      writer.uint32(18).string(message.value)
     }
     return writer
   },
@@ -1429,9 +1425,6 @@ export const MsgSetUnbondFee = {
           message.creator = reader.string()
           break
         case 2:
-          message.denom = reader.string()
-          break
-        case 3:
           message.value = reader.string()
           break
         default:
@@ -1449,11 +1442,6 @@ export const MsgSetUnbondFee = {
     } else {
       message.creator = ''
     }
-    if (object.denom !== undefined && object.denom !== null) {
-      message.denom = String(object.denom)
-    } else {
-      message.denom = ''
-    }
     if (object.value !== undefined && object.value !== null) {
       message.value = String(object.value)
     } else {
@@ -1465,7 +1453,6 @@ export const MsgSetUnbondFee = {
   toJSON(message: MsgSetUnbondFee): unknown {
     const obj: any = {}
     message.creator !== undefined && (obj.creator = message.creator)
-    message.denom !== undefined && (obj.denom = message.denom)
     message.value !== undefined && (obj.value = message.value)
     return obj
   },
@@ -1476,11 +1463,6 @@ export const MsgSetUnbondFee = {
       message.creator = object.creator
     } else {
       message.creator = ''
-    }
-    if (object.denom !== undefined && object.denom !== null) {
-      message.denom = object.denom
-    } else {
-      message.denom = ''
     }
     if (object.value !== undefined && object.value !== null) {
       message.value = object.value

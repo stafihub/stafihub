@@ -6,7 +6,7 @@ import { ChainBondingDuration } from "./module/types/ledger/ledger";
 import { Pool } from "./module/types/ledger/ledger";
 import { TotalExpectedActive } from "./module/types/ledger/ledger";
 import { BondPipeline } from "./module/types/ledger/ledger";
-import { EraSnapShot } from "./module/types/ledger/ledger";
+import { EraSnapshot } from "./module/types/ledger/ledger";
 import { PoolUnbond } from "./module/types/ledger/ledger";
 import { EraUnbondLimit } from "./module/types/ledger/ledger";
 import { PoolDetail } from "./module/types/ledger/ledger";
@@ -27,7 +27,7 @@ import { ActiveReportProposal } from "./module/types/ledger/proposal";
 import { WithdrawReportProposal } from "./module/types/ledger/proposal";
 import { TransferReportProposal } from "./module/types/ledger/proposal";
 import { ExecuteBondProposal } from "./module/types/ledger/proposal";
-export { ChainEra, ChainBondingDuration, Pool, TotalExpectedActive, BondPipeline, EraSnapShot, PoolUnbond, EraUnbondLimit, PoolDetail, LeastBond, LinkChunk, BondSnapshot, ExchangeRate, EraExchangeRate, UnbondFee, Unbonding, UserUnlockChunk, AccountUnbond, BondRecord, SetChainEraProposal, BondReportProposal, BondAndReportActiveProposal, ActiveReportProposal, WithdrawReportProposal, TransferReportProposal, ExecuteBondProposal };
+export { ChainEra, ChainBondingDuration, Pool, TotalExpectedActive, BondPipeline, EraSnapshot, PoolUnbond, EraUnbondLimit, PoolDetail, LeastBond, LinkChunk, BondSnapshot, ExchangeRate, EraExchangeRate, UnbondFee, Unbonding, UserUnlockChunk, AccountUnbond, BondRecord, SetChainEraProposal, BondReportProposal, BondAndReportActiveProposal, ActiveReportProposal, WithdrawReportProposal, TransferReportProposal, ExecuteBondProposal };
 async function initTxClient(vuexGetters) {
     return await txClient(vuexGetters['common/wallet/signer'], {
         addr: vuexGetters['common/env/apiTendermint']
@@ -65,13 +65,32 @@ const getDefaultState = () => {
         ExchangeRateAll: {},
         GetEraExchangeRate: {},
         EraExchangeRatesByDenom: {},
+        PoolsByDenom: {},
+        BondedPoolsByDenom: {},
+        GetPoolDetail: {},
+        GetChainEra: {},
+        GetCurrentEraSnapshot: {},
+        GetReceiver: {},
+        GetCommission: {},
+        GetChainBondingDuration: {},
+        GetUnbondFee: {},
+        GetUnbondCommission: {},
+        GetLeastBond: {},
+        GetEraUnbondLimit: {},
+        GetBondPipeLine: {},
+        GetEraSnapshot: {},
+        GetSnapshot: {},
+        GetTotalExpectedActive: {},
+        GetPoolUnbond: {},
+        GetAccountUnbond: {},
+        GetBondRecord: {},
         _Structure: {
             ChainEra: getStructure(ChainEra.fromPartial({})),
             ChainBondingDuration: getStructure(ChainBondingDuration.fromPartial({})),
             Pool: getStructure(Pool.fromPartial({})),
             TotalExpectedActive: getStructure(TotalExpectedActive.fromPartial({})),
             BondPipeline: getStructure(BondPipeline.fromPartial({})),
-            EraSnapShot: getStructure(EraSnapShot.fromPartial({})),
+            EraSnapshot: getStructure(EraSnapshot.fromPartial({})),
             PoolUnbond: getStructure(PoolUnbond.fromPartial({})),
             EraUnbondLimit: getStructure(EraUnbondLimit.fromPartial({})),
             PoolDetail: getStructure(PoolDetail.fromPartial({})),
@@ -139,6 +158,120 @@ export default {
                 params.query = null;
             }
             return state.EraExchangeRatesByDenom[JSON.stringify(params)] ?? {};
+        },
+        getPoolsByDenom: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.PoolsByDenom[JSON.stringify(params)] ?? {};
+        },
+        getBondedPoolsByDenom: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.BondedPoolsByDenom[JSON.stringify(params)] ?? {};
+        },
+        getGetPoolDetail: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetPoolDetail[JSON.stringify(params)] ?? {};
+        },
+        getGetChainEra: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetChainEra[JSON.stringify(params)] ?? {};
+        },
+        getGetCurrentEraSnapshot: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetCurrentEraSnapshot[JSON.stringify(params)] ?? {};
+        },
+        getGetReceiver: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetReceiver[JSON.stringify(params)] ?? {};
+        },
+        getGetCommission: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetCommission[JSON.stringify(params)] ?? {};
+        },
+        getGetChainBondingDuration: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetChainBondingDuration[JSON.stringify(params)] ?? {};
+        },
+        getGetUnbondFee: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetUnbondFee[JSON.stringify(params)] ?? {};
+        },
+        getGetUnbondCommission: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetUnbondCommission[JSON.stringify(params)] ?? {};
+        },
+        getGetLeastBond: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetLeastBond[JSON.stringify(params)] ?? {};
+        },
+        getGetEraUnbondLimit: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetEraUnbondLimit[JSON.stringify(params)] ?? {};
+        },
+        getGetBondPipeLine: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetBondPipeLine[JSON.stringify(params)] ?? {};
+        },
+        getGetEraSnapshot: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetEraSnapshot[JSON.stringify(params)] ?? {};
+        },
+        getGetSnapshot: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetSnapshot[JSON.stringify(params)] ?? {};
+        },
+        getGetTotalExpectedActive: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetTotalExpectedActive[JSON.stringify(params)] ?? {};
+        },
+        getGetPoolUnbond: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetPoolUnbond[JSON.stringify(params)] ?? {};
+        },
+        getGetAccountUnbond: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetAccountUnbond[JSON.stringify(params)] ?? {};
+        },
+        getGetBondRecord: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.GetBondRecord[JSON.stringify(params)] ?? {};
         },
         getTypeStructure: (state) => (type) => {
             return state._Structure[type].fields;
@@ -221,54 +354,267 @@ export default {
                 throw new SpVuexError('QueryClient:QueryEraExchangeRatesByDenom', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
-        async sendMsgSetChainBondingDuration({ rootGetters }, { value, fee = [], memo = '' }) {
+        async QueryPoolsByDenom({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
             try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetChainBondingDuration(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryPoolsByDenom(key.denom)).data;
+                commit('QUERY', { query: 'PoolsByDenom', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryPoolsByDenom', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getPoolsByDenom']({ params: { ...key }, query }) ?? {};
             }
             catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Send', 'Could not broadcast Tx: ' + e.message);
-                }
+                throw new SpVuexError('QueryClient:QueryPoolsByDenom', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
-        async sendMsgLiquidityUnbond({ rootGetters }, { value, fee = [], memo = '' }) {
+        async QueryBondedPoolsByDenom({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
             try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgLiquidityUnbond(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryBondedPoolsByDenom(key.denom)).data;
+                commit('QUERY', { query: 'BondedPoolsByDenom', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryBondedPoolsByDenom', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getBondedPoolsByDenom']({ params: { ...key }, query }) ?? {};
             }
             catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Send', 'Could not broadcast Tx: ' + e.message);
-                }
+                throw new SpVuexError('QueryClient:QueryBondedPoolsByDenom', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
-        async sendMsgSetReceiver({ rootGetters }, { value, fee = [], memo = '' }) {
+        async QueryGetPoolDetail({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetPoolDetail(key.denom, key.pool)).data;
+                commit('QUERY', { query: 'GetPoolDetail', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetPoolDetail', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetPoolDetail']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetPoolDetail', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetChainEra({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetChainEra(key.denom)).data;
+                commit('QUERY', { query: 'GetChainEra', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetChainEra', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetChainEra']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetChainEra', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetCurrentEraSnapshot({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetCurrentEraSnapshot(key.denom)).data;
+                commit('QUERY', { query: 'GetCurrentEraSnapshot', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetCurrentEraSnapshot', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetCurrentEraSnapshot']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetCurrentEraSnapshot', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetReceiver({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetReceiver()).data;
+                commit('QUERY', { query: 'GetReceiver', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetReceiver', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetReceiver']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetReceiver', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetCommission({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetCommission()).data;
+                commit('QUERY', { query: 'GetCommission', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetCommission', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetCommission']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetCommission', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetChainBondingDuration({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetChainBondingDuration(key.denom)).data;
+                commit('QUERY', { query: 'GetChainBondingDuration', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetChainBondingDuration', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetChainBondingDuration']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetChainBondingDuration', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetUnbondFee({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetUnbondFee()).data;
+                commit('QUERY', { query: 'GetUnbondFee', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetUnbondFee', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetUnbondFee']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetUnbondFee', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetUnbondCommission({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetUnbondCommission()).data;
+                commit('QUERY', { query: 'GetUnbondCommission', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetUnbondCommission', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetUnbondCommission']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetUnbondCommission', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetLeastBond({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetLeastBond(key.denom)).data;
+                commit('QUERY', { query: 'GetLeastBond', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetLeastBond', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetLeastBond']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetLeastBond', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetEraUnbondLimit({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetEraUnbondLimit(key.denom)).data;
+                commit('QUERY', { query: 'GetEraUnbondLimit', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetEraUnbondLimit', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetEraUnbondLimit']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetEraUnbondLimit', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetBondPipeLine({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetBondPipeLine(key.denom, key.pool)).data;
+                commit('QUERY', { query: 'GetBondPipeLine', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetBondPipeLine', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetBondPipeLine']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetBondPipeLine', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetEraSnapshot({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetEraSnapshot(key.denom, key.era)).data;
+                commit('QUERY', { query: 'GetEraSnapshot', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetEraSnapshot', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetEraSnapshot']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetEraSnapshot', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetSnapshot({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetSnapshot(key.shotId)).data;
+                commit('QUERY', { query: 'GetSnapshot', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetSnapshot', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetSnapshot']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetSnapshot', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetTotalExpectedActive({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetTotalExpectedActive(key.denom, key.era)).data;
+                commit('QUERY', { query: 'GetTotalExpectedActive', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetTotalExpectedActive', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetTotalExpectedActive']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetTotalExpectedActive', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetPoolUnbond({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetPoolUnbond(key.denom, key.pool, key.era)).data;
+                commit('QUERY', { query: 'GetPoolUnbond', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetPoolUnbond', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetPoolUnbond']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetPoolUnbond', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetAccountUnbond({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetAccountUnbond(key.denom, key.unbonder)).data;
+                commit('QUERY', { query: 'GetAccountUnbond', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetAccountUnbond', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetAccountUnbond']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetAccountUnbond', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryGetBondRecord({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryGetBondRecord(key.denom, key.blockhash, key.txhash)).data;
+                commit('QUERY', { query: 'GetBondRecord', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryGetBondRecord', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetBondRecord']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryGetBondRecord', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async sendMsgAddNewPool({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetReceiver(value);
+                const msg = await txClient.msgAddNewPool(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
                         gas: "200000" }, memo });
                 return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetReceiver:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgAddNewPool:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetReceiver:Send', 'Could not broadcast Tx: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgAddNewPool:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -289,6 +635,23 @@ export default {
                 }
             }
         },
+        async sendMsgSetChainBondingDuration({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetChainBondingDuration(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
         async sendMsgSetCommission({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -306,20 +669,20 @@ export default {
                 }
             }
         },
-        async sendMsgAddNewPool({ rootGetters }, { value, fee = [], memo = '' }) {
+        async sendMsgSetReceiver({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgAddNewPool(value);
+                const msg = await txClient.msgSetReceiver(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
                         gas: "200000" }, memo });
                 return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgAddNewPool:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetReceiver:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgAddNewPool:Send', 'Could not broadcast Tx: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetReceiver:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -340,6 +703,23 @@ export default {
                 }
             }
         },
+        async sendMsgLiquidityUnbond({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgLiquidityUnbond(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
         async sendMsgClearCurrentEraSnapShots({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -354,40 +734,6 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgSetEraUnbondLimit({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetEraUnbondLimit(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgRemovePool({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgRemovePool(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgRemovePool:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgRemovePool:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -408,20 +754,20 @@ export default {
                 }
             }
         },
-        async sendMsgSetPoolDetail({ rootGetters }, { value, fee = [], memo = '' }) {
+        async sendMsgRemovePool({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetPoolDetail(value);
+                const msg = await txClient.msgRemovePool(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
                         gas: "200000" }, memo });
                 return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgRemovePool:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Send', 'Could not broadcast Tx: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgRemovePool:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -442,78 +788,37 @@ export default {
                 }
             }
         },
-        async MsgSetChainBondingDuration({ rootGetters }, { value }) {
+        async sendMsgSetPoolDetail({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetChainBondingDuration(value);
-                return msg;
+                const msg = await txClient.msgSetPoolDetail(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
-        async MsgLiquidityUnbond({ rootGetters }, { value }) {
+        async sendMsgSetEraUnbondLimit({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgLiquidityUnbond(value);
-                return msg;
+                const msg = await txClient.msgSetEraUnbondLimit(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
-        async MsgSetReceiver({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetReceiver(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetReceiver:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetReceiver:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
-        async MsgSetLeastBond({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetLeastBond(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetLeastBond:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetLeastBond:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
-        async MsgSetCommission({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetCommission(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetCommission:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetCommission:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -532,6 +837,66 @@ export default {
                 }
             }
         },
+        async MsgSetLeastBond({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetLeastBond(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetLeastBond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetLeastBond:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSetChainBondingDuration({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetChainBondingDuration(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSetCommission({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetCommission(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetCommission:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetCommission:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSetReceiver({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetReceiver(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetReceiver:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetReceiver:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
         async MsgSetUnbondFee({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -544,6 +909,21 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgSetUnbondFee:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgLiquidityUnbond({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgLiquidityUnbond(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
@@ -562,18 +942,18 @@ export default {
                 }
             }
         },
-        async MsgSetEraUnbondLimit({ rootGetters }, { value }) {
+        async MsgSetUnbondCommission({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetEraUnbondLimit(value);
+                const msg = await txClient.msgSetUnbondCommission(value);
                 return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
@@ -592,18 +972,18 @@ export default {
                 }
             }
         },
-        async MsgSetUnbondCommission({ rootGetters }, { value }) {
+        async MsgSetInitBond({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetUnbondCommission(value);
+                const msg = await txClient.msgSetInitBond(value);
                 return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetInitBond:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetInitBond:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
@@ -622,18 +1002,18 @@ export default {
                 }
             }
         },
-        async MsgSetInitBond({ rootGetters }, { value }) {
+        async MsgSetEraUnbondLimit({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetInitBond(value);
+                const msg = await txClient.msgSetEraUnbondLimit(value);
                 return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetInitBond:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetInitBond:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Create', 'Could not create message: ' + e.message);
                 }
             }
         },

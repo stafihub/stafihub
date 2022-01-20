@@ -12624,6 +12624,45 @@ paths:
           format: int64
       tags:
         - Query
+  '/stafiprotocol/stafihub/ledger/bondedPoolsByDenom/{denom}':
+    get:
+      summary: Queries a list of bondedPoolsByDenom items.
+      operationId: StafiprotocolStafihubLedgerBondedPoolsByDenom
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              addrs:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}':
     get:
       summary: Queries a list of eraExchangeRatesByDenom items.
@@ -12727,6 +12766,817 @@ paths:
                     type: string
                   value:
                     type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}':
+    get:
+      summary: Queries a list of getAccountUnbond items.
+      operationId: StafiprotocolStafihubLedgerGetAccountUnbond
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              unbond:
+                type: object
+                properties:
+                  unbonder:
+                    type: string
+                  denom:
+                    type: string
+                  chunks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pool:
+                          type: string
+                        unlockEra:
+                          type: integer
+                          format: int64
+                        value:
+                          type: string
+                        recipient:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: unbonder
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getBondPipeLine/{denom}/{pool}':
+    get:
+      summary: Queries a list of getBondPipeLine items.
+      operationId: StafiprotocolStafihubLedgerGetBondPipeLine
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              pipeline:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  pool:
+                    type: string
+                  chunk:
+                    type: object
+                    properties:
+                      bond:
+                        type: string
+                      unbond:
+                        type: string
+                      active:
+                        type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: pool
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}':
+    get:
+      summary: Queries a list of getBondRecord items.
+      operationId: StafiprotocolStafihubLedgerGetBondRecord
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              bondRecord:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  bonder:
+                    type: string
+                  pool:
+                    type: string
+                  blockhash:
+                    type: string
+                  txhash:
+                    type: string
+                  amount:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: blockhash
+          in: path
+          required: true
+          type: string
+        - name: txhash
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getChainBondingDuration/{denom}':
+    get:
+      summary: Queries a list of getChainBondingDuration items.
+      operationId: StafiprotocolStafihubLedgerGetChainBondingDuration
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              era:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getChainEra/{denom}':
+    get:
+      summary: Queries a list of getChainEra items.
+      operationId: StafiprotocolStafihubLedgerGetChainEra
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              era:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /stafiprotocol/stafihub/ledger/getCommission:
+    get:
+      summary: Queries a list of getCommission items.
+      operationId: StafiprotocolStafihubLedgerGetCommission
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              commission:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getCurrentEraSnapshot/{denom}':
+    get:
+      summary: Queries a list of getCurrentEraSnapshot items.
+      operationId: StafiprotocolStafihubLedgerGetCurrentEraSnapshot
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              shotIds:
+                type: array
+                items:
+                  type: string
+                  format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getEraSnapshot/{denom}/{era}':
+    get:
+      summary: Queries a list of getEraSnapshot items.
+      operationId: StafiprotocolStafihubLedgerGetEraSnapshot
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              shotIds:
+                type: array
+                items:
+                  type: string
+                  format: byte
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: era
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getEraUnbondLimit/{denom}':
+    get:
+      summary: Queries a list of getEraUnbondLimit items.
+      operationId: StafiprotocolStafihubLedgerGetEraUnbondLimit
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              limit:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getLeastBond/{denom}':
+    get:
+      summary: Queries a list of getLeastBond items.
+      operationId: StafiprotocolStafihubLedgerGetLeastBond
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              leastBond:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getPoolDetail/{denom}/{pool}':
+    get:
+      summary: Queries a list of getPoolDetail items.
+      operationId: StafiprotocolStafihubLedgerGetPoolDetail
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              detail:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  pool:
+                    type: string
+                  subAccounts:
+                    type: array
+                    items:
+                      type: string
+                  threshold:
+                    type: integer
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: pool
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}':
+    get:
+      summary: Queries a list of getPoolUnbond items.
+      operationId: StafiprotocolStafihubLedgerGetPoolUnbond
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              unbond:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  pool:
+                    type: string
+                  era:
+                    type: integer
+                    format: int64
+                  unbondings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        unbonder:
+                          type: string
+                        amount:
+                          type: string
+                        recipient:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: pool
+          in: path
+          required: true
+          type: string
+        - name: era
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Query
+  /stafiprotocol/stafihub/ledger/getReceiver:
+    get:
+      summary: Queries a list of getReceiver items.
+      operationId: StafiprotocolStafihubLedgerGetReceiver
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              receiver:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getSnapshot/{shotId}':
+    get:
+      summary: Queries a list of getSnapshot items.
+      operationId: StafiprotocolStafihubLedgerGetSnapshot
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              shot:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  pool:
+                    type: string
+                  era:
+                    type: integer
+                    format: int64
+                  chunk:
+                    type: object
+                    properties:
+                      bond:
+                        type: string
+                      unbond:
+                        type: string
+                      active:
+                        type: string
+                  lastVoter:
+                    type: string
+                  bondState:
+                    type: string
+                    enum:
+                      - ERA_UPDATED
+                      - BOND_REPORTED
+                      - ACTIVE_REPORTED
+                      - WITHDRAW_SKIPPED
+                      - WITHDRAW_REPORTED
+                      - TRANSFER_REPORTED
+                    default: ERA_UPDATED
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: shotId
+          in: path
+          required: true
+          type: string
+          format: byte
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/getTotalExpectedActive/{denom}/{era}':
+    get:
+      summary: Queries a list of getTotalExpectedActive items.
+      operationId: StafiprotocolStafihubLedgerGetTotalExpectedActive
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              active:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: era
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Query
+  /stafiprotocol/stafihub/ledger/getUnbondCommission:
+    get:
+      summary: Queries a list of getUnbondCommission items.
+      operationId: StafiprotocolStafihubLedgerGetUnbondCommission
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              commission:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafiprotocol/stafihub/ledger/getUnbondFee:
+    get:
+      summary: Queries a list of getUnbondFee items.
+      operationId: StafiprotocolStafihubLedgerGetUnbondFee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              fee:
+                type: object
+                properties:
+                  value:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/stafiprotocol/stafihub/ledger/poolsByDenom/{denom}':
+    get:
+      summary: Queries a list of poolsByDenom items.
+      operationId: StafiprotocolStafihubLedgerPoolsByDenom
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              addrs:
+                type: array
+                items:
+                  type: string
         default:
           description: An unexpected error response.
           schema:
@@ -20551,6 +21401,89 @@ definitions:
       and
 
       freezing clients
+  stafiprotocol.stafihub.ledger.AccountUnbond:
+    type: object
+    properties:
+      unbonder:
+        type: string
+      denom:
+        type: string
+      chunks:
+        type: array
+        items:
+          type: object
+          properties:
+            pool:
+              type: string
+            unlockEra:
+              type: integer
+              format: int64
+            value:
+              type: string
+            recipient:
+              type: string
+  stafiprotocol.stafihub.ledger.BondPipeline:
+    type: object
+    properties:
+      denom:
+        type: string
+      pool:
+        type: string
+      chunk:
+        type: object
+        properties:
+          bond:
+            type: string
+          unbond:
+            type: string
+          active:
+            type: string
+  stafiprotocol.stafihub.ledger.BondRecord:
+    type: object
+    properties:
+      denom:
+        type: string
+      bonder:
+        type: string
+      pool:
+        type: string
+      blockhash:
+        type: string
+      txhash:
+        type: string
+      amount:
+        type: string
+  stafiprotocol.stafihub.ledger.BondSnapshot:
+    type: object
+    properties:
+      denom:
+        type: string
+      pool:
+        type: string
+      era:
+        type: integer
+        format: int64
+      chunk:
+        type: object
+        properties:
+          bond:
+            type: string
+          unbond:
+            type: string
+          active:
+            type: string
+      lastVoter:
+        type: string
+      bondState:
+        type: string
+        enum:
+          - ERA_UPDATED
+          - BOND_REPORTED
+          - ACTIVE_REPORTED
+          - WITHDRAW_SKIPPED
+          - WITHDRAW_REPORTED
+          - TRANSFER_REPORTED
+        default: ERA_UPDATED
   stafiprotocol.stafihub.ledger.EraExchangeRate:
     type: object
     properties:
@@ -20567,6 +21500,22 @@ definitions:
       denom:
         type: string
       value:
+        type: string
+  stafiprotocol.stafihub.ledger.LeastBond:
+    type: object
+    properties:
+      denom:
+        type: string
+      amount:
+        type: string
+  stafiprotocol.stafihub.ledger.LinkChunk:
+    type: object
+    properties:
+      bond:
+        type: string
+      unbond:
+        type: string
+      active:
         type: string
   stafiprotocol.stafihub.ledger.MsgAddNewPoolResponse:
     type: object
@@ -20594,6 +21543,58 @@ definitions:
     type: object
   stafiprotocol.stafihub.ledger.MsgSetUnbondFeeResponse:
     type: object
+  stafiprotocol.stafihub.ledger.PoolBondState:
+    type: string
+    enum:
+      - ERA_UPDATED
+      - BOND_REPORTED
+      - ACTIVE_REPORTED
+      - WITHDRAW_SKIPPED
+      - WITHDRAW_REPORTED
+      - TRANSFER_REPORTED
+    default: ERA_UPDATED
+  stafiprotocol.stafihub.ledger.PoolDetail:
+    type: object
+    properties:
+      denom:
+        type: string
+      pool:
+        type: string
+      subAccounts:
+        type: array
+        items:
+          type: string
+      threshold:
+        type: integer
+        format: int64
+  stafiprotocol.stafihub.ledger.PoolUnbond:
+    type: object
+    properties:
+      denom:
+        type: string
+      pool:
+        type: string
+      era:
+        type: integer
+        format: int64
+      unbondings:
+        type: array
+        items:
+          type: object
+          properties:
+            unbonder:
+              type: string
+            amount:
+              type: string
+            recipient:
+              type: string
+  stafiprotocol.stafihub.ledger.QueryBondedPoolsByDenomResponse:
+    type: object
+    properties:
+      addrs:
+        type: array
+        items:
+          type: string
   stafiprotocol.stafihub.ledger.QueryEraExchangeRatesByDenomResponse:
     type: object
     properties:
@@ -20621,6 +21622,92 @@ definitions:
               type: string
             value:
               type: string
+  stafiprotocol.stafihub.ledger.QueryGetAccountUnbondResponse:
+    type: object
+    properties:
+      unbond:
+        type: object
+        properties:
+          unbonder:
+            type: string
+          denom:
+            type: string
+          chunks:
+            type: array
+            items:
+              type: object
+              properties:
+                pool:
+                  type: string
+                unlockEra:
+                  type: integer
+                  format: int64
+                value:
+                  type: string
+                recipient:
+                  type: string
+  stafiprotocol.stafihub.ledger.QueryGetBondPipeLineResponse:
+    type: object
+    properties:
+      pipeline:
+        type: object
+        properties:
+          denom:
+            type: string
+          pool:
+            type: string
+          chunk:
+            type: object
+            properties:
+              bond:
+                type: string
+              unbond:
+                type: string
+              active:
+                type: string
+  stafiprotocol.stafihub.ledger.QueryGetBondRecordResponse:
+    type: object
+    properties:
+      bondRecord:
+        type: object
+        properties:
+          denom:
+            type: string
+          bonder:
+            type: string
+          pool:
+            type: string
+          blockhash:
+            type: string
+          txhash:
+            type: string
+          amount:
+            type: string
+  stafiprotocol.stafihub.ledger.QueryGetChainBondingDurationResponse:
+    type: object
+    properties:
+      era:
+        type: integer
+        format: int64
+  stafiprotocol.stafihub.ledger.QueryGetChainEraResponse:
+    type: object
+    properties:
+      era:
+        type: integer
+        format: int64
+  stafiprotocol.stafihub.ledger.QueryGetCommissionResponse:
+    type: object
+    properties:
+      commission:
+        type: string
+  stafiprotocol.stafihub.ledger.QueryGetCurrentEraSnapshotResponse:
+    type: object
+    properties:
+      shotIds:
+        type: array
+        items:
+          type: string
+          format: byte
   stafiprotocol.stafihub.ledger.QueryGetEraExchangeRateResponse:
     type: object
     properties:
@@ -20634,6 +21721,20 @@ definitions:
             format: int64
           value:
             type: string
+  stafiprotocol.stafihub.ledger.QueryGetEraSnapshotResponse:
+    type: object
+    properties:
+      shotIds:
+        type: array
+        items:
+          type: string
+          format: byte
+  stafiprotocol.stafihub.ledger.QueryGetEraUnbondLimitResponse:
+    type: object
+    properties:
+      limit:
+        type: integer
+        format: int64
   stafiprotocol.stafihub.ledger.QueryGetExchangeRateResponse:
     type: object
     properties:
@@ -20644,6 +21745,147 @@ definitions:
             type: string
           value:
             type: string
+  stafiprotocol.stafihub.ledger.QueryGetLeastBondResponse:
+    type: object
+    properties:
+      leastBond:
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+  stafiprotocol.stafihub.ledger.QueryGetPoolDetailResponse:
+    type: object
+    properties:
+      detail:
+        type: object
+        properties:
+          denom:
+            type: string
+          pool:
+            type: string
+          subAccounts:
+            type: array
+            items:
+              type: string
+          threshold:
+            type: integer
+            format: int64
+  stafiprotocol.stafihub.ledger.QueryGetPoolUnbondResponse:
+    type: object
+    properties:
+      unbond:
+        type: object
+        properties:
+          denom:
+            type: string
+          pool:
+            type: string
+          era:
+            type: integer
+            format: int64
+          unbondings:
+            type: array
+            items:
+              type: object
+              properties:
+                unbonder:
+                  type: string
+                amount:
+                  type: string
+                recipient:
+                  type: string
+  stafiprotocol.stafihub.ledger.QueryGetReceiverResponse:
+    type: object
+    properties:
+      receiver:
+        type: string
+  stafiprotocol.stafihub.ledger.QueryGetSnapshotResponse:
+    type: object
+    properties:
+      shot:
+        type: object
+        properties:
+          denom:
+            type: string
+          pool:
+            type: string
+          era:
+            type: integer
+            format: int64
+          chunk:
+            type: object
+            properties:
+              bond:
+                type: string
+              unbond:
+                type: string
+              active:
+                type: string
+          lastVoter:
+            type: string
+          bondState:
+            type: string
+            enum:
+              - ERA_UPDATED
+              - BOND_REPORTED
+              - ACTIVE_REPORTED
+              - WITHDRAW_SKIPPED
+              - WITHDRAW_REPORTED
+              - TRANSFER_REPORTED
+            default: ERA_UPDATED
+  stafiprotocol.stafihub.ledger.QueryGetTotalExpectedActiveResponse:
+    type: object
+    properties:
+      active:
+        type: string
+  stafiprotocol.stafihub.ledger.QueryGetUnbondCommissionResponse:
+    type: object
+    properties:
+      commission:
+        type: string
+  stafiprotocol.stafihub.ledger.QueryGetUnbondFeeResponse:
+    type: object
+    properties:
+      fee:
+        type: object
+        properties:
+          value:
+            type: string
+  stafiprotocol.stafihub.ledger.QueryPoolsByDenomResponse:
+    type: object
+    properties:
+      addrs:
+        type: array
+        items:
+          type: string
+  stafiprotocol.stafihub.ledger.UnbondFee:
+    type: object
+    properties:
+      value:
+        type: string
+  stafiprotocol.stafihub.ledger.Unbonding:
+    type: object
+    properties:
+      unbonder:
+        type: string
+      amount:
+        type: string
+      recipient:
+        type: string
+  stafiprotocol.stafihub.ledger.UserUnlockChunk:
+    type: object
+    properties:
+      pool:
+        type: string
+      unlockEra:
+        type: integer
+        format: int64
+      value:
+        type: string
+      recipient:
+        type: string
   stafiprotocol.stafihub.relayers.MsgCreateRelayerResponse:
     type: object
   stafiprotocol.stafihub.relayers.MsgDeleteRelayerResponse:

@@ -42,14 +42,15 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetUnbondCommission())
 	cmd.AddCommand(CmdGetLeastBond())
 	cmd.AddCommand(CmdGetEraUnbondLimit())
+	cmd.AddCommand(CmdGetBondPipeLine())
+	cmd.AddCommand(CmdGetEraSnapshot())
+	cmd.AddCommand(CmdGetSnapshot())
+	cmd.AddCommand(CmdGetTotalExpectedActive())
+	cmd.AddCommand(CmdGetPoolUnbond())
+	cmd.AddCommand(CmdGetAccountUnbond())
+	cmd.AddCommand(CmdGetBondRecord())
 
-cmd.AddCommand(CmdGetBondPipeLine())
-
-cmd.AddCommand(CmdGetEraSnapshot())
-
-cmd.AddCommand(CmdGetSnapshot())
-
-// this line is used by starport scaffolding # 1
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }
@@ -328,8 +329,7 @@ func CmdGetUnbondFee() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetUnbondFeeRequest{
-			}
+			params := &types.QueryGetUnbondFeeRequest{}
 
 			res, err := queryClient.GetUnbondFee(cmd.Context(), params)
 			if err != nil {
@@ -357,8 +357,7 @@ func CmdGetUnbondCommission() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryGetUnbondCommissionRequest{
-			}
+			params := &types.QueryGetUnbondCommissionRequest{}
 
 			res, err := queryClient.GetUnbondCommission(cmd.Context(), params)
 			if err != nil {
@@ -425,8 +424,6 @@ func CmdGetEraUnbondLimit() *cobra.Command {
 				Denom: reqDenom,
 			}
 
-
-
 			res, err := queryClient.GetEraUnbondLimit(cmd.Context(), params)
 			if err != nil {
 				return err
@@ -458,7 +455,7 @@ func CmdGetBondPipeLine() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 			params := &types.QueryGetBondPipeLineRequest{
 				Denom: reqDenom,
-				Pool: reqPool,
+				Pool:  reqPool,
 			}
 
 			res, err := queryClient.GetBondPipeLine(cmd.Context(), params)
@@ -495,7 +492,7 @@ func CmdGetEraSnapshot() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 			params := &types.QueryGetEraSnapshotRequest{
 				Denom: reqDenom,
-				Era: uint32(reqEra),
+				Era:   uint32(reqEra),
 			}
 
 			res, err := queryClient.GetEraSnapshot(cmd.Context(), params)
@@ -544,5 +541,151 @@ func CmdGetSnapshot() *cobra.Command {
 
 	flags.AddQueryFlagsToCmd(cmd)
 
+	return cmd
+}
+
+func CmdGetTotalExpectedActive() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-total-expected-active [denom] [era]",
+		Short: "Query GetTotalExpectedActive",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+			reqEra, err := strconv.ParseUint(args[1], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryGetTotalExpectedActiveRequest{
+				Denom: reqDenom,
+				Era:   uint32(reqEra),
+			}
+
+			res, err := queryClient.GetTotalExpectedActive(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdGetPoolUnbond() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-pool-unbond [denom] [pool] [era]",
+		Short: "Query GetPoolUnbond",
+		Args:  cobra.ExactArgs(3),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+			reqPool := args[1]
+			reqEra, err := strconv.ParseUint(args[2], 10, 64)
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryGetPoolUnbondRequest{
+				Denom: reqDenom,
+				Pool:  reqPool,
+				Era:   uint32(reqEra),
+			}
+
+			res, err := queryClient.GetPoolUnbond(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdGetAccountUnbond() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-account-unbond [denom] [unbonder]",
+		Short: "Query GetAccountUnbond",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+			reqUnbonder := args[1]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryGetAccountUnbondRequest{
+				Denom:    reqDenom,
+				Unbonder: reqUnbonder,
+			}
+
+			res, err := queryClient.GetAccountUnbond(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdGetBondRecord() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-bond-record [denom] [blockhash] [txhash]",
+		Short: "Query GetBondRecord",
+		Args:  cobra.ExactArgs(3),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+			reqBlockhash := args[1]
+			reqTxhash := args[2]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryGetBondRecordRequest{
+				Denom:     reqDenom,
+				Blockhash: reqBlockhash,
+				Txhash:    reqTxhash,
+			}
+
+			res, err := queryClient.GetBondRecord(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
 }
