@@ -204,23 +204,6 @@ export default {
                 }
             }
         },
-        async sendMsgUpdateThreshold({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgUpdateThreshold(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
         async sendMsgDeleteRelayer({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -235,6 +218,23 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteRelayer:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
+        async sendMsgUpdateThreshold({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgUpdateThreshold(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -253,21 +253,6 @@ export default {
                 }
             }
         },
-        async MsgUpdateThreshold({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgUpdateThreshold(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
         async MsgDeleteRelayer({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -280,6 +265,21 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgDeleteRelayer:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgUpdateThreshold({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgUpdateThreshold(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgUpdateThreshold:Create', 'Could not create message: ' + e.message);
                 }
             }
         },

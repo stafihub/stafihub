@@ -25,17 +25,17 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 		if err := prop.SetContent(content); err != nil {
 			return nil, err
 		}
-	}
-
-	if prop.HasVoted(proposer) {
-		return nil, relayerstypes.ErrAlreadyVoted
-	}
-
-	if prop.IsExpired(curBlock) {
-		prop.Status = types.StatusExpired
 	} else {
-		if uint32(len(prop.Voted)) > threshold.Value {
-			prop.Status = types.StatusApproved
+		if prop.HasVoted(proposer) {
+			return nil, relayerstypes.ErrAlreadyVoted
+		}
+
+		if prop.IsExpired(curBlock) {
+			prop.Status = types.StatusExpired
+		} else {
+			if uint32(len(prop.Voted)) > threshold.Value {
+				prop.Status = types.StatusApproved
+			}
 		}
 	}
 
