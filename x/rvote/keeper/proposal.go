@@ -8,17 +8,11 @@ import (
 )
 
 func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
-	threshold, ok := k.relayerKeeper.GetThreshold(ctx, content.GetDenom())
-	if !ok {
-		return nil, relayerstypes.ErrThresholdNotFound
-	}
-
-	curBlock := ctx.BlockHeight()
 	prop, ok := k.GetProposal(ctx, content.GetPropId())
 	if !ok {
 		prop = &types.Proposal{
 			Status:     types.StatusInitiated,
-			StartBlock: curBlock,
+			StartBlock: ctx.BlockHeight(),
 			Voted:      []string{proposer},
 		}
 		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
@@ -29,17 +23,8 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 		if prop.HasVoted(proposer) {
 			return nil, relayerstypes.ErrAlreadyVoted
 		}
-
-		if prop.IsExpired(curBlock) {
-			prop.Status = types.StatusExpired
-		} else {
-			if uint32(len(prop.Voted)) > threshold.Value {
-				prop.Status = types.StatusApproved
-			}
-		}
+		prop.Voted = append(prop.Voted, proposer)
 	}
-
-	k.SetProposal(ctx, prop)
 	return prop, nil
 }
 

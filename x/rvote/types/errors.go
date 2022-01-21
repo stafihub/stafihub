@@ -12,4 +12,6 @@ var (
 	ErrInvalidProposalType     = sdkerrors.Register(ModuleName, 2, "invalid proposal type error")
 	ErrNoProposalHandlerExists = sdkerrors.Register(ModuleName, 3, "no handler exists for proposal type error")
 	ErrInvalidProposer         = sdkerrors.Register(ModuleName, 4, "invalid proposer error")
+	ErrProposalAlreadyApproved = sdkerrors.Register(ModuleName, 5, "proposal already approved error")
+	ErrProposalAlreadyExpired  = sdkerrors.Register(ModuleName, 6, "invalid already expired error")
 )

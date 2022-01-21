@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 	"github.com/stafiprotocol/stafihub/x/rvote/types"
 	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
 )
@@ -49,9 +50,34 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	if err != nil {
 		return nil, err
 	}
+	if prop.Status == types.StatusApproved {
+		return nil, types.ErrProposalAlreadyApproved
+	}
+	if prop.Status == types.StatusExpired {
+		return nil, types.ErrProposalAlreadyExpired
+	}
+
+	if prop.IsExpired(ctx.BlockHeight()) {
+		prop.Status = types.StatusExpired
+		k.SetProposal(ctx, prop)
+		return nil, types.ErrProposalAlreadyExpired
+	}
+
+	threshold, ok := k.relayerKeeper.GetThreshold(ctx, content.GetDenom())
+	if !ok {
+		return nil, relayerstypes.ErrThresholdNotFound
+	}
+
+	if uint32(len(prop.Voted)) >= threshold.Value {
+		prop.Status = types.StatusApproved
+	}
+	if adminFlag {
+		prop.Status = types.StatusApproved
+	}
 
 	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId()), Status: prop.Status}
-	if !adminFlag && prop.Status != types.StatusApproved {
+	if prop.Status != types.StatusApproved {
+		k.SetProposal(ctx, prop)
 		return res, nil
 	}
 
@@ -61,6 +87,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	if err := handler(cacheCtx, prop.GetContent()); err != nil {
 		return nil, err
 	}
+	k.SetProposal(ctx, prop)
 	// The cached context is created with a new EventManager. However, since
 	// the proposal handler execution was successful, we want to track/keep
 	// any events emitted, so we re-emit to "merge" the events into the
@@ -70,6 +97,4 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	// write state to the underlying multi-store
 	writeCache()
 	return res, nil
-
-	return &types.MsgSubmitProposalResponse{}, nil
 }
