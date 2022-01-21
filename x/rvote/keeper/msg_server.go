@@ -60,7 +60,6 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	if prop.IsExpired(ctx.BlockHeight()) {
 		prop.Status = types.StatusExpired
 		k.SetProposal(ctx, prop)
-		k.relayerKeeper.SetLastVoter(ctx, prop.GetContent().GetDenom(), msg.Proposer)
 		return nil, types.ErrProposalAlreadyExpired
 	}
 
@@ -79,8 +78,11 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId()), Status: prop.Status}
 	if prop.Status != types.StatusApproved {
 		k.SetProposal(ctx, prop)
-		k.relayerKeeper.SetLastVoter(ctx, prop.GetContent().GetDenom(), msg.Proposer)
 		return res, nil
+	}
+	// should not set admin to last voter
+	if !adminFlag {
+		k.relayerKeeper.SetLastVoter(ctx, prop.GetContent().GetDenom(), msg.Proposer)
 	}
 
 	rtr := k.Keeper.Router()
@@ -90,7 +92,6 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		return nil, err
 	}
 	k.SetProposal(ctx, prop)
-	k.relayerKeeper.SetLastVoter(ctx, prop.GetContent().GetDenom(), msg.Proposer)
 	// The cached context is created with a new EventManager. However, since
 	// the proposal handler execution was successful, we want to track/keep
 	// any events emitted, so we re-emit to "merge" the events into the
