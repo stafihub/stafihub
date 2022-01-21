@@ -166,6 +166,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		ledgermoduletypes.ModuleName: 	{authtypes.Minter, authtypes.Burner},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -262,11 +263,8 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		sudomoduletypes.StoreKey,
-		relayersmoduletypes.StoreKey,
-		ledgermoduletypes.StoreKey,
+		sudomoduletypes.StoreKey, relayersmoduletypes.StoreKey, ledgermoduletypes.StoreKey,
 		rvotemoduletypes.StoreKey,
-
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -366,42 +364,24 @@ func New(
 	)
 
 	app.SudoKeeper = *sudomodulekeeper.NewKeeper(
-		appCodec,
-		keys[sudomoduletypes.StoreKey],
-		keys[sudomoduletypes.MemStoreKey],
-
-		app.BankKeeper,
+		appCodec, keys[sudomoduletypes.StoreKey], keys[sudomoduletypes.MemStoreKey], app.BankKeeper,
 	)
 
 	app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
-		appCodec,
-		keys[relayersmoduletypes.StoreKey],
-		keys[relayersmoduletypes.MemStoreKey],
-
-		app.SudoKeeper,
-		app.BankKeeper,
+		appCodec, keys[relayersmoduletypes.StoreKey], keys[relayersmoduletypes.MemStoreKey],
+		app.SudoKeeper, app.BankKeeper,
 	)
 
 	app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
-		appCodec,
-		keys[ledgermoduletypes.StoreKey],
-		keys[ledgermoduletypes.MemStoreKey],
-
-		app.SudoKeeper,
-		app.BankKeeper,
-		app.RelayersKeeper,
+		appCodec, keys[ledgermoduletypes.StoreKey], keys[ledgermoduletypes.MemStoreKey],
+		app.SudoKeeper, app.BankKeeper, app.RelayersKeeper,
 	)
 
 	rvoteRouter := rvotemoduletypes.NewRouter()
 	rvoteRouter.AddRoute(ledgermoduletypes.RouterKey, ledgermodule.NewProposalHandler(app.LedgerKeeper))
 	app.RvoteKeeper = *rvotemodulekeeper.NewKeeper(
-		appCodec,
-		keys[rvotemoduletypes.StoreKey],
-		keys[rvotemoduletypes.MemStoreKey],
-
-		app.SudoKeeper,
-		app.RelayersKeeper,
-		rvoteRouter,
+		appCodec, keys[rvotemoduletypes.StoreKey], keys[rvotemoduletypes.MemStoreKey],
+		app.SudoKeeper, app.RelayersKeeper, rvoteRouter,
 	)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
@@ -485,7 +465,6 @@ func New(
 		relayersmoduletypes.ModuleName,
 		ledgermoduletypes.ModuleName,
 		rvotemoduletypes.ModuleName,
-
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 

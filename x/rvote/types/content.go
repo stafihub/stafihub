@@ -33,7 +33,7 @@ type Handler func(ctx sdk.Context, content Content) error
 // if invalid.
 func ValidateAbstract(c Content) error {
 	propId := c.GetPropId()
-	if len(propId) == PropIdLength {
+	if len(propId) != PropIdLength {
 		return sdkerrors.Wrapf(ErrInvalidProposalContent, "propId's length %d != %d", len(propId), PropIdLength)
 	}
 

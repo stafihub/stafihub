@@ -18,6 +18,9 @@ func (k Keeper) Admin(goCtx context.Context, req *types.QueryAdminRequest) (*typ
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	admin := k.GetAdmin(ctx)
+	if admin == nil {
+		return &types.QueryAdminResponse{}, nil
+	}
 
 	return &types.QueryAdminResponse{Address: admin.String()}, nil
 }

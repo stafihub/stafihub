@@ -2,11 +2,11 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgSetProposalLife } from "./types/rvote/tx";
 import { MsgSubmitProposal } from "./types/rvote/tx";
+import { MsgSetProposalLife } from "./types/rvote/tx";
 const types = [
-    ["/stafiprotocol.stafihub.rvote.MsgSetProposalLife", MsgSetProposalLife],
     ["/stafiprotocol.stafihub.rvote.MsgSubmitProposal", MsgSubmitProposal],
+    ["/stafiprotocol.stafihub.rvote.MsgSetProposalLife", MsgSetProposalLife],
 ];
 export const MissingWalletError = new Error("wallet is required");
 const registry = new Registry(types);
@@ -21,8 +21,8 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     const { address } = (await wallet.getAccounts())[0];
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
-        msgSetProposalLife: (data) => ({ typeUrl: "/stafiprotocol.stafihub.rvote.MsgSetProposalLife", value: data }),
         msgSubmitProposal: (data) => ({ typeUrl: "/stafiprotocol.stafihub.rvote.MsgSubmitProposal", value: data }),
+        msgSetProposalLife: (data) => ({ typeUrl: "/stafiprotocol.stafihub.rvote.MsgSetProposalLife", value: data }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {
