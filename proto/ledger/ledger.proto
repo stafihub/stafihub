@@ -146,8 +146,7 @@ message Signature {
     string pool = 3;
     OriginalTxType txType = 4;
     bytes propId = 5;
-    repeated string sigs = 6 [(gogoproto.nullable) = false];
-    map<string, string> signers = 7;
+    map<string, string> sigs = 6;
 }
 
 // OriginalTxType enumerates the tx type of a signature.

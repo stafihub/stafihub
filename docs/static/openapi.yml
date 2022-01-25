@@ -13387,6 +13387,93 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafiprotocol/stafihub/ledger/getSignature:
+    get:
+      summary: Queries a list of getSignature items.
+      operationId: StafiprotocolStafihubLedgerGetSignature
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              signature:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  era:
+                    type: integer
+                    format: int64
+                  pool:
+                    type: string
+                  txType:
+                    type: string
+                    enum:
+                      - ORIGINAL_TX_TYPE_TRANSFER
+                      - ORIGINAL_TX_TYPE_BOND
+                      - ORIGINAL_TX_TYPE_UNBOND
+                      - ORIGINAL_TX_TYPE_WITHDRAW
+                      - ORIGINAL_TX_TYPE_CLAIM
+                    default: ORIGINAL_TX_TYPE_TRANSFER
+                    description: OriginalTxType enumerates the tx type of a signature.
+                  propId:
+                    type: string
+                    format: byte
+                  sigs:
+                    type: object
+                    additionalProperties:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: query
+          required: false
+          type: string
+        - name: era
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: pool
+          in: query
+          required: false
+          type: string
+        - name: txType
+          in: query
+          required: false
+          type: string
+          enum:
+            - ORIGINAL_TX_TYPE_TRANSFER
+            - ORIGINAL_TX_TYPE_BOND
+            - ORIGINAL_TX_TYPE_UNBOND
+            - ORIGINAL_TX_TYPE_WITHDRAW
+            - ORIGINAL_TX_TYPE_CLAIM
+          default: ORIGINAL_TX_TYPE_TRANSFER
+        - name: propId
+          in: query
+          required: false
+          type: string
+          format: byte
+      tags:
+        - Query
   '/stafiprotocol/stafihub/ledger/getSnapshot/{shotId}':
     get:
       summary: Queries a list of getSnapshot items.
@@ -21813,6 +21900,36 @@ definitions:
     properties:
       receiver:
         type: string
+  stafiprotocol.stafihub.ledger.QueryGetSignatureResponse:
+    type: object
+    properties:
+      signature:
+        type: object
+        properties:
+          denom:
+            type: string
+          era:
+            type: integer
+            format: int64
+          pool:
+            type: string
+          txType:
+            type: string
+            enum:
+              - ORIGINAL_TX_TYPE_TRANSFER
+              - ORIGINAL_TX_TYPE_BOND
+              - ORIGINAL_TX_TYPE_UNBOND
+              - ORIGINAL_TX_TYPE_WITHDRAW
+              - ORIGINAL_TX_TYPE_CLAIM
+            default: ORIGINAL_TX_TYPE_TRANSFER
+            description: OriginalTxType enumerates the tx type of a signature.
+          propId:
+            type: string
+            format: byte
+          sigs:
+            type: object
+            additionalProperties:
+              type: string
   stafiprotocol.stafihub.ledger.QueryGetSnapshotResponse:
     type: object
     properties:
@@ -21871,6 +21988,33 @@ definitions:
       addrs:
         type: array
         items:
+          type: string
+  stafiprotocol.stafihub.ledger.Signature:
+    type: object
+    properties:
+      denom:
+        type: string
+      era:
+        type: integer
+        format: int64
+      pool:
+        type: string
+      txType:
+        type: string
+        enum:
+          - ORIGINAL_TX_TYPE_TRANSFER
+          - ORIGINAL_TX_TYPE_BOND
+          - ORIGINAL_TX_TYPE_UNBOND
+          - ORIGINAL_TX_TYPE_WITHDRAW
+          - ORIGINAL_TX_TYPE_CLAIM
+        default: ORIGINAL_TX_TYPE_TRANSFER
+        description: OriginalTxType enumerates the tx type of a signature.
+      propId:
+        type: string
+        format: byte
+      sigs:
+        type: object
+        additionalProperties:
           type: string
   stafiprotocol.stafihub.ledger.UnbondFee:
     type: object

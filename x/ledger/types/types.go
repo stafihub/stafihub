@@ -92,13 +92,11 @@ func NewSignature(denom string, era uint32, pool string,
 		Pool:    pool,
 		TxType:  txType,
 		PropId:  propId,
-		Sigs:    []string{},
-		Signers: map[string]string{},
+		Sigs:    map[string]string{},
 	}
 }
 
-func (bss BondSnapshot) UpdateState(state PoolBondState) {
-	// todo need to test if the change was kept
+func (bss *BondSnapshot) UpdateState(state PoolBondState) {
 	bss.BondState = state
 }
 

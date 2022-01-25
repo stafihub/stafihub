@@ -125,6 +125,11 @@ service Query {
 		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}";
 	}
 
+// Queries a list of getSignature items.
+	rpc GetSignature(QueryGetSignatureRequest) returns (QueryGetSignatureResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getSignature";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -315,6 +320,18 @@ message QueryGetBondRecordRequest {
 
 message QueryGetBondRecordResponse {
   BondRecord bondRecord = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetSignatureRequest {
+  string denom = 1;
+  uint32 era = 2;
+  string pool = 3;
+  OriginalTxType txType = 4;
+  bytes propId = 5;
+}
+
+message QueryGetSignatureResponse {
+  Signature signature = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

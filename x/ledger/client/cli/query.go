@@ -50,6 +50,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetAccountUnbond())
 	cmd.AddCommand(CmdGetBondRecord())
 
+	cmd.AddCommand(CmdGetSignature())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd
@@ -687,5 +689,55 @@ func CmdGetBondRecord() *cobra.Command {
 	}
 
 	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
+}
+
+func CmdGetSignature() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-signature [denom] [era] [pool] [tx-type] [prop-id]",
+		Short: "Query GetSignature",
+		Args:  cobra.ExactArgs(5),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+			reqEra, err := strconv.ParseUint(args[1], 10, 64)
+			if err != nil {
+				return err
+			}
+			reqPool := args[2]
+			reqTxType, ok := types.OriginalTxType_value[args[3]]
+			if !ok {
+				return fmt.Errorf("invalid txtype")
+			}
+
+			reqPropId, err := hex.DecodeString(args[4])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryGetSignatureRequest{
+				Denom:  reqDenom,
+				Era:    uint32(reqEra),
+				Pool:   reqPool,
+				TxType: types.OriginalTxType(reqTxType),
+				PropId: reqPropId,
+			}
+
+			res, err := queryClient.GetSignature(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
 	return cmd
 }

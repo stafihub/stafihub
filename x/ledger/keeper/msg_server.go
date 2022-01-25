@@ -158,12 +158,10 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 		sig = types.NewSignature(msg.Denom, msg.Era, msg.Pool, msg.TxType, msg.PropId)
 	}
 
-	if _, ok := sig.Signers[msg.Creator]; ok {
+	if _, ok := sig.Sigs[msg.Creator]; ok {
 		return nil, types.ErrSignatureRepeated
 	}
-
-	sig.Sigs = append(sig.Sigs, msg.Signature)
-	sig.Signers[msg.Creator] = msg.Signature
+	sig.Sigs[msg.Creator] = msg.Signature
 
 	k.Keeper.SetSignature(ctx, sig)
 

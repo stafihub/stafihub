@@ -267,3 +267,17 @@ func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRec
 
 	return &types.QueryGetBondRecordResponse{BondRecord: record}, nil
 }
+
+func (q Querier) GetSignature(goCtx context.Context, req *types.QueryGetSignatureRequest) (*types.QueryGetSignatureResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	sig, ok := q.Keeper.GetSignature(ctx, req.Denom, req.Era, req.Pool, req.TxType, req.PropId)
+	if !ok {
+		return &types.QueryGetSignatureResponse{}, nil
+	}
+
+	return &types.QueryGetSignatureResponse{Signature: sig}, nil
+}
