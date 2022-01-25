@@ -2,10 +2,13 @@ package keeper
 
 import (
 	"context"
+	"encoding/hex"
+	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
+	relayertypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 )
 
 type msgServer struct {
@@ -44,7 +47,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		return nil, sdkerrors.ErrInsufficientFunds
 	}
 
-	pipe, ok := k.Keeper.GetBondPipeLine(ctx, denom, msg.Pool)
+	pipe, ok := k.Keeper.GetBondPipeline(ctx, denom, msg.Pool)
 	if !ok {
 		pipe = types.NewBondPipeline(denom, msg.Pool)
 	}
@@ -124,4 +127,71 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	)
 
 	return &types.MsgLiquidityUnbondResponse{}, nil
+}
+
+func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSignature) (*types.MsgSubmitSignatureResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.relayerKeeper.IsRelayer(ctx, msg.Denom, msg.Creator) {
+		return nil, relayertypes.ErrProposerNotRelayer
+	}
+
+	if _, ok := k.GetBondedPool(ctx, msg.Denom); !ok {
+		return nil, types.ErrPoolNotBonded
+	}
+
+	detail, ok := k.GetPoolDetail(ctx, msg.Denom, msg.Pool)
+	if !ok {
+		return nil, types.ErrPoolDetailNotFound
+	}
+
+	ce, ok := k.GetChainEra(ctx, msg.Denom)
+	if !ok {
+		return nil, types.ErrChainEraNotFound
+	}
+	if msg.Era > ce.Era {
+		return nil, types.ErrInvalidEra
+	}
+
+	sig, ok := k.Keeper.GetSignature(ctx, msg.Denom, msg.Era, msg.Pool, msg.TxType, msg.PropId)
+	if !ok {
+		sig = types.NewSignature(msg.Denom, msg.Era, msg.Pool, msg.TxType, msg.PropId)
+	}
+
+	if _, ok := sig.Signers[msg.Creator]; ok {
+		return nil, types.ErrSignatureRepeated
+	}
+
+	sig.Sigs = append(sig.Sigs, msg.Signature)
+	sig.Signers[msg.Creator] = msg.Signature
+
+	k.Keeper.SetSignature(ctx, sig)
+
+	if uint32(len(sig.Sigs)) == detail.Threshold {
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeSignatureEnough,
+				sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+				sdk.NewAttribute(types.AttributeKeyEra, strconv.FormatUint(uint64(msg.Era), 10)),
+				sdk.NewAttribute(types.AttributeKeyPool, msg.Pool),
+				sdk.NewAttribute(types.AttributeKeyTxType, msg.TxType.String()),
+				sdk.NewAttribute(types.AttributeKeyPropId, hex.EncodeToString(msg.PropId)),
+			),
+		)
+	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeSignatureSubmitted,
+			sdk.NewAttribute(sdk.AttributeKeySender, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyEra, strconv.FormatUint(uint64(msg.Era), 10)),
+			sdk.NewAttribute(types.AttributeKeyPool, msg.Pool),
+			sdk.NewAttribute(types.AttributeKeyTxType, msg.TxType.String()),
+			sdk.NewAttribute(types.AttributeKeyPropId, hex.EncodeToString(msg.PropId)),
+			sdk.NewAttribute(sdk.AttributeKeySignature, msg.Signature),
+		),
+	)
+
+	return &types.MsgSubmitSignatureResponse{}, nil
 }

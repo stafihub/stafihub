@@ -139,3 +139,24 @@ message BondRecord {
     string txhash = 5;
     string amount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
+
+message Signature {
+    string denom = 1;
+    uint32 era = 2;
+    string pool = 3;
+    OriginalTxType txType = 4;
+    bytes propId = 5;
+    repeated string sigs = 6 [(gogoproto.nullable) = false];
+    map<string, string> signers = 7;
+}
+
+// OriginalTxType enumerates the tx type of a signature.
+enum OriginalTxType {
+  option (gogoproto.goproto_enum_prefix) = false;
+
+  ORIGINAL_TX_TYPE_TRANSFER = 0 [(gogoproto.enumvalue_customname) = "TxTypeTransfer"];
+  ORIGINAL_TX_TYPE_BOND = 1 [(gogoproto.enumvalue_customname) = "TxTypeBond"];
+  ORIGINAL_TX_TYPE_UNBOND = 2 [(gogoproto.enumvalue_customname) = "TxTypeUnbond"];
+  ORIGINAL_TX_TYPE_WITHDRAW = 3 [(gogoproto.enumvalue_customname) = "TxTypeWithdraw"];
+  ORIGINAL_TX_TYPE_CLAIM = 4 [(gogoproto.enumvalue_customname) = "TxTypeClaim"];
+}

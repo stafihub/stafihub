@@ -84,6 +84,19 @@ func NewBondRecord(denom, bonder, pool, blockhash, txhash string, amount sdk.Int
 	}
 }
 
+func NewSignature(denom string, era uint32, pool string,
+	txType OriginalTxType, propId []byte) Signature {
+	return Signature{
+		Denom:   denom,
+		Era:     era,
+		Pool:    pool,
+		TxType:  txType,
+		PropId:  propId,
+		Sigs:    []string{},
+		Signers: map[string]string{},
+	}
+}
+
 func (bss BondSnapshot) UpdateState(state PoolBondState) {
 	// todo need to test if the change was kept
 	bss.BondState = state

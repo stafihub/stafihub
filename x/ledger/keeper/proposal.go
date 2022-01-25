@@ -32,7 +32,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 	bpool, ok := k.GetBondedPool(ctx, p.Denom)
 	if ok {
 		for addr, _ := range bpool.Addrs {
-			pipe, _ := k.GetBondPipeLine(ctx, p.Denom, addr)
+			pipe, _ := k.GetBondPipeline(ctx, p.Denom, addr)
 			bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
 			bsnap, err := bondShot.Marshal()
 			if err != nil {
@@ -77,7 +77,7 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 		return types.ErrLastVoterNobody
 	}
 
-	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
+	pipe, _ := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
 	switch p.Action {
 	case types.BondOnly:
 		pipe.Chunk.Bond = pipe.Chunk.Bond.Sub(shot.Chunk.Bond)
@@ -132,7 +132,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		return types.ErrRateIsNone
 	}
 
-	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
+	pipe, _ := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	switch p.Action {
 	case types.BondOnly:
@@ -299,7 +299,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		}
 	}
 
-	pipe, _ := k.GetBondPipeLine(ctx, shot.Denom, shot.Pool)
+	pipe, _ := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	totalExpectedActive := k.TotalExpectedActive(ctx, shot.Denom, shot.Era).Add(pipe.Chunk.Active)
@@ -422,7 +422,10 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 	}
 	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Blockhash, p.Txhash, p.Amount)
 
-	pipe, _ := k.GetBondPipeLine(ctx, p.Denom, p.Pool)
+	pipe, ok := k.GetBondPipeline(ctx, p.Denom, p.Pool)
+	if !ok {
+		return types.ErrPoolNotBonded
+	}
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(p.Amount)
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Amount)
 

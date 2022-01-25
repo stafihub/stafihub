@@ -1,3 +1,4 @@
+import { OriginalTxType } from '../ledger/ledger';
 import { Reader, Writer } from 'protobufjs/minimal';
 export declare const protobufPackage = "stafiprotocol.stafihub.ledger";
 export interface MsgAddNewPool {
@@ -90,6 +91,17 @@ export interface MsgSetUnbondCommission {
     commission: string;
 }
 export interface MsgSetUnbondCommissionResponse {
+}
+export interface MsgSubmitSignature {
+    creator: string;
+    denom: string;
+    era: number;
+    pool: string;
+    txType: OriginalTxType;
+    propId: Uint8Array;
+    signature: string;
+}
+export interface MsgSubmitSignatureResponse {
 }
 export declare const MsgAddNewPool: {
     encode(message: MsgAddNewPool, writer?: Writer): Writer;
@@ -273,6 +285,20 @@ export declare const MsgSetUnbondCommissionResponse: {
     toJSON(_: MsgSetUnbondCommissionResponse): unknown;
     fromPartial(_: DeepPartial<MsgSetUnbondCommissionResponse>): MsgSetUnbondCommissionResponse;
 };
+export declare const MsgSubmitSignature: {
+    encode(message: MsgSubmitSignature, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSubmitSignature;
+    fromJSON(object: any): MsgSubmitSignature;
+    toJSON(message: MsgSubmitSignature): unknown;
+    fromPartial(object: DeepPartial<MsgSubmitSignature>): MsgSubmitSignature;
+};
+export declare const MsgSubmitSignatureResponse: {
+    encode(_: MsgSubmitSignatureResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSubmitSignatureResponse;
+    fromJSON(_: any): MsgSubmitSignatureResponse;
+    toJSON(_: MsgSubmitSignatureResponse): unknown;
+    fromPartial(_: DeepPartial<MsgSubmitSignatureResponse>): MsgSubmitSignatureResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     AddNewPool(request: MsgAddNewPool): Promise<MsgAddNewPoolResponse>;
@@ -287,8 +313,9 @@ export interface Msg {
     SetReceiver(request: MsgSetReceiver): Promise<MsgSetReceiverResponse>;
     SetUnbondFee(request: MsgSetUnbondFee): Promise<MsgSetUnbondFeeResponse>;
     LiquidityUnbond(request: MsgLiquidityUnbond): Promise<MsgLiquidityUnbondResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     SetUnbondCommission(request: MsgSetUnbondCommission): Promise<MsgSetUnbondCommissionResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    SubmitSignature(request: MsgSubmitSignature): Promise<MsgSubmitSignatureResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -306,6 +333,7 @@ export declare class MsgClientImpl implements Msg {
     SetUnbondFee(request: MsgSetUnbondFee): Promise<MsgSetUnbondFeeResponse>;
     LiquidityUnbond(request: MsgLiquidityUnbond): Promise<MsgLiquidityUnbondResponse>;
     SetUnbondCommission(request: MsgSetUnbondCommission): Promise<MsgSetUnbondCommissionResponse>;
+    SubmitSignature(request: MsgSubmitSignature): Promise<MsgSubmitSignatureResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -101,7 +101,7 @@ func (k Keeper) SetBondPipeline(ctx sdk.Context, pipe types.BondPipeline) {
 	store.Set([]byte(pipe.Denom+pipe.Pool), b)
 }
 
-func (k Keeper) GetBondPipeLine(ctx sdk.Context, denom string, pool string) (val types.BondPipeline, found bool) {
+func (k Keeper) GetBondPipeline(ctx sdk.Context, denom string, pool string) (val types.BondPipeline, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondPipelinePrefix)
 
 	b := store.Get([]byte(denom + pool))
@@ -449,6 +449,35 @@ func (k Keeper) SetBondRecord(ctx sdk.Context, br types.BondRecord) {
 func (k Keeper) GetBondRecord(ctx sdk.Context, denom, blockhash, txhash string) (val types.BondRecord, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
 	b := store.Get([]byte(denom + blockhash + txhash))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+func (k Keeper) SetSignature(ctx sdk.Context, sig types.Signature) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SignaturePrefix)
+	b := k.cdc.MustMarshal(&sig)
+
+	bera := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, sig.Era)
+	key := append([]byte(sig.Denom+sig.Pool+sig.TxType.String()), bera...)
+	key = append(key, sig.PropId...)
+
+	store.Set(key, b)
+}
+
+func (k Keeper) GetSignature(ctx sdk.Context, denom string, era uint32, pool string,
+	txType types.OriginalTxType, propId []byte) (val types.Signature, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SignaturePrefix)
+	bera := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, era)
+	key := append([]byte(denom+pool+txType.String()), bera...)
+	key = append(key, propId...)
+
+	b := store.Get(key)
 	if b == nil {
 		return val, false
 	}

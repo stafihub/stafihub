@@ -1,9 +1,11 @@
 package cli
 
 import (
+	"encoding/hex"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -51,7 +53,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdWithdrawReport())
 	cmd.AddCommand(CmdTransferReport())
 	cmd.AddCommand(CmdLiquidityUnbond())
-
+	cmd.AddCommand(CmdExecuteBondProposal())
+	cmd.AddCommand(CmdSubmitSignature())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
@@ -80,6 +83,55 @@ func CmdLiquidityUnbond() *cobra.Command {
 				argPool,
 				argValue,
 				argRecipient,
+			)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdSubmitSignature() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "submit-signature [denom] [era] [pool] [tx-type] [prop-id] [signature]",
+		Short: "Broadcast message submit_signature",
+		Args:  cobra.ExactArgs(6),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argDenom := args[0]
+			argEra, err := strconv.ParseUint(args[1], 10, 64)
+			if err != nil {
+				return err
+			}
+			argPool := args[2]
+			argTxType, ok := types.OriginalTxType_value[args[3]]
+			if !ok {
+				return fmt.Errorf("invalid txtype")
+			}
+
+			argPropId, err := hex.DecodeString(args[4])
+			if err != nil {
+				return err
+			}
+			argSignature := args[5]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSubmitSignature(
+				clientCtx.GetFromAddress().String(),
+				argDenom,
+				uint32(argEra),
+				argPool,
+				types.OriginalTxType(argTxType),
+				argPropId,
+				argSignature,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

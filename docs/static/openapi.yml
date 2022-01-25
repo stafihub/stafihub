@@ -12851,10 +12851,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getBondPipeLine/{denom}/{pool}':
+  '/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}':
     get:
       summary: Queries a list of getBondPipeLine items.
-      operationId: StafiprotocolStafihubLedgerGetBondPipeLine
+      operationId: StafiprotocolStafihubLedgerGetBondPipeline
       responses:
         '200':
           description: A successful response.
@@ -21543,6 +21543,18 @@ definitions:
     type: object
   stafiprotocol.stafihub.ledger.MsgSetUnbondFeeResponse:
     type: object
+  stafiprotocol.stafihub.ledger.MsgSubmitSignatureResponse:
+    type: object
+  stafiprotocol.stafihub.ledger.OriginalTxType:
+    type: string
+    enum:
+      - ORIGINAL_TX_TYPE_TRANSFER
+      - ORIGINAL_TX_TYPE_BOND
+      - ORIGINAL_TX_TYPE_UNBOND
+      - ORIGINAL_TX_TYPE_WITHDRAW
+      - ORIGINAL_TX_TYPE_CLAIM
+    default: ORIGINAL_TX_TYPE_TRANSFER
+    description: OriginalTxType enumerates the tx type of a signature.
   stafiprotocol.stafihub.ledger.PoolBondState:
     type: string
     enum:
@@ -21646,7 +21658,7 @@ definitions:
                   type: string
                 recipient:
                   type: string
-  stafiprotocol.stafihub.ledger.QueryGetBondPipeLineResponse:
+  stafiprotocol.stafihub.ledger.QueryGetBondPipelineResponse:
     type: object
     properties:
       pipeline:

@@ -260,9 +260,9 @@ func CmdTransferReport() *cobra.Command {
 
 func CmdExecuteBondProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "execute-bond [denom] [bonder] [shot-id]",
-		Short: "Broadcast message transfer_report",
-		Args:  cobra.ExactArgs(2),
+		Use:   "execute-bond-proposal [denom] [bonder] [pool] [blockhash] [txhash] [amount]",
+		Short: "Broadcast message execute_bond_proposal",
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argBonder, err := sdk.AccAddressFromBech32(args[1])

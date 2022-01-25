@@ -91,6 +91,19 @@ export type LedgerMsgSetUnbondCommissionResponse = object;
 
 export type LedgerMsgSetUnbondFeeResponse = object;
 
+export type LedgerMsgSubmitSignatureResponse = object;
+
+/**
+ * OriginalTxType enumerates the tx type of a signature.
+ */
+export enum LedgerOriginalTxType {
+  ORIGINAL_TX_TYPE_TRANSFER = "ORIGINAL_TX_TYPE_TRANSFER",
+  ORIGINAL_TX_TYPE_BOND = "ORIGINAL_TX_TYPE_BOND",
+  ORIGINAL_TX_TYPE_UNBOND = "ORIGINAL_TX_TYPE_UNBOND",
+  ORIGINAL_TX_TYPE_WITHDRAW = "ORIGINAL_TX_TYPE_WITHDRAW",
+  ORIGINAL_TX_TYPE_CLAIM = "ORIGINAL_TX_TYPE_CLAIM",
+}
+
 export enum LedgerPoolBondState {
   ERA_UPDATED = "ERA_UPDATED",
   BOND_REPORTED = "BOND_REPORTED",
@@ -134,7 +147,7 @@ export interface LedgerQueryGetAccountUnbondResponse {
   unbond?: LedgerAccountUnbond;
 }
 
-export interface LedgerQueryGetBondPipeLineResponse {
+export interface LedgerQueryGetBondPipelineResponse {
   pipeline?: LedgerBondPipeline;
 }
 
@@ -539,13 +552,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGetBondPipeLine
+   * @name QueryGetBondPipeline
    * @summary Queries a list of getBondPipeLine items.
-   * @request GET:/stafiprotocol/stafihub/ledger/getBondPipeLine/{denom}/{pool}
+   * @request GET:/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}
    */
-  queryGetBondPipeLine = (denom: string, pool: string, params: RequestParams = {}) =>
-    this.request<LedgerQueryGetBondPipeLineResponse, RpcStatus>({
-      path: `/stafiprotocol/stafihub/ledger/getBondPipeLine/${denom}/${pool}`,
+  queryGetBondPipeline = (denom: string, pool: string, params: RequestParams = {}) =>
+    this.request<LedgerQueryGetBondPipelineResponse, RpcStatus>({
+      path: `/stafiprotocol/stafihub/ledger/getBondPipeline/${denom}/${pool}`,
       method: "GET",
       format: "json",
       ...params,

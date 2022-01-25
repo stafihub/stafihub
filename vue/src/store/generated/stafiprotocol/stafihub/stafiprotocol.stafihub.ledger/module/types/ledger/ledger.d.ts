@@ -21,6 +21,17 @@ export declare enum BondAction {
 }
 export declare function bondActionFromJSON(object: any): BondAction;
 export declare function bondActionToJSON(object: BondAction): string;
+/** OriginalTxType enumerates the tx type of a signature. */
+export declare enum OriginalTxType {
+    ORIGINAL_TX_TYPE_TRANSFER = 0,
+    ORIGINAL_TX_TYPE_BOND = 1,
+    ORIGINAL_TX_TYPE_UNBOND = 2,
+    ORIGINAL_TX_TYPE_WITHDRAW = 3,
+    ORIGINAL_TX_TYPE_CLAIM = 4,
+    UNRECOGNIZED = -1
+}
+export declare function originalTxTypeFromJSON(object: any): OriginalTxType;
+export declare function originalTxTypeToJSON(object: OriginalTxType): string;
 export interface ChainEra {
     denom: string;
     era: number;
@@ -121,6 +132,21 @@ export interface BondRecord {
     blockhash: string;
     txhash: string;
     amount: string;
+}
+export interface Signature {
+    denom: string;
+    era: number;
+    pool: string;
+    txType: OriginalTxType;
+    propId: Uint8Array;
+    sigs: string[];
+    signers: {
+        [key: string]: string;
+    };
+}
+export interface Signature_SignersEntry {
+    key: string;
+    value: string;
 }
 export declare const ChainEra: {
     encode(message: ChainEra, writer?: Writer): Writer;
@@ -261,6 +287,20 @@ export declare const BondRecord: {
     fromJSON(object: any): BondRecord;
     toJSON(message: BondRecord): unknown;
     fromPartial(object: DeepPartial<BondRecord>): BondRecord;
+};
+export declare const Signature: {
+    encode(message: Signature, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): Signature;
+    fromJSON(object: any): Signature;
+    toJSON(message: Signature): unknown;
+    fromPartial(object: DeepPartial<Signature>): Signature;
+};
+export declare const Signature_SignersEntry: {
+    encode(message: Signature_SignersEntry, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): Signature_SignersEntry;
+    fromJSON(object: any): Signature_SignersEntry;
+    toJSON(message: Signature_SignersEntry): unknown;
+    fromPartial(object: DeepPartial<Signature_SignersEntry>): Signature_SignersEntry;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

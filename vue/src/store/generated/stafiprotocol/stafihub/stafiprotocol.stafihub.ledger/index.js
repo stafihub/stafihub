@@ -20,6 +20,7 @@ import { Unbonding } from "./module/types/ledger/ledger";
 import { UserUnlockChunk } from "./module/types/ledger/ledger";
 import { AccountUnbond } from "./module/types/ledger/ledger";
 import { BondRecord } from "./module/types/ledger/ledger";
+import { Signature } from "./module/types/ledger/ledger";
 import { SetChainEraProposal } from "./module/types/ledger/proposal";
 import { BondReportProposal } from "./module/types/ledger/proposal";
 import { BondAndReportActiveProposal } from "./module/types/ledger/proposal";
@@ -27,7 +28,7 @@ import { ActiveReportProposal } from "./module/types/ledger/proposal";
 import { WithdrawReportProposal } from "./module/types/ledger/proposal";
 import { TransferReportProposal } from "./module/types/ledger/proposal";
 import { ExecuteBondProposal } from "./module/types/ledger/proposal";
-export { ChainEra, ChainBondingDuration, Pool, TotalExpectedActive, BondPipeline, EraSnapshot, PoolUnbond, EraUnbondLimit, PoolDetail, LeastBond, LinkChunk, BondSnapshot, ExchangeRate, EraExchangeRate, UnbondFee, Unbonding, UserUnlockChunk, AccountUnbond, BondRecord, SetChainEraProposal, BondReportProposal, BondAndReportActiveProposal, ActiveReportProposal, WithdrawReportProposal, TransferReportProposal, ExecuteBondProposal };
+export { ChainEra, ChainBondingDuration, Pool, TotalExpectedActive, BondPipeline, EraSnapshot, PoolUnbond, EraUnbondLimit, PoolDetail, LeastBond, LinkChunk, BondSnapshot, ExchangeRate, EraExchangeRate, UnbondFee, Unbonding, UserUnlockChunk, AccountUnbond, BondRecord, Signature, SetChainEraProposal, BondReportProposal, BondAndReportActiveProposal, ActiveReportProposal, WithdrawReportProposal, TransferReportProposal, ExecuteBondProposal };
 async function initTxClient(vuexGetters) {
     return await txClient(vuexGetters['common/wallet/signer'], {
         addr: vuexGetters['common/env/apiTendermint']
@@ -77,7 +78,7 @@ const getDefaultState = () => {
         GetUnbondCommission: {},
         GetLeastBond: {},
         GetEraUnbondLimit: {},
-        GetBondPipeLine: {},
+        GetBondPipeline: {},
         GetEraSnapshot: {},
         GetSnapshot: {},
         GetTotalExpectedActive: {},
@@ -104,6 +105,7 @@ const getDefaultState = () => {
             UserUnlockChunk: getStructure(UserUnlockChunk.fromPartial({})),
             AccountUnbond: getStructure(AccountUnbond.fromPartial({})),
             BondRecord: getStructure(BondRecord.fromPartial({})),
+            Signature: getStructure(Signature.fromPartial({})),
             SetChainEraProposal: getStructure(SetChainEraProposal.fromPartial({})),
             BondReportProposal: getStructure(BondReportProposal.fromPartial({})),
             BondAndReportActiveProposal: getStructure(BondAndReportActiveProposal.fromPartial({})),
@@ -231,11 +233,11 @@ export default {
             }
             return state.GetEraUnbondLimit[JSON.stringify(params)] ?? {};
         },
-        getGetBondPipeLine: (state) => (params = { params: {} }) => {
+        getGetBondPipeline: (state) => (params = { params: {} }) => {
             if (!params.query) {
                 params.query = null;
             }
-            return state.GetBondPipeLine[JSON.stringify(params)] ?? {};
+            return state.GetBondPipeline[JSON.stringify(params)] ?? {};
         },
         getGetEraSnapshot: (state) => (params = { params: {} }) => {
             if (!params.query) {
@@ -510,17 +512,17 @@ export default {
                 throw new SpVuexError('QueryClient:QueryGetEraUnbondLimit', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
-        async QueryGetBondPipeLine({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+        async QueryGetBondPipeline({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
             try {
                 const queryClient = await initQueryClient(rootGetters);
-                let value = (await queryClient.queryGetBondPipeLine(key.denom, key.pool)).data;
-                commit('QUERY', { query: 'GetBondPipeLine', key: { params: { ...key }, query }, value });
+                let value = (await queryClient.queryGetBondPipeline(key.denom, key.pool)).data;
+                commit('QUERY', { query: 'GetBondPipeline', key: { params: { ...key }, query }, value });
                 if (subscribe)
-                    commit('SUBSCRIBE', { action: 'QueryGetBondPipeLine', payload: { options: { all }, params: { ...key }, query } });
-                return getters['getGetBondPipeLine']({ params: { ...key }, query }) ?? {};
+                    commit('SUBSCRIBE', { action: 'QueryGetBondPipeline', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getGetBondPipeline']({ params: { ...key }, query }) ?? {};
             }
             catch (e) {
-                throw new SpVuexError('QueryClient:QueryGetBondPipeLine', 'API Node Unavailable. Could not perform query: ' + e.message);
+                throw new SpVuexError('QueryClient:QueryGetBondPipeline', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
         async QueryGetEraSnapshot({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
@@ -601,108 +603,6 @@ export default {
                 throw new SpVuexError('QueryClient:QueryGetBondRecord', 'API Node Unavailable. Could not perform query: ' + e.message);
             }
         },
-        async sendMsgSetUnbondFee({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetUnbondFee(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgSetPoolDetail({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetPoolDetail(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgRemovePool({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgRemovePool(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgRemovePool:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgRemovePool:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgSetInitBond({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetInitBond(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetInitBond:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetInitBond:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgSetLeastBond({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetLeastBond(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetLeastBond:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetLeastBond:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgClearCurrentEraSnapShots({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgClearCurrentEraSnapShots(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
         async sendMsgSetCommission({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -717,40 +617,6 @@ export default {
                 }
                 else {
                     throw new SpVuexError('TxClient:MsgSetCommission:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgLiquidityUnbond({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgLiquidityUnbond(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Send', 'Could not broadcast Tx: ' + e.message);
-                }
-            }
-        },
-        async sendMsgSetChainBondingDuration({ rootGetters }, { value, fee = [], memo = '' }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetChainBondingDuration(value);
-                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
-                        gas: "200000" }, memo });
-                return result;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -771,37 +637,105 @@ export default {
                 }
             }
         },
-        async sendMsgAddNewPool({ rootGetters }, { value, fee = [], memo = '' }) {
+        async sendMsgClearCurrentEraSnapShots({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgAddNewPool(value);
+                const msg = await txClient.msgClearCurrentEraSnapShots(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
                         gas: "200000" }, memo });
                 return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgAddNewPool:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgAddNewPool:Send', 'Could not broadcast Tx: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
-        async sendMsgSetUnbondCommission({ rootGetters }, { value, fee = [], memo = '' }) {
+        async sendMsgSubmitSignature({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetUnbondCommission(value);
+                const msg = await txClient.msgSubmitSignature(value);
                 const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
                         gas: "200000" }, memo });
                 return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSubmitSignature:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Send', 'Could not broadcast Tx: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSubmitSignature:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
+        async sendMsgSetUnbondFee({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetUnbondFee(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
+        async sendMsgSetInitBond({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetInitBond(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetInitBond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetInitBond:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
+        async sendMsgLiquidityUnbond({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgLiquidityUnbond(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgLiquidityUnbond:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
+        async sendMsgSetPoolDetail({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetPoolDetail(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -822,93 +756,88 @@ export default {
                 }
             }
         },
-        async MsgSetUnbondFee({ rootGetters }, { value }) {
+        async sendMsgAddNewPool({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetUnbondFee(value);
-                return msg;
+                const msg = await txClient.msgAddNewPool(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgAddNewPool:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgAddNewPool:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
-        async MsgSetPoolDetail({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetPoolDetail(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
-        async MsgRemovePool({ rootGetters }, { value }) {
+        async sendMsgRemovePool({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgRemovePool(value);
-                return msg;
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
                     throw new SpVuexError('TxClient:MsgRemovePool:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgRemovePool:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgRemovePool:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
-        async MsgSetInitBond({ rootGetters }, { value }) {
-            try {
-                const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetInitBond(value);
-                return msg;
-            }
-            catch (e) {
-                if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetInitBond:Init', 'Could not initialize signing client. Wallet is required.');
-                }
-                else {
-                    throw new SpVuexError('TxClient:MsgSetInitBond:Create', 'Could not create message: ' + e.message);
-                }
-            }
-        },
-        async MsgSetLeastBond({ rootGetters }, { value }) {
+        async sendMsgSetLeastBond({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
                 const msg = await txClient.msgSetLeastBond(value);
-                return msg;
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
                     throw new SpVuexError('TxClient:MsgSetLeastBond:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetLeastBond:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetLeastBond:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
-        async MsgClearCurrentEraSnapShots({ rootGetters }, { value }) {
+        async sendMsgSetUnbondCommission({ rootGetters }, { value, fee = [], memo = '' }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgClearCurrentEraSnapShots(value);
-                return msg;
+                const msg = await txClient.msgSetUnbondCommission(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetUnbondCommission:Send', 'Could not broadcast Tx: ' + e.message);
+                }
+            }
+        },
+        async sendMsgSetChainBondingDuration({ rootGetters }, { value, fee = [], memo = '' }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetChainBondingDuration(value);
+                const result = await txClient.signAndBroadcast([msg], { fee: { amount: fee,
+                        gas: "200000" }, memo });
+                return result;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Send', 'Could not broadcast Tx: ' + e.message);
                 }
             }
         },
@@ -927,6 +856,81 @@ export default {
                 }
             }
         },
+        async MsgSetReceiver({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetReceiver(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetReceiver:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetReceiver:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgClearCurrentEraSnapShots({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgClearCurrentEraSnapShots(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgClearCurrentEraSnapShots:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSubmitSignature({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSubmitSignature(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSubmitSignature:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSubmitSignature:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSetUnbondFee({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetUnbondFee(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetUnbondFee:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSetInitBond({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetInitBond(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetInitBond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetInitBond:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
         async MsgLiquidityUnbond({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -942,33 +946,33 @@ export default {
                 }
             }
         },
-        async MsgSetChainBondingDuration({ rootGetters }, { value }) {
+        async MsgSetPoolDetail({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetChainBondingDuration(value);
+                const msg = await txClient.msgSetPoolDetail(value);
                 return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetPoolDetail:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
-        async MsgSetReceiver({ rootGetters }, { value }) {
+        async MsgSetEraUnbondLimit({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetReceiver(value);
+                const msg = await txClient.msgSetEraUnbondLimit(value);
                 return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetReceiver:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetReceiver:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Create', 'Could not create message: ' + e.message);
                 }
             }
         },
@@ -987,6 +991,36 @@ export default {
                 }
             }
         },
+        async MsgRemovePool({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgRemovePool(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgRemovePool:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgRemovePool:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
+        async MsgSetLeastBond({ rootGetters }, { value }) {
+            try {
+                const txClient = await initTxClient(rootGetters);
+                const msg = await txClient.msgSetLeastBond(value);
+                return msg;
+            }
+            catch (e) {
+                if (e == MissingWalletError) {
+                    throw new SpVuexError('TxClient:MsgSetLeastBond:Init', 'Could not initialize signing client. Wallet is required.');
+                }
+                else {
+                    throw new SpVuexError('TxClient:MsgSetLeastBond:Create', 'Could not create message: ' + e.message);
+                }
+            }
+        },
         async MsgSetUnbondCommission({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
@@ -1002,18 +1036,18 @@ export default {
                 }
             }
         },
-        async MsgSetEraUnbondLimit({ rootGetters }, { value }) {
+        async MsgSetChainBondingDuration({ rootGetters }, { value }) {
             try {
                 const txClient = await initTxClient(rootGetters);
-                const msg = await txClient.msgSetEraUnbondLimit(value);
+                const msg = await txClient.msgSetChainBondingDuration(value);
                 return msg;
             }
             catch (e) {
                 if (e == MissingWalletError) {
-                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Init', 'Could not initialize signing client. Wallet is required.');
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Init', 'Could not initialize signing client. Wallet is required.');
                 }
                 else {
-                    throw new SpVuexError('TxClient:MsgSetEraUnbondLimit:Create', 'Could not create message: ' + e.message);
+                    throw new SpVuexError('TxClient:MsgSetChainBondingDuration:Create', 'Could not create message: ' + e.message);
                 }
             }
         },

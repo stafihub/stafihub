@@ -183,14 +183,14 @@ func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEra
 	return &types.QueryGetEraUnbondLimitResponse{Limit: eul.Limit}, nil
 }
 
-func (q Querier) GetBondPipeLine(goCtx context.Context, req *types.QueryGetBondPipeLineRequest) (*types.QueryGetBondPipeLineResponse, error) {
+func (q Querier) GetBondPipeline(goCtx context.Context, req *types.QueryGetBondPipelineRequest) (*types.QueryGetBondPipelineResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	pipe, _ := q.Keeper.GetBondPipeLine(ctx, req.Denom, req.Pool)
-	return &types.QueryGetBondPipeLineResponse{Pipeline: pipe}, nil
+	pipe, _ := q.Keeper.GetBondPipeline(ctx, req.Denom, req.Pool)
+	return &types.QueryGetBondPipelineResponse{Pipeline: pipe}, nil
 }
 
 func (q Querier) GetEraSnapshot(goCtx context.Context, req *types.QueryGetEraSnapshotRequest) (*types.QueryGetEraSnapshotResponse, error) {

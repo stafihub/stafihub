@@ -42,7 +42,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetUnbondCommission())
 	cmd.AddCommand(CmdGetLeastBond())
 	cmd.AddCommand(CmdGetEraUnbondLimit())
-	cmd.AddCommand(CmdGetBondPipeLine())
+	cmd.AddCommand(CmdGetBondPipeline())
 	cmd.AddCommand(CmdGetEraSnapshot())
 	cmd.AddCommand(CmdGetSnapshot())
 	cmd.AddCommand(CmdGetTotalExpectedActive())
@@ -438,10 +438,10 @@ func CmdGetEraUnbondLimit() *cobra.Command {
 	return cmd
 }
 
-func CmdGetBondPipeLine() *cobra.Command {
+func CmdGetBondPipeline() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-bond-pipe-line [denom] [pool]",
-		Short: "Query GetBondPipeLine",
+		Use:   "get-bond-pipeline [denom] [pool]",
+		Short: "Query GetBondPipeline",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
@@ -453,12 +453,12 @@ func CmdGetBondPipeLine() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryGetBondPipeLineRequest{
+			params := &types.QueryGetBondPipelineRequest{
 				Denom: reqDenom,
 				Pool:  reqPool,
 			}
 
-			res, err := queryClient.GetBondPipeLine(cmd.Context(), params)
+			res, err := queryClient.GetBondPipeline(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

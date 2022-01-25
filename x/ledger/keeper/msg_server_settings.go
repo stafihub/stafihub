@@ -48,7 +48,7 @@ func (k msgServer) RemovePool(goCtx context.Context, msg *types.MsgRemovePool) (
 		return nil, types.ErrPoolNotBonded
 	}
 
-	pipe, ok := k.Keeper.GetBondPipeLine(ctx, msg.Denom, msg.Addr)
+	pipe, ok := k.Keeper.GetBondPipeline(ctx, msg.Denom, msg.Addr)
 	if !ok {
 		return nil, types.ErrBondPipelineNotFound
 	}

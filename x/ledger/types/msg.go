@@ -20,6 +20,7 @@ var (
 	_ sdk.Msg = &MsgSetUnbondCommission{}
 	_ sdk.Msg = &MsgLiquidityUnbond{}
 	_ sdk.Msg = &MsgSetUnbondFee{}
+	_ sdk.Msg = &MsgSubmitSignature{}
 )
 
 func NewMsgAddNewPool(creator sdk.AccAddress, denom string, addr string) *MsgAddNewPool {
@@ -485,5 +486,42 @@ func (msg *MsgSetUnbondFee) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
+	return nil
+}
+
+func NewMsgSubmitSignature(creator string, denom string, era uint32, pool string, txType OriginalTxType, propId []byte, signature string) *MsgSubmitSignature {
+	return &MsgSubmitSignature{
+		Creator:   creator,
+		Denom:     denom,
+		Era:       era,
+		Pool:      pool,
+		TxType:    txType,
+		PropId:    propId,
+		Signature: signature,
+	}
+}
+
+func (msg *MsgSubmitSignature) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSubmitSignature) Type() string {
+	return "SubmitSignature"
+}
+
+func (msg *MsgSubmitSignature) GetSigners() []sdk.AccAddress {
+	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSubmitSignature) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSubmitSignature) ValidateBasic() error {
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
 	return nil
 }

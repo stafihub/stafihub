@@ -68,10 +68,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		return nil, relayerstypes.ErrThresholdNotFound
 	}
 
-	if uint32(len(prop.Voted)) >= threshold.Value {
-		prop.Status = types.StatusApproved
-	}
-	if adminFlag {
+	if adminFlag || uint32(len(prop.Voted)) >= threshold.Value {
 		prop.Status = types.StatusApproved
 	}
 

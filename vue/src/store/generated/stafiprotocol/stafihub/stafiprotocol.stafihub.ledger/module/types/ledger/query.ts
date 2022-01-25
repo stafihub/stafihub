@@ -135,12 +135,12 @@ export interface QueryGetEraUnbondLimitResponse {
   limit: number
 }
 
-export interface QueryGetBondPipeLineRequest {
+export interface QueryGetBondPipelineRequest {
   denom: string
   pool: string
 }
 
-export interface QueryGetBondPipeLineResponse {
+export interface QueryGetBondPipelineResponse {
   pipeline: BondPipeline | undefined
 }
 
@@ -1943,10 +1943,10 @@ export const QueryGetEraUnbondLimitResponse = {
   }
 }
 
-const baseQueryGetBondPipeLineRequest: object = { denom: '', pool: '' }
+const baseQueryGetBondPipelineRequest: object = { denom: '', pool: '' }
 
-export const QueryGetBondPipeLineRequest = {
-  encode(message: QueryGetBondPipeLineRequest, writer: Writer = Writer.create()): Writer {
+export const QueryGetBondPipelineRequest = {
+  encode(message: QueryGetBondPipelineRequest, writer: Writer = Writer.create()): Writer {
     if (message.denom !== '') {
       writer.uint32(10).string(message.denom)
     }
@@ -1956,10 +1956,10 @@ export const QueryGetBondPipeLineRequest = {
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipeLineRequest {
+  decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipelineRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryGetBondPipeLineRequest } as QueryGetBondPipeLineRequest
+    const message = { ...baseQueryGetBondPipelineRequest } as QueryGetBondPipelineRequest
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -1977,8 +1977,8 @@ export const QueryGetBondPipeLineRequest = {
     return message
   },
 
-  fromJSON(object: any): QueryGetBondPipeLineRequest {
-    const message = { ...baseQueryGetBondPipeLineRequest } as QueryGetBondPipeLineRequest
+  fromJSON(object: any): QueryGetBondPipelineRequest {
+    const message = { ...baseQueryGetBondPipelineRequest } as QueryGetBondPipelineRequest
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = String(object.denom)
     } else {
@@ -1992,15 +1992,15 @@ export const QueryGetBondPipeLineRequest = {
     return message
   },
 
-  toJSON(message: QueryGetBondPipeLineRequest): unknown {
+  toJSON(message: QueryGetBondPipelineRequest): unknown {
     const obj: any = {}
     message.denom !== undefined && (obj.denom = message.denom)
     message.pool !== undefined && (obj.pool = message.pool)
     return obj
   },
 
-  fromPartial(object: DeepPartial<QueryGetBondPipeLineRequest>): QueryGetBondPipeLineRequest {
-    const message = { ...baseQueryGetBondPipeLineRequest } as QueryGetBondPipeLineRequest
+  fromPartial(object: DeepPartial<QueryGetBondPipelineRequest>): QueryGetBondPipelineRequest {
+    const message = { ...baseQueryGetBondPipelineRequest } as QueryGetBondPipelineRequest
     if (object.denom !== undefined && object.denom !== null) {
       message.denom = object.denom
     } else {
@@ -2015,20 +2015,20 @@ export const QueryGetBondPipeLineRequest = {
   }
 }
 
-const baseQueryGetBondPipeLineResponse: object = {}
+const baseQueryGetBondPipelineResponse: object = {}
 
-export const QueryGetBondPipeLineResponse = {
-  encode(message: QueryGetBondPipeLineResponse, writer: Writer = Writer.create()): Writer {
+export const QueryGetBondPipelineResponse = {
+  encode(message: QueryGetBondPipelineResponse, writer: Writer = Writer.create()): Writer {
     if (message.pipeline !== undefined) {
       BondPipeline.encode(message.pipeline, writer.uint32(10).fork()).ldelim()
     }
     return writer
   },
 
-  decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipeLineResponse {
+  decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipelineResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = { ...baseQueryGetBondPipeLineResponse } as QueryGetBondPipeLineResponse
+    const message = { ...baseQueryGetBondPipelineResponse } as QueryGetBondPipelineResponse
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -2043,8 +2043,8 @@ export const QueryGetBondPipeLineResponse = {
     return message
   },
 
-  fromJSON(object: any): QueryGetBondPipeLineResponse {
-    const message = { ...baseQueryGetBondPipeLineResponse } as QueryGetBondPipeLineResponse
+  fromJSON(object: any): QueryGetBondPipelineResponse {
+    const message = { ...baseQueryGetBondPipelineResponse } as QueryGetBondPipelineResponse
     if (object.pipeline !== undefined && object.pipeline !== null) {
       message.pipeline = BondPipeline.fromJSON(object.pipeline)
     } else {
@@ -2053,14 +2053,14 @@ export const QueryGetBondPipeLineResponse = {
     return message
   },
 
-  toJSON(message: QueryGetBondPipeLineResponse): unknown {
+  toJSON(message: QueryGetBondPipelineResponse): unknown {
     const obj: any = {}
     message.pipeline !== undefined && (obj.pipeline = message.pipeline ? BondPipeline.toJSON(message.pipeline) : undefined)
     return obj
   },
 
-  fromPartial(object: DeepPartial<QueryGetBondPipeLineResponse>): QueryGetBondPipeLineResponse {
-    const message = { ...baseQueryGetBondPipeLineResponse } as QueryGetBondPipeLineResponse
+  fromPartial(object: DeepPartial<QueryGetBondPipelineResponse>): QueryGetBondPipelineResponse {
+    const message = { ...baseQueryGetBondPipelineResponse } as QueryGetBondPipelineResponse
     if (object.pipeline !== undefined && object.pipeline !== null) {
       message.pipeline = BondPipeline.fromPartial(object.pipeline)
     } else {
@@ -2889,7 +2889,7 @@ export interface Query {
   /** Queries a list of getEraUnbondLimit items. */
   GetEraUnbondLimit(request: QueryGetEraUnbondLimitRequest): Promise<QueryGetEraUnbondLimitResponse>
   /** Queries a list of getBondPipeLine items. */
-  GetBondPipeLine(request: QueryGetBondPipeLineRequest): Promise<QueryGetBondPipeLineResponse>
+  GetBondPipeline(request: QueryGetBondPipelineRequest): Promise<QueryGetBondPipelineResponse>
   /** Queries a list of getEraSnapshot items. */
   GetEraSnapshot(request: QueryGetEraSnapshotRequest): Promise<QueryGetEraSnapshotResponse>
   /** Queries a list of getSnapshot items. */
@@ -3005,10 +3005,10 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryGetEraUnbondLimitResponse.decode(new Reader(data)))
   }
 
-  GetBondPipeLine(request: QueryGetBondPipeLineRequest): Promise<QueryGetBondPipeLineResponse> {
-    const data = QueryGetBondPipeLineRequest.encode(request).finish()
-    const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Query', 'GetBondPipeLine', data)
-    return promise.then((data) => QueryGetBondPipeLineResponse.decode(new Reader(data)))
+  GetBondPipeline(request: QueryGetBondPipelineRequest): Promise<QueryGetBondPipelineResponse> {
+    const data = QueryGetBondPipelineRequest.encode(request).finish()
+    const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Query', 'GetBondPipeline', data)
+    return promise.then((data) => QueryGetBondPipelineResponse.decode(new Reader(data)))
   }
 
   GetEraSnapshot(request: QueryGetEraSnapshotRequest): Promise<QueryGetEraSnapshotResponse> {

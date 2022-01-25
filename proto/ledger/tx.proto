@@ -2,6 +2,7 @@ syntax = "proto3";
 package stafiprotocol.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
+import "ledger/ledger.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
@@ -21,6 +22,7 @@ service Msg {
   rpc SetUnbondFee(MsgSetUnbondFee) returns (MsgSetUnbondFeeResponse);
   rpc LiquidityUnbond(MsgLiquidityUnbond) returns (MsgLiquidityUnbondResponse);
   rpc SetUnbondCommission(MsgSetUnbondCommission) returns (MsgSetUnbondCommissionResponse);
+  rpc SubmitSignature(MsgSubmitSignature) returns (MsgSubmitSignatureResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -139,6 +141,19 @@ message MsgSetUnbondCommission {
 }
 
 message MsgSetUnbondCommissionResponse {
+}
+
+message MsgSubmitSignature {
+  string creator = 1;
+  string denom = 2;
+  uint32 era = 3;
+  string pool = 4;
+  OriginalTxType txType = 5;
+  bytes propId = 6;
+  string signature = 7;
+}
+
+message MsgSubmitSignatureResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

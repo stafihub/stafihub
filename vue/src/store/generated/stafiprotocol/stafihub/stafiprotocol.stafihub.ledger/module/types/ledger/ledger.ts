@@ -109,6 +109,57 @@ export function bondActionToJSON(object: BondAction): string {
   }
 }
 
+/** OriginalTxType enumerates the tx type of a signature. */
+export enum OriginalTxType {
+  ORIGINAL_TX_TYPE_TRANSFER = 0,
+  ORIGINAL_TX_TYPE_BOND = 1,
+  ORIGINAL_TX_TYPE_UNBOND = 2,
+  ORIGINAL_TX_TYPE_WITHDRAW = 3,
+  ORIGINAL_TX_TYPE_CLAIM = 4,
+  UNRECOGNIZED = -1
+}
+
+export function originalTxTypeFromJSON(object: any): OriginalTxType {
+  switch (object) {
+    case 0:
+    case 'ORIGINAL_TX_TYPE_TRANSFER':
+      return OriginalTxType.ORIGINAL_TX_TYPE_TRANSFER
+    case 1:
+    case 'ORIGINAL_TX_TYPE_BOND':
+      return OriginalTxType.ORIGINAL_TX_TYPE_BOND
+    case 2:
+    case 'ORIGINAL_TX_TYPE_UNBOND':
+      return OriginalTxType.ORIGINAL_TX_TYPE_UNBOND
+    case 3:
+    case 'ORIGINAL_TX_TYPE_WITHDRAW':
+      return OriginalTxType.ORIGINAL_TX_TYPE_WITHDRAW
+    case 4:
+    case 'ORIGINAL_TX_TYPE_CLAIM':
+      return OriginalTxType.ORIGINAL_TX_TYPE_CLAIM
+    case -1:
+    case 'UNRECOGNIZED':
+    default:
+      return OriginalTxType.UNRECOGNIZED
+  }
+}
+
+export function originalTxTypeToJSON(object: OriginalTxType): string {
+  switch (object) {
+    case OriginalTxType.ORIGINAL_TX_TYPE_TRANSFER:
+      return 'ORIGINAL_TX_TYPE_TRANSFER'
+    case OriginalTxType.ORIGINAL_TX_TYPE_BOND:
+      return 'ORIGINAL_TX_TYPE_BOND'
+    case OriginalTxType.ORIGINAL_TX_TYPE_UNBOND:
+      return 'ORIGINAL_TX_TYPE_UNBOND'
+    case OriginalTxType.ORIGINAL_TX_TYPE_WITHDRAW:
+      return 'ORIGINAL_TX_TYPE_WITHDRAW'
+    case OriginalTxType.ORIGINAL_TX_TYPE_CLAIM:
+      return 'ORIGINAL_TX_TYPE_CLAIM'
+    default:
+      return 'UNKNOWN'
+  }
+}
+
 export interface ChainEra {
   denom: string
   era: number
@@ -226,6 +277,21 @@ export interface BondRecord {
   blockhash: string
   txhash: string
   amount: string
+}
+
+export interface Signature {
+  denom: string
+  era: number
+  pool: string
+  txType: OriginalTxType
+  propId: Uint8Array
+  sigs: string[]
+  signers: { [key: string]: string }
+}
+
+export interface Signature_SignersEntry {
+  key: string
+  value: string
 }
 
 const baseChainEra: object = { denom: '', era: 0 }
@@ -2027,6 +2093,253 @@ export const BondRecord = {
       message.amount = object.amount
     } else {
       message.amount = ''
+    }
+    return message
+  }
+}
+
+const baseSignature: object = { denom: '', era: 0, pool: '', txType: 0, sigs: '' }
+
+export const Signature = {
+  encode(message: Signature, writer: Writer = Writer.create()): Writer {
+    if (message.denom !== '') {
+      writer.uint32(10).string(message.denom)
+    }
+    if (message.era !== 0) {
+      writer.uint32(16).uint32(message.era)
+    }
+    if (message.pool !== '') {
+      writer.uint32(26).string(message.pool)
+    }
+    if (message.txType !== 0) {
+      writer.uint32(32).int32(message.txType)
+    }
+    if (message.propId.length !== 0) {
+      writer.uint32(42).bytes(message.propId)
+    }
+    for (const v of message.sigs) {
+      writer.uint32(50).string(v!)
+    }
+    Object.entries(message.signers).forEach(([key, value]) => {
+      Signature_SignersEntry.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim()
+    })
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): Signature {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseSignature } as Signature
+    message.sigs = []
+    message.signers = {}
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.denom = reader.string()
+          break
+        case 2:
+          message.era = reader.uint32()
+          break
+        case 3:
+          message.pool = reader.string()
+          break
+        case 4:
+          message.txType = reader.int32() as any
+          break
+        case 5:
+          message.propId = reader.bytes()
+          break
+        case 6:
+          message.sigs.push(reader.string())
+          break
+        case 7:
+          const entry7 = Signature_SignersEntry.decode(reader, reader.uint32())
+          if (entry7.value !== undefined) {
+            message.signers[entry7.key] = entry7.value
+          }
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): Signature {
+    const message = { ...baseSignature } as Signature
+    message.sigs = []
+    message.signers = {}
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = String(object.denom)
+    } else {
+      message.denom = ''
+    }
+    if (object.era !== undefined && object.era !== null) {
+      message.era = Number(object.era)
+    } else {
+      message.era = 0
+    }
+    if (object.pool !== undefined && object.pool !== null) {
+      message.pool = String(object.pool)
+    } else {
+      message.pool = ''
+    }
+    if (object.txType !== undefined && object.txType !== null) {
+      message.txType = originalTxTypeFromJSON(object.txType)
+    } else {
+      message.txType = 0
+    }
+    if (object.propId !== undefined && object.propId !== null) {
+      message.propId = bytesFromBase64(object.propId)
+    }
+    if (object.sigs !== undefined && object.sigs !== null) {
+      for (const e of object.sigs) {
+        message.sigs.push(String(e))
+      }
+    }
+    if (object.signers !== undefined && object.signers !== null) {
+      Object.entries(object.signers).forEach(([key, value]) => {
+        message.signers[key] = String(value)
+      })
+    }
+    return message
+  },
+
+  toJSON(message: Signature): unknown {
+    const obj: any = {}
+    message.denom !== undefined && (obj.denom = message.denom)
+    message.era !== undefined && (obj.era = message.era)
+    message.pool !== undefined && (obj.pool = message.pool)
+    message.txType !== undefined && (obj.txType = originalTxTypeToJSON(message.txType))
+    message.propId !== undefined && (obj.propId = base64FromBytes(message.propId !== undefined ? message.propId : new Uint8Array()))
+    if (message.sigs) {
+      obj.sigs = message.sigs.map((e) => e)
+    } else {
+      obj.sigs = []
+    }
+    obj.signers = {}
+    if (message.signers) {
+      Object.entries(message.signers).forEach(([k, v]) => {
+        obj.signers[k] = v
+      })
+    }
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<Signature>): Signature {
+    const message = { ...baseSignature } as Signature
+    message.sigs = []
+    message.signers = {}
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom
+    } else {
+      message.denom = ''
+    }
+    if (object.era !== undefined && object.era !== null) {
+      message.era = object.era
+    } else {
+      message.era = 0
+    }
+    if (object.pool !== undefined && object.pool !== null) {
+      message.pool = object.pool
+    } else {
+      message.pool = ''
+    }
+    if (object.txType !== undefined && object.txType !== null) {
+      message.txType = object.txType
+    } else {
+      message.txType = 0
+    }
+    if (object.propId !== undefined && object.propId !== null) {
+      message.propId = object.propId
+    } else {
+      message.propId = new Uint8Array()
+    }
+    if (object.sigs !== undefined && object.sigs !== null) {
+      for (const e of object.sigs) {
+        message.sigs.push(e)
+      }
+    }
+    if (object.signers !== undefined && object.signers !== null) {
+      Object.entries(object.signers).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.signers[key] = String(value)
+        }
+      })
+    }
+    return message
+  }
+}
+
+const baseSignature_SignersEntry: object = { key: '', value: '' }
+
+export const Signature_SignersEntry = {
+  encode(message: Signature_SignersEntry, writer: Writer = Writer.create()): Writer {
+    if (message.key !== '') {
+      writer.uint32(10).string(message.key)
+    }
+    if (message.value !== '') {
+      writer.uint32(18).string(message.value)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): Signature_SignersEntry {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseSignature_SignersEntry } as Signature_SignersEntry
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string()
+          break
+        case 2:
+          message.value = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): Signature_SignersEntry {
+    const message = { ...baseSignature_SignersEntry } as Signature_SignersEntry
+    if (object.key !== undefined && object.key !== null) {
+      message.key = String(object.key)
+    } else {
+      message.key = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value)
+    } else {
+      message.value = ''
+    }
+    return message
+  },
+
+  toJSON(message: Signature_SignersEntry): unknown {
+    const obj: any = {}
+    message.key !== undefined && (obj.key = message.key)
+    message.value !== undefined && (obj.value = message.value)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<Signature_SignersEntry>): Signature_SignersEntry {
+    const message = { ...baseSignature_SignersEntry } as Signature_SignersEntry
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key
+    } else {
+      message.key = ''
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value
+    } else {
+      message.value = ''
     }
     return message
   }

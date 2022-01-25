@@ -94,11 +94,11 @@ export interface QueryGetEraUnbondLimitRequest {
 export interface QueryGetEraUnbondLimitResponse {
     limit: number;
 }
-export interface QueryGetBondPipeLineRequest {
+export interface QueryGetBondPipelineRequest {
     denom: string;
     pool: string;
 }
-export interface QueryGetBondPipeLineResponse {
+export interface QueryGetBondPipelineResponse {
     pipeline: BondPipeline | undefined;
 }
 export interface QueryGetEraSnapshotRequest {
@@ -368,19 +368,19 @@ export declare const QueryGetEraUnbondLimitResponse: {
     toJSON(message: QueryGetEraUnbondLimitResponse): unknown;
     fromPartial(object: DeepPartial<QueryGetEraUnbondLimitResponse>): QueryGetEraUnbondLimitResponse;
 };
-export declare const QueryGetBondPipeLineRequest: {
-    encode(message: QueryGetBondPipeLineRequest, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipeLineRequest;
-    fromJSON(object: any): QueryGetBondPipeLineRequest;
-    toJSON(message: QueryGetBondPipeLineRequest): unknown;
-    fromPartial(object: DeepPartial<QueryGetBondPipeLineRequest>): QueryGetBondPipeLineRequest;
+export declare const QueryGetBondPipelineRequest: {
+    encode(message: QueryGetBondPipelineRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipelineRequest;
+    fromJSON(object: any): QueryGetBondPipelineRequest;
+    toJSON(message: QueryGetBondPipelineRequest): unknown;
+    fromPartial(object: DeepPartial<QueryGetBondPipelineRequest>): QueryGetBondPipelineRequest;
 };
-export declare const QueryGetBondPipeLineResponse: {
-    encode(message: QueryGetBondPipeLineResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipeLineResponse;
-    fromJSON(object: any): QueryGetBondPipeLineResponse;
-    toJSON(message: QueryGetBondPipeLineResponse): unknown;
-    fromPartial(object: DeepPartial<QueryGetBondPipeLineResponse>): QueryGetBondPipeLineResponse;
+export declare const QueryGetBondPipelineResponse: {
+    encode(message: QueryGetBondPipelineResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetBondPipelineResponse;
+    fromJSON(object: any): QueryGetBondPipelineResponse;
+    toJSON(message: QueryGetBondPipelineResponse): unknown;
+    fromPartial(object: DeepPartial<QueryGetBondPipelineResponse>): QueryGetBondPipelineResponse;
 };
 export declare const QueryGetEraSnapshotRequest: {
     encode(message: QueryGetEraSnapshotRequest, writer?: Writer): Writer;
@@ -501,7 +501,7 @@ export interface Query {
     /** Queries a list of getEraUnbondLimit items. */
     GetEraUnbondLimit(request: QueryGetEraUnbondLimitRequest): Promise<QueryGetEraUnbondLimitResponse>;
     /** Queries a list of getBondPipeLine items. */
-    GetBondPipeLine(request: QueryGetBondPipeLineRequest): Promise<QueryGetBondPipeLineResponse>;
+    GetBondPipeline(request: QueryGetBondPipelineRequest): Promise<QueryGetBondPipelineResponse>;
     /** Queries a list of getEraSnapshot items. */
     GetEraSnapshot(request: QueryGetEraSnapshotRequest): Promise<QueryGetEraSnapshotResponse>;
     /** Queries a list of getSnapshot items. */
@@ -534,7 +534,7 @@ export declare class QueryClientImpl implements Query {
     GetUnbondCommission(request: QueryGetUnbondCommissionRequest): Promise<QueryGetUnbondCommissionResponse>;
     GetLeastBond(request: QueryGetLeastBondRequest): Promise<QueryGetLeastBondResponse>;
     GetEraUnbondLimit(request: QueryGetEraUnbondLimitRequest): Promise<QueryGetEraUnbondLimitResponse>;
-    GetBondPipeLine(request: QueryGetBondPipeLineRequest): Promise<QueryGetBondPipeLineResponse>;
+    GetBondPipeline(request: QueryGetBondPipelineRequest): Promise<QueryGetBondPipelineResponse>;
     GetEraSnapshot(request: QueryGetEraSnapshotRequest): Promise<QueryGetEraSnapshotResponse>;
     GetSnapshot(request: QueryGetSnapshotRequest): Promise<QueryGetSnapshotResponse>;
     GetTotalExpectedActive(request: QueryGetTotalExpectedActiveRequest): Promise<QueryGetTotalExpectedActiveResponse>;

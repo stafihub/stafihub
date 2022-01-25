@@ -31,6 +31,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
 	cdc.RegisterConcrete(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal", nil)
 
+	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -57,6 +58,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&WithdrawReportProposal{},
 		&TransferReportProposal{},
 		&ExecuteBondProposal{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSubmitSignature{},
 	)
 	// this line is used by starport scaffolding # 3
 

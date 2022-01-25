@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { originalTxTypeFromJSON, originalTxTypeToJSON } from '../ledger/ledger';
 import { Reader, Writer } from 'protobufjs/minimal';
 export const protobufPackage = 'stafiprotocol.stafihub.ledger';
 const baseMsgAddNewPool = { creator: '', denom: '', addr: '' };
@@ -1580,6 +1581,200 @@ export const MsgSetUnbondCommissionResponse = {
         return message;
     }
 };
+const baseMsgSubmitSignature = { creator: '', denom: '', era: 0, pool: '', txType: 0, signature: '' };
+export const MsgSubmitSignature = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== '') {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.denom !== '') {
+            writer.uint32(18).string(message.denom);
+        }
+        if (message.era !== 0) {
+            writer.uint32(24).uint32(message.era);
+        }
+        if (message.pool !== '') {
+            writer.uint32(34).string(message.pool);
+        }
+        if (message.txType !== 0) {
+            writer.uint32(40).int32(message.txType);
+        }
+        if (message.propId.length !== 0) {
+            writer.uint32(50).bytes(message.propId);
+        }
+        if (message.signature !== '') {
+            writer.uint32(58).string(message.signature);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgSubmitSignature };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.denom = reader.string();
+                    break;
+                case 3:
+                    message.era = reader.uint32();
+                    break;
+                case 4:
+                    message.pool = reader.string();
+                    break;
+                case 5:
+                    message.txType = reader.int32();
+                    break;
+                case 6:
+                    message.propId = reader.bytes();
+                    break;
+                case 7:
+                    message.signature = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgSubmitSignature };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = String(object.denom);
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.era !== undefined && object.era !== null) {
+            message.era = Number(object.era);
+        }
+        else {
+            message.era = 0;
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = String(object.pool);
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.txType !== undefined && object.txType !== null) {
+            message.txType = originalTxTypeFromJSON(object.txType);
+        }
+        else {
+            message.txType = 0;
+        }
+        if (object.propId !== undefined && object.propId !== null) {
+            message.propId = bytesFromBase64(object.propId);
+        }
+        if (object.signature !== undefined && object.signature !== null) {
+            message.signature = String(object.signature);
+        }
+        else {
+            message.signature = '';
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.denom !== undefined && (obj.denom = message.denom);
+        message.era !== undefined && (obj.era = message.era);
+        message.pool !== undefined && (obj.pool = message.pool);
+        message.txType !== undefined && (obj.txType = originalTxTypeToJSON(message.txType));
+        message.propId !== undefined && (obj.propId = base64FromBytes(message.propId !== undefined ? message.propId : new Uint8Array()));
+        message.signature !== undefined && (obj.signature = message.signature);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgSubmitSignature };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
+        }
+        if (object.denom !== undefined && object.denom !== null) {
+            message.denom = object.denom;
+        }
+        else {
+            message.denom = '';
+        }
+        if (object.era !== undefined && object.era !== null) {
+            message.era = object.era;
+        }
+        else {
+            message.era = 0;
+        }
+        if (object.pool !== undefined && object.pool !== null) {
+            message.pool = object.pool;
+        }
+        else {
+            message.pool = '';
+        }
+        if (object.txType !== undefined && object.txType !== null) {
+            message.txType = object.txType;
+        }
+        else {
+            message.txType = 0;
+        }
+        if (object.propId !== undefined && object.propId !== null) {
+            message.propId = object.propId;
+        }
+        else {
+            message.propId = new Uint8Array();
+        }
+        if (object.signature !== undefined && object.signature !== null) {
+            message.signature = object.signature;
+        }
+        else {
+            message.signature = '';
+        }
+        return message;
+    }
+};
+const baseMsgSubmitSignatureResponse = {};
+export const MsgSubmitSignatureResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgSubmitSignatureResponse };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = { ...baseMsgSubmitSignatureResponse };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = { ...baseMsgSubmitSignatureResponse };
+        return message;
+    }
+};
 export class MsgClientImpl {
     constructor(rpc) {
         this.rpc = rpc;
@@ -1649,4 +1844,37 @@ export class MsgClientImpl {
         const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SetUnbondCommission', data);
         return promise.then((data) => MsgSetUnbondCommissionResponse.decode(new Reader(data)));
     }
+    SubmitSignature(request) {
+        const data = MsgSubmitSignature.encode(request).finish();
+        const promise = this.rpc.request('stafiprotocol.stafihub.ledger.Msg', 'SubmitSignature', data);
+        return promise.then((data) => MsgSubmitSignatureResponse.decode(new Reader(data)));
+    }
+}
+var globalThis = (() => {
+    if (typeof globalThis !== 'undefined')
+        return globalThis;
+    if (typeof self !== 'undefined')
+        return self;
+    if (typeof window !== 'undefined')
+        return window;
+    if (typeof global !== 'undefined')
+        return global;
+    throw 'Unable to locate global object';
+})();
+const atob = globalThis.atob || ((b64) => globalThis.Buffer.from(b64, 'base64').toString('binary'));
+function bytesFromBase64(b64) {
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+        arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+}
+const btoa = globalThis.btoa || ((bin) => globalThis.Buffer.from(bin, 'binary').toString('base64'));
+function base64FromBytes(arr) {
+    const bin = [];
+    for (let i = 0; i < arr.byteLength; ++i) {
+        bin.push(String.fromCharCode(arr[i]));
+    }
+    return btoa(bin.join(''));
 }

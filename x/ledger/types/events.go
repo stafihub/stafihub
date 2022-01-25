@@ -2,15 +2,17 @@ package types
 
 // sudo module event types
 const (
-	EventTypePoolAdded        = "pool_added"
-	EventTypePoolRemoved      = "pool_removed"
-	EventTypeEraPoolUpdated   = "era_pool_updated"
-	EventTypeBondReported     = "bond_reported"
-	EventTypeActiveReported   = "active_reported"
-	EventTypeWithdrawReported = "withdraw_reported"
-	EventTypeTransferReported = "transfer_reported"
-	EventTypeBondExecuted     = "bond_executed"
-	EventTypeLiquidityUnbond  = "liquidity_unbond"
+	EventTypePoolAdded          = "pool_added"
+	EventTypePoolRemoved        = "pool_removed"
+	EventTypeEraPoolUpdated     = "era_pool_updated"
+	EventTypeBondReported       = "bond_reported"
+	EventTypeActiveReported     = "active_reported"
+	EventTypeWithdrawReported   = "withdraw_reported"
+	EventTypeTransferReported   = "transfer_reported"
+	EventTypeBondExecuted       = "bond_executed"
+	EventTypeLiquidityUnbond    = "liquidity_unbond"
+	EventTypeSignatureEnough    = "signature_enough"
+	EventTypeSignatureSubmitted = "signature_submitted"
 
 	AttributeKeyDenom        = "denom"
 	AttributeKeyPool         = "pool"
@@ -26,4 +28,8 @@ const (
 	AttributeKeyRbalance     = "rbalance"
 	AttributeKeyUnBondAmount = "unbond_amount"
 	AttributeKeyReceiver     = "receiver"
+	AttributeKeyEra          = "era"
+	AttributeKeyTxType       = "tx_type"
+	AttributeKeyPropId       = "prop_id"
+	AttributeKeySigner       = "signer"
 )

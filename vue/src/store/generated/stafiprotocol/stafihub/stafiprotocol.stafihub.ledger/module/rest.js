@@ -8,6 +8,17 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+/**
+ * OriginalTxType enumerates the tx type of a signature.
+ */
+export var LedgerOriginalTxType;
+(function (LedgerOriginalTxType) {
+    LedgerOriginalTxType["ORIGINAL_TX_TYPE_TRANSFER"] = "ORIGINAL_TX_TYPE_TRANSFER";
+    LedgerOriginalTxType["ORIGINAL_TX_TYPE_BOND"] = "ORIGINAL_TX_TYPE_BOND";
+    LedgerOriginalTxType["ORIGINAL_TX_TYPE_UNBOND"] = "ORIGINAL_TX_TYPE_UNBOND";
+    LedgerOriginalTxType["ORIGINAL_TX_TYPE_WITHDRAW"] = "ORIGINAL_TX_TYPE_WITHDRAW";
+    LedgerOriginalTxType["ORIGINAL_TX_TYPE_CLAIM"] = "ORIGINAL_TX_TYPE_CLAIM";
+})(LedgerOriginalTxType || (LedgerOriginalTxType = {}));
 export var LedgerPoolBondState;
 (function (LedgerPoolBondState) {
     LedgerPoolBondState["ERA_UPDATED"] = "ERA_UPDATED";
@@ -233,12 +244,12 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
-         * @name QueryGetBondPipeLine
+         * @name QueryGetBondPipeline
          * @summary Queries a list of getBondPipeLine items.
-         * @request GET:/stafiprotocol/stafihub/ledger/getBondPipeLine/{denom}/{pool}
+         * @request GET:/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}
          */
-        this.queryGetBondPipeLine = (denom, pool, params = {}) => this.request({
-            path: `/stafiprotocol/stafihub/ledger/getBondPipeLine/${denom}/${pool}`,
+        this.queryGetBondPipeline = (denom, pool, params = {}) => this.request({
+            path: `/stafiprotocol/stafihub/ledger/getBondPipeline/${denom}/${pool}`,
             method: "GET",
             format: "json",
             ...params,

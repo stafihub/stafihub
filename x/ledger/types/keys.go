@@ -41,6 +41,7 @@ var (
 	UnbondCommissionPrefix     = []byte{0x12}
 	AccountUnbondPrefix        = []byte{0x13}
 	BondRecordPrefix           = []byte{0x14}
+	SignaturePrefix            = []byte{0x15}
 )
 
 func KeyPrefix(p string) []byte {

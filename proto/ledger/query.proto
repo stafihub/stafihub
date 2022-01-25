@@ -91,8 +91,8 @@ service Query {
 	}
 
 // Queries a list of getBondPipeLine items.
-	rpc GetBondPipeLine(QueryGetBondPipeLineRequest) returns (QueryGetBondPipeLineResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondPipeLine/{denom}/{pool}";
+	rpc GetBondPipeline(QueryGetBondPipelineRequest) returns (QueryGetBondPipelineResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}";
 	}
 
 // Queries a list of getEraSnapshot items.
@@ -253,12 +253,12 @@ message QueryGetEraUnbondLimitResponse {
   uint32 limit = 1;
 }
 
-message QueryGetBondPipeLineRequest {
+message QueryGetBondPipelineRequest {
   string denom = 1;
   string pool = 2;
 }
 
-message QueryGetBondPipeLineResponse {
+message QueryGetBondPipelineResponse {
   BondPipeline pipeline = 1 [(gogoproto.nullable) = false];
 }
 

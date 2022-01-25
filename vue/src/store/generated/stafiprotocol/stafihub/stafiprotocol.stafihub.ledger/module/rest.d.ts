@@ -57,6 +57,17 @@ export declare type LedgerMsgSetPoolDetailResponse = object;
 export declare type LedgerMsgSetReceiverResponse = object;
 export declare type LedgerMsgSetUnbondCommissionResponse = object;
 export declare type LedgerMsgSetUnbondFeeResponse = object;
+export declare type LedgerMsgSubmitSignatureResponse = object;
+/**
+ * OriginalTxType enumerates the tx type of a signature.
+ */
+export declare enum LedgerOriginalTxType {
+    ORIGINAL_TX_TYPE_TRANSFER = "ORIGINAL_TX_TYPE_TRANSFER",
+    ORIGINAL_TX_TYPE_BOND = "ORIGINAL_TX_TYPE_BOND",
+    ORIGINAL_TX_TYPE_UNBOND = "ORIGINAL_TX_TYPE_UNBOND",
+    ORIGINAL_TX_TYPE_WITHDRAW = "ORIGINAL_TX_TYPE_WITHDRAW",
+    ORIGINAL_TX_TYPE_CLAIM = "ORIGINAL_TX_TYPE_CLAIM"
+}
 export declare enum LedgerPoolBondState {
     ERA_UPDATED = "ERA_UPDATED",
     BOND_REPORTED = "BOND_REPORTED",
@@ -91,7 +102,7 @@ export interface LedgerQueryExchangeRateAllResponse {
 export interface LedgerQueryGetAccountUnbondResponse {
     unbond?: LedgerAccountUnbond;
 }
-export interface LedgerQueryGetBondPipeLineResponse {
+export interface LedgerQueryGetBondPipelineResponse {
     pipeline?: LedgerBondPipeline;
 }
 export interface LedgerQueryGetBondRecordResponse {
@@ -291,11 +302,11 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
-     * @name QueryGetBondPipeLine
+     * @name QueryGetBondPipeline
      * @summary Queries a list of getBondPipeLine items.
-     * @request GET:/stafiprotocol/stafihub/ledger/getBondPipeLine/{denom}/{pool}
+     * @request GET:/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}
      */
-    queryGetBondPipeLine: (denom: string, pool: string, params?: RequestParams) => Promise<HttpResponse<LedgerQueryGetBondPipeLineResponse, RpcStatus>>;
+    queryGetBondPipeline: (denom: string, pool: string, params?: RequestParams) => Promise<HttpResponse<LedgerQueryGetBondPipelineResponse, RpcStatus>>;
     /**
      * No description
      *

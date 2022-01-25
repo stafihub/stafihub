@@ -410,3 +410,34 @@ func TestMsgSetUnbondFee_ValidateBasic(t *testing.T) {
 		})
 	}
 }
+
+func TestMsgSubmitSignature_ValidateBasic(t *testing.T) {
+	tests := []struct {
+		name string
+		msg  MsgSubmitSignature
+		err  error
+	}{
+		{
+			name: "invalid address",
+			msg: MsgSubmitSignature{
+				Creator: "invalid_address",
+			},
+			err: sdkerrors.ErrInvalidAddress,
+		}, {
+			name: "valid address",
+			msg: MsgSubmitSignature{
+				Creator: sample.AccAddress(),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.msg.ValidateBasic()
+			if tt.err != nil {
+				require.ErrorIs(t, err, tt.err)
+				return
+			}
+			require.NoError(t, err)
+		})
+	}
+}

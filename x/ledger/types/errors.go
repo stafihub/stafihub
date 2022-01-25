@@ -31,4 +31,7 @@ var (
 	ErrBondRepeated           = sdkerrors.Register(ModuleName, 21, "bond repeated error")
 	ErrInvalidBonder          = sdkerrors.Register(ModuleName, 22, "invalid bonder error")
 	ErrCommissionTooBig       = sdkerrors.Register(ModuleName, 23, "commission too big error")
+	ErrInvalidEra             = sdkerrors.Register(ModuleName, 24, "invalid era error")
+	ErrSignatureRepeated      = sdkerrors.Register(ModuleName, 25, "signature repeated error")
+	ErrPoolDetailNotFound     = sdkerrors.Register(ModuleName, 26, "pool detail not found error")
 )
