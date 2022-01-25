@@ -1,7 +1,10 @@
 package cli
 
 import (
+	"encoding/hex"
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+
 	// "strings"
 
 	"github.com/spf13/cobra"
@@ -24,7 +27,44 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdGetProposal())
+
+// this line is used by starport scaffolding # 1
+
+	return cmd
+}
+
+func CmdGetProposal() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-proposal [prop-id]",
+		Short: "Query GetProposal",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqPropId, err := hex.DecodeString(args[0])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryGetProposalRequest{
+				PropId: reqPropId,
+			}
+
+			res, err := queryClient.GetProposal(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd
 }

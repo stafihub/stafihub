@@ -1,15 +1,29 @@
 syntax = "proto3";
 package stafiprotocol.stafihub.rvote;
 
-// import "google/api/annotations.proto";
-// import "cosmos/base/query/v1beta1/pagination.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "rvote/proposal.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafiprotocol/stafihub/x/rvote/types";
 
 // Query defines the gRPC querier service.
 service Query {
-    // this line is used by starport scaffolding # 2
+    // Queries a list of getProposal items.
+	rpc GetProposal(QueryGetProposalRequest) returns (QueryGetProposalResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/rvote/getProposal/{propId}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryGetProposalRequest {
+  bytes propId = 1;
+}
+
+message QueryGetProposalResponse {
+  string proposal = 1;
 }
 
 // this line is used by starport scaffolding # 3

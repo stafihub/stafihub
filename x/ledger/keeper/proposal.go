@@ -34,12 +34,12 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 		for addr, _ := range bpool.Addrs {
 			pipe, _ := k.GetBondPipeline(ctx, p.Denom, addr)
 			bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
-			bsnap, err := bondShot.Marshal()
+			bshot, err := bondShot.Marshal()
 			if err != nil {
 				return err
 			}
 
-			shotId := crypto.Sha256(bsnap)
+			shotId := crypto.Sha256(bshot)
 			eraShot.ShotIds = append(eraShot.ShotIds, shotId)
 			k.SetSnapshot(ctx, shotId, bondShot)
 			ctx.EventManager().EmitEvent(
