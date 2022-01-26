@@ -391,7 +391,7 @@ func (k Keeper) SetUnbondFee(ctx sdk.Context, denom string, value sdk.Coin) {
 
 func (k Keeper) GetUnbondFee(ctx sdk.Context, denom string) (val types.UnbondFee, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UnbondFeePrefix)
-	b := store.Get(types.UnbondFeePrefix)
+	b := store.Get([]byte(denom))
 	if b == nil {
 		return val, false
 	}
