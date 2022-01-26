@@ -136,7 +136,7 @@ func (q Querier) GetUnbondFee(goCtx context.Context, req *types.QueryGetUnbondFe
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	fee, ok := q.Keeper.GetUnbondFee(ctx)
+	fee, ok := q.Keeper.GetUnbondFee(ctx, req.Denom)
 	if !ok {
 		return &types.QueryGetUnbondFeeResponse{}, nil
 	}

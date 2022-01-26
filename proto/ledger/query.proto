@@ -72,7 +72,7 @@ service Query {
 
 // Queries a list of getUnbondFee items.
 	rpc GetUnbondFee(QueryGetUnbondFeeRequest) returns (QueryGetUnbondFeeResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getUnbondFee";
+		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getUnbondFee/{denom}";
 	}
 
 // Queries a list of getUnbondCommission items.
@@ -229,6 +229,7 @@ message QueryGetChainBondingDurationResponse {
 }
 
 message QueryGetUnbondFeeRequest {
+   string denom = 1;
 }
 
 message QueryGetUnbondFeeResponse {

@@ -13615,7 +13615,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafiprotocol/stafihub/ledger/getUnbondFee:
+  '/stafiprotocol/stafihub/ledger/getUnbondFee/{denom}':
     get:
       summary: Queries a list of getUnbondFee items.
       operationId: StafiprotocolStafihubLedgerGetUnbondFee
@@ -13648,6 +13648,11 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   '/stafiprotocol/stafihub/ledger/poolsByDenom/{denom}':

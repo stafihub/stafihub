@@ -320,10 +320,12 @@ func CmdGetChainBondingDuration() *cobra.Command {
 
 func CmdGetUnbondFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-unbond-fee",
+		Use:   "get-unbond-fee [denom]",
 		Short: "Query getUnbondFee",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -331,7 +333,9 @@ func CmdGetUnbondFee() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetUnbondFeeRequest{}
+			params := &types.QueryGetUnbondFeeRequest{
+				Denom: reqDenom,
+			}
 
 			res, err := queryClient.GetUnbondFee(cmd.Context(), params)
 			if err != nil {
