@@ -237,7 +237,7 @@ func CmdSetLeastBond() *cobra.Command {
 			argDenom := args[0]
 			argAmount, ok := sdk.NewIntFromString(args[1])
 			if !ok {
-				return fmt.Errorf("amount %s cast error")
+				return fmt.Errorf("amount %s cast error", args[1])
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
