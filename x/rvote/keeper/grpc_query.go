@@ -16,7 +16,7 @@ type Querier struct {
 
 var _ types.QueryServer = Querier{}
 
-func (q Querier) GetProposal(goCtx context.Context,  req *types.QueryGetProposalRequest) (*types.QueryGetProposalResponse, error) {
+func (q Querier) GetProposal(goCtx context.Context, req *types.QueryGetProposalRequest) (*types.QueryGetProposalResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

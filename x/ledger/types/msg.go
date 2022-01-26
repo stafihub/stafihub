@@ -456,9 +456,10 @@ func (msg *MsgLiquidityUnbond) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetUnbondFee(creator sdk.AccAddress, value sdk.Coin) *MsgSetUnbondFee {
+func NewMsgSetUnbondFee(creator sdk.AccAddress, denom string, value sdk.Coin) *MsgSetUnbondFee {
 	return &MsgSetUnbondFee{
 		Creator: creator.String(),
+		Denom:   denom,
 		Value:   value,
 	}
 }

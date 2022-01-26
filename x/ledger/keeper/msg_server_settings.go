@@ -220,12 +220,15 @@ func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFe
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Value.Denom)
-	if !ok {
+	if _, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom); !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	k.Keeper.SetUnbondFee(ctx, msg.Value)
+	if _, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Value.Denom); !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
+	}
+
+	k.Keeper.SetUnbondFee(ctx, msg.Denom, msg.Value)
 	return &types.MsgSetUnbondFeeResponse{}, nil
 }
 

@@ -18,7 +18,6 @@ func TestMsgSetProposalLife_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgSetProposalLife{
 				Creator: "invalid_address",
-
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {

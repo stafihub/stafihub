@@ -13628,6 +13628,8 @@ paths:
               fee:
                 type: object
                 properties:
+                  denom:
+                    type: string
                   value:
                     type: string
         default:
@@ -22190,6 +22192,8 @@ definitions:
       fee:
         type: object
         properties:
+          denom:
+            type: string
           value:
             type: string
   stafiprotocol.stafihub.ledger.QueryPoolsByDenomResponse:
@@ -22229,6 +22233,8 @@ definitions:
   stafiprotocol.stafihub.ledger.UnbondFee:
     type: object
     properties:
+      denom:
+        type: string
       value:
         type: string
   stafiprotocol.stafihub.ledger.Unbonding:

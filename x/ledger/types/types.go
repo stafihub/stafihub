@@ -87,12 +87,12 @@ func NewBondRecord(denom, bonder, pool, blockhash, txhash string, amount sdk.Int
 func NewSignature(denom string, era uint32, pool string,
 	txType OriginalTxType, propId []byte) Signature {
 	return Signature{
-		Denom:   denom,
-		Era:     era,
-		Pool:    pool,
-		TxType:  txType,
-		PropId:  propId,
-		Sigs:    map[string]string{},
+		Denom:  denom,
+		Era:    era,
+		Pool:   pool,
+		TxType: txType,
+		PropId: propId,
+		Sigs:   map[string]string{},
 	}
 }
 

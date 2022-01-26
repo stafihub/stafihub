@@ -119,7 +119,8 @@ message MsgSetReceiverResponse {
 
 message MsgSetUnbondFee {
   string creator = 1;
-  string value = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  string denom = 2;
+  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message MsgSetUnbondFeeResponse {

@@ -378,14 +378,15 @@ func (k Keeper) GetPoolUnbond(ctx sdk.Context, denom string, pool string, era ui
 	return val, true
 }
 
-func (k Keeper) SetUnbondFee(ctx sdk.Context, value sdk.Coin) {
+func (k Keeper) SetUnbondFee(ctx sdk.Context, denom string, value sdk.Coin) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UnbondFeePrefix)
 	uf := types.UnbondFee{
+		Denom: denom,
 		Value: value,
 	}
 
 	b := k.cdc.MustMarshal(&uf)
-	store.Set([]byte(value.Denom), b)
+	store.Set([]byte(denom), b)
 }
 
 func (k Keeper) GetUnbondFee(ctx sdk.Context, denom string) (val types.UnbondFee, found bool) {
