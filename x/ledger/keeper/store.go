@@ -189,7 +189,7 @@ func (k Keeper) SetLeastBond(ctx sdk.Context, denom string, amount sdk.Int) {
 	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) LeastBond(ctx sdk.Context, denom string) (val *types.LeastBond, found bool) {
+func (k Keeper) LeastBond(ctx sdk.Context, denom string) (val types.LeastBond, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.LeastBondPrefix)
 
 	b := store.Get([]byte(denom))
@@ -197,7 +197,7 @@ func (k Keeper) LeastBond(ctx sdk.Context, denom string) (val *types.LeastBond, 
 		return val, false
 	}
 
-	k.cdc.MustUnmarshal(b, val)
+	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
 
