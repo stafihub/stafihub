@@ -357,9 +357,9 @@ func CmdSetReceiver() *cobra.Command {
 
 func CmdSetUnbondFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-unbond-fee [denom] [value]",
+		Use:   "set-unbond-fee [value]",
 		Short: "Broadcast message set_unbond_fee",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argValue, err := sdk.ParseCoinNormalized(args[0])
 			if err != nil {

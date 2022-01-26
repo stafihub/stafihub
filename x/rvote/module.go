@@ -43,6 +43,7 @@ func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
 // Name returns the capability module's name.
 func (AppModuleBasic) Name() string {
 	return types.ModuleName
+
 }
 
 func (AppModuleBasic) RegisterCodec(cdc *codec.LegacyAmino) {
