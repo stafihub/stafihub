@@ -64,7 +64,7 @@ func (k Keeper) ProposalLife(ctx sdk.Context) int64 {
 	return intV.GetValue()
 }
 
-// Router returns the gov Keeper's Router
+// Router returns rvoteKeeper's Router
 func (keeper Keeper) Router() types.Router {
 	return keeper.router
 }
