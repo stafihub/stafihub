@@ -166,7 +166,7 @@ func (q Querier) GetLeastBond(goCtx context.Context, req *types.QueryGetLeastBon
 		return &types.QueryGetLeastBondResponse{}, nil
 	}
 
-	return &types.QueryGetLeastBondResponse{LeastBond: lb}, nil
+	return &types.QueryGetLeastBondResponse{LeastBond: &lb}, nil
 }
 
 func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEraUnbondLimitRequest) (*types.QueryGetEraUnbondLimitResponse, error) {
