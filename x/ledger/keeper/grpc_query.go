@@ -32,9 +32,9 @@ func (q Querier) PoolsByDenom(goCtx context.Context, req *types.QueryPoolsByDeno
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	pool, ok := q.GetPool(ctx, req.Denom)
-	if !ok {
-		return &types.QueryPoolsByDenomResponse{}, nil
+	pool, found := q.GetPool(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	addrs := make([]string, 0)
@@ -50,9 +50,9 @@ func (q Querier) BondedPoolsByDenom(goCtx context.Context, req *types.QueryBonde
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	bondedPool, ok := q.GetBondedPool(ctx, req.Denom)
-	if !ok {
-		return &types.QueryBondedPoolsByDenomResponse{}, nil
+	bondedPool, found := q.GetBondedPool(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	addrs := make([]string, 0)
@@ -69,9 +69,9 @@ func (q Querier) GetPoolDetail(goCtx context.Context, req *types.QueryGetPoolDet
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	detail, ok := q.Keeper.GetPoolDetail(ctx, req.Denom, req.Pool)
-	if !ok {
-		return &types.QueryGetPoolDetailResponse{}, nil
+	detail, found := q.Keeper.GetPoolDetail(ctx, req.Denom, req.Pool)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetPoolDetailResponse{Detail: detail}, nil
@@ -83,9 +83,9 @@ func (q Querier) GetChainEra(goCtx context.Context, req *types.QueryGetChainEraR
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	ce, ok := q.Keeper.GetChainEra(ctx, req.Denom)
-	if !ok {
-		return &types.QueryGetChainEraResponse{}, nil
+	ce, found := q.Keeper.GetChainEra(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetChainEraResponse{Era: ce.Era}, nil
@@ -97,9 +97,9 @@ func (q Querier) GetChainBondingDuration(goCtx context.Context, req *types.Query
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	cbd, ok := q.Keeper.GetChainBondingDuration(ctx, req.Denom)
-	if !ok {
-		return &types.QueryGetChainBondingDurationResponse{}, nil
+	cbd, found := q.Keeper.GetChainBondingDuration(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetChainBondingDurationResponse{Era: cbd.Era}, nil
@@ -113,7 +113,7 @@ func (q Querier) GetReceiver(goCtx context.Context, req *types.QueryGetReceiverR
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	rec := q.Keeper.GetReceiver(ctx)
 	if rec == nil {
-		return &types.QueryGetReceiverResponse{}, nil
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetReceiverResponse{Receiver: rec.String()}, nil
@@ -136,9 +136,9 @@ func (q Querier) GetUnbondFee(goCtx context.Context, req *types.QueryGetUnbondFe
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	fee, ok := q.Keeper.GetUnbondFee(ctx, req.Denom)
-	if !ok {
-		return &types.QueryGetUnbondFeeResponse{}, nil
+	fee, found := q.Keeper.GetUnbondFee(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetUnbondFeeResponse{Fee: fee}, nil
@@ -161,9 +161,9 @@ func (q Querier) GetLeastBond(goCtx context.Context, req *types.QueryGetLeastBon
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	lb, ok := q.Keeper.LeastBond(ctx, req.Denom)
-	if !ok {
-		return &types.QueryGetLeastBondResponse{}, nil
+	lb, found := q.Keeper.LeastBond(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetLeastBondResponse{LeastBond: &lb}, nil
@@ -175,9 +175,9 @@ func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEra
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	eul, ok := q.Keeper.GetEraUnbondLimit(ctx, req.Denom)
-	if !ok {
-		return &types.QueryGetEraUnbondLimitResponse{}, nil
+	eul, found := q.Keeper.GetEraUnbondLimit(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetEraUnbondLimitResponse{Limit: eul.Limit}, nil
@@ -210,7 +210,10 @@ func (q Querier) GetSnapshot(goCtx context.Context, req *types.QueryGetSnapshotR
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	shot, _ := q.Keeper.Snapshot(ctx, req.ShotId)
+	shot, found := q.Keeper.Snapshot(ctx, req.ShotId)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
+	}
 
 	return &types.QueryGetSnapshotResponse{Shot: shot}, nil
 }
@@ -232,9 +235,9 @@ func (q Querier) GetPoolUnbond(goCtx context.Context, req *types.QueryGetPoolUnb
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	unbond, ok := q.Keeper.GetPoolUnbond(ctx, req.Denom, req.Pool, req.Era)
-	if !ok {
-		return &types.QueryGetPoolUnbondResponse{}, nil
+	unbond, found := q.Keeper.GetPoolUnbond(ctx, req.Denom, req.Pool, req.Era)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetPoolUnbondResponse{Unbond: unbond}, nil
@@ -246,9 +249,9 @@ func (q Querier) GetAccountUnbond(goCtx context.Context, req *types.QueryGetAcco
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	unbond, ok := q.Keeper.GetAccountUnbond(ctx, req.Denom, req.Unbonder)
-	if !ok {
-		return &types.QueryGetAccountUnbondResponse{}, nil
+	unbond, found := q.Keeper.GetAccountUnbond(ctx, req.Denom, req.Unbonder)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetAccountUnbondResponse{Unbond: unbond}, nil
@@ -260,9 +263,9 @@ func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRec
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	record, ok := q.Keeper.GetBondRecord(ctx, req.Denom, req.Blockhash, req.Txhash)
-	if !ok {
-		return &types.QueryGetBondRecordResponse{}, nil
+	record, found := q.Keeper.GetBondRecord(ctx, req.Denom, req.Blockhash, req.Txhash)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetBondRecordResponse{BondRecord: record}, nil
@@ -274,9 +277,9 @@ func (q Querier) GetSignature(goCtx context.Context, req *types.QueryGetSignatur
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	sig, ok := q.Keeper.GetSignature(ctx, req.Denom, req.Era, req.Pool, req.TxType, req.PropId)
-	if !ok {
-		return &types.QueryGetSignatureResponse{}, nil
+	sig, found := q.Keeper.GetSignature(ctx, req.Denom, req.Era, req.Pool, req.TxType, req.PropId)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetSignatureResponse{Signature: sig}, nil

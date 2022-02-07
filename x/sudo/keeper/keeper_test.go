@@ -1,11 +1,12 @@
 package keeper_test
 
 import (
+	"testing"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/stafiprotocol/stafihub/testutil/keeper"
 	"github.com/stafiprotocol/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestAdmin(t *testing.T) {

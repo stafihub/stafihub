@@ -5,6 +5,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+var (
+	TestDenom = "TestDenom"
+)
+
 // AccAddress returns a sample account address
 func AccAddress() string {
 	pk := ed25519.GenPrivKey().PubKey()

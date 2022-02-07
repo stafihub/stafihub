@@ -39,12 +39,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 		return nil, types.ErrRelayerAlreadySet
 	}
 
-	var relayer = &types.Relayer{
-		Denom:   msg.Denom,
-		Address: msg.Address,
-	}
-
-	k.SetRelayer(ctx, relayer)
+	k.SetRelayer(ctx, msg.Denom, msg.Address)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
@@ -96,12 +91,8 @@ func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateTh
 		lastTh = last.Value
 	}
 
-	var threshold = types.Threshold{
-		Denom: msg.Denom,
-		Value: msg.Value,
-	}
-
-	k.SetThreshold(ctx, &threshold)
+	var threshold = types.Threshold{Denom: msg.Denom, Value: msg.Value}
+	k.SetThreshold(ctx, threshold)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeThresholdUpdated,

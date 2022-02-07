@@ -11,46 +11,24 @@ option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 // Query defines the gRPC querier service.
 service Query {
-	// Queries a list of relayer items.
-	rpc RelayerAll(QueryAllRelayerRequest) returns (QueryAllRelayerResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/all";
-	}
-
     // Queries a list of relayersByDenom items.
 	rpc RelayersByDenom(QueryRelayersByDenomRequest) returns (QueryRelayersByDenomResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/relayers_by_denom/{denom}";
+		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/{denom}";
 	}
 
     // Queries a threshold by denom.
 	rpc Threshold(QueryGetThresholdRequest) returns (QueryGetThresholdResponse) {
 		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/threshold/{denom}";
 	}
-
-	// Queries a list of threshold items.
-	rpc ThresholdAll(QueryAllThresholdRequest) returns (QueryAllThresholdResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/threshold";
-	}
-
 // this line is used by starport scaffolding # 2
-}
-
-message QueryAllRelayerRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllRelayerResponse {
-	repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryRelayersByDenomRequest {
     string denom = 1;
-    cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryRelayersByDenomResponse {
-    repeated Relayer relayers = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+    repeated string relayers = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetThresholdRequest {
@@ -58,16 +36,6 @@ message QueryGetThresholdRequest {
 }
 
 message QueryGetThresholdResponse {
-	Threshold threshold = 1 [(gogoproto.nullable) = false];
+	uint32 threshold = 1;
 }
-
-message QueryAllThresholdRequest {
-	cosmos.base.query.v1beta1.PageRequest pagination = 1;
-}
-
-message QueryAllThresholdResponse {
-	repeated Threshold threshold = 1 [(gogoproto.nullable) = false];
-	cosmos.base.query.v1beta1.PageResponse pagination = 2;
-}
-
 // this line is used by starport scaffolding # 3

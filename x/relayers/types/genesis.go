@@ -12,8 +12,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Relayers:   []*Relayer{},
-		Thresholds: []*Threshold{},
+		Relayers:   []Relayer{},
+		Thresholds: []Threshold{},
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -29,11 +29,7 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("invalid denom %s", elem.Denom)
 		}
 
-		key := elem.Denom + elem.Address
-		if _, ok := relayerDenomMap[key]; ok {
-			return fmt.Errorf("duplicated denom %s and address %s for relayer", elem.Denom, elem.Address)
-		}
-		relayerDenomMap[key] = struct{}{}
+		relayerDenomMap[elem.Denom] = struct{}{}
 	}
 	// Check for duplicated index in threshold
 	thresholdDenomMap := make(map[string]struct{})

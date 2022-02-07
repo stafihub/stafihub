@@ -21,45 +21,9 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdListRelayer())
 	cmd.AddCommand(CmdRelayersByDenom())
-
-	cmd.AddCommand(CmdListThreshold())
 	cmd.AddCommand(CmdShowThreshold())
 	// this line is used by starport scaffolding # 1
-
-	return cmd
-}
-
-func CmdListRelayer() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "list-relayer",
-		Short: "list all relayer",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
-
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-
-			params := &types.QueryAllRelayerRequest{
-				Pagination: pageReq,
-			}
-
-			res, err := queryClient.RelayerAll(context.Background(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
-	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd
 }
@@ -78,17 +42,9 @@ func CmdRelayersByDenom() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-
 			params := &types.QueryRelayersByDenomRequest{
-
 				Denom: reqDenom,
 			}
-
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
-			if err != nil {
-				return err
-			}
-			params.Pagination = pageReq
 
 			res, err := queryClient.RelayersByDenom(cmd.Context(), params)
 			if err != nil {
@@ -104,39 +60,6 @@ func CmdRelayersByDenom() *cobra.Command {
 	return cmd
 }
 
-func CmdListThreshold() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "list-threshold",
-		Short: "list all threshold",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
-
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-
-			params := &types.QueryAllThresholdRequest{
-				Pagination: pageReq,
-			}
-
-			res, err := queryClient.ThresholdAll(context.Background(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
-
 func CmdShowThreshold() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-threshold [denom]",
@@ -144,13 +67,11 @@ func CmdShowThreshold() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
-
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryGetThresholdRequest{
 				Denom: args[0],
 			}
-
 			res, err := queryClient.Threshold(context.Background(), params)
 			if err != nil {
 				return err
