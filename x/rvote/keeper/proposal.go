@@ -35,11 +35,12 @@ func (k Keeper) SetProposal(ctx sdk.Context, proposal *types.Proposal) {
 }
 
 func (k Keeper) GetProposal(ctx sdk.Context, id []byte) (val *types.Proposal, found bool) {
+	val = &types.Proposal{}
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 
 	b := store.Get(id)
 	if b == nil {
-		return val, false
+		return nil, false
 	}
 
 	k.cdc.MustUnmarshal(b, val)
