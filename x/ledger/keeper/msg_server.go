@@ -31,7 +31,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		return nil, types.ErrChainEraNotFound
 	}
 
-	_, ok = k.Keeper.GetChainBondingDuration(ctx, denom)
+	du, ok := k.Keeper.GetChainBondingDuration(ctx, denom)
 	if !ok {
 		return nil, types.ErrBondingDurationNotSet
 	}
@@ -62,7 +62,8 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	}
 	pipe.Chunk.Unbond = pipe.Chunk.Unbond.Add(balance)
 
-	chunk := types.UserUnlockChunk{Pool: msg.Pool, UnlockEra: ce.Era, Value: balance, Recipient: msg.Recipient}
+	unlockEra := ce.Era + du.GetEra()
+	chunk := types.UserUnlockChunk{Pool: msg.Pool, UnlockEra: unlockEra, Value: balance, Recipient: msg.Recipient}
 	unbonds, ok := k.Keeper.GetAccountUnbond(ctx, denom, msg.Creator)
 	if !ok {
 		unbonds = types.NewAccountUnbond(denom, msg.Creator, []types.UserUnlockChunk{chunk})
@@ -71,11 +72,11 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	}
 
 	unbonding := types.NewUnbonding(msg.Creator, msg.Recipient, balance)
-	poolUnbonds, ok := k.Keeper.GetPoolUnbond(ctx, denom, msg.Pool, ce.Era)
-	eul, ok := k.Keeper.GetEraUnbondLimit(ctx, denom)
+	poolUnbonds, ok := k.Keeper.GetPoolUnbond(ctx, denom, msg.Pool, unlockEra)
 	if !ok {
-		poolUnbonds = types.NewPoolUnbond(denom, msg.Pool, ce.Era, []types.Unbonding{unbonding})
+		poolUnbonds = types.NewPoolUnbond(denom, msg.Pool, unlockEra, []types.Unbonding{unbonding})
 	} else {
+		eul, _ := k.Keeper.GetEraUnbondLimit(ctx, denom)
 		if uint32(len(poolUnbonds.Unbondings)) > eul.Limit {
 			return nil, types.ErrPoolLimitReached
 		}
@@ -84,7 +85,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 
 	unbondFee, ok := k.Keeper.GetUnbondFee(ctx, denom)
 	if ok && unbondFee.Value.IsPositive() {
-		feeBal := k.bankKeeper.GetBalance(ctx, unbonder, denom)
+		feeBal := k.bankKeeper.GetBalance(ctx, unbonder, unbondFee.Value.Denom)
 		if feeBal.IsLT(unbondFee.Value) {
 			return nil, sdkerrors.ErrInsufficientFunds
 		}
