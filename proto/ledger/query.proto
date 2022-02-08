@@ -90,7 +90,7 @@ service Query {
 		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getEraUnbondLimit/{denom}";
 	}
 
-// Queries a list of getBondPipeLine items.
+// Queries a list of getBondPipeline items.
 	rpc GetBondPipeline(QueryGetBondPipelineRequest) returns (QueryGetBondPipelineResponse) {
 		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}";
 	}

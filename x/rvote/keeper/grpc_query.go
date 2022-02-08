@@ -2,8 +2,6 @@ package keeper
 
 import (
 	"context"
-	"encoding/hex"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/rvote/types"
 	"google.golang.org/grpc/codes"
@@ -22,10 +20,21 @@ func (q Querier) GetProposal(goCtx context.Context, req *types.QueryGetProposalR
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	prop, ok := q.Keeper.GetProposal(ctx, req.PropId)
-	if !ok {
-		return nil, status.Errorf(codes.NotFound, "proposal %s not found", hex.EncodeToString(req.PropId))
+	prop, found := q.Keeper.GetProposal(ctx, req.PropId)
+	if !found {
+		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
 	return &types.QueryGetProposalResponse{Proposal: prop.String()}, nil
+}
+
+func (k Keeper) GetProposalLife(goCtx context.Context, req *types.QueryGetProposalLifeRequest) (*types.QueryGetProposalLifeResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	pl := k.ProposalLife(ctx)
+
+	return &types.QueryGetProposalLifeResponse{ProposalLife: pl}, nil
 }

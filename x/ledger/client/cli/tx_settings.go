@@ -114,18 +114,17 @@ func CmdSetEraUnbondLimit() *cobra.Command {
 
 func CmdSetInitBond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-init-bond [denom] [pool] [amount] [receiver]",
+		Use:   "set-init-bond [pool] [coin] [receiver]",
 		Short: "Broadcast message set_init_bond",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argPool := args[1]
-			argAmount, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("cast amount %s into Int error", args[2])
+			argPool := args[0]
+			argCoin, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
 			}
 
-			argReceiver, err := sdk.AccAddressFromBech32(args[3])
+			argReceiver, err := sdk.AccAddressFromBech32(args[2])
 			if err != nil {
 				return err
 			}
@@ -137,9 +136,8 @@ func CmdSetInitBond() *cobra.Command {
 
 			msg := types.NewMsgSetInitBond(
 				clientCtx.GetFromAddress(),
-				argDenom,
 				argPool,
-				argAmount,
+				argCoin,
 				argReceiver,
 			)
 			if err := msg.ValidateBasic(); err != nil {

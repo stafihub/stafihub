@@ -1,12 +1,12 @@
 package keeper_test
 
 import (
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	"testing"
 
 	//sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/stafiprotocol/stafihub/testutil/keeper"
 	"github.com/stafiprotocol/stafihub/testutil/sample"
+	"github.com/stafiprotocol/stafihub/x/relayers/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -96,7 +96,3 @@ func Test_AllThreshold(t *testing.T) {
 	require.True(t, len(ths) == 1)
 	t.Log(ths)
 }
-
-
-
-

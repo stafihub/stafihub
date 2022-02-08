@@ -88,24 +88,22 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	denom := msg.Coin.Denom
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, denom)
 	if !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	if !k.IsPoolExist(ctx, msg.Denom, msg.Pool) {
+	if !k.IsPoolExist(ctx, denom, msg.Pool) {
 		return nil, types.ErrPoolNotFound
 	}
 
-	if k.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
+	if k.IsBondedPoolExist(ctx, denom, msg.Pool) {
 		return nil, types.ErrRepeatInitBond
 	}
 
-	rbalance := k.TokenToRtoken(ctx, msg.Denom, msg.Amount)
-	rcoins := sdk.Coins{
-		sdk.NewCoin(msg.Denom, rbalance),
-	}
-
+	rbalance := k.TokenToRtoken(ctx, denom, msg.Coin.Amount)
+	rcoins := sdk.Coins{sdk.NewCoin(denom, rbalance)}
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
 		panic(err)
 	}
@@ -115,9 +113,9 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 		panic(err)
 	}
 
-	k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
-	k.AddBondedPool(ctx, msg.Denom, msg.Pool)
-	k.SetBondPipeline(ctx, types.NewBondPipeline(msg.Denom, msg.Pool))
+	k.SetExchangeRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
+	k.AddBondedPool(ctx, denom, msg.Pool)
+	k.SetBondPipeline(ctx, types.NewBondPipeline(denom, msg.Pool))
 
 	return &types.MsgSetInitBondResponse{}, nil
 }

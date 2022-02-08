@@ -125,12 +125,11 @@ func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetInitBond(creator sdk.AccAddress, denom string, pool string, amount sdk.Int, receiver sdk.AccAddress) *MsgSetInitBond {
+func NewMsgSetInitBond(creator sdk.AccAddress, pool string, coin sdk.Coin, receiver sdk.AccAddress) *MsgSetInitBond {
 	return &MsgSetInitBond{
 		Creator:  creator.String(),
-		Denom:    denom,
 		Pool:     pool,
-		Amount:   amount,
+		Coin:     coin,
 		Receiver: receiver.String(),
 	}
 }

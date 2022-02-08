@@ -23,6 +23,9 @@ import (
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	ledgermodule "github.com/stafiprotocol/stafihub/x/ledger"
+	ledgerkeeper "github.com/stafiprotocol/stafihub/x/ledger/keeper"
+	ledgertypes "github.com/stafiprotocol/stafihub/x/ledger/types"
 	relayerkeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
 	sudokeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
 	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
@@ -87,6 +90,18 @@ func RvoteKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		bankKeeper,
 	)
 
+	ledgerKeeper := ledgerkeeper.NewKeeper(
+		cdc,
+		storeKey,
+		memStoreKey,
+		sudoKeeper,
+		bankKeeper,
+		relayerKeeper,
+	)
+
+	rvoteRouter := types.NewRouter()
+	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledgermodule.NewProposalHandler(*ledgerKeeper))
+
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
@@ -94,7 +109,7 @@ func RvoteKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 		sudoKeeper,
 		relayerKeeper,
-		types.NewRouter(),
+		rvoteRouter,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

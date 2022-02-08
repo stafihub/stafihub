@@ -55,10 +55,9 @@ message MsgSetEraUnbondLimitResponse {
 
 message MsgSetInitBond {
   string creator = 1;
-  string denom = 2;
-  string pool = 3;
-  string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string receiver = 5;
+  string pool = 2;
+  string coin = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  string receiver = 4;
 }
 
 message MsgSetInitBondResponse {

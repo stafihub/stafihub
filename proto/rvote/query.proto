@@ -2,8 +2,7 @@ syntax = "proto3";
 package stafiprotocol.stafihub.rvote;
 
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
-import "rvote/proposal.proto";
+// import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafiprotocol/stafihub/x/rvote/types";
@@ -15,6 +14,11 @@ service Query {
 		option (google.api.http).get = "/stafiprotocol/stafihub/rvote/getProposal/{propId}";
 	}
 
+// Queries a list of getProposalLife items.
+	rpc GetProposalLife(QueryGetProposalLifeRequest) returns (QueryGetProposalLifeResponse) {
+		option (google.api.http).get = "/stafiprotocol/stafihub/rvote/getProposalLife";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -24,6 +28,13 @@ message QueryGetProposalRequest {
 
 message QueryGetProposalResponse {
   string proposal = 1;
+}
+
+message QueryGetProposalLifeRequest {
+}
+
+message QueryGetProposalLifeResponse {
+  int64 proposalLife = 1;
 }
 
 // this line is used by starport scaffolding # 3

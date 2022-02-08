@@ -6,7 +6,6 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -117,35 +116,118 @@ func (m *QueryGetProposalResponse) GetProposal() string {
 	return ""
 }
 
+type QueryGetProposalLifeRequest struct {
+}
+
+func (m *QueryGetProposalLifeRequest) Reset()         { *m = QueryGetProposalLifeRequest{} }
+func (m *QueryGetProposalLifeRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetProposalLifeRequest) ProtoMessage()    {}
+func (*QueryGetProposalLifeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fe9488996c0b15b7, []int{2}
+}
+func (m *QueryGetProposalLifeRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetProposalLifeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetProposalLifeRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetProposalLifeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetProposalLifeRequest.Merge(m, src)
+}
+func (m *QueryGetProposalLifeRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetProposalLifeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetProposalLifeRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetProposalLifeRequest proto.InternalMessageInfo
+
+type QueryGetProposalLifeResponse struct {
+	ProposalLife int64 `protobuf:"varint,1,opt,name=proposalLife,proto3" json:"proposalLife,omitempty"`
+}
+
+func (m *QueryGetProposalLifeResponse) Reset()         { *m = QueryGetProposalLifeResponse{} }
+func (m *QueryGetProposalLifeResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetProposalLifeResponse) ProtoMessage()    {}
+func (*QueryGetProposalLifeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fe9488996c0b15b7, []int{3}
+}
+func (m *QueryGetProposalLifeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetProposalLifeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetProposalLifeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetProposalLifeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetProposalLifeResponse.Merge(m, src)
+}
+func (m *QueryGetProposalLifeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetProposalLifeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetProposalLifeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetProposalLifeResponse proto.InternalMessageInfo
+
+func (m *QueryGetProposalLifeResponse) GetProposalLife() int64 {
+	if m != nil {
+		return m.ProposalLife
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*QueryGetProposalRequest)(nil), "stafiprotocol.stafihub.rvote.QueryGetProposalRequest")
 	proto.RegisterType((*QueryGetProposalResponse)(nil), "stafiprotocol.stafihub.rvote.QueryGetProposalResponse")
+	proto.RegisterType((*QueryGetProposalLifeRequest)(nil), "stafiprotocol.stafihub.rvote.QueryGetProposalLifeRequest")
+	proto.RegisterType((*QueryGetProposalLifeResponse)(nil), "stafiprotocol.stafihub.rvote.QueryGetProposalLifeResponse")
 }
 
 func init() { proto.RegisterFile("rvote/query.proto", fileDescriptor_fe9488996c0b15b7) }
 
 var fileDescriptor_fe9488996c0b15b7 = []byte{
-	// 307 bytes of a gzipped FileDescriptorProto
+	// 335 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0x2a, 0xcb, 0x2f,
 	0x49, 0xd5, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x29,
 	0x2e, 0x49, 0x4c, 0xcb, 0x04, 0xb3, 0x93, 0xf3, 0x73, 0xf4, 0xc0, 0xbc, 0x8c, 0xd2, 0x24, 0x3d,
 	0xb0, 0x4a, 0x29, 0x99, 0xf4, 0xfc, 0xfc, 0xf4, 0x9c, 0x54, 0xfd, 0xc4, 0x82, 0x4c, 0xfd, 0xc4,
-	0xbc, 0xbc, 0xfc, 0x92, 0xc4, 0x92, 0xcc, 0xfc, 0xbc, 0x62, 0x88, 0x5e, 0x29, 0xad, 0xe4, 0xfc,
-	0xe2, 0xdc, 0xfc, 0x62, 0xfd, 0xa4, 0xc4, 0x62, 0xa8, 0xa1, 0xfa, 0x65, 0x86, 0x49, 0xa9, 0x25,
-	0x89, 0x86, 0xfa, 0x05, 0x89, 0xe9, 0x99, 0x79, 0x60, 0xc5, 0x50, 0xb5, 0x22, 0x10, 0xab, 0x0b,
-	0x8a, 0xf2, 0x0b, 0xf2, 0x8b, 0x13, 0x73, 0x20, 0xa2, 0x4a, 0x86, 0x5c, 0xe2, 0x81, 0x20, 0x7d,
-	0xee, 0xa9, 0x25, 0x01, 0x50, 0x99, 0xa0, 0xd4, 0xc2, 0xd2, 0xd4, 0xe2, 0x12, 0x21, 0x31, 0x2e,
-	0x36, 0x90, 0x62, 0xcf, 0x14, 0x09, 0x46, 0x05, 0x46, 0x0d, 0x9e, 0x20, 0x28, 0x4f, 0xc9, 0x8c,
-	0x4b, 0x02, 0x53, 0x4b, 0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa, 0x90, 0x14, 0x17, 0x07, 0xcc, 0x02,
-	0xb0, 0x2e, 0xce, 0x20, 0x38, 0xdf, 0xe8, 0x10, 0x23, 0x17, 0x2b, 0x58, 0xa3, 0xd0, 0x0e, 0x46,
-	0x2e, 0x6e, 0x24, 0xdd, 0x42, 0xa6, 0x7a, 0xf8, 0xc2, 0x40, 0x0f, 0x87, 0x03, 0xa5, 0xcc, 0x48,
-	0xd5, 0x06, 0x71, 0xa4, 0x92, 0x55, 0xd3, 0xe5, 0x27, 0x93, 0x99, 0x4c, 0x84, 0x8c, 0xf4, 0x51,
-	0xf4, 0xeb, 0xc3, 0xf4, 0xeb, 0x43, 0x42, 0x2a, 0x1d, 0xa1, 0x55, 0xbf, 0x1a, 0xe2, 0xf7, 0x5a,
-	0x27, 0xcf, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2,
-	0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63, 0x88, 0xd2, 0x4f, 0xcf, 0x2c,
-	0x01, 0x59, 0x9e, 0x9c, 0x9f, 0x8b, 0xcb, 0xdc, 0x0a, 0xa8, 0xc9, 0x25, 0x95, 0x05, 0xa9, 0xc5,
-	0x49, 0x6c, 0x60, 0x05, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0xa9, 0xf7, 0x88, 0xad, 0x14,
-	0x02, 0x00, 0x00,
+	0xbc, 0xbc, 0xfc, 0x92, 0xc4, 0x92, 0xcc, 0xfc, 0xbc, 0x62, 0x88, 0x5e, 0x25, 0x43, 0x2e, 0xf1,
+	0x40, 0x90, 0x51, 0xee, 0xa9, 0x25, 0x01, 0x45, 0xf9, 0x05, 0xf9, 0xc5, 0x89, 0x39, 0x41, 0xa9,
+	0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x42, 0x62, 0x5c, 0x6c, 0x05, 0x45, 0xf9, 0x05, 0x9e, 0x29, 0x12,
+	0x8c, 0x0a, 0x8c, 0x1a, 0x3c, 0x41, 0x50, 0x9e, 0x92, 0x19, 0x97, 0x04, 0xa6, 0x96, 0xe2, 0x82,
+	0xfc, 0xbc, 0xe2, 0x54, 0x21, 0x29, 0x2e, 0x8e, 0x02, 0xa8, 0x18, 0x58, 0x17, 0x67, 0x10, 0x9c,
+	0xaf, 0x24, 0xcb, 0x25, 0x8d, 0xae, 0xcf, 0x27, 0x33, 0x2d, 0x15, 0x6a, 0x9d, 0x92, 0x13, 0x97,
+	0x0c, 0x76, 0x69, 0xa8, 0xd1, 0x4a, 0x5c, 0x3c, 0x05, 0x48, 0xe2, 0x60, 0xe3, 0x99, 0x83, 0x50,
+	0xc4, 0x8c, 0x5a, 0x98, 0xb9, 0x58, 0xc1, 0x86, 0x08, 0xed, 0x60, 0xe4, 0xe2, 0x46, 0x32, 0x49,
+	0xc8, 0x54, 0x0f, 0x5f, 0x20, 0xe9, 0xe1, 0x08, 0x03, 0x29, 0x33, 0x52, 0xb5, 0x41, 0x1c, 0xab,
+	0x64, 0xd5, 0x74, 0xf9, 0xc9, 0x64, 0x26, 0x13, 0x21, 0x23, 0x7d, 0x14, 0xfd, 0xfa, 0x30, 0xfd,
+	0xfa, 0x90, 0x58, 0x4c, 0x47, 0x68, 0xd5, 0xaf, 0x86, 0x04, 0x6f, 0xad, 0xd0, 0x7e, 0x46, 0x2e,
+	0x7e, 0xb4, 0x40, 0x10, 0xb2, 0x24, 0xcd, 0x1d, 0x48, 0xe1, 0x2a, 0x65, 0x45, 0x8e, 0x56, 0xa8,
+	0x37, 0x4c, 0xc1, 0xde, 0xd0, 0x17, 0xd2, 0x25, 0xda, 0x1b, 0x20, 0xed, 0x4e, 0x9e, 0x27, 0x1e,
+	0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17,
+	0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0xa5, 0x9f, 0x9e, 0x59, 0x02, 0xb2, 0x3b, 0x39,
+	0x3f, 0x17, 0x97, 0x91, 0x15, 0x50, 0x43, 0x4b, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x0a,
+	0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x3c, 0xdd, 0x98, 0x47, 0xf7, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -162,6 +244,8 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Queries a list of getProposal items.
 	GetProposal(ctx context.Context, in *QueryGetProposalRequest, opts ...grpc.CallOption) (*QueryGetProposalResponse, error)
+	// Queries a list of getProposalLife items.
+	GetProposalLife(ctx context.Context, in *QueryGetProposalLifeRequest, opts ...grpc.CallOption) (*QueryGetProposalLifeResponse, error)
 }
 
 type queryClient struct {
@@ -181,10 +265,21 @@ func (c *queryClient) GetProposal(ctx context.Context, in *QueryGetProposalReque
 	return out, nil
 }
 
+func (c *queryClient) GetProposalLife(ctx context.Context, in *QueryGetProposalLifeRequest, opts ...grpc.CallOption) (*QueryGetProposalLifeResponse, error) {
+	out := new(QueryGetProposalLifeResponse)
+	err := c.cc.Invoke(ctx, "/stafiprotocol.stafihub.rvote.Query/GetProposalLife", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a list of getProposal items.
 	GetProposal(context.Context, *QueryGetProposalRequest) (*QueryGetProposalResponse, error)
+	// Queries a list of getProposalLife items.
+	GetProposalLife(context.Context, *QueryGetProposalLifeRequest) (*QueryGetProposalLifeResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -193,6 +288,9 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) GetProposal(ctx context.Context, req *QueryGetProposalRequest) (*QueryGetProposalResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProposal not implemented")
+}
+func (*UnimplementedQueryServer) GetProposalLife(ctx context.Context, req *QueryGetProposalLifeRequest) (*QueryGetProposalLifeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProposalLife not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -217,6 +315,24 @@ func _Query_GetProposal_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_GetProposalLife_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetProposalLifeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetProposalLife(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafiprotocol.stafihub.rvote.Query/GetProposalLife",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetProposalLife(ctx, req.(*QueryGetProposalLifeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "stafiprotocol.stafihub.rvote.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -224,6 +340,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProposal",
 			Handler:    _Query_GetProposal_Handler,
+		},
+		{
+			MethodName: "GetProposalLife",
+			Handler:    _Query_GetProposalLife_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -290,6 +410,57 @@ func (m *QueryGetProposalResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetProposalLifeRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetProposalLifeRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetProposalLifeRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetProposalLifeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetProposalLifeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetProposalLifeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ProposalLife != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.ProposalLife))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -323,6 +494,27 @@ func (m *QueryGetProposalResponse) Size() (n int) {
 	l = len(m.Proposal)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetProposalLifeRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryGetProposalLifeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ProposalLife != 0 {
+		n += 1 + sovQuery(uint64(m.ProposalLife))
 	}
 	return n
 }
@@ -478,6 +670,125 @@ func (m *QueryGetProposalResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Proposal = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetProposalLifeRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetProposalLifeRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetProposalLifeRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetProposalLifeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetProposalLifeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetProposalLifeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProposalLife", wireType)
+			}
+			m.ProposalLife = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ProposalLife |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])

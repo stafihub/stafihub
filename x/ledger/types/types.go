@@ -11,6 +11,15 @@ func NewPool(denom string) Pool {
 	}
 }
 
+func NewPoolDetail(denom, pool string, subAccounts []string, threshold uint32) PoolDetail {
+	return PoolDetail{
+		Denom:       denom,
+		Pool:        pool,
+		SubAccounts: subAccounts,
+		Threshold:   threshold,
+	}
+}
+
 func NewChainEra(denom string) ChainEra {
 	return ChainEra{
 		Denom: denom,

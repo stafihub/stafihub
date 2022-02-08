@@ -66,5 +66,3 @@ func (k Keeper) GetAllRelayer(ctx sdk.Context) (list []types.Relayer) {
 
 	return
 }
-
-

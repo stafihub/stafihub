@@ -28,6 +28,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdGetProposal())
+	cmd.AddCommand(CmdGetProposalLife())
 
 	// this line is used by starport scaffolding # 1
 
@@ -56,6 +57,34 @@ func CmdGetProposal() *cobra.Command {
 			}
 
 			res, err := queryClient.GetProposal(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdGetProposalLife() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-proposal-life",
+		Short: "Query GetProposalLife",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.QueryGetProposalLifeRequest{}
+
+			res, err := queryClient.GetProposalLife(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

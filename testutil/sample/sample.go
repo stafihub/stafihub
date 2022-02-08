@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	TestDenom = "TestDenom"
+	TestDenom  = "TestDenom"
+	TestDenom1 = "TestDenom1"
 )
 
 // AccAddress returns a sample account address
@@ -14,4 +15,10 @@ func AccAddress() string {
 	pk := ed25519.GenPrivKey().PubKey()
 	addr := pk.Address()
 	return sdk.AccAddress(addr).String()
+}
+
+func OriginAccAddress() sdk.AccAddress {
+	pk := ed25519.GenPrivKey().PubKey()
+	addr := pk.Address()
+	return sdk.AccAddress(addr)
 }

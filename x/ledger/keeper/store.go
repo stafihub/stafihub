@@ -157,13 +157,8 @@ func (k Keeper) GetChainBondingDuration(ctx sdk.Context, denom string) (val type
 
 func (k Keeper) SetPoolDetail(ctx sdk.Context, denom string, pool string, subAccounts []string, threshold uint32) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolDetailPrefix)
-	cbd := &types.PoolDetail{
-		Denom:       denom,
-		Pool:        pool,
-		SubAccounts: subAccounts,
-		Threshold:   threshold,
-	}
-	b := k.cdc.MustMarshal(cbd)
+	cbd := types.NewPoolDetail(denom, pool, subAccounts, threshold)
+	b := k.cdc.MustMarshal(&cbd)
 	store.Set([]byte(denom+pool), b)
 }
 
@@ -217,17 +212,16 @@ func (k Keeper) CurrentEraSnapshots(ctx sdk.Context, denom string) types.EraSnap
 
 	var val types.EraSnapshot
 	k.cdc.MustUnmarshal(b, &val)
+	if val.ShotIds == nil {
+		return types.NewEraSnapshot(denom)
+	}
 	return val
 }
 
 func (k Keeper) ClearCurrentEraSnapshots(ctx sdk.Context, denom string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.CurrentEraSnapshotPrefix)
-
-	cess := &types.EraSnapshot{
-		Denom:   denom,
-		ShotIds: [][]byte{},
-	}
-	b := k.cdc.MustMarshal(cess)
+	shot := types.NewEraSnapshot(denom)
+	b := k.cdc.MustMarshal(&shot)
 	store.Set([]byte(denom), b)
 }
 
@@ -375,6 +369,9 @@ func (k Keeper) GetPoolUnbond(ctx sdk.Context, denom string, pool string, era ui
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
+	if val.Unbondings == nil {
+		val.Unbondings = []types.Unbonding{}
+	}
 	return val, true
 }
 
@@ -438,6 +435,9 @@ func (k Keeper) GetAccountUnbond(ctx sdk.Context, denom, unbonder string) (val t
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
+	if val.Chunks == nil {
+		val.Chunks = []types.UserUnlockChunk{}
+	}
 	return val, true
 }
 
@@ -484,5 +484,8 @@ func (k Keeper) GetSignature(ctx sdk.Context, denom string, era uint32, pool str
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
+	if val.Sigs == nil {
+		val.Sigs = make(map[string]string)
+	}
 	return val, true
 }

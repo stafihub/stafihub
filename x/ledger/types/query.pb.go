@@ -2431,7 +2431,7 @@ type QueryClient interface {
 	GetLeastBond(ctx context.Context, in *QueryGetLeastBondRequest, opts ...grpc.CallOption) (*QueryGetLeastBondResponse, error)
 	// Queries a list of getEraUnbondLimit items.
 	GetEraUnbondLimit(ctx context.Context, in *QueryGetEraUnbondLimitRequest, opts ...grpc.CallOption) (*QueryGetEraUnbondLimitResponse, error)
-	// Queries a list of getBondPipeLine items.
+	// Queries a list of getBondPipeline items.
 	GetBondPipeline(ctx context.Context, in *QueryGetBondPipelineRequest, opts ...grpc.CallOption) (*QueryGetBondPipelineResponse, error)
 	// Queries a list of getEraSnapshot items.
 	GetEraSnapshot(ctx context.Context, in *QueryGetEraSnapshotRequest, opts ...grpc.CallOption) (*QueryGetEraSnapshotResponse, error)
@@ -2707,7 +2707,7 @@ type QueryServer interface {
 	GetLeastBond(context.Context, *QueryGetLeastBondRequest) (*QueryGetLeastBondResponse, error)
 	// Queries a list of getEraUnbondLimit items.
 	GetEraUnbondLimit(context.Context, *QueryGetEraUnbondLimitRequest) (*QueryGetEraUnbondLimitResponse, error)
-	// Queries a list of getBondPipeLine items.
+	// Queries a list of getBondPipeline items.
 	GetBondPipeline(context.Context, *QueryGetBondPipelineRequest) (*QueryGetBondPipelineResponse, error)
 	// Queries a list of getEraSnapshot items.
 	GetEraSnapshot(context.Context, *QueryGetEraSnapshotRequest) (*QueryGetEraSnapshotResponse, error)
