@@ -102,15 +102,17 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 		return nil, types.ErrRepeatInitBond
 	}
 
-	rbalance := k.TokenToRtoken(ctx, denom, msg.Coin.Amount)
-	rcoins := sdk.Coins{sdk.NewCoin(denom, rbalance)}
-	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
-		panic(err)
-	}
+	if msg.Coin.Amount.GT(sdk.ZeroInt()) {
+		rbalance := k.TokenToRtoken(ctx, denom, msg.Coin.Amount)
+		rcoins := sdk.Coins{sdk.NewCoin(denom, rbalance)}
+		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
+			panic(err)
+		}
 
-	rec, _ := sdk.AccAddressFromBech32(msg.Receiver)
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rec, rcoins); err != nil {
-		panic(err)
+		rec, _ := sdk.AccAddressFromBech32(msg.Receiver)
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rec, rcoins); err != nil {
+			panic(err)
+		}
 	}
 
 	k.SetExchangeRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))

@@ -289,13 +289,15 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		commission := k.Commission(ctx)
 		fee := commission.MulInt(diff).TruncateInt()
 		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
-		coin := sdk.NewCoin(shot.Denom, rfee)
-		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
-			return err
-		}
 
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, sdk.Coins{coin}); err != nil {
-			return err
+		if rfee.GT(sdk.ZeroInt()) {
+			coin := sdk.NewCoin(shot.Denom, rfee)
+			if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
+				return err
+			}
+			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, sdk.Coins{coin}); err != nil {
+				return err
+			}
 		}
 	}
 
