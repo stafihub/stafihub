@@ -16,13 +16,8 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
 
-	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
-	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
-	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	sudokeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
 	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
 )
@@ -30,62 +25,39 @@ import (
 func RelayersKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+
+	sudoStoreKey := sdk.NewKVStoreKey(sudotypes.StoreKey)
+	sudoMemStoreKey := storetypes.NewMemoryStoreKey(sudotypes.MemStoreKey)
+
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
-
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
+	bankStoreKey := sdk.NewKVStoreKey(banktypes.StoreKey)
+	stateStore.MountStoreWithDB(bankStoreKey, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(sudoStoreKey, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(sudoMemStoreKey, sdk.StoreTypeMemory, nil)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	encCfg := app.MakeTestEncodingConfig()
-	keyParams := sdk.NewKVStoreKey(paramstypes.StoreKey)
-	tkeyParams := sdk.NewTransientStoreKey(paramstypes.TStoreKey)
-	paramsKeeper := paramskeeper.NewKeeper(encCfg.Marshaler, encCfg.Amino, keyParams, tkeyParams)
+	paramsKeeper := ParamsKeeper(&encCfg)
+	accountKeeper := AccountKeeper(&encCfg, &paramsKeeper)
+	bankKeeper := BankKeeper(&encCfg, &paramsKeeper, &accountKeeper)
+	sudoKeeper := SimpleSudoKeeper(sudoStoreKey, sudoMemStoreKey, cdc, bankKeeper)
 
-	keyAcc := sdk.NewKVStoreKey(authtypes.StoreKey)
-	maccPerms := map[string][]string{
-		authtypes.FeeCollectorName:     nil,
-		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
-		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		types.ModuleName:               {authtypes.Burner, authtypes.Minter},
-	}
-	accountKeeper := authkeeper.NewAccountKeeper(
-		encCfg.Marshaler, // amino codec
-		keyAcc,           // target store
-		paramsKeeper.Subspace(authtypes.ModuleName),
-		authtypes.ProtoBaseAccount, // prototype,
-		maccPerms,
-	)
+	k := SimpleRelayersKeeper(storeKey, memStoreKey, cdc, bankKeeper, sudoKeeper)
+	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
+	return k, ctx
+}
 
-	keyBank := sdk.NewKVStoreKey(banktypes.StoreKey)
-	blacklistedAddrs := make(map[string]bool)
-	bankKeeper := bankkeeper.NewBaseKeeper(
-		encCfg.Marshaler,
-		keyBank,
-		accountKeeper,
-		paramsKeeper.Subspace(banktypes.ModuleName),
-		blacklistedAddrs,
-	)
-
-	sudoKey := sdk.NewKVStoreKey(sudotypes.StoreKey)
-	sudoMemKey := storetypes.NewMemoryStoreKey(sudotypes.MemStoreKey)
-	sudoKeeper := sudokeeper.NewKeeper(
-		cdc,
-		sudoKey,
-		sudoMemKey,
-		bankKeeper,
-	)
-
-	k := keeper.NewKeeper(
+func SimpleRelayersKeeper(storeKey *sdk.KVStoreKey, memStoreKey *sdk.MemoryStoreKey, cdc *codec.ProtoCodec, bankKeeper bankkeeper.Keeper, sudoKeeper *sudokeeper.Keeper) *keeper.Keeper {
+	return keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		sudoKeeper,
 		bankKeeper,
 	)
-
-	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
-	return k, ctx
 }

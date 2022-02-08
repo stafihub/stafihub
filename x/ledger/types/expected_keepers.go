@@ -8,6 +8,7 @@ import (
 
 type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
+	GetAdmin(ctx sdk.Context) sdk.AccAddress
 }
 
 // BankKeeper defines the contract needed to be fulfilled for banking and supply

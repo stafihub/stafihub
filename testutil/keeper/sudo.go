@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/simapp/params"
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -33,15 +34,28 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
+	bankStoreKey := sdk.NewKVStoreKey(banktypes.StoreKey)
+	stateStore.MountStoreWithDB(bankStoreKey, sdk.StoreTypeIAVL, db)
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
-
 	encCfg := app.MakeTestEncodingConfig()
+	paramsKeeper := ParamsKeeper(&encCfg)
+	accountKeeper := AccountKeeper(&encCfg, &paramsKeeper)
+	bankKeeper := BankKeeper(&encCfg, &paramsKeeper, &accountKeeper)
+
+	k := SimpleSudoKeeper(storeKey, memStoreKey, codec.NewProtoCodec(registry), bankKeeper)
+	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
+	return k, ctx
+}
+
+func ParamsKeeper(encCfg *params.EncodingConfig) paramskeeper.Keeper {
 	keyParams := sdk.NewKVStoreKey(paramstypes.StoreKey)
 	tkeyParams := sdk.NewTransientStoreKey(paramstypes.TStoreKey)
-	paramsKeeper := paramskeeper.NewKeeper(encCfg.Marshaler, encCfg.Amino, keyParams, tkeyParams)
+	return paramskeeper.NewKeeper(encCfg.Marshaler, encCfg.Amino, keyParams, tkeyParams)
+}
 
+func AccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper) authkeeper.AccountKeeper {
 	keyAcc := sdk.NewKVStoreKey(authtypes.StoreKey)
 	maccPerms := map[string][]string{
 		authtypes.FeeCollectorName:     nil,
@@ -49,32 +63,33 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		types.ModuleName:               {authtypes.Burner, authtypes.Minter},
 	}
-	accountKeeper := authkeeper.NewAccountKeeper(
+
+	return authkeeper.NewAccountKeeper(
 		encCfg.Marshaler, // amino codec
 		keyAcc,           // target store
 		paramsKeeper.Subspace(authtypes.ModuleName),
 		authtypes.ProtoBaseAccount, // prototype,
 		maccPerms,
 	)
+}
 
+func BankKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper, accountKeeper *authkeeper.AccountKeeper) bankkeeper.Keeper {
 	keyBank := sdk.NewKVStoreKey(banktypes.StoreKey)
 	blacklistedAddrs := make(map[string]bool)
-	bankKeeper := bankkeeper.NewBaseKeeper(
+	return bankkeeper.NewBaseKeeper(
 		encCfg.Marshaler,
 		keyBank,
 		accountKeeper,
 		paramsKeeper.Subspace(banktypes.ModuleName),
 		blacklistedAddrs,
 	)
+}
 
-	k := keeper.NewKeeper(
-		codec.NewProtoCodec(registry),
+func SimpleSudoKeeper(storeKey *sdk.KVStoreKey, memStoreKey *sdk.MemoryStoreKey, cdc *codec.ProtoCodec, bankKeeper bankkeeper.Keeper) *keeper.Keeper {
+	return keeper.NewKeeper(
+		cdc,
 		storeKey,
 		memStoreKey,
-
 		bankKeeper,
 	)
-
-	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
-	return k, ctx
 }
