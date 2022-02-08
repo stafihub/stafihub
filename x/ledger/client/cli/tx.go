@@ -62,9 +62,9 @@ func GetTxCmd() *cobra.Command {
 
 func CmdLiquidityUnbond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "liquidity-unbond [denom] [pool] [value] [recipient]",
+		Use:   "liquidity-unbond [pool] [value] [recipient]",
 		Short: "Broadcast message liquidity_unbond",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argPool := args[0]
 			argValue, err := sdk.ParseCoinNormalized(args[1])
