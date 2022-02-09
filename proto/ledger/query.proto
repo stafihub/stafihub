@@ -1,5 +1,5 @@
 syntax = "proto3";
-package stafiprotocol.stafihub.ledger;
+package stafihub.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
 import "ledger/ledger.proto";
@@ -13,121 +13,121 @@ option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 service Query {
 // Queries a list of getExchangeRate items.
 	rpc GetExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/exchangerate/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/exchangerate/{denom}";
 	}
 
 // Queries a list of exchangeRateAll items.
 	rpc ExchangeRateAll(QueryExchangeRateAllRequest) returns (QueryExchangeRateAllResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/exchangeRateAll";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/exchangeRateAll";
 	}
 
 // Queries a list of getEraExchangeRate items.
 	rpc GetEraExchangeRate(QueryGetEraExchangeRateRequest) returns (QueryGetEraExchangeRateResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/EraExchangeRate/{denom}/{era}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/EraExchangeRate/{denom}/{era}";
 	}
 
 // Queries a list of eraExchangeRatesByDenom items.
 	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
 	}
 // Queries a list of poolsByDenom items.
 	rpc PoolsByDenom(QueryPoolsByDenomRequest) returns (QueryPoolsByDenomResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/poolsByDenom/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/poolsByDenom/{denom}";
 	}
 
 // Queries a list of bondedPoolsByDenom items.
 	rpc BondedPoolsByDenom(QueryBondedPoolsByDenomRequest) returns (QueryBondedPoolsByDenomResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/bondedPoolsByDenom/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/bondedPoolsByDenom/{denom}";
 	}
 
 // Queries a list of getPoolDetail items.
 	rpc GetPoolDetail(QueryGetPoolDetailRequest) returns (QueryGetPoolDetailResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getPoolDetail/{denom}/{pool}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getPoolDetail/{denom}/{pool}";
 	}
 
 // Queries a list of getChainEra items.
 	rpc GetChainEra(QueryGetChainEraRequest) returns (QueryGetChainEraResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getChainEra/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getChainEra/{denom}";
 	}
 
 // Queries a list of getCurrentEraSnapshot items.
 	rpc GetCurrentEraSnapshot(QueryGetCurrentEraSnapshotRequest) returns (QueryGetCurrentEraSnapshotResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getCurrentEraSnapshot/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getCurrentEraSnapshot/{denom}";
 	}
 
 // Queries a list of getReceiver items.
 	rpc GetReceiver(QueryGetReceiverRequest) returns (QueryGetReceiverResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getReceiver";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getReceiver";
 	}
 
 // Queries a list of getCommission items.
 	rpc GetCommission(QueryGetCommissionRequest) returns (QueryGetCommissionResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getCommission";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getCommission";
 	}
 
 // Queries a list of getChainBondingDuration items.
 	rpc GetChainBondingDuration(QueryGetChainBondingDurationRequest) returns (QueryGetChainBondingDurationResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getChainBondingDuration/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getChainBondingDuration/{denom}";
 	}
 
 // Queries a list of getUnbondFee items.
 	rpc GetUnbondFee(QueryGetUnbondFeeRequest) returns (QueryGetUnbondFeeResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getUnbondFee/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondFee/{denom}";
 	}
 
 // Queries a list of getUnbondCommission items.
 	rpc GetUnbondCommission(QueryGetUnbondCommissionRequest) returns (QueryGetUnbondCommissionResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getUnbondCommission";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondCommission";
 	}
 
 // Queries a list of getLeastBond items.
 	rpc GetLeastBond(QueryGetLeastBondRequest) returns (QueryGetLeastBondResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getLeastBond/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getLeastBond/{denom}";
 	}
 
 // Queries a list of getEraUnbondLimit items.
 	rpc GetEraUnbondLimit(QueryGetEraUnbondLimitRequest) returns (QueryGetEraUnbondLimitResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getEraUnbondLimit/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getEraUnbondLimit/{denom}";
 	}
 
 // Queries a list of getBondPipeline items.
 	rpc GetBondPipeline(QueryGetBondPipelineRequest) returns (QueryGetBondPipelineResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondPipeline/{denom}/{pool}";
 	}
 
 // Queries a list of getEraSnapshot items.
 	rpc GetEraSnapshot(QueryGetEraSnapshotRequest) returns (QueryGetEraSnapshotResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getEraSnapshot/{denom}/{era}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getEraSnapshot/{denom}/{era}";
 	}
 
 // Queries a list of getSnapshot items.
 	rpc GetSnapshot(QueryGetSnapshotRequest) returns (QueryGetSnapshotResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getSnapshot/{shotId}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getSnapshot/{shotId}";
 	}
 
 // Queries a list of getTotalExpectedActive items.
 	rpc GetTotalExpectedActive(QueryGetTotalExpectedActiveRequest) returns (QueryGetTotalExpectedActiveResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getTotalExpectedActive/{denom}/{era}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getTotalExpectedActive/{denom}/{era}";
 	}
 
 // Queries a list of getPoolUnbond items.
 	rpc GetPoolUnbond(QueryGetPoolUnbondRequest) returns (QueryGetPoolUnbondResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}";
 	}
 
 // Queries a list of getAccountUnbond items.
 	rpc GetAccountUnbond(QueryGetAccountUnbondRequest) returns (QueryGetAccountUnbondResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}";
 	}
 
 // Queries a list of getBondRecord items.
 	rpc GetBondRecord(QueryGetBondRecordRequest) returns (QueryGetBondRecordResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}";
 	}
 
 // Queries a list of getSignature items.
 	rpc GetSignature(QueryGetSignatureRequest) returns (QueryGetSignatureResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/ledger/getSignature";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getSignature";
 	}
 
 // this line is used by starport scaffolding # 2

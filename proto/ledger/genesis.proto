@@ -1,5 +1,5 @@
 syntax = "proto3";
-package stafiprotocol.stafihub.ledger;
+package stafihub.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
 import "ledger/ledger.proto";

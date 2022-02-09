@@ -1,5 +1,5 @@
 syntax = "proto3";
-package stafiprotocol.stafihub.relayers;
+package stafihub.stafihub.relayers;
 
 // this line is used by starport scaffolding # proto/tx/import
 

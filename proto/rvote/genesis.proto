@@ -1,5 +1,5 @@
 syntax = "proto3";
-package stafiprotocol.stafihub.rvote;
+package stafihub.stafihub.rvote;
 
 import "gogoproto/gogo.proto";
 

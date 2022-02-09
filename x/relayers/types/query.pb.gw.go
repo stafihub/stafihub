@@ -278,9 +278,9 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_RelayersByDenom_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafiprotocol", "stafihub", "relayers", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_RelayersByDenom_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"stafihub", "relayers", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Threshold_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"stafiprotocol", "stafihub", "relayers", "threshold", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Threshold_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "relayers", "threshold", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

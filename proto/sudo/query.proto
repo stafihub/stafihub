@@ -1,5 +1,5 @@
 syntax = "proto3";
-package stafiprotocol.stafihub.sudo;
+package stafihub.stafihub.sudo;
 
 import "google/api/annotations.proto";
 // this line is used by starport scaffolding # 1
@@ -10,7 +10,7 @@ option go_package = "github.com/stafihub/stafihub/x/sudo/types";
 service Query {
     // Queries a list of admin items.
 	rpc Admin(QueryAdminRequest) returns (QueryAdminResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/sudo/admin";
+		option (google.api.http).get = "/stafihub/stafihub/sudo/admin";
 	}
 // this line is used by starport scaffolding # 2
 }

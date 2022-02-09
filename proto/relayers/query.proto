@@ -1,5 +1,5 @@
 syntax = "proto3";
-package stafiprotocol.stafihub.relayers;
+package stafihub.stafihub.relayers;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
@@ -12,12 +12,12 @@ option go_package = "github.com/stafihub/stafihub/x/relayers/types";
 service Query {
     // Queries a list of relayersByDenom items.
 	rpc RelayersByDenom(QueryRelayersByDenomRequest) returns (QueryRelayersByDenomResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/relayers/{denom}";
 	}
 
     // Queries a threshold by denom.
 	rpc Threshold(QueryGetThresholdRequest) returns (QueryGetThresholdResponse) {
-		option (google.api.http).get = "/stafiprotocol/stafihub/relayers/threshold/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/relayers/threshold/{denom}";
 	}
 // this line is used by starport scaffolding # 2
 }

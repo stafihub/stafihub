@@ -12574,10 +12574,10 @@ paths:
                         }
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/EraExchangeRate/{denom}/{era}':
+  '/stafihub/stafihub/ledger/EraExchangeRate/{denom}/{era}':
     get:
       summary: Queries a list of getEraExchangeRate items.
-      operationId: StafiprotocolStafihubLedgerGetEraExchangeRate
+      operationId: StafihubStafihubLedgerGetEraExchangeRate
       responses:
         '200':
           description: A successful response.
@@ -12624,10 +12624,10 @@ paths:
           format: int64
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/bondedPoolsByDenom/{denom}':
+  '/stafihub/stafihub/ledger/bondedPoolsByDenom/{denom}':
     get:
       summary: Queries a list of bondedPoolsByDenom items.
-      operationId: StafiprotocolStafihubLedgerBondedPoolsByDenom
+      operationId: StafihubStafihubLedgerBondedPoolsByDenom
       responses:
         '200':
           description: A successful response.
@@ -12663,10 +12663,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/eraExchangeRatesByDenom/{denom}':
+  '/stafihub/stafihub/ledger/eraExchangeRatesByDenom/{denom}':
     get:
       summary: Queries a list of eraExchangeRatesByDenom items.
-      operationId: StafiprotocolStafihubLedgerEraExchangeRatesByDenom
+      operationId: StafihubStafihubLedgerEraExchangeRatesByDenom
       responses:
         '200':
           description: A successful response.
@@ -12710,10 +12710,10 @@ paths:
           type: string
       tags:
         - Query
-  /stafiprotocol/stafihub/ledger/exchangeRateAll:
+  /stafihub/stafihub/ledger/exchangeRateAll:
     get:
       summary: Queries a list of exchangeRateAll items.
-      operationId: StafiprotocolStafihubLedgerExchangeRateAll
+      operationId: StafihubStafihubLedgerExchangeRateAll
       responses:
         '200':
           description: A successful response.
@@ -12749,10 +12749,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/exchangerate/{denom}':
+  '/stafihub/stafihub/ledger/exchangerate/{denom}':
     get:
       summary: Queries a list of getExchangeRate items.
-      operationId: StafiprotocolStafihubLedgerGetExchangeRate
+      operationId: StafihubStafihubLedgerGetExchangeRate
       responses:
         '200':
           description: A successful response.
@@ -12791,10 +12791,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}':
+  '/stafihub/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}':
     get:
       summary: Queries a list of getAccountUnbond items.
-      operationId: StafiprotocolStafihubLedgerGetAccountUnbond
+      operationId: StafihubStafihubLedgerGetAccountUnbond
       responses:
         '200':
           description: A successful response.
@@ -12851,10 +12851,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getBondPipeline/{denom}/{pool}':
+  '/stafihub/stafihub/ledger/getBondPipeline/{denom}/{pool}':
     get:
       summary: Queries a list of getBondPipeline items.
-      operationId: StafiprotocolStafihubLedgerGetBondPipeline
+      operationId: StafihubStafihubLedgerGetBondPipeline
       responses:
         '200':
           description: A successful response.
@@ -12906,10 +12906,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}':
+  '/stafihub/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}':
     get:
       summary: Queries a list of getBondRecord items.
-      operationId: StafiprotocolStafihubLedgerGetBondRecord
+      operationId: StafihubStafihubLedgerGetBondRecord
       responses:
         '200':
           description: A successful response.
@@ -12964,10 +12964,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getChainBondingDuration/{denom}':
+  '/stafihub/stafihub/ledger/getChainBondingDuration/{denom}':
     get:
       summary: Queries a list of getChainBondingDuration items.
-      operationId: StafiprotocolStafihubLedgerGetChainBondingDuration
+      operationId: StafihubStafihubLedgerGetChainBondingDuration
       responses:
         '200':
           description: A successful response.
@@ -13002,10 +13002,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getChainEra/{denom}':
+  '/stafihub/stafihub/ledger/getChainEra/{denom}':
     get:
       summary: Queries a list of getChainEra items.
-      operationId: StafiprotocolStafihubLedgerGetChainEra
+      operationId: StafihubStafihubLedgerGetChainEra
       responses:
         '200':
           description: A successful response.
@@ -13040,10 +13040,10 @@ paths:
           type: string
       tags:
         - Query
-  /stafiprotocol/stafihub/ledger/getCommission:
+  /stafihub/stafihub/ledger/getCommission:
     get:
       summary: Queries a list of getCommission items.
-      operationId: StafiprotocolStafihubLedgerGetCommission
+      operationId: StafihubStafihubLedgerGetCommission
       responses:
         '200':
           description: A successful response.
@@ -13072,10 +13072,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getCurrentEraSnapshot/{denom}':
+  '/stafihub/stafihub/ledger/getCurrentEraSnapshot/{denom}':
     get:
       summary: Queries a list of getCurrentEraSnapshot items.
-      operationId: StafiprotocolStafihubLedgerGetCurrentEraSnapshot
+      operationId: StafihubStafihubLedgerGetCurrentEraSnapshot
       responses:
         '200':
           description: A successful response.
@@ -13111,10 +13111,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getEraSnapshot/{denom}/{era}':
+  '/stafihub/stafihub/ledger/getEraSnapshot/{denom}/{era}':
     get:
       summary: Queries a list of getEraSnapshot items.
-      operationId: StafiprotocolStafihubLedgerGetEraSnapshot
+      operationId: StafihubStafihubLedgerGetEraSnapshot
       responses:
         '200':
           description: A successful response.
@@ -13155,10 +13155,10 @@ paths:
           format: int64
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getEraUnbondLimit/{denom}':
+  '/stafihub/stafihub/ledger/getEraUnbondLimit/{denom}':
     get:
       summary: Queries a list of getEraUnbondLimit items.
-      operationId: StafiprotocolStafihubLedgerGetEraUnbondLimit
+      operationId: StafihubStafihubLedgerGetEraUnbondLimit
       responses:
         '200':
           description: A successful response.
@@ -13193,10 +13193,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getLeastBond/{denom}':
+  '/stafihub/stafihub/ledger/getLeastBond/{denom}':
     get:
       summary: Queries a list of getLeastBond items.
-      operationId: StafiprotocolStafihubLedgerGetLeastBond
+      operationId: StafihubStafihubLedgerGetLeastBond
       responses:
         '200':
           description: A successful response.
@@ -13235,10 +13235,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getPoolDetail/{denom}/{pool}':
+  '/stafihub/stafihub/ledger/getPoolDetail/{denom}/{pool}':
     get:
       summary: Queries a list of getPoolDetail items.
-      operationId: StafiprotocolStafihubLedgerGetPoolDetail
+      operationId: StafihubStafihubLedgerGetPoolDetail
       responses:
         '200':
           description: A successful response.
@@ -13288,10 +13288,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}':
+  '/stafihub/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}':
     get:
       summary: Queries a list of getPoolUnbond items.
-      operationId: StafiprotocolStafihubLedgerGetPoolUnbond
+      operationId: StafihubStafihubLedgerGetPoolUnbond
       responses:
         '200':
           description: A successful response.
@@ -13353,10 +13353,10 @@ paths:
           format: int64
       tags:
         - Query
-  /stafiprotocol/stafihub/ledger/getReceiver:
+  /stafihub/stafihub/ledger/getReceiver:
     get:
       summary: Queries a list of getReceiver items.
-      operationId: StafiprotocolStafihubLedgerGetReceiver
+      operationId: StafihubStafihubLedgerGetReceiver
       responses:
         '200':
           description: A successful response.
@@ -13385,10 +13385,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafiprotocol/stafihub/ledger/getSignature:
+  /stafihub/stafihub/ledger/getSignature:
     get:
       summary: Queries a list of getSignature items.
-      operationId: StafiprotocolStafihubLedgerGetSignature
+      operationId: StafihubStafihubLedgerGetSignature
       responses:
         '200':
           description: A successful response.
@@ -13470,10 +13470,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getSnapshot/{shotId}':
+  '/stafihub/stafihub/ledger/getSnapshot/{shotId}':
     get:
       summary: Queries a list of getSnapshot items.
-      operationId: StafiprotocolStafihubLedgerGetSnapshot
+      operationId: StafihubStafihubLedgerGetSnapshot
       responses:
         '200':
           description: A successful response.
@@ -13536,10 +13536,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getTotalExpectedActive/{denom}/{era}':
+  '/stafihub/stafihub/ledger/getTotalExpectedActive/{denom}/{era}':
     get:
       summary: Queries a list of getTotalExpectedActive items.
-      operationId: StafiprotocolStafihubLedgerGetTotalExpectedActive
+      operationId: StafihubStafihubLedgerGetTotalExpectedActive
       responses:
         '200':
           description: A successful response.
@@ -13578,10 +13578,10 @@ paths:
           format: int64
       tags:
         - Query
-  /stafiprotocol/stafihub/ledger/getUnbondCommission:
+  /stafihub/stafihub/ledger/getUnbondCommission:
     get:
       summary: Queries a list of getUnbondCommission items.
-      operationId: StafiprotocolStafihubLedgerGetUnbondCommission
+      operationId: StafihubStafihubLedgerGetUnbondCommission
       responses:
         '200':
           description: A successful response.
@@ -13610,10 +13610,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/getUnbondFee/{denom}':
+  '/stafihub/stafihub/ledger/getUnbondFee/{denom}':
     get:
       summary: Queries a list of getUnbondFee items.
-      operationId: StafiprotocolStafihubLedgerGetUnbondFee
+      operationId: StafihubStafihubLedgerGetUnbondFee
       responses:
         '200':
           description: A successful response.
@@ -13652,10 +13652,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/ledger/poolsByDenom/{denom}':
+  '/stafihub/stafihub/ledger/poolsByDenom/{denom}':
     get:
       summary: Queries a list of poolsByDenom items.
-      operationId: StafiprotocolStafihubLedgerPoolsByDenom
+      operationId: StafihubStafihubLedgerPoolsByDenom
       responses:
         '200':
           description: A successful response.
@@ -13691,10 +13691,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/relayers/threshold/{denom}':
+  '/stafihub/stafihub/relayers/threshold/{denom}':
     get:
       summary: Queries a threshold by denom.
-      operationId: StafiprotocolStafihubRelayersThreshold
+      operationId: StafihubStafihubRelayersThreshold
       responses:
         '200':
           description: A successful response.
@@ -13729,10 +13729,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/relayers/{denom}':
+  '/stafihub/stafihub/relayers/{denom}':
     get:
       summary: Queries a list of relayersByDenom items.
-      operationId: StafiprotocolStafihubRelayersRelayersByDenom
+      operationId: StafihubStafihubRelayersRelayersByDenom
       responses:
         '200':
           description: A successful response.
@@ -13768,10 +13768,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafiprotocol/stafihub/rvote/getProposal/{propId}':
+  '/stafihub/stafihub/rvote/getProposal/{propId}':
     get:
       summary: Queries a list of getProposal items.
-      operationId: StafiprotocolStafihubRvoteGetProposal
+      operationId: StafihubStafihubRvoteGetProposal
       responses:
         '200':
           description: A successful response.
@@ -13972,10 +13972,10 @@ paths:
           type: string
       tags:
         - Query
-  /stafiprotocol/stafihub/rvote/getProposalLife:
+  /stafihub/stafihub/rvote/getProposalLife:
     get:
       summary: Queries a list of getProposalLife items.
-      operationId: StafiprotocolStafihubRvoteGetProposalLife
+      operationId: StafihubStafihubRvoteGetProposalLife
       responses:
         '200':
           description: A successful response.
@@ -14172,10 +14172,10 @@ paths:
                         }
       tags:
         - Query
-  /stafiprotocol/stafihub/sudo/admin:
+  /stafihub/stafihub/sudo/admin:
     get:
       summary: Queries a list of admin items.
-      operationId: StafiprotocolStafihubSudoAdmin
+      operationId: StafihubStafihubSudoAdmin
       responses:
         '200':
           description: A successful response.
@@ -21554,7 +21554,7 @@ definitions:
       and
 
       freezing clients
-  stafiprotocol.stafihub.ledger.AccountUnbond:
+  stafihub.stafihub.ledger.AccountUnbond:
     type: object
     properties:
       unbonder:
@@ -21575,7 +21575,7 @@ definitions:
               type: string
             recipient:
               type: string
-  stafiprotocol.stafihub.ledger.BondPipeline:
+  stafihub.stafihub.ledger.BondPipeline:
     type: object
     properties:
       denom:
@@ -21591,7 +21591,7 @@ definitions:
             type: string
           active:
             type: string
-  stafiprotocol.stafihub.ledger.BondRecord:
+  stafihub.stafihub.ledger.BondRecord:
     type: object
     properties:
       denom:
@@ -21606,7 +21606,7 @@ definitions:
         type: string
       amount:
         type: string
-  stafiprotocol.stafihub.ledger.BondSnapshot:
+  stafihub.stafihub.ledger.BondSnapshot:
     type: object
     properties:
       denom:
@@ -21637,7 +21637,7 @@ definitions:
           - WITHDRAW_REPORTED
           - TRANSFER_REPORTED
         default: ERA_UPDATED
-  stafiprotocol.stafihub.ledger.EraExchangeRate:
+  stafihub.stafihub.ledger.EraExchangeRate:
     type: object
     properties:
       denom:
@@ -21647,21 +21647,21 @@ definitions:
         format: int64
       value:
         type: string
-  stafiprotocol.stafihub.ledger.ExchangeRate:
+  stafihub.stafihub.ledger.ExchangeRate:
     type: object
     properties:
       denom:
         type: string
       value:
         type: string
-  stafiprotocol.stafihub.ledger.LeastBond:
+  stafihub.stafihub.ledger.LeastBond:
     type: object
     properties:
       denom:
         type: string
       amount:
         type: string
-  stafiprotocol.stafihub.ledger.LinkChunk:
+  stafihub.stafihub.ledger.LinkChunk:
     type: object
     properties:
       bond:
@@ -21670,35 +21670,35 @@ definitions:
         type: string
       active:
         type: string
-  stafiprotocol.stafihub.ledger.MsgAddNewPoolResponse:
+  stafihub.stafihub.ledger.MsgAddNewPoolResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
+  stafihub.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgLiquidityUnbondResponse:
+  stafihub.stafihub.ledger.MsgLiquidityUnbondResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgRemovePoolResponse:
+  stafihub.stafihub.ledger.MsgRemovePoolResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetChainBondingDurationResponse:
+  stafihub.stafihub.ledger.MsgSetChainBondingDurationResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetCommissionResponse:
+  stafihub.stafihub.ledger.MsgSetCommissionResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetEraUnbondLimitResponse:
+  stafihub.stafihub.ledger.MsgSetEraUnbondLimitResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetInitBondResponse:
+  stafihub.stafihub.ledger.MsgSetInitBondResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetLeastBondResponse:
+  stafihub.stafihub.ledger.MsgSetLeastBondResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetPoolDetailResponse:
+  stafihub.stafihub.ledger.MsgSetPoolDetailResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetReceiverResponse:
+  stafihub.stafihub.ledger.MsgSetReceiverResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetUnbondCommissionResponse:
+  stafihub.stafihub.ledger.MsgSetUnbondCommissionResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSetUnbondFeeResponse:
+  stafihub.stafihub.ledger.MsgSetUnbondFeeResponse:
     type: object
-  stafiprotocol.stafihub.ledger.MsgSubmitSignatureResponse:
+  stafihub.stafihub.ledger.MsgSubmitSignatureResponse:
     type: object
-  stafiprotocol.stafihub.ledger.OriginalTxType:
+  stafihub.stafihub.ledger.OriginalTxType:
     type: string
     enum:
       - ORIGINAL_TX_TYPE_TRANSFER
@@ -21708,7 +21708,7 @@ definitions:
       - ORIGINAL_TX_TYPE_CLAIM
     default: ORIGINAL_TX_TYPE_TRANSFER
     description: OriginalTxType enumerates the tx type of a signature.
-  stafiprotocol.stafihub.ledger.PoolBondState:
+  stafihub.stafihub.ledger.PoolBondState:
     type: string
     enum:
       - ERA_UPDATED
@@ -21718,7 +21718,7 @@ definitions:
       - WITHDRAW_REPORTED
       - TRANSFER_REPORTED
     default: ERA_UPDATED
-  stafiprotocol.stafihub.ledger.PoolDetail:
+  stafihub.stafihub.ledger.PoolDetail:
     type: object
     properties:
       denom:
@@ -21732,7 +21732,7 @@ definitions:
       threshold:
         type: integer
         format: int64
-  stafiprotocol.stafihub.ledger.PoolUnbond:
+  stafihub.stafihub.ledger.PoolUnbond:
     type: object
     properties:
       denom:
@@ -21753,14 +21753,14 @@ definitions:
               type: string
             recipient:
               type: string
-  stafiprotocol.stafihub.ledger.QueryBondedPoolsByDenomResponse:
+  stafihub.stafihub.ledger.QueryBondedPoolsByDenomResponse:
     type: object
     properties:
       addrs:
         type: array
         items:
           type: string
-  stafiprotocol.stafihub.ledger.QueryEraExchangeRatesByDenomResponse:
+  stafihub.stafihub.ledger.QueryEraExchangeRatesByDenomResponse:
     type: object
     properties:
       eraExchangeRates:
@@ -21775,7 +21775,7 @@ definitions:
               format: int64
             value:
               type: string
-  stafiprotocol.stafihub.ledger.QueryExchangeRateAllResponse:
+  stafihub.stafihub.ledger.QueryExchangeRateAllResponse:
     type: object
     properties:
       exchangeRates:
@@ -21787,7 +21787,7 @@ definitions:
               type: string
             value:
               type: string
-  stafiprotocol.stafihub.ledger.QueryGetAccountUnbondResponse:
+  stafihub.stafihub.ledger.QueryGetAccountUnbondResponse:
     type: object
     properties:
       unbond:
@@ -21811,7 +21811,7 @@ definitions:
                   type: string
                 recipient:
                   type: string
-  stafiprotocol.stafihub.ledger.QueryGetBondPipelineResponse:
+  stafihub.stafihub.ledger.QueryGetBondPipelineResponse:
     type: object
     properties:
       pipeline:
@@ -21830,7 +21830,7 @@ definitions:
                 type: string
               active:
                 type: string
-  stafiprotocol.stafihub.ledger.QueryGetBondRecordResponse:
+  stafihub.stafihub.ledger.QueryGetBondRecordResponse:
     type: object
     properties:
       bondRecord:
@@ -21848,31 +21848,31 @@ definitions:
             type: string
           amount:
             type: string
-  stafiprotocol.stafihub.ledger.QueryGetChainBondingDurationResponse:
+  stafihub.stafihub.ledger.QueryGetChainBondingDurationResponse:
     type: object
     properties:
       era:
         type: integer
         format: int64
-  stafiprotocol.stafihub.ledger.QueryGetChainEraResponse:
+  stafihub.stafihub.ledger.QueryGetChainEraResponse:
     type: object
     properties:
       era:
         type: integer
         format: int64
-  stafiprotocol.stafihub.ledger.QueryGetCommissionResponse:
+  stafihub.stafihub.ledger.QueryGetCommissionResponse:
     type: object
     properties:
       commission:
         type: string
-  stafiprotocol.stafihub.ledger.QueryGetCurrentEraSnapshotResponse:
+  stafihub.stafihub.ledger.QueryGetCurrentEraSnapshotResponse:
     type: object
     properties:
       shotIds:
         type: array
         items:
           type: string
-  stafiprotocol.stafihub.ledger.QueryGetEraExchangeRateResponse:
+  stafihub.stafihub.ledger.QueryGetEraExchangeRateResponse:
     type: object
     properties:
       eraExchangeRate:
@@ -21885,20 +21885,20 @@ definitions:
             format: int64
           value:
             type: string
-  stafiprotocol.stafihub.ledger.QueryGetEraSnapshotResponse:
+  stafihub.stafihub.ledger.QueryGetEraSnapshotResponse:
     type: object
     properties:
       shotIds:
         type: array
         items:
           type: string
-  stafiprotocol.stafihub.ledger.QueryGetEraUnbondLimitResponse:
+  stafihub.stafihub.ledger.QueryGetEraUnbondLimitResponse:
     type: object
     properties:
       limit:
         type: integer
         format: int64
-  stafiprotocol.stafihub.ledger.QueryGetExchangeRateResponse:
+  stafihub.stafihub.ledger.QueryGetExchangeRateResponse:
     type: object
     properties:
       exchangeRate:
@@ -21908,7 +21908,7 @@ definitions:
             type: string
           value:
             type: string
-  stafiprotocol.stafihub.ledger.QueryGetLeastBondResponse:
+  stafihub.stafihub.ledger.QueryGetLeastBondResponse:
     type: object
     properties:
       leastBond:
@@ -21918,7 +21918,7 @@ definitions:
             type: string
           amount:
             type: string
-  stafiprotocol.stafihub.ledger.QueryGetPoolDetailResponse:
+  stafihub.stafihub.ledger.QueryGetPoolDetailResponse:
     type: object
     properties:
       detail:
@@ -21935,7 +21935,7 @@ definitions:
           threshold:
             type: integer
             format: int64
-  stafiprotocol.stafihub.ledger.QueryGetPoolUnbondResponse:
+  stafihub.stafihub.ledger.QueryGetPoolUnbondResponse:
     type: object
     properties:
       unbond:
@@ -21959,12 +21959,12 @@ definitions:
                   type: string
                 recipient:
                   type: string
-  stafiprotocol.stafihub.ledger.QueryGetReceiverResponse:
+  stafihub.stafihub.ledger.QueryGetReceiverResponse:
     type: object
     properties:
       receiver:
         type: string
-  stafiprotocol.stafihub.ledger.QueryGetSignatureResponse:
+  stafihub.stafihub.ledger.QueryGetSignatureResponse:
     type: object
     properties:
       signature:
@@ -21993,7 +21993,7 @@ definitions:
             type: array
             items:
               type: string
-  stafiprotocol.stafihub.ledger.QueryGetSnapshotResponse:
+  stafihub.stafihub.ledger.QueryGetSnapshotResponse:
     type: object
     properties:
       shot:
@@ -22027,17 +22027,17 @@ definitions:
               - WITHDRAW_REPORTED
               - TRANSFER_REPORTED
             default: ERA_UPDATED
-  stafiprotocol.stafihub.ledger.QueryGetTotalExpectedActiveResponse:
+  stafihub.stafihub.ledger.QueryGetTotalExpectedActiveResponse:
     type: object
     properties:
       active:
         type: string
-  stafiprotocol.stafihub.ledger.QueryGetUnbondCommissionResponse:
+  stafihub.stafihub.ledger.QueryGetUnbondCommissionResponse:
     type: object
     properties:
       commission:
         type: string
-  stafiprotocol.stafihub.ledger.QueryGetUnbondFeeResponse:
+  stafihub.stafihub.ledger.QueryGetUnbondFeeResponse:
     type: object
     properties:
       fee:
@@ -22047,14 +22047,14 @@ definitions:
             type: string
           value:
             type: string
-  stafiprotocol.stafihub.ledger.QueryPoolsByDenomResponse:
+  stafihub.stafihub.ledger.QueryPoolsByDenomResponse:
     type: object
     properties:
       addrs:
         type: array
         items:
           type: string
-  stafiprotocol.stafihub.ledger.Signature:
+  stafihub.stafihub.ledger.Signature:
     type: object
     properties:
       denom:
@@ -22080,14 +22080,14 @@ definitions:
         type: array
         items:
           type: string
-  stafiprotocol.stafihub.ledger.UnbondFee:
+  stafihub.stafihub.ledger.UnbondFee:
     type: object
     properties:
       denom:
         type: string
       value:
         type: string
-  stafiprotocol.stafihub.ledger.Unbonding:
+  stafihub.stafihub.ledger.Unbonding:
     type: object
     properties:
       unbonder:
@@ -22096,7 +22096,7 @@ definitions:
         type: string
       recipient:
         type: string
-  stafiprotocol.stafihub.ledger.UserUnlockChunk:
+  stafihub.stafihub.ledger.UserUnlockChunk:
     type: object
     properties:
       pool:
@@ -22108,28 +22108,28 @@ definitions:
         type: string
       recipient:
         type: string
-  stafiprotocol.stafihub.relayers.MsgCreateRelayerResponse:
+  stafihub.stafihub.relayers.MsgCreateRelayerResponse:
     type: object
-  stafiprotocol.stafihub.relayers.MsgDeleteRelayerResponse:
+  stafihub.stafihub.relayers.MsgDeleteRelayerResponse:
     type: object
-  stafiprotocol.stafihub.relayers.MsgUpdateThresholdResponse:
+  stafihub.stafihub.relayers.MsgUpdateThresholdResponse:
     type: object
-  stafiprotocol.stafihub.relayers.QueryGetThresholdResponse:
+  stafihub.stafihub.relayers.QueryGetThresholdResponse:
     type: object
     properties:
       threshold:
         type: integer
         format: int64
-  stafiprotocol.stafihub.relayers.QueryRelayersByDenomResponse:
+  stafihub.stafihub.relayers.QueryRelayersByDenomResponse:
     type: object
     properties:
       relayers:
         type: array
         items:
           type: string
-  stafiprotocol.stafihub.rvote.MsgSetProposalLifeResponse:
+  stafihub.stafihub.rvote.MsgSetProposalLifeResponse:
     type: object
-  stafiprotocol.stafihub.rvote.MsgSubmitProposalResponse:
+  stafihub.stafihub.rvote.MsgSubmitProposalResponse:
     type: object
     properties:
       propId:
@@ -22142,7 +22142,7 @@ definitions:
           - PROPOSAL_STATUS_EXPIRED
         default: PROPOSAL_STATUS_INITIATED
         description: ProposalStatus enumerates the valid statuses of a proposal.
-  stafiprotocol.stafihub.rvote.ProposalStatus:
+  stafihub.stafihub.rvote.ProposalStatus:
     type: string
     enum:
       - PROPOSAL_STATUS_INITIATED
@@ -22150,22 +22150,22 @@ definitions:
       - PROPOSAL_STATUS_EXPIRED
     default: PROPOSAL_STATUS_INITIATED
     description: ProposalStatus enumerates the valid statuses of a proposal.
-  stafiprotocol.stafihub.rvote.QueryGetProposalLifeResponse:
+  stafihub.stafihub.rvote.QueryGetProposalLifeResponse:
     type: object
     properties:
       proposalLife:
         type: string
         format: int64
-  stafiprotocol.stafihub.rvote.QueryGetProposalResponse:
+  stafihub.stafihub.rvote.QueryGetProposalResponse:
     type: object
     properties:
       proposal:
         type: string
-  stafiprotocol.stafihub.sudo.MsgAddDenomResponse:
+  stafihub.stafihub.sudo.MsgAddDenomResponse:
     type: object
-  stafiprotocol.stafihub.sudo.MsgUpdateAdminResponse:
+  stafihub.stafihub.sudo.MsgUpdateAdminResponse:
     type: object
-  stafiprotocol.stafihub.sudo.QueryAdminResponse:
+  stafihub.stafihub.sudo.QueryAdminResponse:
     type: object
     properties:
       address:
