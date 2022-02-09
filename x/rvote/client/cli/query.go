@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/client/flags"
 
 	// "strings"
@@ -12,7 +13,7 @@ import (
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/stafiprotocol/stafihub/x/rvote/types"
+	"github.com/stafihub/stafihub/x/rvote/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

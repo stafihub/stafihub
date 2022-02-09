@@ -2,7 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
+	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
 )
 
 type SudoKeeper interface {

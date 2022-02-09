@@ -6,8 +6,8 @@ import (
 
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/ledger/keeper"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/x/ledger/keeper"
+	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"

@@ -86,20 +86,20 @@ import (
 	"github.com/tendermint/spm/cosmoscmd"
 	"github.com/tendermint/spm/openapiconsole"
 
-	"github.com/stafiprotocol/stafihub/docs"
+	"github.com/stafihub/stafihub/docs"
 
-	ledgermodule "github.com/stafiprotocol/stafihub/x/ledger"
-	ledgermodulekeeper "github.com/stafiprotocol/stafihub/x/ledger/keeper"
-	ledgermoduletypes "github.com/stafiprotocol/stafihub/x/ledger/types"
-	relayersmodule "github.com/stafiprotocol/stafihub/x/relayers"
-	relayersmodulekeeper "github.com/stafiprotocol/stafihub/x/relayers/keeper"
-	relayersmoduletypes "github.com/stafiprotocol/stafihub/x/relayers/types"
-	rvotemodule "github.com/stafiprotocol/stafihub/x/rvote"
-	rvotemodulekeeper "github.com/stafiprotocol/stafihub/x/rvote/keeper"
-	rvotemoduletypes "github.com/stafiprotocol/stafihub/x/rvote/types"
-	sudomodule "github.com/stafiprotocol/stafihub/x/sudo"
-	sudomodulekeeper "github.com/stafiprotocol/stafihub/x/sudo/keeper"
-	sudomoduletypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	ledgermodule "github.com/stafihub/stafihub/x/ledger"
+	ledgermodulekeeper "github.com/stafihub/stafihub/x/ledger/keeper"
+	ledgermoduletypes "github.com/stafihub/stafihub/x/ledger/types"
+	relayersmodule "github.com/stafihub/stafihub/x/relayers"
+	relayersmodulekeeper "github.com/stafihub/stafihub/x/relayers/keeper"
+	relayersmoduletypes "github.com/stafihub/stafihub/x/relayers/types"
+	rvotemodule "github.com/stafihub/stafihub/x/rvote"
+	rvotemodulekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
+	rvotemoduletypes "github.com/stafihub/stafihub/x/rvote/types"
+	sudomodule "github.com/stafihub/stafihub/x/sudo"
+	sudomodulekeeper "github.com/stafihub/stafihub/x/sudo/keeper"
+	sudomoduletypes "github.com/stafihub/stafihub/x/sudo/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

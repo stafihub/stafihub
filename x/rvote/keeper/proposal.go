@@ -3,8 +3,8 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
-	"github.com/stafiprotocol/stafihub/x/rvote/types"
+	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
+	"github.com/stafihub/stafihub/x/rvote/types"
 )
 
 func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {

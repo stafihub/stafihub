@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/stafiprotocol/stafihub/testutil/network"
-	"github.com/stafiprotocol/stafihub/x/relayers/client/cli"
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
+	"github.com/stafihub/stafihub/testutil/network"
+	"github.com/stafihub/stafihub/x/relayers/client/cli"
+	"github.com/stafihub/stafihub/x/relayers/types"
 )
 
 // Prevent strconv unused error

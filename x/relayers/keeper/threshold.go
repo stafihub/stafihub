@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
+	"github.com/stafihub/stafihub/x/relayers/types"
 )
 
 // SetThreshold set a specific threshold in the store from its denom

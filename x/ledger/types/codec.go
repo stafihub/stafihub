@@ -5,7 +5,7 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
-	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
+	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {

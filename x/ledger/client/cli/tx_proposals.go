@@ -9,8 +9,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
-	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
+	"github.com/stafihub/stafihub/x/ledger/types"
+	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 )
 
 var _ = strconv.Itoa(0)

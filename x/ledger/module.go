@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
@@ -17,9 +18,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/stafiprotocol/stafihub/x/ledger/client/cli"
-	"github.com/stafiprotocol/stafihub/x/ledger/keeper"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/x/ledger/client/cli"
+	"github.com/stafihub/stafihub/x/ledger/keeper"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var (

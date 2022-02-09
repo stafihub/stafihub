@@ -2,8 +2,9 @@ package types
 
 import (
 	"encoding/hex"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
+	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 	"github.com/tendermint/tendermint/crypto"
 )
 

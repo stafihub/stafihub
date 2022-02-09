@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
+	"github.com/stafihub/stafihub/x/relayers/types"
 	"github.com/stretchr/testify/require"
 )
 

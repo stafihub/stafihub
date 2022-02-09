@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 func (k Keeper) AddPool(ctx sdk.Context, denom string, addr string) {

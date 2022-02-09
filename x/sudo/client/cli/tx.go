@@ -2,9 +2,10 @@ package cli
 
 import (
 	"fmt"
-	"github.com/cosmos/cosmos-sdk/version"
 	"strings"
 	"time"
+
+	"github.com/cosmos/cosmos-sdk/version"
 
 	"github.com/spf13/cobra"
 
@@ -12,7 +13,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/sudo/types"
 )
 
 var (

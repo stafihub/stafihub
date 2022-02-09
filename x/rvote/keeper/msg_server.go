@@ -2,10 +2,11 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
-	"github.com/stafiprotocol/stafihub/x/rvote/types"
-	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
+	"github.com/stafihub/stafihub/x/rvote/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 type msgServer struct {

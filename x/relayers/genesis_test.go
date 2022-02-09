@@ -3,9 +3,9 @@ package relayers_test
 import (
 	"testing"
 
-	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
-	"github.com/stafiprotocol/stafihub/x/relayers"
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
+	keepertest "github.com/stafihub/stafihub/testutil/keeper"
+	"github.com/stafihub/stafihub/x/relayers"
+	"github.com/stafihub/stafihub/x/relayers/types"
 	"github.com/stretchr/testify/require"
 )
 

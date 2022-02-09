@@ -3,9 +3,9 @@ package sudo_test
 import (
 	"testing"
 
-	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
-	"github.com/stafiprotocol/stafihub/x/sudo"
-	"github.com/stafiprotocol/stafihub/x/sudo/types"
+	keepertest "github.com/stafihub/stafihub/testutil/keeper"
+	"github.com/stafihub/stafihub/x/sudo"
+	"github.com/stafihub/stafihub/x/sudo/types"
 	"github.com/stretchr/testify/require"
 )
 

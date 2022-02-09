@@ -6,8 +6,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/stafiprotocol/stafihub/x/relayers/types"
-	sudotypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/relayers/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 type msgServer struct {

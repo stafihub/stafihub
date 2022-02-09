@@ -6,7 +6,7 @@ import "ledger/ledger.proto";
 
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "github.com/stafiprotocol/stafihub/x/ledger/types";
+option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 
 // GenesisState defines the ledger module's genesis state.
 message GenesisState {

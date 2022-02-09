@@ -11,8 +11,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 
-	"github.com/stafiprotocol/stafihub/testutil/network"
-	"github.com/stafiprotocol/stafihub/x/relayers/client/cli"
+	"github.com/stafihub/stafihub/testutil/network"
+	"github.com/stafihub/stafihub/x/relayers/client/cli"
 )
 
 // Prevent strconv unused error

@@ -1,4 +1,4 @@
-module github.com/stafiprotocol/stafihub
+module github.com/stafihub/stafihub
 
 go 1.16
 

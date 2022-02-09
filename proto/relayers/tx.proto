@@ -3,7 +3,7 @@ package stafiprotocol.stafihub.relayers;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
+option go_package = "github.com/stafihub/stafihub/x/relayers/types";
 
 // Msg defines the Msg service.
 service Msg {

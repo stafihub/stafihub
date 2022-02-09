@@ -2,10 +2,11 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
-	sudoTypes "github.com/stafiprotocol/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/ledger/types"
+	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) AddNewPool(goCtx context.Context, msg *types.MsgAddNewPool) (*types.MsgAddNewPoolResponse, error) {

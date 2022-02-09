@@ -4,7 +4,7 @@ package stafiprotocol.stafihub.sudo;
 import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
+option go_package = "github.com/stafihub/stafihub/x/sudo/types";
 
 // GenesisState defines the sudo module's genesis state.
 message GenesisState {

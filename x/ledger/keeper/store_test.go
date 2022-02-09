@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	testkeeper "github.com/stafiprotocol/stafihub/testutil/keeper"
-	"github.com/stafiprotocol/stafihub/testutil/sample"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
+	testkeeper "github.com/stafihub/stafihub/testutil/keeper"
+	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -129,7 +129,7 @@ func TestKeeper_SetLeastBond(t *testing.T) {
 	require.False(t, found)
 
 	expLb := types.LeastBond{
-		Denom: sample.TestDenom,
+		Denom:  sample.TestDenom,
 		Amount: sdk.NewInt(100),
 	}
 	k.SetLeastBond(ctx, expLb.Denom, expLb.Amount)
@@ -146,7 +146,7 @@ func TestKeeper_CurrentEraSnapshots(t *testing.T) {
 	require.Equal(t, types.NewEraSnapshot(sample.TestDenom), shot)
 
 	shot1 := types.EraSnapshot{
-		Denom: sample.TestDenom,
+		Denom:   sample.TestDenom,
 		ShotIds: []string{"shotId1", "shotId2"},
 	}
 	k.SetCurrentEraSnapshot(ctx, shot1)
@@ -184,7 +184,7 @@ func TestKeeper_SetEraSnapshot(t *testing.T) {
 	require.Equal(t, types.NewEraSnapshot(sample.TestDenom), shot)
 
 	shot1 := types.EraSnapshot{
-		Denom: sample.TestDenom,
+		Denom:   sample.TestDenom,
 		ShotIds: []string{"shotId1", "shotId2"},
 	}
 	k.SetEraSnapshot(ctx, era, shot1)
@@ -340,5 +340,3 @@ func TestKeeper_SetSignature(t *testing.T) {
 	require.True(t, found)
 	require.Equal(t, sig1, sig)
 }
-
-

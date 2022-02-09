@@ -2,13 +2,14 @@ package keeper_test
 
 import (
 	"context"
-	"github.com/stafiprotocol/stafihub/testutil/sample"
 	"testing"
 
+	"github.com/stafihub/stafihub/testutil/sample"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "github.com/stafiprotocol/stafihub/testutil/keeper"
-	"github.com/stafiprotocol/stafihub/x/ledger/keeper"
-	"github.com/stafiprotocol/stafihub/x/ledger/types"
+	keepertest "github.com/stafihub/stafihub/testutil/keeper"
+	"github.com/stafihub/stafihub/x/ledger/keeper"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

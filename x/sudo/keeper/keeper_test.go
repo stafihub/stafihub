@@ -3,8 +3,8 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "github.com/stafiprotocol/stafihub/testutil/keeper"
-	"github.com/stafiprotocol/stafihub/testutil/sample"
+	testkeeper "github.com/stafihub/stafihub/testutil/keeper"
+	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 

@@ -10,10 +10,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafiprotocol/stafihub/app"
-	"github.com/stafiprotocol/stafihub/testutil/sample"
-	"github.com/stafiprotocol/stafihub/x/sudo/keeper"
-	"github.com/stafiprotocol/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/app"
+	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/sudo/keeper"
+	"github.com/stafihub/stafihub/x/sudo/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
@@ -30,19 +30,19 @@ import (
 
 var (
 	registry = codectypes.NewInterfaceRegistry()
-	cdc = codec.NewProtoCodec(registry)
+	cdc      = codec.NewProtoCodec(registry)
 
-	db = tmdb.NewMemDB()
+	db         = tmdb.NewMemDB()
 	stateStore = store.NewCommitMultiStore(db)
-	encCfg = app.MakeTestEncodingConfig()
+	encCfg     = app.MakeTestEncodingConfig()
 
-	paramsKeeper = ParamsKeeper(&encCfg)
+	paramsKeeper  = ParamsKeeper(&encCfg)
 	accountKeeper = AccountKeeper(&encCfg, paramsKeeper)
-	bankKeeper = BankKeeper(&encCfg, paramsKeeper, accountKeeper)
+	bankKeeper    = BankKeeper(&encCfg, paramsKeeper, accountKeeper)
 
-	sudoStoreKey = sdk.NewKVStoreKey(types.StoreKey)
-	sudoMemStoreKey  = storetypes.NewMemoryStoreKey(types.MemStoreKey)
-	sudoOnce     sync.Once
+	sudoStoreKey    = sdk.NewKVStoreKey(types.StoreKey)
+	sudoMemStoreKey = storetypes.NewMemoryStoreKey(types.MemStoreKey)
+	sudoOnce        sync.Once
 )
 
 func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -50,7 +50,6 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		stateStore.MountStoreWithDB(sudoStoreKey, sdk.StoreTypeIAVL, db)
 		stateStore.MountStoreWithDB(sudoMemStoreKey, sdk.StoreTypeMemory, nil)
 	})
-
 
 	require.NoError(t, stateStore.LoadLatestVersion())
 

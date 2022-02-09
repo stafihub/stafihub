@@ -4,7 +4,7 @@ package stafiprotocol.stafihub.sudo;
 import "google/api/annotations.proto";
 // this line is used by starport scaffolding # 1
 
-option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
+option go_package = "github.com/stafihub/stafihub/x/sudo/types";
 
 // Query defines the gRPC querier service.
 service Query {
