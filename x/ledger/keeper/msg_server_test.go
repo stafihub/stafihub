@@ -17,7 +17,7 @@ func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
 }
 
 func addNewPool(s types.MsgServer, ctx context.Context) *types.MsgAddNewPool {
-	msg := types.NewMsgAddNewPool(sample.OriginAccAddress(), sample.TestDenom, sample.AccAddress())
+	msg := types.NewMsgAddNewPool(sample.TestAdminAcc, sample.TestDenom, sample.AccAddress())
 	_, err := s.AddNewPool(ctx, msg)
 	if err != nil {
 		panic(err)

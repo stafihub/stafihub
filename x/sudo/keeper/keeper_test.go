@@ -12,7 +12,7 @@ func TestAdmin(t *testing.T) {
 	k, ctx := testkeeper.SudoKeeper(t)
 
 	admin := k.GetAdmin(ctx)
-	require.Nil(t, admin)
+	require.Equal(t, sample.TestAdminAcc, admin)
 
 	addr := sample.OriginAccAddress()
 	k.SetAdmin(ctx, addr)

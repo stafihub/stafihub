@@ -3,12 +3,22 @@ package sample
 import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafiprotocol/stafihub/app"
+	"github.com/tendermint/spm/cosmoscmd"
 )
 
 var (
-	TestDenom  = "TestDenom"
-	TestDenom1 = "TestDenom1"
+	TestDenom       = "TestDenom"
+	TestDenom1      = "TestDenom1"
+	TestAdmin string
+	TestAdminAcc sdk.AccAddress
 )
+
+func init() {
+	cosmoscmd.SetPrefixes(app.AccountAddressPrefix)
+	TestAdminAcc = OriginAccAddress()
+	TestAdmin = TestAdminAcc.String()
+}
 
 // AccAddress returns a sample account address
 func AccAddress() string {
