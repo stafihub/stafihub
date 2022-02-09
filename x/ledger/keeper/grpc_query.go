@@ -37,11 +37,7 @@ func (q Querier) PoolsByDenom(goCtx context.Context, req *types.QueryPoolsByDeno
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
-	addrs := make([]string, 0)
-	for addr, _ := range pool.Addrs {
-		addrs = append(addrs, addr)
-	}
-	return &types.QueryPoolsByDenomResponse{Addrs: addrs}, nil
+	return &types.QueryPoolsByDenomResponse{Addrs: pool.Addrs}, nil
 }
 
 func (q Querier) BondedPoolsByDenom(goCtx context.Context, req *types.QueryBondedPoolsByDenomRequest) (*types.QueryBondedPoolsByDenomResponse, error) {
@@ -55,12 +51,7 @@ func (q Querier) BondedPoolsByDenom(goCtx context.Context, req *types.QueryBonde
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}
 
-	addrs := make([]string, 0)
-	for addr, _ := range bondedPool.Addrs {
-		addrs = append(addrs, addr)
-	}
-
-	return &types.QueryBondedPoolsByDenomResponse{Addrs: addrs}, nil
+	return &types.QueryBondedPoolsByDenomResponse{Addrs: bondedPool.Addrs}, nil
 }
 
 func (q Querier) GetPoolDetail(goCtx context.Context, req *types.QueryGetPoolDetailRequest) (*types.QueryGetPoolDetailResponse, error) {

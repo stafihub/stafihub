@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 
@@ -41,10 +40,7 @@ func CmdGetProposal() *cobra.Command {
 		Short: "Query GetProposal",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqPropId, err := hex.DecodeString(args[0])
-			if err != nil {
-				return err
-			}
+			reqPropId := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

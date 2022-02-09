@@ -17,17 +17,9 @@ func (k Keeper) RelayersByDenom(c context.Context, req *types.QueryRelayersByDen
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
-	rel, ok := k.GetRelayerByDenom(ctx, req.Denom)
-	if !ok || rel.Addrs == nil {
-		return nil, status.Error(codes.InvalidArgument, "not found")
-	}
+	rel, _ := k.GetRelayerByDenom(ctx, req.Denom)
 
-	relayers := make([]string, 0)
-	for addr, _ := range rel.Addrs {
-		relayers = append(relayers, addr)
-	}
-
-	return &types.QueryRelayersByDenomResponse{Relayers: relayers}, nil
+	return &types.QueryRelayersByDenomResponse{Relayers: rel.Addrs}, nil
 }
 
 func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest) (*types.QueryGetThresholdResponse, error) {

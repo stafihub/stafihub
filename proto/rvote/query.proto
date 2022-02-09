@@ -23,7 +23,7 @@ service Query {
 }
 
 message QueryGetProposalRequest {
-  bytes propId = 1;
+  string propId = 1;
 }
 
 message QueryGetProposalResponse {

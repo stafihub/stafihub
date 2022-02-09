@@ -10,48 +10,48 @@ message SetChainEraProposal {
     string proposer = 1;
     string denom = 2;
     uint32 era = 3;
-    bytes propId = 4;
+    string propId = 4;
 }
 
 message BondReportProposal {
     string proposer = 1;
     string denom = 2;
-    bytes shotId = 3;
+    string shotId = 3;
     BondAction action = 4;
-    bytes propId = 5;
+    string propId = 5;
 }
 
 message BondAndReportActiveProposal {
   string proposer = 1;
   string denom = 2;
-  bytes shotId = 3;
+  string shotId = 3;
   BondAction action = 4;
   string staked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string unstaked = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  bytes propId = 7;
+  string propId = 7;
 }
 
 message ActiveReportProposal {
   string proposer = 1;
   string denom = 2;
-  bytes shotId = 3;
+  string shotId = 3;
   string staked = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string unstaked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  bytes propId = 6;
+  string propId = 6;
 }
 
 message WithdrawReportProposal {
     string proposer = 1;
     string denom = 2;
-    bytes shotId = 3;
-    bytes propId = 4;
+    string shotId = 3;
+    string propId = 4;
 }
 
 message TransferReportProposal {
     string proposer = 1;
     string denom = 2;
-    bytes shotId = 3;
-    bytes propId = 4;
+    string shotId = 3;
+    string propId = 4;
 }
 
 message ExecuteBondProposal {
@@ -62,5 +62,5 @@ message ExecuteBondProposal {
     string blockhash = 5;
     string txhash = 6;
     string amount = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-    bytes propId = 8;
+    string propId = 8;
 }

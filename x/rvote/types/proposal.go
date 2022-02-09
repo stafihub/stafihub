@@ -31,10 +31,10 @@ func (p *Proposal) GetContent() Content {
 	return content
 }
 
-func (p *Proposal) PropId() []byte {
+func (p *Proposal) PropId() string {
 	content := p.GetContent()
 	if content == nil {
-		return nil
+		return ""
 	}
 	return content.GetPropId()
 }

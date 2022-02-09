@@ -39,7 +39,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 		return nil, types.ErrRelayerAlreadySet
 	}
 
-	k.SetRelayer(ctx, msg.Denom, msg.Address)
+	k.AddRelayer(ctx, msg.Denom, msg.Address)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

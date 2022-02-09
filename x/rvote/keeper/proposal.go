@@ -8,7 +8,8 @@ import (
 )
 
 func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
-	prop, ok := k.GetProposal(ctx, content.GetPropId())
+	propId := content.GetPropId()
+	prop, ok := k.GetProposal(ctx, propId)
 	if !ok {
 		prop = &types.Proposal{
 			Status:     types.StatusInitiated,
@@ -31,14 +32,14 @@ func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer 
 func (k Keeper) SetProposal(ctx sdk.Context, proposal *types.Proposal) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 	b := k.cdc.MustMarshal(proposal)
-	store.Set(proposal.PropId(), b)
+	store.Set([]byte(proposal.PropId()), b)
 }
 
-func (k Keeper) GetProposal(ctx sdk.Context, id []byte) (val *types.Proposal, found bool) {
+func (k Keeper) GetProposal(ctx sdk.Context, propId string) (val *types.Proposal, found bool) {
 	val = &types.Proposal{}
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
 
-	b := store.Get(id)
+	b := store.Get([]byte(propId))
 	if b == nil {
 		return nil, false
 	}

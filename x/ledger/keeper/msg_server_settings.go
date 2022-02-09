@@ -24,6 +24,10 @@ func (k msgServer) AddNewPool(goCtx context.Context, msg *types.MsgAddNewPool) (
 	//	return nil, banktypes.ErrDenomMetadataNotFound
 	//}
 
+	if k.Keeper.IsPoolExist(ctx, msg.Denom, msg.Addr) {
+		return nil, types.ErrPoolAlreadyAdded
+	}
+
 	k.Keeper.AddPool(ctx, msg.Denom, msg.Addr)
 	return &types.MsgAddNewPoolResponse{}, nil
 }

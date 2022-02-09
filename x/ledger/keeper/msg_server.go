@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"encoding/hex"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -159,11 +158,12 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 		sig = types.NewSignature(msg.Denom, msg.Era, msg.Pool, msg.TxType, msg.PropId)
 	}
 
-	if _, ok := sig.Sigs[msg.Creator]; ok {
-		return nil, types.ErrSignatureRepeated
+	for _, signer := range sig.Sigs {
+		if signer == msg.Creator {
+			return nil, types.ErrSignatureRepeated
+		}
 	}
-	sig.Sigs[msg.Creator] = msg.Signature
-
+	sig.Sigs = append(sig.Sigs, msg.Creator)
 	k.Keeper.SetSignature(ctx, sig)
 
 	if uint32(len(sig.Sigs)) == detail.Threshold {
@@ -174,7 +174,7 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 				sdk.NewAttribute(types.AttributeKeyEra, strconv.FormatUint(uint64(msg.Era), 10)),
 				sdk.NewAttribute(types.AttributeKeyPool, msg.Pool),
 				sdk.NewAttribute(types.AttributeKeyTxType, msg.TxType.String()),
-				sdk.NewAttribute(types.AttributeKeyPropId, hex.EncodeToString(msg.PropId)),
+				sdk.NewAttribute(types.AttributeKeyPropId, msg.PropId),
 			),
 		)
 	}
@@ -187,7 +187,7 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 			sdk.NewAttribute(types.AttributeKeyEra, strconv.FormatUint(uint64(msg.Era), 10)),
 			sdk.NewAttribute(types.AttributeKeyPool, msg.Pool),
 			sdk.NewAttribute(types.AttributeKeyTxType, msg.TxType.String()),
-			sdk.NewAttribute(types.AttributeKeyPropId, hex.EncodeToString(msg.PropId)),
+			sdk.NewAttribute(types.AttributeKeyPropId, msg.PropId),
 			sdk.NewAttribute(sdk.AttributeKeySignature, msg.Signature),
 		),
 	)

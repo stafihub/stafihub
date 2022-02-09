@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	rvotetypes "github.com/stafiprotocol/stafihub/x/rvote/types"
 	"github.com/tendermint/tendermint/crypto"
@@ -50,7 +51,7 @@ func (p *SetChainEraProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *SetChainEraProposal) ProposalRoute() string {
@@ -74,7 +75,7 @@ func (p *SetChainEraProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewBondReportProposal(proposer sdk.AccAddress, denom string, shotId []byte, action BondAction) *BondReportProposal {
+func NewBondReportProposal(proposer sdk.AccAddress, denom string, shotId string, action BondAction) *BondReportProposal {
 	p := &BondReportProposal{
 		Denom:  denom,
 		ShotId: shotId,
@@ -92,7 +93,7 @@ func (p *BondReportProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *BondReportProposal) ProposalRoute() string {
@@ -116,7 +117,7 @@ func (p *BondReportProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewBondAndReportActiveProposal(proposer sdk.AccAddress, denom string, shotId []byte, action BondAction, staked, unstaked sdk.Int) *BondAndReportActiveProposal {
+func NewBondAndReportActiveProposal(proposer sdk.AccAddress, denom string, shotId string, action BondAction, staked, unstaked sdk.Int) *BondAndReportActiveProposal {
 	p := &BondAndReportActiveProposal{
 		Denom:    denom,
 		ShotId:   shotId,
@@ -136,7 +137,7 @@ func (p *BondAndReportActiveProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *BondAndReportActiveProposal) ProposalRoute() string {
@@ -160,7 +161,7 @@ func (p *BondAndReportActiveProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewActiveReportProposal(proposer sdk.AccAddress, denom string, shotId []byte, staked, unstaked sdk.Int) *ActiveReportProposal {
+func NewActiveReportProposal(proposer sdk.AccAddress, denom string, shotId string, staked, unstaked sdk.Int) *ActiveReportProposal {
 	p := &ActiveReportProposal{
 		Denom:    denom,
 		ShotId:   shotId,
@@ -179,7 +180,7 @@ func (p *ActiveReportProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *ActiveReportProposal) ProposalRoute() string {
@@ -203,7 +204,7 @@ func (p *ActiveReportProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewWithdrawReportProposal(proposer sdk.AccAddress, denom string, shotId []byte) *WithdrawReportProposal {
+func NewWithdrawReportProposal(proposer sdk.AccAddress, denom string, shotId string) *WithdrawReportProposal {
 	p := &WithdrawReportProposal{
 		Denom:  denom,
 		ShotId: shotId,
@@ -220,7 +221,7 @@ func (p *WithdrawReportProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *WithdrawReportProposal) ProposalRoute() string {
@@ -244,7 +245,7 @@ func (p *WithdrawReportProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewTransferReportProposal(proposer sdk.AccAddress, denom string, shotId []byte) *TransferReportProposal {
+func NewTransferReportProposal(proposer sdk.AccAddress, denom string, shotId string) *TransferReportProposal {
 	p := &TransferReportProposal{
 		Denom:  denom,
 		ShotId: shotId,
@@ -261,7 +262,7 @@ func (p *TransferReportProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *TransferReportProposal) ProposalRoute() string {
@@ -308,7 +309,7 @@ func (p *ExecuteBondProposal) setPropId() {
 		panic(err)
 	}
 
-	p.PropId = crypto.Sha256(b)
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
 }
 
 func (p *ExecuteBondProposal) ProposalRoute() string {

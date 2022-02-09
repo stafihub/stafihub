@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 
 	"strconv"
@@ -521,10 +520,7 @@ func CmdGetSnapshot() *cobra.Command {
 		Short: "Query GetSnapShot",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqShotId, err := hex.DecodeString(args[0])
-			if err != nil {
-				return err
-			}
+			reqShotId := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -713,10 +709,7 @@ func CmdGetSignature() *cobra.Command {
 				return fmt.Errorf("invalid txtype")
 			}
 
-			reqPropId, err := hex.DecodeString(args[4])
-			if err != nil {
-				return err
-			}
+			reqPropId := args[4]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

@@ -4,13 +4,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func NewPool(denom string) Pool {
-	return Pool{
-		Denom: denom,
-		Addrs: map[string]bool{},
-	}
-}
-
 func NewPoolDetail(denom, pool string, subAccounts []string, threshold uint32) PoolDetail {
 	return PoolDetail{
 		Denom:       denom,
@@ -78,7 +71,7 @@ func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk, voter stri
 func NewEraSnapshot(denom string) EraSnapshot {
 	return EraSnapshot{
 		Denom:   denom,
-		ShotIds: [][]byte{},
+		ShotIds: []string{},
 	}
 }
 
@@ -94,14 +87,14 @@ func NewBondRecord(denom, bonder, pool, blockhash, txhash string, amount sdk.Int
 }
 
 func NewSignature(denom string, era uint32, pool string,
-	txType OriginalTxType, propId []byte) Signature {
+	txType OriginalTxType, propId string) Signature {
 	return Signature{
 		Denom:  denom,
 		Era:    era,
 		Pool:   pool,
 		TxType: txType,
 		PropId: propId,
-		Sigs:   map[string]string{},
+		Sigs:   []string{},
 	}
 }
 

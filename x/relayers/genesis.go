@@ -11,8 +11,8 @@ import (
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// Set all the relayer
 	for _, rel := range genState.Relayers {
-		for addr, _ := range rel.Addrs {
-			k.SetRelayer(ctx, rel.Denom, addr)
+		for _, addr := range rel.Addrs {
+			k.AddRelayer(ctx, rel.Denom, addr)
 		}
 	}
 	// Set all the threshold

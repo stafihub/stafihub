@@ -2,8 +2,6 @@ package keeper
 
 import (
 	"context"
-	"encoding/hex"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	relayerstypes "github.com/stafiprotocol/stafihub/x/relayers/types"
 	"github.com/stafiprotocol/stafihub/x/rvote/types"
@@ -72,7 +70,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		prop.Status = types.StatusApproved
 	}
 
-	res := &types.MsgSubmitProposalResponse{PropId: hex.EncodeToString(prop.PropId()), Status: prop.Status}
+	res := &types.MsgSubmitProposalResponse{PropId: prop.PropId(), Status: prop.Status}
 	if prop.Status != types.StatusApproved {
 		k.SetProposal(ctx, prop)
 		return res, nil

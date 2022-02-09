@@ -32,12 +32,12 @@ func Test_Relayer(t *testing.T) {
 
 	addr := sample.AccAddress()
 	require.False(t, k.IsRelayer(ctx, sample.TestDenom, addr))
-	k.SetRelayer(ctx, sample.TestDenom, addr)
+	k.AddRelayer(ctx, sample.TestDenom, addr)
 	require.True(t, k.IsRelayer(ctx, sample.TestDenom, addr))
 
 	addr1 := sample.AccAddress()
 	require.False(t, k.IsRelayer(ctx, sample.TestDenom, addr1))
-	k.SetRelayer(ctx, sample.TestDenom, addr1)
+	k.AddRelayer(ctx, sample.TestDenom, addr1)
 	require.True(t, k.IsRelayer(ctx, sample.TestDenom, addr1))
 
 	rel, ok := k.GetRelayerByDenom(ctx, sample.TestDenom)
@@ -60,7 +60,7 @@ func Test_AllRelayer(t *testing.T) {
 	require.True(t, len(rels) == 0)
 
 	addr := sample.AccAddress()
-	k.SetRelayer(ctx, sample.TestDenom, addr)
+	k.AddRelayer(ctx, sample.TestDenom, addr)
 	rels = k.GetAllRelayer(ctx)
 	require.True(t, len(rels) == 1)
 }

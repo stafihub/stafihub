@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"bytes"
 	"encoding/hex"
 	"strconv"
 
@@ -31,7 +30,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 
 	bpool, ok := k.GetBondedPool(ctx, p.Denom)
 	if ok {
-		for addr, _ := range bpool.Addrs {
+		for _, addr := range bpool.Addrs {
 			pipe, _ := k.GetBondPipeline(ctx, p.Denom, addr)
 			bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
 			bshot, err := bondShot.Marshal()
@@ -39,7 +38,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 				return err
 			}
 
-			shotId := crypto.Sha256(bshot)
+			shotId := hex.EncodeToString(crypto.Sha256(bshot))
 			eraShot.ShotIds = append(eraShot.ShotIds, shotId)
 			k.SetSnapshot(ctx, shotId, bondShot)
 			ctx.EventManager().EmitEvent(
@@ -48,7 +47,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 					sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
 					sdk.NewAttribute(types.AttributeKeyLastEra, strconv.FormatUint(uint64(ce.Era), 10)),
 					sdk.NewAttribute(types.AttributeKeyCurrentEra, strconv.FormatUint(uint64(p.Era), 10)),
-					sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(shotId)),
+					sdk.NewAttribute(types.AttributeKeyShotId, shotId),
 					sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 				),
 			)
@@ -104,7 +103,7 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 		sdk.NewEvent(
 			types.EventTypeBondReported,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-			sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+			sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
 			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 		),
 	)
@@ -161,7 +160,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 	eraShots := k.EraSnapshot(ctx, shot.Denom, shot.Era)
 	found := false
 	for _, id := range eraShots.ShotIds {
-		if bytes.Equal(id, p.ShotId) {
+		if id == p.ShotId {
 			found = true
 		}
 	}
@@ -170,10 +169,10 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 	}
 
 	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
-	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([][]byte, 0)}
+	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([]string, 0)}
 	found = false
 	for _, id := range currentEraShots.ShotIds {
-		if bytes.Equal(id, p.ShotId) {
+		if id == p.ShotId {
 			found = true
 		} else {
 			newCurrentEraShots.ShotIds = append(newCurrentEraShots.ShotIds, id)
@@ -202,9 +201,9 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
 	totalExpectedActive := k.TotalExpectedActive(ctx, shot.Denom, shot.Era).Add(pipe.Chunk.Active)
 
-	shots := make([][]byte, 0)
+	shots := make([]string, 0)
 	for _, id := range eraShots.ShotIds {
-		if !bytes.Equal(id, p.ShotId) {
+		if id != p.ShotId {
 			shots = append(shots, id)
 		}
 	}
@@ -225,7 +224,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 			sdk.NewEvent(
 				types.EventTypeActiveReported,
 				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-				sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+				sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
 				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 			),
 		)
@@ -261,7 +260,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	eraShots := k.EraSnapshot(ctx, shot.Denom, shot.Era)
 	found := false
 	for _, id := range eraShots.ShotIds {
-		if bytes.Equal(id, p.ShotId) {
+		if id == p.ShotId {
 			found = true
 		}
 	}
@@ -270,10 +269,10 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	}
 
 	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
-	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([][]byte, 0)}
+	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([]string, 0)}
 	found = false
 	for _, id := range currentEraShots.ShotIds {
-		if bytes.Equal(id, p.ShotId) {
+		if id == p.ShotId {
 			found = true
 		} else {
 			newCurrentEraShots.ShotIds = append(newCurrentEraShots.ShotIds, id)
@@ -306,19 +305,19 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	totalExpectedActive := k.TotalExpectedActive(ctx, shot.Denom, shot.Era).Add(pipe.Chunk.Active)
 
-	shots := make([][]byte, 0)
+	shotIds := make([]string, 0)
 	for _, id := range eraShots.ShotIds {
-		if !bytes.Equal(id, p.ShotId) {
-			shots = append(shots, id)
+		if id != p.ShotId {
+			shotIds = append(shotIds, id)
 		}
 	}
 
-	if len(shots) == 0 {
+	if len(shotIds) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
 		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
 	}
 
-	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shots})
+	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shotIds})
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
@@ -329,7 +328,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 			sdk.NewEvent(
 				types.EventTypeActiveReported,
 				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-				sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+				sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
 				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 			),
 		)
@@ -364,7 +363,7 @@ func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.Withdraw
 		sdk.NewEvent(
 			types.EventTypeWithdrawReported,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-			sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+			sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
 			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 		),
 	)
@@ -391,7 +390,7 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 	newCurrentEraShots := types.NewEraSnapshot(shot.Denom)
 	found := false
 	for _, id := range currentEraShots.ShotIds {
-		if bytes.Equal(id, p.ShotId) {
+		if id == p.ShotId {
 			found = true
 		} else {
 			newCurrentEraShots.ShotIds = append(newCurrentEraShots.ShotIds, id)
@@ -409,7 +408,7 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 		sdk.NewEvent(
 			types.EventTypeTransferReported,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-			sdk.NewAttribute(types.AttributeKeyShotId, hex.EncodeToString(p.ShotId)),
+			sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
 			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 		),
 	)

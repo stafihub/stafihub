@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 	"strconv"
 
@@ -59,10 +58,7 @@ func CmdBondReport() *cobra.Command {
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId, err := hex.DecodeString(args[1])
-			if err != nil {
-				return err
-			}
+			argShotId := args[1]
 			argAction, ok := types.BondAction_value[args[2]]
 			if !ok {
 				return fmt.Errorf("cannot cast %s into bondAction", args[2])
@@ -99,10 +95,7 @@ func CmdBondAndReportActive() *cobra.Command {
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId, err := hex.DecodeString(args[1])
-			if err != nil {
-				return err
-			}
+			argShotId := args[1]
 			argAction, ok := types.BondAction_value[args[2]]
 			if !ok {
 				return fmt.Errorf("cannot cast %s into bondAction", args[2])
@@ -148,10 +141,7 @@ func CmdActiveReport() *cobra.Command {
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId, err := hex.DecodeString(args[1])
-			if err != nil {
-				return err
-			}
+			argShotId := args[1]
 			argStaked, ok := sdk.NewIntFromString(args[2])
 			if !ok {
 				return fmt.Errorf("cast staked %s into Int error", args[2])
@@ -192,10 +182,7 @@ func CmdWithdrawReport() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId, err := hex.DecodeString(args[1])
-			if err != nil {
-				return err
-			}
+			argShotId := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -229,10 +216,7 @@ func CmdTransferReport() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotId, err := hex.DecodeString(args[1])
-			if err != nil {
-				return err
-			}
+			argShotId := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

@@ -10,7 +10,7 @@ option go_package = "github.com/stafiprotocol/stafihub/x/sudo/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc UpdateAdmin(MsgUpdateAdmin) returns (MsgUpdateAdminResponse);
+  rpc UpdateAdmin(MsgUpdateAdmin) returns (MsgUpdateAdminResponse);
   rpc AddDenom(MsgAddDenom) returns (MsgAddDenomResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }

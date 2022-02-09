@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafiprotocol/stafihub/x/ledger/types"
@@ -9,12 +10,8 @@ import (
 
 func (k Keeper) AddPool(ctx sdk.Context, denom string, addr string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolPrefix)
-	pool, ok := k.GetPool(ctx, denom)
-	if !ok {
-		pool = types.NewPool(denom)
-	}
-
-	pool.Addrs[addr] = true
+	pool, _ := k.GetPool(ctx, denom)
+	pool.Addrs = append(pool.Addrs, addr)
 	b := k.cdc.MustMarshal(&pool)
 	store.Set([]byte(denom), b)
 }
@@ -25,18 +22,25 @@ func (k Keeper) IsPoolExist(ctx sdk.Context, denom string, addr string) bool {
 		return false
 	}
 
-	return pool.Addrs[addr]
-}
-
-func (k Keeper) GetPool(ctx sdk.Context, denom string) (pool types.Pool, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolPrefix)
-	b := store.Get([]byte(denom))
-	if b == nil {
-		return pool, false
+	for _, adr := range pool.Addrs {
+		if adr == addr {
+			return true
+		}
 	}
 
-	k.cdc.MustUnmarshal(b, &pool)
-	return pool, true
+	return false
+}
+
+func (k Keeper) GetPool(ctx sdk.Context, denom string) (types.Pool, bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolPrefix)
+	b := store.Get([]byte(denom))
+	val := types.Pool{Denom: denom, Addrs: []string{}}
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
 }
 
 func (k Keeper) RemovePool(ctx sdk.Context, denom string, addr string) {
@@ -46,7 +50,13 @@ func (k Keeper) RemovePool(ctx sdk.Context, denom string, addr string) {
 		return
 	}
 
-	delete(pool.Addrs, addr)
+	addrs := make([]string, 0)
+	for _, adr := range pool.Addrs {
+		if adr != addr {
+			addrs = append(addrs, adr)
+		}
+	}
+	pool.Addrs = addrs
 	b := k.cdc.MustMarshal(&pool)
 	store.Set([]byte(denom), b)
 }
@@ -57,18 +67,25 @@ func (k Keeper) IsBondedPoolExist(ctx sdk.Context, denom string, addr string) bo
 		return false
 	}
 
-	return pool.Addrs[addr]
+	for _, adr := range pool.Addrs {
+		if adr == addr {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (k Keeper) GetBondedPool(ctx sdk.Context, denom string) (pool types.Pool, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondedPoolPrefix)
 	b := store.Get([]byte(denom))
+	val := types.Pool{Denom: denom, Addrs: []string{}}
 	if b == nil {
-		return pool, false
+		return val, false
 	}
 
-	k.cdc.MustUnmarshal(b, &pool)
-	return pool, true
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
 }
 
 func (k Keeper) RemoveBondedPool(ctx sdk.Context, denom string, addr string) {
@@ -78,19 +95,21 @@ func (k Keeper) RemoveBondedPool(ctx sdk.Context, denom string, addr string) {
 		return
 	}
 
-	delete(pool.Addrs, addr)
+	addrs := make([]string, 0)
+	for _, adr := range pool.Addrs {
+		if adr != addr {
+			addrs = append(addrs, adr)
+		}
+	}
+	pool.Addrs = addrs
 	b := k.cdc.MustMarshal(&pool)
 	store.Set([]byte(denom), b)
 }
 
 func (k Keeper) AddBondedPool(ctx sdk.Context, denom string, addr string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondedPoolPrefix)
-	pool, ok := k.GetBondedPool(ctx, denom)
-	if !ok {
-		pool = types.NewPool(denom)
-	}
-
-	pool.Addrs[addr] = true
+	pool, _ := k.GetBondedPool(ctx, denom)
+	pool.Addrs = append(pool.Addrs, addr)
 	b := k.cdc.MustMarshal(&pool)
 	store.Set([]byte(denom), b)
 }
@@ -225,16 +244,16 @@ func (k Keeper) ClearCurrentEraSnapshots(ctx sdk.Context, denom string) {
 	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) SetSnapshot(ctx sdk.Context, shotId []byte, shot types.BondSnapshot) {
+func (k Keeper) SetSnapshot(ctx sdk.Context, shotId string, shot types.BondSnapshot) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SnapshotPrefix)
 	b := k.cdc.MustMarshal(&shot)
-	store.Set(shotId, b)
+	store.Set([]byte(shotId), b)
 }
 
-func (k Keeper) Snapshot(ctx sdk.Context, shotId []byte) (val types.BondSnapshot, found bool) {
+func (k Keeper) Snapshot(ctx sdk.Context, shotId string) (val types.BondSnapshot, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SnapshotPrefix)
 
-	b := store.Get(shotId)
+	b := store.Get([]byte(shotId))
 	if b == nil {
 		return types.BondSnapshot{}, false
 	}
@@ -471,21 +490,19 @@ func (k Keeper) SetSignature(ctx sdk.Context, sig types.Signature) {
 }
 
 func (k Keeper) GetSignature(ctx sdk.Context, denom string, era uint32, pool string,
-	txType types.OriginalTxType, propId []byte) (val types.Signature, found bool) {
+	txType types.OriginalTxType, propId string) (types.Signature, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.SignaturePrefix)
 	bera := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bera, era)
 	key := append([]byte(denom+pool+txType.String()), bera...)
 	key = append(key, propId...)
 
+	val := types.NewSignature(denom, era, pool, txType, propId)
 	b := store.Get(key)
 	if b == nil {
 		return val, false
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
-	if val.Sigs == nil {
-		val.Sigs = make(map[string]string)
-	}
 	return val, true
 }

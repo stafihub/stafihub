@@ -203,7 +203,7 @@ message QueryGetCurrentEraSnapshotRequest {
 }
 
 message QueryGetCurrentEraSnapshotResponse {
-  repeated bytes shotIds = 1;
+  repeated string shotIds = 1;
 }
 
 message QueryGetReceiverRequest {
@@ -274,11 +274,11 @@ message QueryGetEraSnapshotRequest {
 }
 
 message QueryGetEraSnapshotResponse {
-  repeated bytes shotIds = 1;
+  repeated string shotIds = 1;
 }
 
 message QueryGetSnapshotRequest {
-  bytes shotId = 1;
+  string shotId = 1;
 }
 
 message QueryGetSnapshotResponse {
@@ -328,7 +328,7 @@ message QueryGetSignatureRequest {
   uint32 era = 2;
   string pool = 3;
   OriginalTxType txType = 4;
-  bytes propId = 5;
+  string propId = 5;
 }
 
 message QueryGetSignatureResponse {

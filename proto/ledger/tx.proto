@@ -149,7 +149,7 @@ message MsgSubmitSignature {
   uint32 era = 3;
   string pool = 4;
   OriginalTxType txType = 5;
-  bytes propId = 6;
+  string propId = 6;
   string signature = 7;
 }
 

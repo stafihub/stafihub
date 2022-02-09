@@ -17,7 +17,7 @@ const (
 // TODO Try to unify this interface with types/module/simulation
 // https://github.com/cosmos/cosmos-sdk/issues/5853
 type Content interface {
-	GetPropId() []byte
+	GetPropId() string
 	GetDenom() string
 	ProposalRoute() string
 	ProposalType() string

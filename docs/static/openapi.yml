@@ -13086,7 +13086,6 @@ paths:
                 type: array
                 items:
                   type: string
-                  format: byte
         default:
           description: An unexpected error response.
           schema:
@@ -13126,7 +13125,6 @@ paths:
                 type: array
                 items:
                   type: string
-                  format: byte
         default:
           description: An unexpected error response.
           schema:
@@ -13419,10 +13417,9 @@ paths:
                     description: OriginalTxType enumerates the tx type of a signature.
                   propId:
                     type: string
-                    format: byte
                   sigs:
-                    type: object
-                    additionalProperties:
+                    type: array
+                    items:
                       type: string
         default:
           description: An unexpected error response.
@@ -13471,7 +13468,6 @@ paths:
           in: query
           required: false
           type: string
-          format: byte
       tags:
         - Query
   '/stafiprotocol/stafihub/ledger/getSnapshot/{shotId}':
@@ -13538,7 +13534,6 @@ paths:
           in: path
           required: true
           type: string
-          format: byte
       tags:
         - Query
   '/stafiprotocol/stafihub/ledger/getTotalExpectedActive/{denom}/{era}':
@@ -13975,7 +13970,6 @@ paths:
           in: path
           required: true
           type: string
-          format: byte
       tags:
         - Query
   /stafiprotocol/stafihub/rvote/getProposalLife:
@@ -21878,7 +21872,6 @@ definitions:
         type: array
         items:
           type: string
-          format: byte
   stafiprotocol.stafihub.ledger.QueryGetEraExchangeRateResponse:
     type: object
     properties:
@@ -21899,7 +21892,6 @@ definitions:
         type: array
         items:
           type: string
-          format: byte
   stafiprotocol.stafihub.ledger.QueryGetEraUnbondLimitResponse:
     type: object
     properties:
@@ -21997,10 +21989,9 @@ definitions:
             description: OriginalTxType enumerates the tx type of a signature.
           propId:
             type: string
-            format: byte
           sigs:
-            type: object
-            additionalProperties:
+            type: array
+            items:
               type: string
   stafiprotocol.stafihub.ledger.QueryGetSnapshotResponse:
     type: object
@@ -22085,10 +22076,9 @@ definitions:
         description: OriginalTxType enumerates the tx type of a signature.
       propId:
         type: string
-        format: byte
       sigs:
-        type: object
-        additionalProperties:
+        type: array
+        items:
           type: string
   stafiprotocol.stafihub.ledger.UnbondFee:
     type: object

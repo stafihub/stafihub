@@ -17,7 +17,7 @@ message ChainBondingDuration {
 
 message Pool {
   string denom = 1;
-  map<string, bool> addrs = 2;
+  repeated string addrs = 2;
 }
 
 message TotalExpectedActive {
@@ -34,7 +34,7 @@ message BondPipeline {
 
 message EraSnapshot {
     string denom = 1;
-    repeated bytes shotIds = 3;
+    repeated string shotIds = 3;
 }
 
 message PoolUnbond {
@@ -146,8 +146,8 @@ message Signature {
     uint32 era = 2;
     string pool = 3;
     OriginalTxType txType = 4;
-    bytes propId = 5;
-    map<string, string> sigs = 6;
+    string propId = 5;
+    repeated string sigs = 6;
 }
 
 // OriginalTxType enumerates the tx type of a signature.

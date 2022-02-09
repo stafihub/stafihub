@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"encoding/hex"
 	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -113,10 +112,7 @@ func CmdSubmitSignature() *cobra.Command {
 				return fmt.Errorf("invalid txtype")
 			}
 
-			argPropId, err := hex.DecodeString(args[4])
-			if err != nil {
-				return err
-			}
+			argPropId := args[4]
 			argSignature := args[5]
 
 			clientCtx, err := client.GetClientTxContext(cmd)

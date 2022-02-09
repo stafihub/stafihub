@@ -5,7 +5,7 @@ option go_package = "github.com/stafiprotocol/stafihub/x/relayers/types";
 
 message Relayer {
     string denom = 1;
-    map<string, bool> addrs = 2;
+    repeated string addrs = 2;
 }
 
 message Threshold {

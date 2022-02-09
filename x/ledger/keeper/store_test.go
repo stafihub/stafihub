@@ -24,15 +24,14 @@ func TestKeeper_AddPool(t *testing.T) {
 
 	pl, found := k.GetPool(ctx, sample.TestDenom)
 	require.True(t, found)
-	require.Equal(t, pl.Denom, sample.TestDenom)
-	require.True(t, pl.Addrs[pool])
+	require.Equal(t, types.Pool{Denom: sample.TestDenom, Addrs: []string{pool}}, pl)
 
 	k.RemovePool(ctx, sample.TestDenom, pool)
 	require.False(t, k.IsPoolExist(ctx, sample.TestDenom, pool))
 
 	pl, found = k.GetPool(ctx, sample.TestDenom)
 	require.True(t, found)
-	require.False(t, pl.Addrs[pool])
+	require.Equal(t, types.Pool{Denom: sample.TestDenom, Addrs: []string{}}, pl)
 }
 
 func TestKeeper_AddBondedPool(t *testing.T) {
@@ -49,15 +48,14 @@ func TestKeeper_AddBondedPool(t *testing.T) {
 
 	bpl, found := k.GetBondedPool(ctx, sample.TestDenom)
 	require.True(t, found)
-	require.Equal(t, bpl.Denom, sample.TestDenom)
-	require.True(t, bpl.Addrs[pool])
+	require.Equal(t, types.Pool{Denom: sample.TestDenom, Addrs: []string{pool}}, bpl)
 
 	k.RemoveBondedPool(ctx, sample.TestDenom, pool)
 	require.False(t, k.IsBondedPoolExist(ctx, sample.TestDenom, pool))
 
 	bpl, found = k.GetBondedPool(ctx, sample.TestDenom)
 	require.True(t, found)
-	require.False(t, bpl.Addrs[pool])
+	require.Equal(t, types.Pool{Denom: sample.TestDenom, Addrs: []string{}}, bpl)
 }
 
 func TestKeeper_BondPipeline(t *testing.T) {
@@ -149,7 +147,7 @@ func TestKeeper_CurrentEraSnapshots(t *testing.T) {
 
 	shot1 := types.EraSnapshot{
 		Denom: sample.TestDenom,
-		ShotIds: [][]byte{[]byte("123"), []byte("456")},
+		ShotIds: []string{"shotId1", "shotId2"},
 	}
 	k.SetCurrentEraSnapshot(ctx, shot1)
 
@@ -165,7 +163,7 @@ func TestKeeper_CurrentEraSnapshots(t *testing.T) {
 func TestKeeper_SetSnapshot(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	shotId := []byte(`123`)
+	shotId := "testShotId"
 	_, found := k.Snapshot(ctx, shotId)
 	require.False(t, found)
 
@@ -187,7 +185,7 @@ func TestKeeper_SetEraSnapshot(t *testing.T) {
 
 	shot1 := types.EraSnapshot{
 		Denom: sample.TestDenom,
-		ShotIds: [][]byte{[]byte(`123`), []byte(`456`)},
+		ShotIds: []string{"shotId1", "shotId2"},
 	}
 	k.SetEraSnapshot(ctx, era, shot1)
 
@@ -332,7 +330,7 @@ func TestKeeper_SetBondRecord(t *testing.T) {
 func TestKeeper_SetSignature(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	sig1 := types.NewSignature(sample.TestDenom, uint32(100), sample.AccAddress(), types.TxTypeBond, []byte(`123`))
+	sig1 := types.NewSignature(sample.TestDenom, uint32(100), sample.AccAddress(), types.TxTypeBond, "testPropId")
 	_, found := k.GetSignature(ctx, sig1.Denom, sig1.Era, sig1.Pool, sig1.TxType, sig1.PropId)
 	require.False(t, found)
 

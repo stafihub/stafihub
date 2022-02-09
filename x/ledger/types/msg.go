@@ -489,7 +489,7 @@ func (msg *MsgSetUnbondFee) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSubmitSignature(creator string, denom string, era uint32, pool string, txType OriginalTxType, propId []byte, signature string) *MsgSubmitSignature {
+func NewMsgSubmitSignature(creator string, denom string, era uint32, pool string, txType OriginalTxType, propId string, signature string) *MsgSubmitSignature {
 	return &MsgSubmitSignature{
 		Creator:   creator,
 		Denom:     denom,
