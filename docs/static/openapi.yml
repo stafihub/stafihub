@@ -21690,6 +21690,8 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetPoolDetailResponse:
     type: object
+  stafihub.stafihub.ledger.MsgSetRParamsResponse:
+    type: object
   stafihub.stafihub.ledger.MsgSetReceiverResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetUnbondCommissionResponse:

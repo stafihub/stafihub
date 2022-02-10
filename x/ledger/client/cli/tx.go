@@ -55,6 +55,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdLiquidityUnbond())
 	cmd.AddCommand(CmdExecuteBondProposal())
 	cmd.AddCommand(CmdSubmitSignature())
+	cmd.AddCommand(CmdSetRParams())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
