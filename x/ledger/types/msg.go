@@ -529,7 +529,7 @@ func (msg *MsgSubmitSignature) ValidateBasic() error {
 
 const TypeMsgSetRParams = "set_r_params"
 
-func NewMsgSetRParams(creator string, denom string, chainId string, nativeDenom string, gasPrice string, eraSeconds string, validators []string) *MsgSetRParams {
+func NewMsgSetRParams(creator string, denom string, chainId string, nativeDenom string, gasPrice string, eraSeconds string, leastBond sdk.Int, validators []string) *MsgSetRParams {
 	return &MsgSetRParams{
 		Creator:     creator,
 		Denom:       denom,
@@ -537,6 +537,7 @@ func NewMsgSetRParams(creator string, denom string, chainId string, nativeDenom 
 		NativeDenom: nativeDenom,
 		GasPrice:    gasPrice,
 		EraSeconds:  eraSeconds,
+		LeastBond:   leastBond,
 		Validators:  validators,
 	}
 }

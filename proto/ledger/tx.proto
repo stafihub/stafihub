@@ -164,7 +164,8 @@ message MsgSetRParams {
   string nativeDenom = 4;
   string gasPrice = 5;
   string eraSeconds = 6;
-  repeated string validators = 7;
+  string leastBond = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  repeated string validators = 8;
 }
 
 message MsgSetRParamsResponse {

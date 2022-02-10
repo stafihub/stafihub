@@ -160,3 +160,15 @@ enum OriginalTxType {
   ORIGINAL_TX_TYPE_WITHDRAW = 3 [(gogoproto.enumvalue_customname) = "TxTypeWithdraw"];
   ORIGINAL_TX_TYPE_CLAIM = 4 [(gogoproto.enumvalue_customname) = "TxTypeClaim"];
 }
+
+message RParams {
+    string creator = 1;
+    string denom = 2;
+    string chainId = 3;
+    string nativeDenom = 4;
+    string gasPrice = 5;
+    string eraSeconds = 6;
+    string amount = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    repeated string validators = 8;
+  }
+  
