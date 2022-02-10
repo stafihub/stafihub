@@ -21,6 +21,7 @@ var (
 	_ sdk.Msg = &MsgLiquidityUnbond{}
 	_ sdk.Msg = &MsgSetUnbondFee{}
 	_ sdk.Msg = &MsgSubmitSignature{}
+	_ sdk.Msg = &MsgSetRParams{}
 )
 
 func NewMsgAddNewPool(creator sdk.AccAddress, denom string, addr string) *MsgAddNewPool {
@@ -522,6 +523,49 @@ func (msg *MsgSubmitSignature) GetSignBytes() []byte {
 func (msg *MsgSubmitSignature) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+	return nil
+}
+
+const TypeMsgSetRParams = "set_r_params"
+
+func NewMsgSetRParams(creator string, denom string, chainId string, nativeDenom string, gasPrice string, eraSeconds string, validators []string) *MsgSetRParams {
+	return &MsgSetRParams{
+		Creator:     creator,
+		Denom:       denom,
+		ChainId:     chainId,
+		NativeDenom: nativeDenom,
+		GasPrice:    gasPrice,
+		EraSeconds:  eraSeconds,
+		Validators:  validators,
+	}
+}
+
+func (msg *MsgSetRParams) Route() string {
+	return RouterKey
+}
+
+func (msg *MsgSetRParams) Type() string {
+	return TypeMsgSetRParams
+}
+
+func (msg *MsgSetRParams) GetSigners() []sdk.AccAddress {
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{creator}
+}
+
+func (msg *MsgSetRParams) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+func (msg *MsgSetRParams) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	return nil
 }
