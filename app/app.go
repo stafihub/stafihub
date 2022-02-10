@@ -25,6 +25,7 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/vesting"
+	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -88,18 +89,18 @@ import (
 
 	"github.com/stafihub/stafihub/docs"
 
-	ledgermodule "github.com/stafihub/stafihub/x/ledger"
-	ledgermodulekeeper "github.com/stafihub/stafihub/x/ledger/keeper"
-	ledgermoduletypes "github.com/stafihub/stafihub/x/ledger/types"
-	relayersmodule "github.com/stafihub/stafihub/x/relayers"
-	relayersmodulekeeper "github.com/stafihub/stafihub/x/relayers/keeper"
-	relayersmoduletypes "github.com/stafihub/stafihub/x/relayers/types"
-	rvotemodule "github.com/stafihub/stafihub/x/rvote"
-	rvotemodulekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
-	rvotemoduletypes "github.com/stafihub/stafihub/x/rvote/types"
-	sudomodule "github.com/stafihub/stafihub/x/sudo"
-	sudomodulekeeper "github.com/stafihub/stafihub/x/sudo/keeper"
-	sudomoduletypes "github.com/stafihub/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/ledger"
+	ledgerkeeper "github.com/stafihub/stafihub/x/ledger/keeper"
+	ledgertypes "github.com/stafihub/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/x/relayers"
+	relayerskeeper "github.com/stafihub/stafihub/x/relayers/keeper"
+	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
+	"github.com/stafihub/stafihub/x/rvote"
+	rvotekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
+	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
+	"github.com/stafihub/stafihub/x/sudo"
+	sudokeeper "github.com/stafihub/stafihub/x/sudo/keeper"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -150,10 +151,10 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		sudomodule.AppModuleBasic{},
-		relayersmodule.AppModuleBasic{},
-		ledgermodule.AppModuleBasic{},
-		rvotemodule.AppModuleBasic{},
+		sudo.AppModuleBasic{},
+		relayers.AppModuleBasic{},
+		ledger.AppModuleBasic{},
+		rvote.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -166,7 +167,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		ledgermoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner},
+		ledgertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -223,13 +224,13 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	SudoKeeper sudomodulekeeper.Keeper
+	SudoKeeper sudokeeper.Keeper
 
-	RelayersKeeper relayersmodulekeeper.Keeper
+	RelayersKeeper relayerskeeper.Keeper
 
-	LedgerKeeper ledgermodulekeeper.Keeper
+	LedgerKeeper ledgerkeeper.Keeper
 
-	RvoteKeeper rvotemodulekeeper.Keeper
+	RvoteKeeper rvotekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -263,8 +264,8 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		sudomoduletypes.StoreKey, relayersmoduletypes.StoreKey, ledgermoduletypes.StoreKey,
-		rvotemoduletypes.StoreKey,
+		sudotypes.StoreKey, relayerstypes.StoreKey, ledgertypes.StoreKey,
+		rvotetypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -363,24 +364,24 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.SudoKeeper = *sudomodulekeeper.NewKeeper(
-		appCodec, keys[sudomoduletypes.StoreKey], keys[sudomoduletypes.MemStoreKey], app.BankKeeper,
+	app.SudoKeeper = *sudokeeper.NewKeeper(
+		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
 	)
 
-	app.RelayersKeeper = *relayersmodulekeeper.NewKeeper(
-		appCodec, keys[relayersmoduletypes.StoreKey], keys[relayersmoduletypes.MemStoreKey],
+	app.RelayersKeeper = *relayerskeeper.NewKeeper(
+		appCodec, keys[relayerstypes.StoreKey], keys[relayerstypes.MemStoreKey],
 		app.SudoKeeper, app.BankKeeper,
 	)
 
-	app.LedgerKeeper = *ledgermodulekeeper.NewKeeper(
-		appCodec, keys[ledgermoduletypes.StoreKey], keys[ledgermoduletypes.MemStoreKey],
+	app.LedgerKeeper = *ledgerkeeper.NewKeeper(
+		appCodec, keys[ledgertypes.StoreKey], keys[ledgertypes.MemStoreKey],
 		app.SudoKeeper, app.BankKeeper, app.RelayersKeeper,
 	)
 
-	rvoteRouter := rvotemoduletypes.NewRouter()
-	rvoteRouter.AddRoute(ledgermoduletypes.RouterKey, ledgermodule.NewProposalHandler(app.LedgerKeeper))
-	app.RvoteKeeper = *rvotemodulekeeper.NewKeeper(
-		appCodec, keys[rvotemoduletypes.StoreKey], keys[rvotemoduletypes.MemStoreKey],
+	rvoteRouter := rvotetypes.NewRouter()
+	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledger.NewProposalHandler(app.LedgerKeeper))
+	app.RvoteKeeper = *rvotekeeper.NewKeeper(
+		appCodec, keys[rvotetypes.StoreKey], keys[rvotetypes.MemStoreKey],
 		app.SudoKeeper, app.RelayersKeeper, rvoteRouter,
 	)
 
@@ -422,10 +423,10 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		sudomodule.NewAppModule(appCodec, app.SudoKeeper),
-		relayersmodule.NewAppModule(appCodec, app.RelayersKeeper),
-		ledgermodule.NewAppModule(appCodec, app.LedgerKeeper),
-		rvotemodule.NewAppModule(appCodec, app.RvoteKeeper),
+		sudo.NewAppModule(appCodec, app.SudoKeeper),
+		relayers.NewAppModule(appCodec, app.RelayersKeeper),
+		ledger.NewAppModule(appCodec, app.LedgerKeeper),
+		rvote.NewAppModule(appCodec, app.RvoteKeeper),
 
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
@@ -437,10 +438,20 @@ func New(
 	app.mm.SetOrderBeginBlockers(
 		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
-		feegrant.ModuleName,
+		feegrant.ModuleName, ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
+		sudotypes.ModuleName, authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
+		banktypes.ModuleName, govtypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName,
+		rvotetypes.ModuleName,
 	)
 
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
+	app.mm.SetOrderEndBlockers(
+		crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName,
+		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName,
+		slashingtypes.ModuleName, evidencetypes.ModuleName, ibchost.ModuleName, feegrant.ModuleName,
+		ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
+		sudotypes.ModuleName, authtypes.ModuleName, vestingtypes.ModuleName,
+		banktypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName, rvotetypes.ModuleName,
+	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
@@ -461,10 +472,14 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
-		sudomoduletypes.ModuleName,
-		relayersmoduletypes.ModuleName,
-		ledgermoduletypes.ModuleName,
-		rvotemoduletypes.ModuleName,
+		upgradetypes.ModuleName,
+		feegrant.ModuleName,
+		paramstypes.ModuleName,
+		vestingtypes.ModuleName,
+		sudotypes.ModuleName,
+		relayerstypes.ModuleName,
+		ledgertypes.ModuleName,
+		rvotetypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -652,10 +667,10 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
-	paramsKeeper.Subspace(sudomoduletypes.ModuleName)
-	paramsKeeper.Subspace(relayersmoduletypes.ModuleName)
-	paramsKeeper.Subspace(ledgermoduletypes.ModuleName)
-	paramsKeeper.Subspace(rvotemoduletypes.ModuleName)
+	paramsKeeper.Subspace(sudotypes.ModuleName)
+	paramsKeeper.Subspace(relayerstypes.ModuleName)
+	paramsKeeper.Subspace(ledgertypes.ModuleName)
+	paramsKeeper.Subspace(rvotetypes.ModuleName)
 
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
