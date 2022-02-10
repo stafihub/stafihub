@@ -130,6 +130,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getSignature";
 	}
 
+// Queries a list of GetRParams items.
+	rpc GetRParams(QueryGetRParamsRequest) returns (QueryGetRParamsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_r_params/{denom}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -333,6 +338,14 @@ message QueryGetSignatureRequest {
 
 message QueryGetSignatureResponse {
   Signature signature = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetRParamsRequest {
+  string denom = 1;
+}
+
+message QueryGetRParamsResponse {
+	RParams rParams = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

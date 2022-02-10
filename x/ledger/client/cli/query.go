@@ -51,6 +51,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdGetSignature())
 
+	cmd.AddCommand(CmdGetRParams())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd
@@ -726,6 +728,40 @@ func CmdGetSignature() *cobra.Command {
 			}
 
 			res, err := queryClient.GetSignature(cmd.Context(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdGetRParams() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "get-r-params [denom]",
+		Short: "query rParams",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqDenom := args[0]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryGetRParamsRequest{
+
+				Denom: reqDenom,
+			}
+
+			res, err := queryClient.GetRParams(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

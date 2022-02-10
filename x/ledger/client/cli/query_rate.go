@@ -89,8 +89,8 @@ func CmdShowEraExchangeRate() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryGetEraExchangeRateRequest{
-				argDenom,
-				uint32(argEra),
+				Denom: argDenom,
+				Era:   uint32(argEra),
 			}
 
 			res, err := queryClient.GetEraExchangeRate(context.Background(), params)

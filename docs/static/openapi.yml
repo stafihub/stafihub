@@ -13652,6 +13652,62 @@ paths:
           type: string
       tags:
         - Query
+  '/stafihub/stafihub/ledger/get_r_params/{denom}':
+    get:
+      summary: Queries a list of GetRParams items.
+      operationId: StafihubStafihubLedgerGetRParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              rParams:
+                type: object
+                properties:
+                  creator:
+                    type: string
+                  denom:
+                    type: string
+                  chainId:
+                    type: string
+                  nativeDenom:
+                    type: string
+                  gasPrice:
+                    type: string
+                  eraSeconds:
+                    type: string
+                  leastBond:
+                    type: string
+                  validators:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/stafihub/stafihub/ledger/poolsByDenom/{denom}':
     get:
       summary: Queries a list of poolsByDenom items.
@@ -21961,6 +22017,30 @@ definitions:
                   type: string
                 recipient:
                   type: string
+  stafihub.stafihub.ledger.QueryGetRParamsResponse:
+    type: object
+    properties:
+      rParams:
+        type: object
+        properties:
+          creator:
+            type: string
+          denom:
+            type: string
+          chainId:
+            type: string
+          nativeDenom:
+            type: string
+          gasPrice:
+            type: string
+          eraSeconds:
+            type: string
+          leastBond:
+            type: string
+          validators:
+            type: array
+            items:
+              type: string
   stafihub.stafihub.ledger.QueryGetReceiverResponse:
     type: object
     properties:
@@ -22053,6 +22133,27 @@ definitions:
     type: object
     properties:
       addrs:
+        type: array
+        items:
+          type: string
+  stafihub.stafihub.ledger.RParams:
+    type: object
+    properties:
+      creator:
+        type: string
+      denom:
+        type: string
+      chainId:
+        type: string
+      nativeDenom:
+        type: string
+      gasPrice:
+        type: string
+      eraSeconds:
+        type: string
+      leastBond:
+        type: string
+      validators:
         type: array
         items:
           type: string

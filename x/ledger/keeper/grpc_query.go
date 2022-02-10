@@ -275,3 +275,18 @@ func (q Querier) GetSignature(goCtx context.Context, req *types.QueryGetSignatur
 
 	return &types.QueryGetSignatureResponse{Signature: sig}, nil
 }
+
+func (q Querier) GetRParams(goCtx context.Context, req *types.QueryGetRParamsRequest) (*types.QueryGetRParamsResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	rParams, found := q.Keeper.GetRParams(ctx, req.GetDenom())
+	if !found {
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
+	}
+
+	return &types.QueryGetRParamsResponse{RParams: rParams}, nil
+}
