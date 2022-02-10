@@ -252,8 +252,22 @@ func (k msgServer) SetUnbondCommission(goCtx context.Context, msg *types.MsgSetU
 func (k msgServer) SetRParams(goCtx context.Context, msg *types.MsgSetRParams) (*types.MsgSetRParamsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudoTypes.ErrCreatorNotAdmin
+	}
+
+	rParams := types.RParams{
+		Creator:     msg.GetCreator(),
+		Denom:       msg.GetDenom(),
+		ChainId:     msg.GetChainId(),
+		NativeDenom: msg.GetNativeDenom(),
+		GasPrice:    msg.GetGasPrice(),
+		EraSeconds:  msg.GetEraSeconds(),
+		LeastBond:   msg.LeastBond,
+		Validators:  msg.GetValidators(),
+	}
+
+	k.Keeper.SetRParams(ctx, rParams)
 
 	return &types.MsgSetRParamsResponse{}, nil
 }

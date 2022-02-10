@@ -506,3 +506,20 @@ func (k Keeper) GetSignature(ctx sdk.Context, denom string, era uint32, pool str
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
+
+func (k Keeper) SetRParams(ctx sdk.Context, rParams types.RParams) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RParamsPrefix)
+	b := k.cdc.MustMarshal(&rParams)
+	store.Set([]byte(rParams.Denom), b)
+}
+
+func (k Keeper) GetRParams(ctx sdk.Context, denom string) (val types.RParams, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RParamsPrefix)
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
