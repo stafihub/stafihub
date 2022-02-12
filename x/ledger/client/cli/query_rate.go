@@ -54,7 +54,7 @@ func CmdShowExchangeRate() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryGetExchangeRateRequest{
-				args[0],
+				Denom: args[0],
 			}
 
 			res, err := queryClient.GetExchangeRate(context.Background(), params)

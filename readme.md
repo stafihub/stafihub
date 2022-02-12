@@ -34,36 +34,39 @@ for example, start node: `sudo ./release/stafihubd start`
 
 ### Sudo operate example
 
-common:
+global settings:
 
 ```
 
-./stafihubd tx ledger set-receiver fis1mgjkpyfm00mxk0nmhvfvwhlr65067d53cd49zm --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx ledger set-receiver fis1mgjkpyfm00mxk0nmhvfvwhlr65067d53cd49zm --from admin --chain-id local-stafihub --keyring-backend file
 
-./stafihubd tx ledger set-commission 0.1 --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx ledger set-commission 0.1 --from admin --chain-id local-stafihub --keyring-backend file
+
+## set fis metadata
+stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
 ```
 
-when add new denom:
+add new denom setttings:
 
 ```
+## set rtoken metadata
+stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
-./stafihubd tx sudo add-denom  --metadata ./metadata.json --chain-id my-chain --from my-account --keyring-backend file
+stafihubd tx ledger set-unbond-fee ratom 1000000fis --from admin --chain-id local-stafihub --keyring-backend file
 
-./stafihubd tx ledger set-unbond-fee ratom4 10stake  --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx ledger set-chain-bonding-duration uratom 2 --chain-id local-stafihub --from admin --keyring-backend file
 
-./stafihubd tx ledger set-chain-bonding-duration ratom4 2 --chain-id my-chain --from my-account --keyring-backend file 
+stafihubd tx ledger add-new-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
 
-./stafihubd tx ledger set-least-bond ratom4 2 --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl+cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
-./stafihubd tx ledger add-new-pool ratom4 cosmos1rp7lvszhm2c4724fzah5qa5ekjq4ckfv226p3n --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx ledger set-init-bond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 0uratom fis1mgjkpyfm00mxk0nmhvfvwhlr65067d53cd49zm --from admin --chain-id local-stafihub --keyring-backend file
 
-./stafihubd tx ledger set-pool-detail ratom4 cosmos1rp7lvszhm2c4724fzah5qa5ekjq4ckfv226p3n cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl+cosmos1u8pqvzscpp24x8jnaq3l3qtks0l3segy2pvm4t 1 --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx relayers create-relayer uratom fis1ychj8z22pw0ruc65mx8nvdn7ca9qylpkzwkkgq --keyring-backend file --from admin --chain-id local-stafihub
 
-./stafihubd tx ledger set-init-bond cosmos1rp7lvszhm2c4724fzah5qa5ekjq4ckfv226p3n 1ratom4 fis1mgjkpyfm00mxk0nmhvfvwhlr65067d53cd49zm --from my-account --chain-id my-chain --keyring-backend file
+stafihubd tx relayers update-threshold uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
 
-./stafihubd tx relayers create-relayer ratom4 fis1ychj8z22pw0ruc65mx8nvdn7ca9qylpkzwkkgq --keyring-backend file --from my-account --chain-id my-chain
-
-./stafihubd tx relayers update-threshold ratom4 1 --from my-account --keyring-backend file --chain-id my-chain
+stafihubd tx ledger set-r-params uratom local-cosmos stake 0.00001stake 600 0 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --keyring-backend file --chain-id local-stafihub
 
 ```

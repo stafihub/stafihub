@@ -28,7 +28,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdShowExchangeRate())
 	cmd.AddCommand(CmdShowEraExchangeRate())
 	cmd.AddCommand(CmdEraExchangeRateByDenom())
-
 	cmd.AddCommand(CmdPoolsByDenom())
 	cmd.AddCommand(CmdBondedPoolsByDenom())
 	cmd.AddCommand(CmdGetPoolDetail())
@@ -48,9 +47,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetPoolUnbond())
 	cmd.AddCommand(CmdGetAccountUnbond())
 	cmd.AddCommand(CmdGetBondRecord())
-
 	cmd.AddCommand(CmdGetSignature())
-
 	cmd.AddCommand(CmdGetRParams())
 
 	// this line is used by starport scaffolding # 1

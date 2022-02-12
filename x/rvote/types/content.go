@@ -7,7 +7,7 @@ import (
 
 // Constants pertaining to a Content object
 const (
-	PropIdLength = 32
+	PropIdLength = 64
 )
 
 // Content defines an interface that a proposal must implement. It contains
