@@ -163,7 +163,7 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 			return nil, types.ErrSignatureRepeated
 		}
 	}
-	sig.Sigs = append(sig.Sigs, msg.Creator)
+	sig.Sigs = append(sig.Sigs, msg.Signature)
 	k.Keeper.SetSignature(ctx, sig)
 
 	if uint32(len(sig.Sigs)) == detail.Threshold {

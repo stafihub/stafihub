@@ -70,3 +70,15 @@ stafihubd tx relayers update-threshold uratom 1 --from admin --keyring-backend f
 stafihubd tx ledger set-r-params uratom local-cosmos stake 0.00001stake 600 0 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --keyring-backend file --chain-id local-stafihub
 
 ```
+
+liquidity bond:
+
+```
+gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo fis1mvhq5pktlvk7p2dsj9cdsunryaxtwph7f56ucq --keyring-backend file --chain-id local-cosmos
+```
+
+liquidity unbond:
+
+```
+stafihubd tx ledger liquidity-unbond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100uratom cosmos1j9dues7ey2a39nes4ewfvyma96d3f5zrdhnfan --keyring-backend file --from user --home /Users/tpkeeper/gowork/stafi/rtoken-relay-core/keys/stafihub --chain-id local-stafihub
+```
