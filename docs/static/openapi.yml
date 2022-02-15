@@ -22266,6 +22266,8 @@ definitions:
         type: string
   stafihub.stafihub.sudo.MsgAddDenomResponse:
     type: object
+  stafihub.stafihub.sudo.MsgSetInflationBaseResponse:
+    type: object
   stafihub.stafihub.sudo.MsgUpdateAdminResponse:
     type: object
   stafihub.stafihub.sudo.QueryAdminResponse:
