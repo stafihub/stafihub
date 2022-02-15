@@ -63,11 +63,11 @@ func (k Keeper) SetInflationBase(ctx sdk.Context, inflationBase sdk.Int) {
 	store.Set(types.InflationBasePrefix, bts)
 }
 
-func (k Keeper) GetInflationBase(ctx sdk.Context) (sdk.Int, bool) {
+func (k Keeper) GetInflationBase(ctx sdk.Context) sdk.Int {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.InflationBasePrefix)
 	if len(bts) == 0 {
-		return sdk.Int{}, false
+		panic(fmt.Errorf("inflationBase not found"))
 	}
 	var amount sdk.Int
 	err := amount.Unmarshal(bts)
@@ -75,15 +75,11 @@ func (k Keeper) GetInflationBase(ctx sdk.Context) (sdk.Int, bool) {
 		panic(fmt.Errorf("unable to unmarshal supply value %v", err))
 	}
 
-	return amount, true
+	return amount
 }
 
 func (k Keeper) StakingTokenSupply(ctx sdk.Context) sdk.Int {
-	inflationBase, ok := k.GetInflationBase(ctx)
-	if !ok {
-		panic(ok)
-	}
-	return inflationBase
+	return k.GetInflationBase(ctx)
 }
 
 func (k Keeper) BondedRatio(ctx sdk.Context) sdk.Dec {

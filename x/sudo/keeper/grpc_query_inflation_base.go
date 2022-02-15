@@ -16,10 +16,7 @@ func (k Keeper) InflationBase(goCtx context.Context, req *types.QueryInflationBa
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	inflationBase, found := k.GetInflationBase(ctx)
-	if !found {
-		return nil, types.ErrInflationBaseNotFound
-	}
+	inflationBase := k.GetInflationBase(ctx)
 
 	return &types.QueryInflationBaseResponse{
 		InflationBase: inflationBase,

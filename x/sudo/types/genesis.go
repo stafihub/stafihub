@@ -13,8 +13,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Admin: "fis15cg8s33kywgm7qulxs0kxyu26m2gr06mz2frjj",
-		// this line is used by starport scaffolding # genesis/types/default
+		Admin:         "fis15cg8s33kywgm7qulxs0kxyu26m2gr06mz2frjj",
+		InflationBase: sdk.NewIntFromUint64(1000000000000),
 	}
 }
 
