@@ -160,7 +160,7 @@ var (
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:     nil,
+		authtypes.FeeCollectorName:     {authtypes.Burner},
 		distrtypes.ModuleName:          nil,
 		minttypes.ModuleName:           {authtypes.Minter},
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
@@ -168,6 +168,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		ledgertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
+		sudotypes.ModuleName:           {authtypes.Burner, authtypes.Minter},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -306,7 +307,7 @@ func New(
 		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName),
 	)
 	sudoKeeper := *sudokeeper.NewKeeper(
-		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
+		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], authtypes.FeeCollectorName, app.BankKeeper,
 	)
 	app.MintKeeper = mintkeeper.NewKeeper(
 		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &sudoKeeper,
@@ -424,7 +425,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		sudo.NewAppModule(appCodec, app.SudoKeeper),
+		sudo.NewAppModule(appCodec, app.SudoKeeper, app.MintKeeper),
 		relayers.NewAppModule(appCodec, app.RelayersKeeper),
 		ledger.NewAppModule(appCodec, app.LedgerKeeper),
 		rvote.NewAppModule(appCodec, app.RvoteKeeper),
@@ -436,11 +437,13 @@ func New(
 	// there is nothing left over in the validator fee pool, so as to keep the
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
+	// Note: sudo module should happens after mint module and before distribution module, as it will burn minted coins
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
+		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, sudotypes.ModuleName,
+		distrtypes.ModuleName, slashingtypes.ModuleName,
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 		feegrant.ModuleName, ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
-		sudotypes.ModuleName, authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
+		authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
 		banktypes.ModuleName, govtypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName,
 		rvotetypes.ModuleName,
 	)

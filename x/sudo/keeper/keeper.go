@@ -12,9 +12,10 @@ import (
 
 type (
 	Keeper struct {
-		cdc      codec.BinaryCodec
-		storeKey sdk.StoreKey
-		memKey   sdk.StoreKey
+		cdc              codec.BinaryCodec
+		storeKey         sdk.StoreKey
+		memKey           sdk.StoreKey
+		feeCollectorName string
 
 		bankKeeper types.BankKeeper
 	}
@@ -24,14 +25,15 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
+	feeCollectorName string,
 	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
-		cdc:      cdc,
-		storeKey: storeKey,
-		memKey:   memKey,
-
-		bankKeeper: bankKeeper,
+		cdc:              cdc,
+		storeKey:         storeKey,
+		memKey:           memKey,
+		feeCollectorName: feeCollectorName,
+		bankKeeper:       bankKeeper,
 	}
 }
 
@@ -78,10 +80,20 @@ func (k Keeper) GetInflationBase(ctx sdk.Context) sdk.Int {
 	return amount
 }
 
+// impl for mint keeper
 func (k Keeper) StakingTokenSupply(ctx sdk.Context) sdk.Int {
 	return k.GetInflationBase(ctx)
 }
 
+// impl for mint keeper
 func (k Keeper) BondedRatio(ctx sdk.Context) sdk.Dec {
 	return sdk.ZeroDec()
+}
+
+func (k Keeper) GetFeeCollectorName() string {
+	return k.feeCollectorName
+}
+
+func (k Keeper) GetBankKeeper() types.BankKeeper {
+	return k.bankKeeper
 }
