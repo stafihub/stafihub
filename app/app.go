@@ -305,8 +305,11 @@ func New(
 	stakingKeeper := stakingkeeper.NewKeeper(
 		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName),
 	)
+	sudoKeeper := *sudokeeper.NewKeeper(
+		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
+	)
 	app.MintKeeper = mintkeeper.NewKeeper(
-		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &stakingKeeper,
+		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &sudoKeeper,
 		app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName,
 	)
 	app.DistrKeeper = distrkeeper.NewKeeper(
@@ -364,9 +367,7 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.SudoKeeper = *sudokeeper.NewKeeper(
-		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
-	)
+	app.SudoKeeper = sudoKeeper
 
 	app.RelayersKeeper = *relayerskeeper.NewKeeper(
 		appCodec, keys[relayerstypes.StoreKey], keys[relayerstypes.MemStoreKey],
