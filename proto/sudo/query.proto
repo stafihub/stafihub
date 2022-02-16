@@ -1,6 +1,5 @@
 syntax = "proto3";
 package stafihub.stafihub.sudo;
-import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 // this line is used by starport scaffolding # 1
 
@@ -12,11 +11,6 @@ service Query {
 	rpc Admin(QueryAdminRequest) returns (QueryAdminResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/sudo/admin";
 	}
-// Queries a list of InflationBase items.
-	rpc InflationBase(QueryInflationBaseRequest) returns (QueryInflationBaseResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/sudo/inflation_base";
-	}
-
 // this line is used by starport scaffolding # 2
 }
 
@@ -25,13 +19,6 @@ message QueryAdminRequest {
 
 message QueryAdminResponse {
   string address = 1;
-}
-
-message QueryInflationBaseRequest {
-}
-
-message QueryInflationBaseResponse {
-  string inflationBase = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

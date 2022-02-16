@@ -20,7 +20,6 @@ const (
 var (
 	AdminPrefix         = []byte{0x00}
 	SymbolPrefix        = []byte{0x01}
-	InflationBasePrefix = []byte{0x02}
 )
 
 func KeyPrefix(p string) []byte {

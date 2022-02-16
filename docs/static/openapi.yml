@@ -14328,38 +14328,6 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/sudo/inflation_base:
-    get:
-      summary: Queries a list of InflationBase items.
-      operationId: StafihubStafihubSudoInflationBase
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              inflationBase:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
 definitions:
   cosmos.authz.v1beta1.Grant:
     type: object
@@ -22383,17 +22351,10 @@ definitions:
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   stafihub.stafihub.sudo.MsgAddDenomResponse:
     type: object
-  stafihub.stafihub.sudo.MsgSetInflationBaseResponse:
-    type: object
   stafihub.stafihub.sudo.MsgUpdateAdminResponse:
     type: object
   stafihub.stafihub.sudo.QueryAdminResponse:
     type: object
     properties:
       address:
-        type: string
-  stafihub.stafihub.sudo.QueryInflationBaseResponse:
-    type: object
-    properties:
-      inflationBase:
         type: string

@@ -36,7 +36,6 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdUpdateAdmin())
 	cmd.AddCommand(CmdAddDenom())
-	cmd.AddCommand(CmdSetInflationBase())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

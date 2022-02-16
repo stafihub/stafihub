@@ -314,7 +314,7 @@ func New(
 		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName),
 	)
 	sudoKeeper := *sudokeeper.NewKeeper(
-		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], authtypes.FeeCollectorName, app.BankKeeper,
+		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
 	)
 
 	stakextraKeeper := *stakextramodulekeeper.NewKeeper(
@@ -446,7 +446,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		sudo.NewAppModule(appCodec, app.SudoKeeper, app.MintKeeper),
+		sudo.NewAppModule(appCodec, app.SudoKeeper),
 		relayers.NewAppModule(appCodec, app.RelayersKeeper),
 		ledger.NewAppModule(appCodec, app.LedgerKeeper),
 		rvote.NewAppModule(appCodec, app.RvoteKeeper),
