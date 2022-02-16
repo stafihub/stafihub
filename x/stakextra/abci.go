@@ -1,12 +1,12 @@
-package sudo
+package stakextra
 
 import (
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafihub/stafihub/x/sudo/keeper"
-	"github.com/stafihub/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/stakextra/keeper"
+	"github.com/stafihub/stafihub/x/stakextra/types"
 )
 
 func BeginBlocker(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper) {

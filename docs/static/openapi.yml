@@ -14228,17 +14228,17 @@ paths:
                         }
       tags:
         - Query
-  /stafihub/stafihub/sudo/admin:
+  /stafihub/stafihub/stakextra/inflation_base:
     get:
-      summary: Queries a list of admin items.
-      operationId: StafihubStafihubSudoAdmin
+      summary: Queries a list of InflationBase items.
+      operationId: StafihubStafihubStakextraInflationBase
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              address:
+              inflationBase:
                 type: string
         default:
           description: An unexpected error response.
@@ -14260,17 +14260,53 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/sudo/inflation_base:
+  /stafihub/stafihub/stakextra/params:
     get:
-      summary: Queries a list of InflationBase items.
-      operationId: StafihubStafihubSudoInflationBase
+      summary: Parameters queries the parameters of the module.
+      operationId: StafihubStafihubStakextraParams
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              inflationBase:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafihub/stafihub/sudo/admin:
+    get:
+      summary: Queries a list of admin items.
+      operationId: StafihubStafihubSudoAdmin
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              address:
                 type: string
         default:
           description: An unexpected error response.
@@ -22296,9 +22332,24 @@ definitions:
     properties:
       proposal:
         type: string
-  stafihub.stafihub.sudo.MsgAddDenomResponse:
+  stafihub.stafihub.stakextra.MsgSetInflationBaseResponse:
     type: object
-  stafihub.stafihub.sudo.MsgSetInflationBaseResponse:
+  stafihub.stafihub.stakextra.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  stafihub.stafihub.stakextra.QueryInflationBaseResponse:
+    type: object
+    properties:
+      inflationBase:
+        type: string
+  stafihub.stafihub.stakextra.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.sudo.MsgAddDenomResponse:
     type: object
   stafihub.stafihub.sudo.MsgUpdateAdminResponse:
     type: object
@@ -22306,9 +22357,4 @@ definitions:
     type: object
     properties:
       address:
-        type: string
-  stafihub.stafihub.sudo.QueryInflationBaseResponse:
-    type: object
-    properties:
-      inflationBase:
         type: string

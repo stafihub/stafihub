@@ -8,15 +8,13 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgUpdateAdmin{}, "sudo/UpdateAdmin", nil)
-	cdc.RegisterConcrete(&MsgAddDenom{}, "sudo/AddDenom", nil)
+	cdc.RegisterConcrete(&MsgSetInflationBase{}, "stakextra/SetInflationBase", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgUpdateAdmin{},
-		&MsgAddDenom{},
+		&MsgSetInflationBase{},
 	)
 	// this line is used by starport scaffolding # 3
 
@@ -24,6 +22,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 }
 
 var (
-	amino     = codec.NewLegacyAmino()
+	Amino     = codec.NewLegacyAmino()
 	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )

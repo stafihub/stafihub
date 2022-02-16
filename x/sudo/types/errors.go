@@ -8,7 +8,6 @@ import (
 
 // x/sudo module sentinel errors
 var (
-	ErrCreatorNotAdmin       = sdkerrors.Register(ModuleName, 1, "creator is not admin error")
-	ErrDenomAlreadyExist     = sdkerrors.Register(ModuleName, 2, "denom already exist error")
-	ErrInflationBaseNotFound = sdkerrors.Register(ModuleName, 3, "denom already exist error")
+	ErrCreatorNotAdmin   = sdkerrors.Register(ModuleName, 1, "creator is not admin error")
+	ErrDenomAlreadyExist = sdkerrors.Register(ModuleName, 2, "denom already exist error")
 )

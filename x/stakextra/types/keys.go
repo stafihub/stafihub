@@ -2,7 +2,7 @@ package types
 
 const (
 	// ModuleName defines the module name
-	ModuleName = "sudo"
+	ModuleName = "stakextra"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -14,12 +14,11 @@ const (
 	QuerierRoute = ModuleName
 
 	// MemStoreKey defines the in-memory store key
-	MemStoreKey = "mem_sudo"
+	MemStoreKey = "mem_stakextra"
 )
 
 var (
-	AdminPrefix         = []byte{0x00}
-	SymbolPrefix        = []byte{0x01}
+	InflationBasePrefix = []byte{0x00}
 )
 
 func KeyPrefix(p string) []byte {

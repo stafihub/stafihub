@@ -16,8 +16,7 @@ type (
 		storeKey         sdk.StoreKey
 		memKey           sdk.StoreKey
 		feeCollectorName string
-
-		bankKeeper types.BankKeeper
+		bankKeeper       types.BankKeeper
 	}
 )
 
@@ -25,15 +24,13 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
-	feeCollectorName string,
 	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
-		cdc:              cdc,
-		storeKey:         storeKey,
-		memKey:           memKey,
-		feeCollectorName: feeCollectorName,
-		bankKeeper:       bankKeeper,
+		cdc:        cdc,
+		storeKey:   storeKey,
+		memKey:     memKey,
+		bankKeeper: bankKeeper,
 	}
 }
 
@@ -54,46 +51,4 @@ func (k Keeper) GetAdmin(ctx sdk.Context) sdk.AccAddress {
 func (k Keeper) IsAdmin(ctx sdk.Context, address string) bool {
 	admin := k.GetAdmin(ctx)
 	return admin.String() == address
-}
-
-func (k Keeper) SetInflationBase(ctx sdk.Context, inflationBase sdk.Int) {
-	store := ctx.KVStore(k.storeKey)
-	bts, err := inflationBase.Marshal()
-	if err != nil {
-		panic(fmt.Errorf("unable to marshal amount value %v", err))
-	}
-	store.Set(types.InflationBasePrefix, bts)
-}
-
-func (k Keeper) GetInflationBase(ctx sdk.Context) sdk.Int {
-	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.InflationBasePrefix)
-	if len(bts) == 0 {
-		panic(fmt.Errorf("inflationBase not found"))
-	}
-	var amount sdk.Int
-	err := amount.Unmarshal(bts)
-	if err != nil {
-		panic(fmt.Errorf("unable to unmarshal supply value %v", err))
-	}
-
-	return amount
-}
-
-// impl for mint keeper
-func (k Keeper) StakingTokenSupply(ctx sdk.Context) sdk.Int {
-	return k.GetInflationBase(ctx)
-}
-
-// impl for mint keeper
-func (k Keeper) BondedRatio(ctx sdk.Context) sdk.Dec {
-	return sdk.ZeroDec()
-}
-
-func (k Keeper) GetFeeCollectorName() string {
-	return k.feeCollectorName
-}
-
-func (k Keeper) GetBankKeeper() types.BankKeeper {
-	return k.bankKeeper
 }

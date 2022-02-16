@@ -1,12 +1,12 @@
-package sudo
+package stakextra
 
 import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/stafihub/stafihub/x/sudo/keeper"
-	"github.com/stafihub/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/stakextra/keeper"
+	"github.com/stafihub/stafihub/x/stakextra/types"
 )
 
 // NewHandler ...
@@ -17,11 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgUpdateAdmin:
-			res, err := msgServer.UpdateAdmin(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgAddDenom:
-			res, err := msgServer.AddDenom(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetInflationBase:
+			res, err := msgServer.SetInflationBase(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

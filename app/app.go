@@ -98,6 +98,9 @@ import (
 	"github.com/stafihub/stafihub/x/rvote"
 	rvotekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
+	stakextramodule "github.com/stafihub/stafihub/x/stakextra"
+	stakextramodulekeeper "github.com/stafihub/stafihub/x/stakextra/keeper"
+	stakextramoduletypes "github.com/stafihub/stafihub/x/stakextra/types"
 	"github.com/stafihub/stafihub/x/sudo"
 	sudokeeper "github.com/stafihub/stafihub/x/sudo/keeper"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
@@ -155,6 +158,7 @@ var (
 		relayers.AppModuleBasic{},
 		ledger.AppModuleBasic{},
 		rvote.AppModuleBasic{},
+		stakextramodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -232,6 +236,8 @@ type App struct {
 	LedgerKeeper ledgerkeeper.Keeper
 
 	RvoteKeeper rvotekeeper.Keeper
+
+	StakextraKeeper stakextramodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -267,6 +273,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		sudotypes.StoreKey, relayerstypes.StoreKey, ledgertypes.StoreKey,
 		rvotetypes.StoreKey,
+		stakextramoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -307,10 +314,21 @@ func New(
 		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName),
 	)
 	sudoKeeper := *sudokeeper.NewKeeper(
-		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], authtypes.FeeCollectorName, app.BankKeeper,
+		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
 	)
+
+	stakextraKeeper := *stakextramodulekeeper.NewKeeper(
+		appCodec,
+		keys[stakextramoduletypes.StoreKey],
+		keys[stakextramoduletypes.MemStoreKey],
+		app.GetSubspace(stakextramoduletypes.ModuleName),
+		app.BankKeeper,
+		sudoKeeper,
+		authtypes.FeeCollectorName,
+	)
+
 	app.MintKeeper = mintkeeper.NewKeeper(
-		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &sudoKeeper,
+		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &stakextraKeeper,
 		app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName,
 	)
 	app.DistrKeeper = distrkeeper.NewKeeper(
@@ -387,6 +405,9 @@ func New(
 		app.SudoKeeper, app.RelayersKeeper, rvoteRouter,
 	)
 
+	app.StakextraKeeper = stakextraKeeper
+	stakextraModule := stakextramodule.NewAppModule(appCodec, app.StakextraKeeper, app.MintKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -425,11 +446,12 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		sudo.NewAppModule(appCodec, app.SudoKeeper, app.MintKeeper),
+		sudo.NewAppModule(appCodec, app.SudoKeeper),
 		relayers.NewAppModule(appCodec, app.RelayersKeeper),
 		ledger.NewAppModule(appCodec, app.LedgerKeeper),
 		rvote.NewAppModule(appCodec, app.RvoteKeeper),
 
+		stakextraModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -437,13 +459,13 @@ func New(
 	// there is nothing left over in the validator fee pool, so as to keep the
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
-	// Note: sudo module should happens after mint module and before distribution module, as it will burn minted coins
+	// Note: stakextra module should happens after mint module and before distribution module, as it will burn minted coins
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, sudotypes.ModuleName,
+		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, stakextramoduletypes.ModuleName,
 		distrtypes.ModuleName, slashingtypes.ModuleName,
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 		feegrant.ModuleName, ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
-		authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
+		sudotypes.ModuleName, authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
 		banktypes.ModuleName, govtypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName,
 		rvotetypes.ModuleName,
 	)
@@ -484,6 +506,7 @@ func New(
 		relayerstypes.ModuleName,
 		ledgertypes.ModuleName,
 		rvotetypes.ModuleName,
+		stakextramoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -676,6 +699,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ledgertypes.ModuleName)
 	paramsKeeper.Subspace(rvotetypes.ModuleName)
 
+	paramsKeeper.Subspace(stakextramoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

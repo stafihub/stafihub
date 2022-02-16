@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
-	"github.com/stafihub/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/stakextra/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -24,6 +24,7 @@ func CmdSetInflationBase() *cobra.Command {
 			if !ok {
 				return fmt.Errorf("args[0] cast to int failed")
 			}
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err

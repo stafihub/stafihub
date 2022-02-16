@@ -1,10 +1,8 @@
-package sudo
+package stakextra
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-
 	// this line is used by starport scaffolding # 1
 
 	"github.com/gorilla/mux"
@@ -18,9 +16,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/stafihub/stafihub/x/sudo/client/cli"
-	"github.com/stafihub/stafihub/x/sudo/keeper"
-	"github.com/stafihub/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/stakextra/client/cli"
+	"github.com/stafihub/stafihub/x/stakextra/keeper"
+	"github.com/stafihub/stafihub/x/stakextra/types"
 )
 
 var (
@@ -80,7 +78,6 @@ func (AppModuleBasic) RegisterRESTRoutes(clientCtx client.Context, rtr *mux.Rout
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
 func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
 	// this line is used by starport scaffolding # 2
-	types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
 }
 
 // GetTxCmd returns the capability module's root tx command.
@@ -101,13 +98,19 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper keeper.Keeper
+	keeper     keeper.Keeper
+	mintKeeper types.MintKeeper
 }
 
-func NewAppModule(cdc codec.Codec, keeper keeper.Keeper) AppModule {
+func NewAppModule(
+	cdc codec.Codec,
+	keeper keeper.Keeper,
+	mintKeeper types.MintKeeper,
+) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
+		mintKeeper:     mintKeeper,
 	}
 }
 
@@ -161,6 +164,7 @@ func (AppModule) ConsensusVersion() uint64 { return 2 }
 
 // BeginBlock executes all ABCI BeginBlock logic respective to the capability module.
 func (am AppModule) BeginBlock(ctx sdk.Context, _ abci.RequestBeginBlock) {
+	BeginBlocker(ctx, am.keeper, am.mintKeeper)
 }
 
 // EndBlock executes all ABCI EndBlock logic respective to the capability module. It
