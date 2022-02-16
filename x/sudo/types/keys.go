@@ -18,8 +18,8 @@ const (
 )
 
 var (
-	AdminPrefix         = []byte{0x00}
-	SymbolPrefix        = []byte{0x01}
+	AdminPrefix  = []byte{0x00}
+	SymbolPrefix = []byte{0x01}
 )
 
 func KeyPrefix(p string) []byte {

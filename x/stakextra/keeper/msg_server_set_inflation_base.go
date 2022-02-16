@@ -18,6 +18,5 @@ func (k msgServer) SetInflationBase(goCtx context.Context, msg *types.MsgSetInfl
 
 	k.Keeper.SetInflationBase(ctx, msg.InflationBase)
 
-
 	return &types.MsgSetInflationBaseResponse{}, nil
 }

@@ -14260,6 +14260,38 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/stakextra/module_account:
+    get:
+      summary: Queries a list of ModuleAccount items.
+      operationId: StafihubStafihubStakextraModuleAccount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              moduleAccount:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/stakextra/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -22341,6 +22373,11 @@ definitions:
     type: object
     properties:
       inflationBase:
+        type: string
+  stafihub.stafihub.stakextra.QueryModuleAccountResponse:
+    type: object
+    properties:
+      moduleAccount:
         type: string
   stafihub.stafihub.stakextra.QueryParamsResponse:
     type: object

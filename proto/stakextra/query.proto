@@ -20,6 +20,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/stakextra/inflation_base";
 	}
 
+// Queries a list of ModuleAccount items.
+	rpc ModuleAccount(QueryModuleAccountRequest) returns (QueryModuleAccountResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/stakextra/module_account";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -37,6 +42,13 @@ message QueryInflationBaseRequest {
 
 message QueryInflationBaseResponse {
   string inflationBase = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message QueryModuleAccountRequest {
+}
+
+message QueryModuleAccountResponse {
+  string moduleAccount = 1;
 }
 
 // this line is used by starport scaffolding # 3
