@@ -1,6 +1,8 @@
 package rstaking
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stafihub/stafihub/x/rstaking/keeper"
@@ -18,10 +20,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 	if params.MintDenom != genState.CoinToBeBurned.Denom {
 		panic("mint denom not equal coinToBeBurned denom")
 	}
+	if len(genState.GetValAddressWhitelist()) == 0 {
+		panic("val_address_white_list empty")
+	}
+
 	for _, addr := range genState.GetValAddressWhitelist() {
 		valAddr, err := sdk.ValAddressFromBech32(addr)
 		if err != nil {
-			panic(err)
+			panic(fmt.Sprintf("valAddress format err, %s", err))
 		}
 		k.AddValAddressToWhitelist(ctx, valAddr)
 	}

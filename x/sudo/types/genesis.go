@@ -13,7 +13,7 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Admin: "",
+		Admin: "stafi1qzt0qajzr9df3en5sk06xlk26n30003c8uhdkg",
 	}
 }
 
