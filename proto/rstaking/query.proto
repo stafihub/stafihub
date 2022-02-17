@@ -3,7 +3,6 @@ package stafihub.stafihub.rstaking;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "rstaking/params.proto";
 // this line is used by starport scaffolding # 1
 
@@ -23,6 +22,11 @@ service Query {
 // Queries a list of ModuleAccount items.
 	rpc ModuleAccount(QueryModuleAccountRequest) returns (QueryModuleAccountResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/rstaking/module_account";
+	}
+
+// Queries a list of ValidatorWhitelist items.
+	rpc ValidatorWhitelist(QueryValidatorWhitelistRequest) returns (QueryValidatorWhitelistResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rstaking/validator_whitelist";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -49,6 +53,13 @@ message QueryModuleAccountRequest {
 
 message QueryModuleAccountResponse {
   string moduleAccount = 1;
+}
+
+message QueryValidatorWhitelistRequest {
+}
+
+message QueryValidatorWhitelistResponse {
+  repeated string valAddress = 1;
 }
 
 // this line is used by starport scaffolding # 3

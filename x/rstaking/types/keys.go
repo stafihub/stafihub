@@ -1,5 +1,7 @@
 package types
 
+import sdk "github.com/cosmos/cosmos-sdk/types"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "rstaking"
@@ -18,9 +20,16 @@ const (
 )
 
 var (
-	InflationBasePrefix = []byte{0x00}
+	ValAddressStoreKeyPrefix = []byte{0x00}
+)
+var (
+	InflationBaseKey = []byte("inflationBaseKey")
 )
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
+}
+
+func ValAddressStoreKey(addr sdk.ValAddress) []byte {
+	return append(ValAddressStoreKeyPrefix, addr.Bytes()...)
 }

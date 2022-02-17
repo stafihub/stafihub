@@ -13924,6 +13924,40 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/rstaking/validator_whitelist:
+    get:
+      summary: Queries a list of ValidatorWhitelist items.
+      operationId: StafihubStafihubRstakingValidatorWhitelist
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              valAddress:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   '/stafihub/stafihub/rvote/getProposal/{propId}':
     get:
       summary: Queries a list of getProposal items.
@@ -22330,6 +22364,8 @@ definitions:
         type: array
         items:
           type: string
+  stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse:
+    type: object
   stafihub.stafihub.rstaking.MsgSetInflationBaseResponse:
     type: object
   stafihub.stafihub.rstaking.Params:
@@ -22352,6 +22388,13 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.rstaking.QueryValidatorWhitelistResponse:
+    type: object
+    properties:
+      valAddress:
+        type: array
+        items:
+          type: string
   stafihub.stafihub.rvote.MsgSetProposalLifeResponse:
     type: object
   stafihub.stafihub.rvote.MsgSubmitProposalResponse:

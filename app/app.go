@@ -108,7 +108,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "fis"
+	AccountAddressPrefix = "stafi"
 	Name                 = "stafihub"
 )
 
@@ -313,11 +313,11 @@ func New(
 	stakingKeeper := stakingkeeper.NewKeeper(
 		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName),
 	)
-	sudoKeeper := *sudokeeper.NewKeeper(
+	sudoKeeper := sudokeeper.NewKeeper(
 		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
 	)
 
-	rstakingKeeper := *rstakingmodulekeeper.NewKeeper(
+	rstakingKeeper := rstakingmodulekeeper.NewKeeper(
 		appCodec,
 		keys[rstakingmoduletypes.StoreKey],
 		keys[rstakingmoduletypes.MemStoreKey],
@@ -328,7 +328,7 @@ func New(
 	)
 
 	app.MintKeeper = mintkeeper.NewKeeper(
-		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &rstakingKeeper,
+		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), rstakingKeeper,
 		app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName,
 	)
 	app.DistrKeeper = distrkeeper.NewKeeper(
@@ -348,7 +348,7 @@ func New(
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
 	app.StakingKeeper = *stakingKeeper.SetHooks(
-		stakingtypes.NewMultiStakingHooks(app.DistrKeeper.Hooks(), app.SlashingKeeper.Hooks()),
+		stakingtypes.NewMultiStakingHooks(rstakingKeeper.Hooks(), app.DistrKeeper.Hooks(), app.SlashingKeeper.Hooks()),
 	)
 
 	// ... other modules keepers
@@ -386,7 +386,7 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.SudoKeeper = sudoKeeper
+	app.SudoKeeper = *sudoKeeper
 
 	app.RelayersKeeper = *relayerskeeper.NewKeeper(
 		appCodec, keys[relayerstypes.StoreKey], keys[relayerstypes.MemStoreKey],
@@ -405,7 +405,7 @@ func New(
 		app.SudoKeeper, app.RelayersKeeper, rvoteRouter,
 	)
 
-	app.RStakingKeeper = rstakingKeeper
+	app.RStakingKeeper = *rstakingKeeper
 	rstakingModule := rstakingmodule.NewAppModule(appCodec, app.RStakingKeeper, app.MintKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
@@ -459,7 +459,7 @@ func New(
 	// there is nothing left over in the validator fee pool, so as to keep the
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
-	// Note: rstaking module should happens after mint module and before distribution module, as it will burn minted coins
+	// NOTE: rstaking module should happens after mint module and before distribution module, as it will burn minted coins
 	app.mm.SetOrderBeginBlockers(
 		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, rstakingmoduletypes.ModuleName,
 		distrtypes.ModuleName, slashingtypes.ModuleName,
@@ -484,16 +484,18 @@ func New(
 	// NOTE: Capability module must occur first so that it can initialize any capabilities
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
-	// NOTE: rstaking module must occur after auth/bank/genutil/mint moduels so that coinToBeBurned can be set rightly.
+	// NOTE: rstaking module must occur after auth/bank/mint moduels so that coinToBeBurned can be set rightly and must
+	// before staking module so that hooks can work rightly.
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
+		minttypes.ModuleName,
+		rstakingmoduletypes.ModuleName,
 		stakingtypes.ModuleName,
 		slashingtypes.ModuleName,
 		govtypes.ModuleName,
-		minttypes.ModuleName,
 		crisistypes.ModuleName,
 		ibchost.ModuleName,
 		genutiltypes.ModuleName,
@@ -507,7 +509,6 @@ func New(
 		relayerstypes.ModuleName,
 		ledgertypes.ModuleName,
 		rvotetypes.ModuleName,
-		rstakingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 

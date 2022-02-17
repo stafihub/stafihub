@@ -59,12 +59,12 @@ func (k Keeper) SetInflationBase(ctx sdk.Context, inflationBase sdk.Int) {
 	if err != nil {
 		panic(fmt.Errorf("unable to marshal amount value %v", err))
 	}
-	store.Set(types.InflationBasePrefix, bts)
+	store.Set(types.InflationBaseKey, bts)
 }
 
 func (k Keeper) GetInflationBase(ctx sdk.Context) sdk.Int {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.InflationBasePrefix)
+	bts := store.Get(types.InflationBaseKey)
 	if len(bts) == 0 {
 		panic(fmt.Errorf("inflationBase not found"))
 	}
@@ -73,7 +73,6 @@ func (k Keeper) GetInflationBase(ctx sdk.Context) sdk.Int {
 	if err != nil {
 		panic(fmt.Errorf("unable to unmarshal supply value %v", err))
 	}
-
 	return amount
 }
 
@@ -102,4 +101,27 @@ func (k Keeper) MintCoins(ctx sdk.Context, newCoins sdk.Coins) error {
 	}
 
 	return k.bankKeeper.MintCoins(ctx, types.ModuleName, newCoins)
+}
+
+func (k Keeper) AddValAddressToWhitelist(ctx sdk.Context, valAddress sdk.ValAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.ValAddressStoreKey(valAddress), []byte{0x11})
+}
+
+func (k Keeper) HasValAddressInWhitelist(ctx sdk.Context, valAddess sdk.ValAddress) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.ValAddressStoreKey(valAddess))
+}
+
+func (k Keeper) GetValAddressWhitelist(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ValAddressStoreKeyPrefix)
+
+	valList := make([]string, 0)
+
+	defer iterator.Close()
+	for ; iterator.Valid(); iterator.Next() {
+		valList = append(valList, sdk.ValAddress(iterator.Key()).String())
+	}
+	return valList
 }

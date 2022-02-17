@@ -18,6 +18,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 	if params.MintDenom != genState.CoinToBeBurned.Denom {
 		panic("mint denom not equal coinToBeBurned denom")
 	}
+	for _, addr := range genState.GetValAddressWhitelist() {
+		valAddr, err := sdk.ValAddressFromBech32(addr)
+		if err != nil {
+			panic(err)
+		}
+		k.AddValAddressToWhitelist(ctx, valAddr)
+	}
 
 	balance := k.GetBankKeeper().GetBalance(ctx, moduleAddress, params.MintDenom)
 
@@ -42,6 +49,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper
 	moduleAddress := authTypes.NewModuleAddress(types.ModuleName)
 	balance := k.GetBankKeeper().GetBalance(ctx, moduleAddress, params.MintDenom)
 	genesis.CoinToBeBurned = balance
+	genesis.ValAddressWhitelist = k.GetValAddressWhitelist(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

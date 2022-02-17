@@ -10,6 +10,7 @@ option go_package = "github.com/stafihub/stafihub/x/rstaking/types";
 // Msg defines the Msg service.
 service Msg {
       rpc SetInflationBase(MsgSetInflationBase) returns (MsgSetInflationBaseResponse);
+  rpc AddValToWhitelist(MsgAddValToWhitelist) returns (MsgAddValToWhitelistResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -19,6 +20,14 @@ message MsgSetInflationBase {
 }
 
 message MsgSetInflationBaseResponse {
+}
+
+message MsgAddValToWhitelist {
+  string creator = 1;
+  string valAddress = 2;
+}
+
+message MsgAddValToWhitelistResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
