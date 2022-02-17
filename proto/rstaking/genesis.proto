@@ -1,0 +1,16 @@
+syntax = "proto3";
+package stafihub.stafihub.rstaking;
+
+import "gogoproto/gogo.proto";
+import "rstaking/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/stafihub/stafihub/x/rstaking/types";
+
+// GenesisState defines the rstaking module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  string inflationBase = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false, (gogoproto.moretags) = "yaml:\"inflationBase\""];
+  string coinToBeBurned = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

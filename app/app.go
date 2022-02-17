@@ -95,12 +95,12 @@ import (
 	"github.com/stafihub/stafihub/x/relayers"
 	relayerskeeper "github.com/stafihub/stafihub/x/relayers/keeper"
 	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
+	rstakingmodule "github.com/stafihub/stafihub/x/rstaking"
+	rstakingmodulekeeper "github.com/stafihub/stafihub/x/rstaking/keeper"
+	rstakingmoduletypes "github.com/stafihub/stafihub/x/rstaking/types"
 	"github.com/stafihub/stafihub/x/rvote"
 	rvotekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
-	stakextramodule "github.com/stafihub/stafihub/x/stakextra"
-	stakextramodulekeeper "github.com/stafihub/stafihub/x/stakextra/keeper"
-	stakextramoduletypes "github.com/stafihub/stafihub/x/stakextra/types"
 	"github.com/stafihub/stafihub/x/sudo"
 	sudokeeper "github.com/stafihub/stafihub/x/sudo/keeper"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
@@ -158,21 +158,21 @@ var (
 		relayers.AppModuleBasic{},
 		ledger.AppModuleBasic{},
 		rvote.AppModuleBasic{},
-		stakextramodule.AppModuleBasic{},
+		rstakingmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:      {authtypes.Burner},
-		distrtypes.ModuleName:           nil,
-		minttypes.ModuleName:            {authtypes.Minter},
-		stakingtypes.BondedPoolName:     {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName:  {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:             {authtypes.Burner},
-		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
-		ledgertypes.ModuleName:          {authtypes.Minter, authtypes.Burner},
-		stakextramoduletypes.ModuleName: {authtypes.Burner, authtypes.Minter},
+		authtypes.FeeCollectorName:     {authtypes.Burner},
+		distrtypes.ModuleName:          nil,
+		minttypes.ModuleName:           {authtypes.Minter},
+		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:            {authtypes.Burner},
+		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		ledgertypes.ModuleName:         {authtypes.Minter, authtypes.Burner},
+		rstakingmoduletypes.ModuleName: {authtypes.Burner, authtypes.Minter},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -237,7 +237,7 @@ type App struct {
 
 	RvoteKeeper rvotekeeper.Keeper
 
-	StakextraKeeper stakextramodulekeeper.Keeper
+	RStakingKeeper rstakingmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -273,7 +273,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
 		sudotypes.StoreKey, relayerstypes.StoreKey, ledgertypes.StoreKey,
 		rvotetypes.StoreKey,
-		stakextramoduletypes.StoreKey,
+		rstakingmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -317,18 +317,18 @@ func New(
 		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
 	)
 
-	stakextraKeeper := *stakextramodulekeeper.NewKeeper(
+	rstakingKeeper := *rstakingmodulekeeper.NewKeeper(
 		appCodec,
-		keys[stakextramoduletypes.StoreKey],
-		keys[stakextramoduletypes.MemStoreKey],
-		app.GetSubspace(stakextramoduletypes.ModuleName),
+		keys[rstakingmoduletypes.StoreKey],
+		keys[rstakingmoduletypes.MemStoreKey],
+		app.GetSubspace(rstakingmoduletypes.ModuleName),
 		app.BankKeeper,
 		sudoKeeper,
 		authtypes.FeeCollectorName,
 	)
 
 	app.MintKeeper = mintkeeper.NewKeeper(
-		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &stakextraKeeper,
+		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &rstakingKeeper,
 		app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName,
 	)
 	app.DistrKeeper = distrkeeper.NewKeeper(
@@ -405,8 +405,8 @@ func New(
 		app.SudoKeeper, app.RelayersKeeper, rvoteRouter,
 	)
 
-	app.StakextraKeeper = stakextraKeeper
-	stakextraModule := stakextramodule.NewAppModule(appCodec, app.StakextraKeeper, app.MintKeeper)
+	app.RStakingKeeper = rstakingKeeper
+	rstakingModule := rstakingmodule.NewAppModule(appCodec, app.RStakingKeeper, app.MintKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -451,7 +451,7 @@ func New(
 		ledger.NewAppModule(appCodec, app.LedgerKeeper),
 		rvote.NewAppModule(appCodec, app.RvoteKeeper),
 
-		stakextraModule,
+		rstakingModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -459,9 +459,9 @@ func New(
 	// there is nothing left over in the validator fee pool, so as to keep the
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
-	// Note: stakextra module should happens after mint module and before distribution module, as it will burn minted coins
+	// Note: rstaking module should happens after mint module and before distribution module, as it will burn minted coins
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, stakextramoduletypes.ModuleName,
+		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, rstakingmoduletypes.ModuleName,
 		distrtypes.ModuleName, slashingtypes.ModuleName,
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 		feegrant.ModuleName, ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
@@ -472,7 +472,7 @@ func New(
 
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName,
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, stakextramoduletypes.ModuleName, distrtypes.ModuleName,
+		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, rstakingmoduletypes.ModuleName, distrtypes.ModuleName,
 		slashingtypes.ModuleName, evidencetypes.ModuleName, ibchost.ModuleName, feegrant.ModuleName,
 		ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
 		sudotypes.ModuleName, authtypes.ModuleName, vestingtypes.ModuleName,
@@ -484,7 +484,7 @@ func New(
 	// NOTE: Capability module must occur first so that it can initialize any capabilities
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
-	// NOTE: stakextra module must occur after auth/bank/genutil/mint moduels so that coinToBeBurned can be set rightly.
+	// NOTE: rstaking module must occur after auth/bank/genutil/mint moduels so that coinToBeBurned can be set rightly.
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
@@ -507,7 +507,7 @@ func New(
 		relayerstypes.ModuleName,
 		ledgertypes.ModuleName,
 		rvotetypes.ModuleName,
-		stakextramoduletypes.ModuleName,
+		rstakingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -700,7 +700,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ledgertypes.ModuleName)
 	paramsKeeper.Subspace(rvotetypes.ModuleName)
 
-	paramsKeeper.Subspace(stakextramoduletypes.ModuleName)
+	paramsKeeper.Subspace(rstakingmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
