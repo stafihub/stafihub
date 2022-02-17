@@ -7,10 +7,10 @@ import (
 
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
-	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
 	MintCoins(ctx sdk.Context, name string, amt sdk.Coins) error
 	HasBalance(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coin) bool
+	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
 }
 
 type MintKeeper interface {

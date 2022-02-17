@@ -13,6 +13,10 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Params:        DefaultParams(),
 		InflationBase: sdk.NewIntFromUint64(1000000000000),
+		CoinToBeBurned: sdk.Coin{
+			Denom:  "stake",
+			Amount: sdk.NewIntFromUint64(1000000000000),
+		},
 	}
 }
 

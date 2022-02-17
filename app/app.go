@@ -484,6 +484,7 @@ func New(
 	// NOTE: Capability module must occur first so that it can initialize any capabilities
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
+	// NOTE: stakextra module must occur after auth/bank/genutil/mint moduels so that coinToBeBurned can be set rightly.
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
