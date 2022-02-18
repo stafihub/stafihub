@@ -27,7 +27,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdListExchangeRate())
 	cmd.AddCommand(CmdShowExchangeRate())
 	cmd.AddCommand(CmdShowEraExchangeRate())
-	cmd.AddCommand(CmdEraExchangeRateByDenom())
+	cmd.AddCommand(CmdEraExchangeRatesByDenom())
 	cmd.AddCommand(CmdPoolsByDenom())
 	cmd.AddCommand(CmdBondedPoolsByDenom())
 	cmd.AddCommand(CmdGetPoolDetail())

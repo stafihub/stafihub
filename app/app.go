@@ -109,7 +109,7 @@ import (
 
 const (
 	AccountAddressPrefix = "stafi"
-	Name                 = "stafihub"
+	Name                 = "stafi"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals

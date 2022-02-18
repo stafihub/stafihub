@@ -75,7 +75,7 @@ func CmdShowEraExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-era-exchange-rate [denom] [era]",
 		Short: "shows a EraExchangeRate",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 
@@ -107,10 +107,10 @@ func CmdShowEraExchangeRate() *cobra.Command {
 	return cmd
 }
 
-func CmdEraExchangeRateByDenom() *cobra.Command {
+func CmdEraExchangeRatesByDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "era-exchange-rate-by-denom [denom]",
-		Short: "Query EraExchangeRateByDenom",
+		Use:   "era-exchange-rates-by-denom [denom]",
+		Short: "Query EraExchangeRatesByDenom",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
