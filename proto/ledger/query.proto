@@ -122,7 +122,7 @@ service Query {
 
 // Queries a list of getBondRecord items.
 	rpc GetBondRecord(QueryGetBondRecordRequest) returns (QueryGetBondRecordResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondRecord/{denom}/{txhash}";
 	}
 
 // Queries a list of getSignature items.
@@ -320,8 +320,7 @@ message QueryGetAccountUnbondResponse {
 
 message QueryGetBondRecordRequest {
   string denom = 1;
-  string blockhash = 2;
-  string txhash = 3;
+  string txhash = 2;
 }
 
 message QueryGetBondRecordResponse {

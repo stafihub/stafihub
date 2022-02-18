@@ -254,7 +254,7 @@ func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRec
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	record, found := q.Keeper.GetBondRecord(ctx, req.Denom, req.Blockhash, req.Txhash)
+	record, found := q.Keeper.GetBondRecord(ctx, req.Denom, req.Txhash)
 	if !found {
 		return nil, status.Error(codes.InvalidArgument, "not found")
 	}

@@ -658,13 +658,12 @@ func CmdGetAccountUnbond() *cobra.Command {
 
 func CmdGetBondRecord() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-bond-record [denom] [blockhash] [txhash]",
+		Use:   "get-bond-record [denom] [txhash]",
 		Short: "Query GetBondRecord",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
-			reqBlockhash := args[1]
-			reqTxhash := args[2]
+			reqTxhash := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -674,7 +673,6 @@ func CmdGetBondRecord() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 			params := &types.QueryGetBondRecordRequest{
 				Denom:     reqDenom,
-				Blockhash: reqBlockhash,
 				Txhash:    reqTxhash,
 			}
 

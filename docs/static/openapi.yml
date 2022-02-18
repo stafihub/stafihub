@@ -12906,7 +12906,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getBondRecord/{denom}/{blockhash}/{txhash}':
+  '/stafihub/stafihub/ledger/getBondRecord/{denom}/{txhash}':
     get:
       summary: Queries a list of getBondRecord items.
       operationId: StafihubStafihubLedgerGetBondRecord
@@ -12924,8 +12924,6 @@ paths:
                   bonder:
                     type: string
                   pool:
-                    type: string
-                  blockhash:
                     type: string
                   txhash:
                     type: string
@@ -12951,10 +12949,6 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: denom
-          in: path
-          required: true
-          type: string
-        - name: blockhash
           in: path
           required: true
           type: string
@@ -21790,8 +21784,6 @@ definitions:
         type: string
       pool:
         type: string
-      blockhash:
-        type: string
       txhash:
         type: string
       amount:
@@ -22033,8 +22025,6 @@ definitions:
           bonder:
             type: string
           pool:
-            type: string
-          blockhash:
             type: string
           txhash:
             type: string

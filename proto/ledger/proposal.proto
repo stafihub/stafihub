@@ -59,8 +59,7 @@ message ExecuteBondProposal {
     string denom = 2;
     string bonder = 3;
     string pool = 4;
-    string blockhash = 5;
-    string txhash = 6;
-    string amount = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-    string propId = 8;
+    string txhash = 7;
+    string amount = 8 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string propId = 9;
 }

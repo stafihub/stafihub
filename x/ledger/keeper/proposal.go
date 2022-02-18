@@ -417,11 +417,11 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 }
 
 func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBondProposal) error {
-	br, ok := k.GetBondRecord(ctx, p.Denom, p.Blockhash, p.Txhash)
+	br, ok := k.GetBondRecord(ctx, p.Denom, p.Txhash)
 	if ok {
 		return types.ErrBondRepeated
 	}
-	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Blockhash, p.Txhash, p.Amount)
+	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Txhash, p.Amount)
 
 	pipe, ok := k.GetBondPipeline(ctx, p.Denom, p.Pool)
 	if !ok {
@@ -452,7 +452,6 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 			sdk.NewAttribute(types.AttributeKeyDenom, br.Denom),
 			sdk.NewAttribute(types.AttributeKeyBonder, br.Bonder),
 			sdk.NewAttribute(types.AttributeKeyPool, br.Pool),
-			sdk.NewAttribute(types.AttributeKeyBlockhash, br.Blockhash),
 			sdk.NewAttribute(types.AttributeKeyTxhash, br.Txhash),
 			sdk.NewAttribute(types.AttributeKeyBalance, br.Amount.String()),
 			sdk.NewAttribute(types.AttributeKeyRbalance, rbalance.String()),
