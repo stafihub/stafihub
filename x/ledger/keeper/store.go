@@ -463,12 +463,12 @@ func (k Keeper) GetAccountUnbond(ctx sdk.Context, denom, unbonder string) (val t
 func (k Keeper) SetBondRecord(ctx sdk.Context, br types.BondRecord) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
 	b := k.cdc.MustMarshal(&br)
-	store.Set([]byte(br.Denom+br.Blockhash+br.Txhash), b)
+	store.Set([]byte(br.Denom+br.Txhash), b)
 }
 
-func (k Keeper) GetBondRecord(ctx sdk.Context, denom, blockhash, txhash string) (val types.BondRecord, found bool) {
+func (k Keeper) GetBondRecord(ctx sdk.Context, denom, txhash string) (val types.BondRecord, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
-	b := store.Get([]byte(denom + blockhash + txhash))
+	b := store.Get([]byte(denom + txhash))
 	if b == nil {
 		return val, false
 	}

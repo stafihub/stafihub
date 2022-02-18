@@ -1275,17 +1275,6 @@ func request_Query_GetBondRecord_0(ctx context.Context, marshaler runtime.Marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "denom", err)
 	}
 
-	val, ok = pathParams["blockhash"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "blockhash")
-	}
-
-	protoReq.Blockhash, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "blockhash", err)
-	}
-
 	val, ok = pathParams["txhash"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "txhash")
@@ -1322,17 +1311,6 @@ func local_request_Query_GetBondRecord_0(ctx context.Context, marshaler runtime.
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "denom", err)
-	}
-
-	val, ok = pathParams["blockhash"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "blockhash")
-	}
-
-	protoReq.Blockhash, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "blockhash", err)
 	}
 
 	val, ok = pathParams["txhash"]
@@ -2611,7 +2589,7 @@ var (
 
 	pattern_Query_GetAccountUnbond_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getAccountUnbond", "denom", "unbonder"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetBondRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"stafihub", "ledger", "getBondRecord", "denom", "blockhash", "txhash"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetBondRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getBondRecord", "denom", "txhash"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_GetSignature_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "getSignature"}, "", runtime.AssumeColonVerbOpt(true)))
 

@@ -136,9 +136,8 @@ message BondRecord {
     string denom = 1;
     string bonder = 2;
     string pool = 3;
-    string blockhash = 4;
-    string txhash = 5;
-    string amount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string txhash = 4;
+    string amount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message Signature {
