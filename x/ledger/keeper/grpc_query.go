@@ -17,7 +17,7 @@ var _ types.QueryServer = Querier{}
 
 func (q Querier) GetCurrentEraSnapshot(goCtx context.Context, req *types.QueryGetCurrentEraSnapshotRequest) (*types.QueryGetCurrentEraSnapshotResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -28,13 +28,13 @@ func (q Querier) GetCurrentEraSnapshot(goCtx context.Context, req *types.QueryGe
 
 func (q Querier) PoolsByDenom(goCtx context.Context, req *types.QueryPoolsByDenomRequest) (*types.QueryPoolsByDenomResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	pool, found := q.GetPool(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryPoolsByDenomResponse{Addrs: pool.Addrs}, nil
@@ -42,13 +42,13 @@ func (q Querier) PoolsByDenom(goCtx context.Context, req *types.QueryPoolsByDeno
 
 func (q Querier) BondedPoolsByDenom(goCtx context.Context, req *types.QueryBondedPoolsByDenomRequest) (*types.QueryBondedPoolsByDenomResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	bondedPool, found := q.GetBondedPool(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryBondedPoolsByDenomResponse{Addrs: bondedPool.Addrs}, nil
@@ -56,13 +56,13 @@ func (q Querier) BondedPoolsByDenom(goCtx context.Context, req *types.QueryBonde
 
 func (q Querier) GetPoolDetail(goCtx context.Context, req *types.QueryGetPoolDetailRequest) (*types.QueryGetPoolDetailResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	detail, found := q.Keeper.GetPoolDetail(ctx, req.Denom, req.Pool)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetPoolDetailResponse{Detail: detail}, nil
@@ -70,13 +70,13 @@ func (q Querier) GetPoolDetail(goCtx context.Context, req *types.QueryGetPoolDet
 
 func (q Querier) GetChainEra(goCtx context.Context, req *types.QueryGetChainEraRequest) (*types.QueryGetChainEraResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	ce, found := q.Keeper.GetChainEra(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetChainEraResponse{Era: ce.Era}, nil
@@ -84,13 +84,13 @@ func (q Querier) GetChainEra(goCtx context.Context, req *types.QueryGetChainEraR
 
 func (q Querier) GetChainBondingDuration(goCtx context.Context, req *types.QueryGetChainBondingDurationRequest) (*types.QueryGetChainBondingDurationResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	cbd, found := q.Keeper.GetChainBondingDuration(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetChainBondingDurationResponse{Era: cbd.Era}, nil
@@ -98,13 +98,13 @@ func (q Querier) GetChainBondingDuration(goCtx context.Context, req *types.Query
 
 func (q Querier) GetReceiver(goCtx context.Context, req *types.QueryGetReceiverRequest) (*types.QueryGetReceiverResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	rec := q.Keeper.GetReceiver(ctx)
 	if rec == nil {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetReceiverResponse{Receiver: rec.String()}, nil
@@ -112,7 +112,7 @@ func (q Querier) GetReceiver(goCtx context.Context, req *types.QueryGetReceiverR
 
 func (q Querier) GetCommission(goCtx context.Context, req *types.QueryGetCommissionRequest) (*types.QueryGetCommissionResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -123,13 +123,13 @@ func (q Querier) GetCommission(goCtx context.Context, req *types.QueryGetCommiss
 
 func (q Querier) GetUnbondFee(goCtx context.Context, req *types.QueryGetUnbondFeeRequest) (*types.QueryGetUnbondFeeResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	fee, found := q.Keeper.GetUnbondFee(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetUnbondFeeResponse{Fee: fee}, nil
@@ -137,7 +137,7 @@ func (q Querier) GetUnbondFee(goCtx context.Context, req *types.QueryGetUnbondFe
 
 func (q Querier) GetUnbondCommission(goCtx context.Context, req *types.QueryGetUnbondCommissionRequest) (*types.QueryGetUnbondCommissionResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -148,13 +148,13 @@ func (q Querier) GetUnbondCommission(goCtx context.Context, req *types.QueryGetU
 
 func (q Querier) GetLeastBond(goCtx context.Context, req *types.QueryGetLeastBondRequest) (*types.QueryGetLeastBondResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	lb, found := q.Keeper.LeastBond(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetLeastBondResponse{LeastBond: &lb}, nil
@@ -162,13 +162,13 @@ func (q Querier) GetLeastBond(goCtx context.Context, req *types.QueryGetLeastBon
 
 func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEraUnbondLimitRequest) (*types.QueryGetEraUnbondLimitResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	eul, found := q.Keeper.GetEraUnbondLimit(ctx, req.Denom)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetEraUnbondLimitResponse{Limit: eul.Limit}, nil
@@ -176,7 +176,7 @@ func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEra
 
 func (q Querier) GetBondPipeline(goCtx context.Context, req *types.QueryGetBondPipelineRequest) (*types.QueryGetBondPipelineResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -186,7 +186,7 @@ func (q Querier) GetBondPipeline(goCtx context.Context, req *types.QueryGetBondP
 
 func (q Querier) GetEraSnapshot(goCtx context.Context, req *types.QueryGetEraSnapshotRequest) (*types.QueryGetEraSnapshotResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -197,13 +197,13 @@ func (q Querier) GetEraSnapshot(goCtx context.Context, req *types.QueryGetEraSna
 
 func (q Querier) GetSnapshot(goCtx context.Context, req *types.QueryGetSnapshotRequest) (*types.QueryGetSnapshotResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	shot, found := q.Keeper.Snapshot(ctx, req.ShotId)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetSnapshotResponse{Shot: shot}, nil
@@ -211,7 +211,7 @@ func (q Querier) GetSnapshot(goCtx context.Context, req *types.QueryGetSnapshotR
 
 func (q Querier) GetTotalExpectedActive(goCtx context.Context, req *types.QueryGetTotalExpectedActiveRequest) (*types.QueryGetTotalExpectedActiveResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
@@ -222,13 +222,13 @@ func (q Querier) GetTotalExpectedActive(goCtx context.Context, req *types.QueryG
 
 func (q Querier) GetPoolUnbond(goCtx context.Context, req *types.QueryGetPoolUnbondRequest) (*types.QueryGetPoolUnbondResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	unbond, found := q.Keeper.GetPoolUnbond(ctx, req.Denom, req.Pool, req.Era)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetPoolUnbondResponse{Unbond: unbond}, nil
@@ -236,13 +236,13 @@ func (q Querier) GetPoolUnbond(goCtx context.Context, req *types.QueryGetPoolUnb
 
 func (q Querier) GetAccountUnbond(goCtx context.Context, req *types.QueryGetAccountUnbondRequest) (*types.QueryGetAccountUnbondResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	unbond, found := q.Keeper.GetAccountUnbond(ctx, req.Denom, req.Unbonder)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetAccountUnbondResponse{Unbond: unbond}, nil
@@ -250,13 +250,13 @@ func (q Querier) GetAccountUnbond(goCtx context.Context, req *types.QueryGetAcco
 
 func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRecordRequest) (*types.QueryGetBondRecordResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	record, found := q.Keeper.GetBondRecord(ctx, req.Denom, req.Txhash)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetBondRecordResponse{BondRecord: record}, nil
@@ -264,13 +264,13 @@ func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRec
 
 func (q Querier) GetSignature(goCtx context.Context, req *types.QueryGetSignatureRequest) (*types.QueryGetSignatureResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	sig, found := q.Keeper.GetSignature(ctx, req.Denom, req.Era, req.Pool, req.TxType, req.PropId)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetSignatureResponse{Signature: sig}, nil
@@ -278,7 +278,7 @@ func (q Querier) GetSignature(goCtx context.Context, req *types.QueryGetSignatur
 
 func (q Querier) GetRParams(goCtx context.Context, req *types.QueryGetRParamsRequest) (*types.QueryGetRParamsResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)

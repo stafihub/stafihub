@@ -11,7 +11,7 @@ import (
 
 func (k Keeper) ModuleAccount(goCtx context.Context, req *types.QueryModuleAccountRequest) (*types.QueryModuleAccountResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	return &types.QueryModuleAccountResponse{

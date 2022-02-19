@@ -13,7 +13,7 @@ var _ types.QueryServer = Keeper{}
 
 func (k Keeper) RelayersByDenom(c context.Context, req *types.QueryRelayersByDenomRequest) (*types.QueryRelayersByDenomResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
@@ -24,7 +24,7 @@ func (k Keeper) RelayersByDenom(c context.Context, req *types.QueryRelayersByDen
 
 func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest) (*types.QueryGetThresholdResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 	val, found := k.GetThreshold(
@@ -32,7 +32,7 @@ func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest
 		req.Denom,
 	)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetThresholdResponse{Threshold: val.Value}, nil

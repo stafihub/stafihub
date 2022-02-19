@@ -49,7 +49,7 @@ var _ = strconv.IntSize
 //	})
 //	t.Run("InvalidRequest", func(t *testing.T) {
 //		_, err := keeper.RelayerAll(wctx, nil)
-//		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+//		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, codes.InvalidArgument.String()))
 //	})
 //}
 //
@@ -82,11 +82,11 @@ var _ = strconv.IntSize
 //			request: &types.QueryGetThresholdRequest{
 //				Index: strconv.Itoa(100000),
 //			},
-//			err: status.Error(codes.InvalidArgument, "not found"),
+//			err: status.Error(codes.NotFound, codes.NotFound.String()),
 //		},
 //		{
 //			desc: "InvalidRequest",
-//			err:  status.Error(codes.InvalidArgument, "invalid request"),
+//			err:  status.Error(codes.InvalidArgument, codes.InvalidArgument.String()),
 //		},
 //	} {
 //		t.Run(tc.desc, func(t *testing.T) {
@@ -142,6 +142,6 @@ var _ = strconv.IntSize
 //	})
 //	t.Run("InvalidRequest", func(t *testing.T) {
 //		_, err := keeper.ThresholdAll(wctx, nil)
-//		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+//		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, codes.InvalidArgument.String()))
 //	})
 //}

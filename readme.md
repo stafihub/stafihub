@@ -38,7 +38,7 @@ global settings:
 
 ```
 
-stafihubd tx ledger set-receiver fis1mgjkpyfm00mxk0nmhvfvwhlr65067d53cd49zm --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-receiver stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx ledger set-commission 0.1 --from admin --chain-id local-stafihub --keyring-backend file
 
@@ -53,7 +53,7 @@ add new denom setttings:
 ## set rtoken metadata
 stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
-stafihubd tx ledger set-unbond-fee ratom 1000000fis --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-unbond-fee ratom 100000fis --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx ledger set-chain-bonding-duration uratom 2 --chain-id local-stafihub --from admin --keyring-backend file
 
@@ -61,9 +61,9 @@ stafihubd tx ledger add-new-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n
 
 stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl+cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx ledger set-init-bond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 0uratom fis1mgjkpyfm00mxk0nmhvfvwhlr65067d53cd49zm --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-init-bond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 0uratom stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx relayers create-relayer uratom fis1ychj8z22pw0ruc65mx8nvdn7ca9qylpkzwkkgq --keyring-backend file --from admin --chain-id local-stafihub
+stafihubd tx relayers create-relayer uratom stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --keyring-backend file --from admin --chain-id local-stafihub
 
 stafihubd tx relayers update-threshold uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
 
@@ -74,8 +74,15 @@ stafihubd tx ledger set-r-params uratom local-cosmos stake 0.00001stake 600 0 co
 liquidity bond:
 
 ```
-gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo fis1mvhq5pktlvk7p2dsj9cdsunryaxtwph7f56ucq --keyring-backend file --chain-id local-cosmos
+gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
 ```
+
+recover:
+
+```
+gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1stake --memo 2:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:9A80F3E6A007E1144BE34F4A0AC35B9288C19641BCAD3464277168000AF5FC66 --keyring-backend file --chain-id local-cosmos
+```
+
 
 liquidity unbond:
 

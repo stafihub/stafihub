@@ -61,7 +61,7 @@ func TestShowThreshold(t *testing.T) {
 			idIndex: strconv.Itoa(100000),
 
 			args: common,
-			err:  status.Error(codes.InvalidArgument, "not found"),
+			err:  status.Error(codes.NotFound, codes.NotFound.String()),
 		},
 	} {
 		tc := tc

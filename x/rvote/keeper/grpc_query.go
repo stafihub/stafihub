@@ -17,13 +17,13 @@ var _ types.QueryServer = Querier{}
 
 func (q Querier) GetProposal(goCtx context.Context, req *types.QueryGetProposalRequest) (*types.QueryGetProposalResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	prop, found := q.Keeper.GetProposal(ctx, req.PropId)
 	if !found {
-		return nil, status.Error(codes.InvalidArgument, "not found")
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryGetProposalResponse{Proposal: prop.String()}, nil
@@ -31,7 +31,7 @@ func (q Querier) GetProposal(goCtx context.Context, req *types.QueryGetProposalR
 
 func (k Keeper) GetProposalLife(goCtx context.Context, req *types.QueryGetProposalLifeRequest) (*types.QueryGetProposalLifeResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
