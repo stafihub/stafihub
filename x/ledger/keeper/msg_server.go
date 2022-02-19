@@ -158,8 +158,8 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 		sig = types.NewSignature(msg.Denom, msg.Era, msg.Pool, msg.TxType, msg.PropId)
 	}
 
-	for _, signer := range sig.Sigs {
-		if signer == msg.Creator {
+	for _, sig := range sig.Sigs {
+		if sig == msg.Signature {
 			return nil, types.ErrSignatureRepeated
 		}
 	}
