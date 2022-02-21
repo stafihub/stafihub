@@ -3,7 +3,6 @@ vue/dist
 release/
 .idea/
 test_metadatas/
-stafihubd
 vue/
 metadata.json
 build/

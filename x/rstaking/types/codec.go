@@ -10,6 +10,7 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetInflationBase{}, "rstaking/SetInflationBase", nil)
 	cdc.RegisterConcrete(&MsgAddValToWhitelist{}, "rstaking/AddValToWhitelist", nil)
+	cdc.RegisterConcrete(&MsgToggleWhitelistSwitch{}, "rstaking/ToggleWhitelistSwitch", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -19,6 +20,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAddValToWhitelist{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgToggleWhitelistSwitch{},
 	)
 	// this line is used by starport scaffolding # 3
 

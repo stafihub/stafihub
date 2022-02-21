@@ -23,7 +23,13 @@ var (
 	ValAddressStoreKeyPrefix = []byte{0x00}
 )
 var (
-	InflationBaseKey = []byte("inflationBaseKey")
+	InflationBaseKey   = []byte("inflationBaseKey")
+	WhitelistSwitchKey = []byte("whitelistSwitchKey")
+)
+
+var (
+	SwitchStateClose = []byte{0x00}
+	SwitchStateOpen  = []byte{0x01}
 )
 
 func KeyPrefix(p string) []byte {

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -124,4 +125,26 @@ func (k Keeper) GetValAddressWhitelist(ctx sdk.Context) []string {
 		valList = append(valList, sdk.ValAddress(iterator.Key()).String())
 	}
 	return valList
+}
+
+func (k Keeper) ToggleWhitelistSwitch(ctx sdk.Context) {
+	k.SetWhitelistSwitch(ctx, !k.GetWhitelistSwitch(ctx))
+}
+
+func (k Keeper) SetWhitelistSwitch(ctx sdk.Context, isOpen bool) {
+	store := ctx.KVStore(k.storeKey)
+	state := types.SwitchStateClose
+	if isOpen {
+		state = types.SwitchStateOpen
+	}
+	store.Set(types.WhitelistSwitchKey, state)
+}
+
+func (k Keeper) GetWhitelistSwitch(ctx sdk.Context) bool {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.WhitelistSwitchKey)
+	if len(bts) == 0 {
+		return true
+	}
+	return bytes.Equal(bts, types.SwitchStateOpen)
 }
