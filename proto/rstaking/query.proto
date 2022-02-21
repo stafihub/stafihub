@@ -29,6 +29,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rstaking/validator_whitelist";
 	}
 
+// Queries a list of WhitelistSwitch items.
+	rpc WhitelistSwitch(QueryWhitelistSwitchRequest) returns (QueryWhitelistSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rstaking/whitelist_switch";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -60,6 +65,13 @@ message QueryValidatorWhitelistRequest {
 
 message QueryValidatorWhitelistResponse {
   repeated string valAddress = 1;
+}
+
+message QueryWhitelistSwitchRequest {
+}
+
+message QueryWhitelistSwitchResponse {
+	bool isOpen = 1;
 }
 
 // this line is used by starport scaffolding # 3
