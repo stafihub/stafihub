@@ -672,8 +672,8 @@ func CmdGetBondRecord() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 			params := &types.QueryGetBondRecordRequest{
-				Denom:     reqDenom,
-				Txhash:    reqTxhash,
+				Denom:  reqDenom,
+				Txhash: reqTxhash,
 			}
 
 			res, err := queryClient.GetBondRecord(cmd.Context(), params)
