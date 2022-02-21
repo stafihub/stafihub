@@ -1,0 +1,12 @@
+syntax = "proto3";
+package stafihub.stafihub.bridge;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafihub/stafihub/x/bridge/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}
