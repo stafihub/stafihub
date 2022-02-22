@@ -13,6 +13,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetResourceidToDenom{}, "bridge/SetResourceidToDenom", nil)
 	cdc.RegisterConcrete(&MsgDeposit{}, "bridge/Deposit", nil)
 	cdc.RegisterConcrete(&MsgAddChainId{}, "bridge/AddChainId", nil)
+	cdc.RegisterConcrete(&MsgSetResourceidType{}, "bridge/SetResourceidType", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -31,6 +32,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAddChainId{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetResourceidType{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"context"
 	"encoding/hex"
 	"fmt"
@@ -37,16 +38,19 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	if balance.Amount.LT(msg.Amount) {
 		return nil, types.ErrBalanceNotEnough
 	}
+	resourceIdType := k.Keeper.GetResourceIdType(ctx, resourceId)
 
-	burnedCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))
-
-	err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, burnedCoins)
+	shouldBurnedOrLockedCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))
+	err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, shouldBurnedOrLockedCoins)
 	if err != nil {
 		return nil, err
 	}
-	err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, burnedCoins)
-	if err != nil {
-		return nil, err
+
+	if bytes.Equal(resourceIdType, types.ResourceIdTypeForeign) {
+		err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, shouldBurnedOrLockedCoins)
+		if err != nil {
+			return nil, err
+		}
 	}
 	k.Keeper.SetDepositCounts(ctx, chainId, count+1)
 
