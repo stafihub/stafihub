@@ -30,6 +30,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/chaind_ids";
 	}
 
+// Queries a list of ResourceIdTypes items.
+	rpc ResourceIdTypes(QueryResourceIdTypesRequest) returns (QueryResourceIdTypesResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/resource_id_types";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -61,6 +66,13 @@ message QueryChaindIdsRequest {
 
 message QueryChaindIdsResponse {
   repeated string chainId = 1;
+}
+
+message QueryResourceIdTypesRequest {
+}
+
+message QueryResourceIdTypesResponse {
+  repeated string idTypes = 1;
 }
 
 // this line is used by starport scaffolding # 3

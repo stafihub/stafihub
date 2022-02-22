@@ -27,10 +27,18 @@ var (
 	DepositCountsStoreKeyPrefix     = []byte{0x02}
 	ProposalStoreKeyPrefix          = []byte{0x03}
 	ChainIdStoreKeyPrefix           = []byte{0x04}
+	ResourceIdTypeStoreKeyPrefix    = []byte{0x05}
 )
 
 var (
 	ThresholdStoreKey = []byte("thresholdStoreKey")
+)
+
+type ResourceIdType []byte
+
+var (
+	ResourceIdTypeForeign = ResourceIdType([]byte{0x00})
+	ResourceIdTypeNative  = ResourceIdType([]byte{0x01})
 )
 
 func KeyPrefix(p string) []byte {
@@ -51,6 +59,10 @@ func ResourceIdToDenomStoreKey(resourceId [32]byte) []byte {
 
 func DepositCountsStoreKey(chainId uint8) []byte {
 	return append(DepositCountsStoreKeyPrefix, chainId)
+}
+
+func ResourceIdTypeStoreKey(resourceId [32]byte) []byte {
+	return append(ResourceIdTypeStoreKeyPrefix, resourceId[:]...)
 }
 
 func ProposalStoreKey(chainId uint8, depositNonce uint64, hash [32]byte) []byte {

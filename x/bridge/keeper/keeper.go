@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -180,4 +181,36 @@ func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 		panic(err)
 	}
 	return proposal, true
+}
+
+func (k Keeper) SetResourceIdType(ctx sdk.Context, resourceId [32]byte, idType types.ResourceIdType) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.ResourceIdTypeStoreKey(resourceId), idType)
+}
+
+func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.ResourceIdType {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.ResourceIdTypeStoreKey(resourceId))
+	if len(bts) == 0 {
+		return types.ResourceIdTypeForeign
+	}
+	return bts
+}
+
+func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdTypeStoreKeyPrefix)
+	defer iterator.Close()
+
+	chainIdList := make([]string, 0)
+	for ; iterator.Valid(); iterator.Next() {
+
+		value := iterator.Value()
+		if len(value) == 0 {
+			value = []byte{0x00}
+		}
+
+		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key())+":"+fmt.Sprintf("%d", value[1]))
+	}
+	return chainIdList
 }
