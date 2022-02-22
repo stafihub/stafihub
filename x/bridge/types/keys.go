@@ -26,6 +26,7 @@ var (
 	ResourceIdToDenomStoreKeyPrefix = []byte{0x01}
 	DepositCountsStoreKeyPrefix     = []byte{0x02}
 	ProposalStoreKeyPrefix          = []byte{0x03}
+	ChainIdStoreKeyPrefix           = []byte{0x04}
 )
 
 var (
@@ -38,6 +39,10 @@ func KeyPrefix(p string) []byte {
 
 func RelayStoreKey(addr sdk.AccAddress) []byte {
 	return append(RelayerStoreKeyPrefix, addr.Bytes()...)
+}
+
+func ChainIdStoreKey(chaindId uint8) []byte {
+	return append(ChainIdStoreKeyPrefix, chaindId)
 }
 
 func ResourceIdToDenomStoreKey(resourceId [32]byte) []byte {

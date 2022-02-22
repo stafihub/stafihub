@@ -27,6 +27,10 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, err
 	}
 	chainId := uint8(msg.DestChainId)
+	if !k.Keeper.HasChainId(ctx, chainId) {
+		return nil, types.ErrChainIdNotSupport
+	}
+
 	count := k.Keeper.GetDepositCounts(ctx, chainId)
 
 	balance := k.bankKeeper.GetBalance(ctx, userAddress, denom)

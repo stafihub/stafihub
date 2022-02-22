@@ -12574,6 +12574,40 @@ paths:
                         }
       tags:
         - Query
+  /stafihub/stafihub/bridge/chaind_ids:
+    get:
+      summary: Queries a list of ChaindIds items.
+      operationId: StafihubStafihubBridgeChaindIds
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              chainId:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/bridge/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -21872,6 +21906,8 @@ definitions:
       and
 
       freezing clients
+  stafihub.stafihub.bridge.MsgAddChainIdResponse:
+    type: object
   stafihub.stafihub.bridge.MsgAddRelayerResponse:
     type: object
   stafihub.stafihub.bridge.MsgDepositResponse:
@@ -21883,6 +21919,13 @@ definitions:
   stafihub.stafihub.bridge.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.bridge.QueryChaindIdsResponse:
+    type: object
+    properties:
+      chainId:
+        type: array
+        items:
+          type: string
   stafihub.stafihub.bridge.QueryParamsResponse:
     type: object
     properties:
