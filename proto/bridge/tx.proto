@@ -1,15 +1,18 @@
 syntax = "proto3";
 package stafihub.stafihub.bridge;
 
+import "gogoproto/gogo.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafihub/stafihub/x/bridge/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc AddRelayer(MsgAddRelayer) returns (MsgAddRelayerResponse);
+  rpc AddRelayer(MsgAddRelayer) returns (MsgAddRelayerResponse);
   rpc SetThreshold(MsgSetThreshold) returns (MsgSetThresholdResponse);
   rpc SetResourceidToDenom(MsgSetResourceidToDenom) returns (MsgSetResourceidToDenomResponse);
+  rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -36,6 +39,17 @@ message MsgSetResourceidToDenom {
 }
 
 message MsgSetResourceidToDenomResponse {
+}
+
+message MsgDeposit {
+  string creator = 1;
+  uint32 destChainId = 2;
+  string resourceId = 3;
+  string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string receiver = 5;
+}
+
+message MsgDepositResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
