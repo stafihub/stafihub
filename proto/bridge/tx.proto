@@ -13,6 +13,7 @@ service Msg {
   rpc SetThreshold(MsgSetThreshold) returns (MsgSetThresholdResponse);
   rpc SetResourceidToDenom(MsgSetResourceidToDenom) returns (MsgSetResourceidToDenomResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
+  rpc AddChainId(MsgAddChainId) returns (MsgAddChainIdResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -50,6 +51,14 @@ message MsgDeposit {
 }
 
 message MsgDepositResponse {
+}
+
+message MsgAddChainId {
+  string creator = 1;
+  uint32 chainId = 2;
+}
+
+message MsgAddChainIdResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

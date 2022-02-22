@@ -74,6 +74,28 @@ func (k Keeper) GetRelayers(ctx sdk.Context) []string {
 	return relayerList
 }
 
+func (k Keeper) AddChainId(ctx sdk.Context, chainId uint8) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.ChainIdStoreKey(chainId), []byte{})
+}
+
+func (k Keeper) HasChainId(ctx sdk.Context, chainId uint8) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.ChainIdStoreKey(chainId))
+}
+
+func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ChainIdStoreKeyPrefix)
+	defer iterator.Close()
+
+	chainIdList := make([]string, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		chainIdList = append(chainIdList, fmt.Sprintf("%d", iterator.Key()[0]))
+	}
+	return chainIdList
+}
+
 func (k Keeper) SetThreshold(ctx sdk.Context, threshold uint8) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.ThresholdStoreKey, []byte{threshold})

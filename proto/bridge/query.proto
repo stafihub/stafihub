@@ -25,6 +25,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/threshold";
 	}
 
+// Queries a list of ChaindIds items.
+	rpc ChaindIds(QueryChaindIdsRequest) returns (QueryChaindIdsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/chaind_ids";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -49,6 +54,13 @@ message QueryThresholdRequest {
 
 message QueryThresholdResponse {
   string threshold = 1;
+}
+
+message QueryChaindIdsRequest {
+}
+
+message QueryChaindIdsResponse {
+  repeated string chainId = 1;
 }
 
 // this line is used by starport scaffolding # 3
