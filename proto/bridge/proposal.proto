@@ -2,15 +2,20 @@ syntax = "proto3";
 package stafihub.stafihub.bridge;
 
 import "gogoproto/gogo.proto";
-import "google/protobuf/any.proto";
 
 option go_package = "github.com/stafihub/stafihub/x/bridge/types";
 
 message Proposal {
-
-  ProposalStatus status = 1 ;
-  repeated string voters = 2 ;
+  ProposalContent content = 1 ;
+  ProposalStatus status = 2 ;
+  repeated string voters = 3 ;
 }
+
+message ProposalContent {
+  string amount = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string receiver = 2;
+}
+
 
 // ProposalStatus enumerates the valid statuses of a proposal.
 enum ProposalStatus {

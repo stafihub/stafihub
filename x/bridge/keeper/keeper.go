@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"crypto/sha256"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -53,7 +54,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) AddRelayer(ctx sdk.Context, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.RelayStoreKey(address), []byte{0xff})
+	store.Set(types.RelayStoreKey(address), []byte{})
 }
 
 func (k Keeper) HasRelayer(ctx sdk.Context, address sdk.AccAddress) bool {
@@ -114,4 +115,47 @@ func (k Keeper) GetDepositCounts(ctx sdk.Context, chainId uint8) uint64 {
 		return 0
 	}
 	return sdk.BigEndianToUint64(bts)
+}
+
+func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, prop types.Proposal) {
+	store := ctx.KVStore(k.storeKey)
+
+	contentBts, err := prop.Content.Marshal()
+	if err != nil {
+		panic(err)
+	}
+	hashBts := make([]byte, 0)
+	hashBts = append(hashBts, resourceId[:]...)
+	hashBts = append(hashBts, contentBts...)
+	hash := sha256.Sum256(hashBts)
+
+	propBts, err := prop.Marshal()
+	if err != nil {
+		panic(err)
+	}
+	store.Set(types.ProposalStoreKey(chainId, depositNonce, hash), propBts)
+}
+
+func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, content types.ProposalContent) (*types.Proposal, bool) {
+	store := ctx.KVStore(k.storeKey)
+
+	contentBts, err := content.Marshal()
+	if err != nil {
+		panic(err)
+	}
+	hashBts := make([]byte, 0)
+	hashBts = append(hashBts, resourceId[:]...)
+	hashBts = append(hashBts, contentBts...)
+	hash := sha256.Sum256(hashBts)
+	bts := store.Get(types.ProposalStoreKey(chainId, depositNonce, hash))
+	if len(bts) == 0 {
+		return nil, false
+	}
+
+	proposal := new(types.Proposal)
+	err = proposal.Unmarshal(bts)
+	if err != nil {
+		panic(err)
+	}
+	return proposal, true
 }

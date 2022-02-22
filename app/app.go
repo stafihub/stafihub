@@ -489,7 +489,7 @@ func New(
 		feegrant.ModuleName, ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
 		sudotypes.ModuleName, authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
 		banktypes.ModuleName, govtypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName,
-		rvotetypes.ModuleName,
+		rvotetypes.ModuleName, bridgemoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -499,6 +499,7 @@ func New(
 		ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
 		sudotypes.ModuleName, authtypes.ModuleName, vestingtypes.ModuleName,
 		banktypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName, rvotetypes.ModuleName,
+		bridgemoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
