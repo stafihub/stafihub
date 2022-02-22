@@ -15,7 +15,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/stafihub/stafihub/bridge/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of Relayers items.
+	rpc Relayers(QueryRelayersRequest) returns (QueryRelayersResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/relayers";
+	}
+
+// Queries a list of Threshold items.
+	rpc Threshold(QueryThresholdRequest) returns (QueryThresholdResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/threshold";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +35,20 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRelayersRequest {
+}
+
+message QueryRelayersResponse {
+  repeated string addressList = 1;
+}
+
+message QueryThresholdRequest {
+}
+
+message QueryThresholdResponse {
+  string threshold = 1;
 }
 
 // this line is used by starport scaffolding # 3

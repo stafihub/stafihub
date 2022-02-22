@@ -117,10 +117,9 @@ func (k Keeper) HasValAddressInWhitelist(ctx sdk.Context, valAddess sdk.ValAddre
 func (k Keeper) GetValAddressWhitelist(ctx sdk.Context) []string {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.ValAddressStoreKeyPrefix)
+	defer iterator.Close()
 
 	valList := make([]string, 0)
-
-	defer iterator.Close()
 	for ; iterator.Valid(); iterator.Next() {
 		valList = append(valList, sdk.ValAddress(iterator.Key()).String())
 	}
