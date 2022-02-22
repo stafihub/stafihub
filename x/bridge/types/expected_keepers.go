@@ -11,8 +11,14 @@ type AccountKeeper interface {
 	// Methods imported from account should be defined here
 }
 
-// BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
-	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
-	// Methods imported from bank should be defined here
+	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
+	MintCoins(ctx sdk.Context, name string, amt sdk.Coins) error
+	HasBalance(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coin) bool
+	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
+}
+
+type SudoKeeper interface {
+	IsAdmin(ctx sdk.Context, address string) bool
+	GetAdmin(ctx sdk.Context) sdk.AccAddress
 }

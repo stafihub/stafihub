@@ -1,0 +1,22 @@
+syntax = "proto3";
+package stafihub.stafihub.bridge;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/stafihub/stafihub/x/bridge/types";
+
+message Proposal {
+
+  ProposalStatus status = 1 ;
+  repeated string voters = 2 ;
+}
+
+// ProposalStatus enumerates the valid statuses of a proposal.
+enum ProposalStatus {
+  option (gogoproto.goproto_enum_prefix) = false;
+
+  PROPOSAL_STATUS_INACTIVE = 0 [(gogoproto.enumvalue_customname) = "StatusInActive"];
+  PROPOSAL_STATUS_ACTIVE = 1 [(gogoproto.enumvalue_customname) = "StatusActive"];
+  PROPOSAL_STATUS_EXECUTED = 2 [(gogoproto.enumvalue_customname) = "StatusExecuted"];
+}
