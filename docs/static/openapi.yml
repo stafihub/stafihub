@@ -12644,6 +12644,75 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/stafihub/stafihub/bridge/proposal_detail/{chainId}/{depositNonce}/{resourceId}/{amount}/{receiver}':
+    get:
+      summary: Queries a list of ProposalDetail items.
+      operationId: StafihubStafihubBridgeProposalDetail
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              proposal:
+                type: object
+                properties:
+                  content:
+                    type: object
+                    properties:
+                      amount:
+                        type: string
+                      receiver:
+                        type: string
+                  executed:
+                    type: boolean
+                  voters:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: depositNonce
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: resourceId
+          in: path
+          required: true
+          type: string
+        - name: amount
+          in: path
+          required: true
+          type: string
+        - name: receiver
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /stafihub/stafihub/bridge/relayers:
     get:
       summary: Queries a list of Relayers items.
@@ -21952,9 +22021,34 @@ definitions:
     type: object
   stafihub.stafihub.bridge.MsgSetThresholdResponse:
     type: object
+  stafihub.stafihub.bridge.MsgVoteProposalResponse:
+    type: object
   stafihub.stafihub.bridge.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.bridge.Proposal:
+    type: object
+    properties:
+      content:
+        type: object
+        properties:
+          amount:
+            type: string
+          receiver:
+            type: string
+      executed:
+        type: boolean
+      voters:
+        type: array
+        items:
+          type: string
+  stafihub.stafihub.bridge.ProposalContent:
+    type: object
+    properties:
+      amount:
+        type: string
+      receiver:
+        type: string
   stafihub.stafihub.bridge.QueryChaindIdsResponse:
     type: object
     properties:
@@ -21969,6 +22063,25 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.bridge.QueryProposalDetailResponse:
+    type: object
+    properties:
+      proposal:
+        type: object
+        properties:
+          content:
+            type: object
+            properties:
+              amount:
+                type: string
+              receiver:
+                type: string
+          executed:
+            type: boolean
+          voters:
+            type: array
+            items:
+              type: string
   stafihub.stafihub.bridge.QueryRelayersResponse:
     type: object
     properties:

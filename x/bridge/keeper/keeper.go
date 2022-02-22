@@ -140,7 +140,7 @@ func (k Keeper) GetDepositCounts(ctx sdk.Context, chainId uint8) uint64 {
 	return sdk.BigEndianToUint64(bts)
 }
 
-func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, prop types.Proposal) {
+func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, prop *types.Proposal) {
 	store := ctx.KVStore(k.storeKey)
 
 	contentBts, err := prop.Content.Marshal()

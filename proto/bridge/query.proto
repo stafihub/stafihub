@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "bridge/params.proto";
+import "bridge/proposal.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafihub/stafihub/x/bridge/types";
@@ -33,6 +34,11 @@ service Query {
 // Queries a list of ResourceIdTypes items.
 	rpc ResourceIdTypes(QueryResourceIdTypesRequest) returns (QueryResourceIdTypesResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/resource_id_types";
+	}
+
+// Queries a list of ProposalDetail items.
+	rpc ProposalDetail(QueryProposalDetailRequest) returns (QueryProposalDetailResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/proposal_detail/{chainId}/{depositNonce}/{resourceId}/{amount}/{receiver}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -73,6 +79,18 @@ message QueryResourceIdTypesRequest {
 
 message QueryResourceIdTypesResponse {
   repeated string idTypes = 1;
+}
+
+message QueryProposalDetailRequest {
+  uint32 chainId = 1;
+  uint64 depositNonce = 2;
+  string resourceId = 3;
+  string amount = 4;
+  string receiver = 5;
+}
+
+message QueryProposalDetailResponse {
+  Proposal proposal = 1;
 }
 
 // this line is used by starport scaffolding # 3
