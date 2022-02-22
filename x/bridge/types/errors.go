@@ -13,4 +13,7 @@ var (
 	ErrBalanceNotEnough      = sdkerrors.Register(ModuleName, 1102, "balance not enough")
 	ErrChainIdNotSupport     = sdkerrors.Register(ModuleName, 1103, "chainId not support")
 	ErrUnKnownResourceIdType = sdkerrors.Register(ModuleName, 1104, "unknown resource id type")
+	ErrAlreadyVoted          = sdkerrors.Register(ModuleName, 1105, "voter already voted")
+	ErrAlreadyExecuted       = sdkerrors.Register(ModuleName, 1106, "voter already executed")
+	ErrThresholdNotSet       = sdkerrors.Register(ModuleName, 1107, "threshold not set")
 )
