@@ -21,10 +21,8 @@ const (
 
 var (
 	ValAddressStoreKeyPrefix = []byte{0x00}
-)
-var (
-	InflationBaseKey   = []byte("inflationBaseKey")
-	WhitelistSwitchKey = []byte("whitelistSwitchKey")
+	InflationBaseKey         = []byte{0x01}
+	WhitelistSwitchKey       = []byte{0x02}
 )
 
 var (
