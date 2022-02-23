@@ -8,10 +8,11 @@ import (
 )
 
 var (
-	TestDenom    = "TestDenom"
-	TestDenom1   = "TestDenom1"
-	TestAdmin    string
-	TestAdminAcc sdk.AccAddress
+	TestDenom      = "TestDenom"
+	TestDenom1     = "TestDenom1"
+	TestAddrPrefix = "Tstafi"
+	TestAdmin      string
+	TestAdminAcc   sdk.AccAddress
 )
 
 func init() {

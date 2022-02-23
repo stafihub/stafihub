@@ -55,6 +55,7 @@ func (k msgServer) AddDenom(goCtx context.Context, msg *types.MsgAddDenom) (*typ
 		return nil, types.ErrDenomAlreadyExist
 	}
 
+	k.SetAddressPrefix(ctx, msg.Metadata.Base, msg.AddrPrefix)
 	k.bankKeeper.SetDenomMetaData(ctx, msg.Metadata)
 	return &types.MsgAddDenomResponse{}, nil
 }

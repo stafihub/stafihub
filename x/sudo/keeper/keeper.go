@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -51,4 +52,19 @@ func (k Keeper) GetAdmin(ctx sdk.Context) sdk.AccAddress {
 func (k Keeper) IsAdmin(ctx sdk.Context, address string) bool {
 	admin := k.GetAdmin(ctx)
 	return admin.String() == address
+}
+
+func (k Keeper) SetAddressPrefix(ctx sdk.Context, denom, addrPrefix string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AddressPrefix)
+	store.Set([]byte(denom), []byte(addrPrefix))
+}
+
+func (k Keeper) GetAddressPrefix(ctx sdk.Context, denom string) (val string, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AddressPrefix)
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return val, false
+	}
+
+	return string(b), true
 }

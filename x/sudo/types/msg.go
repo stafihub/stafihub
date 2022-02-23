@@ -43,10 +43,11 @@ func (msg *MsgUpdateAdmin) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgAddDenom(creator sdk.AccAddress, metadata banktypes.Metadata) *MsgAddDenom {
+func NewMsgAddDenom(creator sdk.AccAddress, metadata banktypes.Metadata, prefix string) *MsgAddDenom {
 	return &MsgAddDenom{
 		Creator:  creator.String(),
 		Metadata: metadata,
+		AddrPrefix: prefix,
 	}
 }
 

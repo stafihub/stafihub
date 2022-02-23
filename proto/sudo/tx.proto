@@ -26,6 +26,7 @@ message MsgUpdateAdminResponse {
 message MsgAddDenom {
   string creator = 1;
   cosmos.bank.v1beta1.Metadata Metadata = 2 [(gogoproto.nullable) = false];
+  string addrPrefix = 3;
 }
 
 message MsgAddDenomResponse {

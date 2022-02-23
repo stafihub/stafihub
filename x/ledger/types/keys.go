@@ -43,6 +43,8 @@ var (
 	BondRecordPrefix           = []byte{0x14}
 	SignaturePrefix            = []byte{0x15}
 	RParamsPrefix              = []byte{0x16}
+	RValidatorIndicatorPrefix  = []byte{0x17}
+	RValidatorPrefix           = []byte{0x18}
 	TotalFeePrefix             = []byte{0x20}
 )
 

@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/rstaking/types"
-	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) SetInflationBase(goCtx context.Context, msg *types.MsgSetInflationBase) (*types.MsgSetInflationBaseResponse, error) {
@@ -13,7 +13,7 @@ func (k msgServer) SetInflationBase(goCtx context.Context, msg *types.MsgSetInfl
 
 	isAdmin := k.sudoKeeper.IsAdmin(ctx, msg.Creator)
 	if !isAdmin {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	k.Keeper.SetInflationBase(ctx, msg.InflationBase)

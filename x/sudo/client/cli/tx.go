@@ -22,6 +22,7 @@ var (
 
 const (
 	FlagMetadata = "metadata"
+	FlagAddressPrefix = "address_prefix"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -81,7 +82,7 @@ func CmdAddDenom() *cobra.Command {
 			fmt.Sprintf(`Broadcast message add_denom with an denom_metadata which can be given through a metadata JSON file.
 
 Example:
-$ %s tx sudo add-denom --metadata="path/to/metadata.json" --from mykey
+$ %s tx sudo add-denom --metadata="path/to/metadata.json" --address_prefix="cosmos" --from mykey
 
 Where metadata.json could be like this:
 
@@ -130,12 +131,18 @@ Where metadata.json could be like this:
 				return err
 			}
 
-			msg := types.NewMsgAddDenom(clientCtx.GetFromAddress(), *md)
+			prefix, _ := cmd.Flags().GetString(FlagMetadata)
+			if prefix == "" {
+				return fmt.Errorf("prefix not give")
+			}
+
+			msg := types.NewMsgAddDenom(clientCtx.GetFromAddress(), *md, prefix)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 
 	cmd.Flags().String(FlagMetadata, "", "Metadata file path")
+	cmd.Flags().String(FlagAddressPrefix, "", "address prefix of the denom, such like `cosmos` for uatom")
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd

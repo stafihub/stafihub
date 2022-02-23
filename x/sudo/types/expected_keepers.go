@@ -7,6 +7,7 @@ import (
 )
 
 type BankKeeper interface {
+	//HasDenomMetaData(ctx sdk.Context, denom string) bool
 	GetDenomMetaData(ctx sdk.Context, denom string) (banktypes.Metadata, bool)
 	SetDenomMetaData(ctx sdk.Context, denomMetaData banktypes.Metadata)
 	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error

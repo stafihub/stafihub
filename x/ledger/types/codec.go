@@ -31,7 +31,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
 	cdc.RegisterConcrete(&MsgSetRParams{}, "ledger/SetRParams", nil)
-	// this line is used by starport scaffolding # 2
+	cdc.RegisterConcrete(&MsgOnboard{}, "ledger/Onboard", nil)
+cdc.RegisterConcrete(&MsgSetRValidatorIndicator{}, "ledger/SetRValidatorIndicator", nil)
+// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -62,7 +64,13 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetRParams{},
 	)
-	// this line is used by starport scaffolding # 3
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgOnboard{},
+)
+registry.RegisterImplementations((*sdk.Msg)(nil),
+	&MsgSetRValidatorIndicator{},
+)
+// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

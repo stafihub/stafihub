@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/rstaking/types"
-	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) AddValToWhitelist(goCtx context.Context, msg *types.MsgAddValToWhitelist) (*types.MsgAddValToWhitelistResponse, error) {
@@ -13,7 +13,7 @@ func (k msgServer) AddValToWhitelist(goCtx context.Context, msg *types.MsgAddVal
 
 	isAdmin := k.sudoKeeper.IsAdmin(ctx, msg.Creator)
 	if !isAdmin {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 	valAddress, err := sdk.ValAddressFromBech32(msg.ValAddress)
 	if err != nil {

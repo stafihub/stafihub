@@ -175,5 +175,30 @@ message RParams {
     string eraSeconds = 6;
     string leastBond = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
     repeated string validators = 8;
-  }
-  
+}
+
+message RValidator {
+    string denom = 1;
+    string address = 2;
+    string operatorAddress = 3;
+    RValidatorStatus status = 4;
+    string locked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+enum RValidatorStatus {
+    option (gogoproto.goproto_enum_prefix) = false;
+
+    RVALIDATOR_STATUS_ONBOARD = 0 [(gogoproto.enumvalue_customname) = "Onboard"];
+    RVALIDATOR_STATUS_PICKABLE = 1 [(gogoproto.enumvalue_customname) = "Pickable"];
+    RVALIDATOR_STATUS_PICKED = 2 [(gogoproto.enumvalue_customname) = "Picked"];
+    RVALIDATOR_STATUS_UNPICKABLE = 3 [(gogoproto.enumvalue_customname) = "Unpickable"];
+    RVALIDATOR_STATUS_OFFBOARD = 4 [(gogoproto.enumvalue_customname) = "Offboard"];
+}
+
+message RValidatorIndicator {
+    string denom = 1;
+    string commission = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+    uint32 uptime = 3;
+    int64 votingPower = 4;
+    string locked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}

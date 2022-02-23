@@ -54,7 +54,9 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdExecuteBondProposal())
 	cmd.AddCommand(CmdSubmitSignature())
 	cmd.AddCommand(CmdSetRParams())
-	// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdOnboard())
+cmd.AddCommand(CmdSetRValidatorIndicator())
+// this line is used by starport scaffolding # 1
 
 	return cmd
 }

@@ -6,14 +6,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
-	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) SetEraUnbondLimit(goCtx context.Context, msg *types.MsgSetEraUnbondLimit) (*types.MsgSetEraUnbondLimitResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
@@ -30,7 +30,7 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	denom := msg.Coin.Denom
@@ -67,7 +67,7 @@ func (k msgServer) SetChainBondingDuration(goCtx context.Context, msg *types.Msg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
@@ -83,7 +83,7 @@ func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDet
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
@@ -100,7 +100,7 @@ func (k msgServer) SetLeastBond(goCtx context.Context, msg *types.MsgSetLeastBon
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
@@ -117,7 +117,7 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context, msg *types.Ms
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
@@ -134,7 +134,7 @@ func (k msgServer) SetCommission(goCtx context.Context, msg *types.MsgSetCommiss
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	k.Keeper.SetCommission(ctx, msg.Commission)
@@ -145,7 +145,7 @@ func (k msgServer) SetReceiver(goCtx context.Context, msg *types.MsgSetReceiver)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	receiver, _ := sdk.AccAddressFromBech32(msg.Receiver)
@@ -158,7 +158,7 @@ func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	if _, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom); !ok {
@@ -177,7 +177,7 @@ func (k msgServer) SetUnbondCommission(goCtx context.Context, msg *types.MsgSetU
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	k.Keeper.SetUnbondCommission(ctx, msg.Commission)
@@ -189,7 +189,7 @@ func (k msgServer) SetRParams(goCtx context.Context, msg *types.MsgSetRParams) (
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
+		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
 	rParams := types.RParams{

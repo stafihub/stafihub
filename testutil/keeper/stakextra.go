@@ -8,6 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stafihub/stafihub/x/rstaking/keeper"
 	"github.com/stafihub/stafihub/x/rstaking/types"
@@ -36,11 +37,17 @@ func RStakingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"RStakingParams",
 	)
+
+	sudoKeeper, _ := SudoKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+
+		bankKeeper,
+		sudoKeeper,
+		authtypes.FeeCollectorName,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

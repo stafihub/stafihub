@@ -34,4 +34,8 @@ var (
 	ErrInvalidEra             = sdkerrors.Register(ModuleName, 24, "invalid era error")
 	ErrSignatureRepeated      = sdkerrors.Register(ModuleName, 25, "signature repeated error")
 	ErrPoolDetailNotFound     = sdkerrors.Register(ModuleName, 26, "pool detail not found error")
+	ErrAddrPrefixNotMatched     = sdkerrors.Register(ModuleName, 27, "addr prefix not matched error")
+	ErrLockedDenomNotMatch     = sdkerrors.Register(ModuleName, 28, "locked not matched error")
+	ErrLockedNotEnough     = sdkerrors.Register(ModuleName, 29, "locked not enough error")
+	ErrRValidatorAlreadyExist = sdkerrors.Register(ModuleName, 30, "rvalidator already exist error")
 )
