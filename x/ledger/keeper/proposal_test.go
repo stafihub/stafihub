@@ -11,7 +11,6 @@ import (
 
 func setupSettings(t testing.TB) {
 	k, ctx := keepertest.LedgerKeeper(t)
-	s, wctx := keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
-	msg := addNewPool(s, wctx)
-	t.Log(msg)
+	s, _ := keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
+	t.Log(s)
 }

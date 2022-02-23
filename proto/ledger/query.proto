@@ -30,10 +30,6 @@ service Query {
 	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
 	}
-// Queries a list of poolsByDenom items.
-	rpc PoolsByDenom(QueryPoolsByDenomRequest) returns (QueryPoolsByDenomResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/poolsByDenom/{denom}";
-	}
 
 // Queries a list of bondedPoolsByDenom items.
 	rpc BondedPoolsByDenom(QueryBondedPoolsByDenomRequest) returns (QueryBondedPoolsByDenomResponse) {
@@ -135,6 +131,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/get_r_params/{denom}";
 	}
 
+// Queries a list of TotalFeeList items.
+	rpc TotalFeeList(QueryTotalFeeListRequest) returns (QueryTotalFeeListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/total_fee_list";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -168,14 +169,6 @@ message QueryEraExchangeRatesByDenomRequest {
 
 message QueryEraExchangeRatesByDenomResponse {
     repeated EraExchangeRate eraExchangeRates = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryPoolsByDenomRequest {
-  string denom = 1;
-}
-
-message QueryPoolsByDenomResponse {
-  repeated string addrs = 1;
 }
 
 message QueryBondedPoolsByDenomRequest {
@@ -345,6 +338,13 @@ message QueryGetRParamsRequest {
 
 message QueryGetRParamsResponse {
 	RParams rParams = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryTotalFeeListRequest {
+}
+
+message QueryTotalFeeListResponse {
+	repeated TotalFee totalFeeList = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

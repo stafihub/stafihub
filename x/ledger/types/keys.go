@@ -43,6 +43,7 @@ var (
 	BondRecordPrefix           = []byte{0x14}
 	SignaturePrefix            = []byte{0x15}
 	RParamsPrefix              = []byte{0x16}
+	TotalFeePrefix             = []byte{0x20}
 )
 
 func KeyPrefix(p string) []byte {

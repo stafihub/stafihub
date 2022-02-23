@@ -9,66 +9,6 @@ import (
 	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-func (k msgServer) AddNewPool(goCtx context.Context, msg *types.MsgAddNewPool) (*types.MsgAddNewPoolResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
-	}
-
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
-	if !ok {
-		return nil, banktypes.ErrDenomMetadataNotFound
-	}
-
-	//if !k.bankKeeper.HasDenomMetaData(ctx, msg.Denom) {
-	//	return nil, banktypes.ErrDenomMetadataNotFound
-	//}
-
-	if k.Keeper.IsPoolExist(ctx, msg.Denom, msg.Addr) {
-		return nil, types.ErrPoolAlreadyAdded
-	}
-
-	k.Keeper.AddPool(ctx, msg.Denom, msg.Addr)
-	return &types.MsgAddNewPoolResponse{}, nil
-}
-
-func (k msgServer) RemovePool(goCtx context.Context, msg *types.MsgRemovePool) (*types.MsgRemovePoolResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudoTypes.ErrCreatorNotAdmin
-	}
-
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
-	if !ok {
-		return nil, banktypes.ErrDenomMetadataNotFound
-	}
-
-	if !k.IsPoolExist(ctx, msg.Denom, msg.Addr) {
-		return nil, types.ErrPoolNotFound
-	}
-
-	if !k.IsBondedPoolExist(ctx, msg.Denom, msg.Addr) {
-		return nil, types.ErrPoolNotBonded
-	}
-
-	pipe, ok := k.Keeper.GetBondPipeline(ctx, msg.Denom, msg.Addr)
-	if !ok {
-		return nil, types.ErrBondPipelineNotFound
-	}
-
-	chunk := pipe.Chunk
-	if chunk.Bond.Int64() != 0 || chunk.Unbond.Int64() != 0 || chunk.Active.Int64() != 0 {
-		return nil, types.ErrActiveAlreadySet
-	}
-
-	k.Keeper.RemovePool(ctx, msg.Denom, msg.Addr)
-	k.Keeper.RemoveBondedPool(ctx, msg.Denom, msg.Addr)
-
-	return &types.MsgRemovePoolResponse{}, nil
-}
-
 func (k msgServer) SetEraUnbondLimit(goCtx context.Context, msg *types.MsgSetEraUnbondLimit) (*types.MsgSetEraUnbondLimitResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -97,10 +37,6 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, denom)
 	if !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
-	}
-
-	if !k.IsPoolExist(ctx, denom, msg.Pool) {
-		return nil, types.ErrPoolNotFound
 	}
 
 	if k.IsBondedPoolExist(ctx, denom, msg.Pool) {

@@ -8,59 +8,6 @@ import (
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
-func (k Keeper) AddPool(ctx sdk.Context, denom string, addr string) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolPrefix)
-	pool, _ := k.GetPool(ctx, denom)
-	pool.Addrs = append(pool.Addrs, addr)
-	b := k.cdc.MustMarshal(&pool)
-	store.Set([]byte(denom), b)
-}
-
-func (k Keeper) IsPoolExist(ctx sdk.Context, denom string, addr string) bool {
-	pool, ok := k.GetPool(ctx, denom)
-	if !ok {
-		return false
-	}
-
-	for _, adr := range pool.Addrs {
-		if adr == addr {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (k Keeper) GetPool(ctx sdk.Context, denom string) (types.Pool, bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolPrefix)
-	b := store.Get([]byte(denom))
-	val := types.Pool{Denom: denom, Addrs: []string{}}
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
-}
-
-func (k Keeper) RemovePool(ctx sdk.Context, denom string, addr string) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolPrefix)
-	pool, ok := k.GetPool(ctx, denom)
-	if !ok {
-		return
-	}
-
-	addrs := make([]string, 0)
-	for _, adr := range pool.Addrs {
-		if adr != addr {
-			addrs = append(addrs, adr)
-		}
-	}
-	pool.Addrs = addrs
-	b := k.cdc.MustMarshal(&pool)
-	store.Set([]byte(denom), b)
-}
-
 func (k Keeper) IsBondedPoolExist(ctx sdk.Context, denom string, addr string) bool {
 	pool, ok := k.GetBondedPool(ctx, denom)
 	if !ok {

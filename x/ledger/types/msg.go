@@ -7,8 +7,6 @@ import (
 )
 
 var (
-	_ sdk.Msg = &MsgAddNewPool{}
-	_ sdk.Msg = &MsgRemovePool{}
 	_ sdk.Msg = &MsgSetEraUnbondLimit{}
 	_ sdk.Msg = &MsgSetInitBond{}
 	_ sdk.Msg = &MsgSetChainBondingDuration{}
@@ -23,74 +21,6 @@ var (
 	_ sdk.Msg = &MsgSubmitSignature{}
 	_ sdk.Msg = &MsgSetRParams{}
 )
-
-func NewMsgAddNewPool(creator sdk.AccAddress, denom string, addr string) *MsgAddNewPool {
-	return &MsgAddNewPool{
-		Creator: creator.String(),
-		Denom:   denom,
-		Addr:    addr,
-	}
-}
-
-func (msg *MsgAddNewPool) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgAddNewPool) Type() string {
-	return "AddNewPool"
-}
-
-func (msg *MsgAddNewPool) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgAddNewPool) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgAddNewPool) ValidateBasic() error {
-	if msg.Creator == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
-	}
-
-	return nil
-}
-
-func NewMsgRemovePool(creator sdk.AccAddress, denom string, addr string) *MsgRemovePool {
-	return &MsgRemovePool{
-		Creator: creator.String(),
-		Denom:   denom,
-		Addr:    addr,
-	}
-}
-
-func (msg *MsgRemovePool) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgRemovePool) Type() string {
-	return "RemovePool"
-}
-
-func (msg *MsgRemovePool) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgRemovePool) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgRemovePool) ValidateBasic() error {
-	if msg.Creator == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
-	}
-
-	return nil
-}
 
 func NewMsgSetEraUnbondLimit(creator sdk.AccAddress, denom string, limit uint32) *MsgSetEraUnbondLimit {
 	return &MsgSetEraUnbondLimit{

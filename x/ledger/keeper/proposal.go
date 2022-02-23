@@ -196,6 +196,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, sdk.Coins{coin}); err != nil {
 			return err
 		}
+		k.IncreaseTotalFee(ctx, coin.Denom, coin.Amount)
 	}
 
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
@@ -297,6 +298,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, sdk.Coins{coin}); err != nil {
 				return err
 			}
+			k.IncreaseTotalFee(ctx, coin.Denom, coin.Amount)
 		}
 	}
 

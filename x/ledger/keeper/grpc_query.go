@@ -26,20 +26,6 @@ func (q Querier) GetCurrentEraSnapshot(goCtx context.Context, req *types.QueryGe
 	return &types.QueryGetCurrentEraSnapshotResponse{ShotIds: shot.ShotIds}, nil
 }
 
-func (q Querier) PoolsByDenom(goCtx context.Context, req *types.QueryPoolsByDenomRequest) (*types.QueryPoolsByDenomResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	pool, found := q.GetPool(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
-
-	return &types.QueryPoolsByDenomResponse{Addrs: pool.Addrs}, nil
-}
-
 func (q Querier) BondedPoolsByDenom(goCtx context.Context, req *types.QueryBondedPoolsByDenomRequest) (*types.QueryBondedPoolsByDenomResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())

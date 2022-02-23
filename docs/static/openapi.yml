@@ -13941,20 +13941,25 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/poolsByDenom/{denom}':
+  /stafihub/stafihub/ledger/total_fee_list:
     get:
-      summary: Queries a list of poolsByDenom items.
-      operationId: StafihubStafihubLedgerPoolsByDenom
+      summary: Queries a list of TotalFeeList items.
+      operationId: StafihubStafihubLedgerTotalFeeList
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              addrs:
+              totalFeeList:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    value:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13973,11 +13978,6 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
       tags:
         - Query
   '/stafihub/stafihub/relayers/threshold/{denom}':
@@ -22215,13 +22215,9 @@ definitions:
         type: string
       active:
         type: string
-  stafihub.stafihub.ledger.MsgAddNewPoolResponse:
-    type: object
   stafihub.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
     type: object
   stafihub.stafihub.ledger.MsgLiquidityUnbondResponse:
-    type: object
-  stafihub.stafihub.ledger.MsgRemovePoolResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetChainBondingDurationResponse:
     type: object
@@ -22616,13 +22612,18 @@ definitions:
             type: string
           value:
             type: string
-  stafihub.stafihub.ledger.QueryPoolsByDenomResponse:
+  stafihub.stafihub.ledger.QueryTotalFeeListResponse:
     type: object
     properties:
-      addrs:
+      totalFeeList:
         type: array
         items:
-          type: string
+          type: object
+          properties:
+            denom:
+              type: string
+            value:
+              type: string
   stafihub.stafihub.ledger.RParams:
     type: object
     properties:
@@ -22670,6 +22671,13 @@ definitions:
         type: array
         items:
           type: string
+  stafihub.stafihub.ledger.TotalFee:
+    type: object
+    properties:
+      denom:
+        type: string
+      value:
+        type: string
   stafihub.stafihub.ledger.UnbondFee:
     type: object
     properties:

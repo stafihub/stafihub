@@ -102,6 +102,12 @@ message ExchangeRate {
     string value = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
 }
 
+message TotalFee {
+    string denom = 1;
+    string value = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+
 message EraExchangeRate {
   string denom = 1;
   uint32 era = 2;

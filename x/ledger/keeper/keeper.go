@@ -157,3 +157,49 @@ func (k Keeper) RtokenToToken(ctx sdk.Context, denom string, rbalance sdk.Int) s
 
 	return sdk.OneDec().MulInt(rbalance).Quo(er.Value).TruncateInt()
 }
+
+func (k Keeper) IncreaseTotalFee(ctx sdk.Context, denom string, increase sdk.Int) {
+	total, found := k.GetTotalFee(ctx, denom)
+	if !found {
+		total = types.TotalFee{
+			Denom: denom,
+			Value: sdk.ZeroInt(),
+		}
+	}
+	total.Value = total.Value.Add(increase)
+	k.SetTotalFee(ctx, denom, total.Value)
+}
+
+func (k Keeper) SetTotalFee(ctx sdk.Context, denom string, total sdk.Int) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalFeePrefix)
+	e := types.TotalFee{
+		Denom: denom,
+		Value: total,
+	}
+	b := k.cdc.MustMarshal(&e)
+	store.Set([]byte(denom), b)
+}
+
+func (k Keeper) GetTotalFee(ctx sdk.Context, denom string) (val types.TotalFee, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalFeePrefix)
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+func (k Keeper) GetAllTotalFee(ctx sdk.Context) (list []types.TotalFee) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalFeePrefix)
+	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.TotalFee
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, val)
+	}
+	return
+}
