@@ -105,6 +105,10 @@ import (
 	sudokeeper "github.com/stafihub/stafihub/x/sudo/keeper"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+	customcrisis "github.com/stafihub/stafihub/custom/crisis"
+	customgov "github.com/stafihub/stafihub/custom/gov"
+	custommint "github.com/stafihub/stafihub/custom/mint"
+	customstaking "github.com/stafihub/stafihub/custom/staking"
 )
 
 const (
@@ -141,12 +145,12 @@ var (
 		genutil.AppModuleBasic{},
 		bank.AppModuleBasic{},
 		capability.AppModuleBasic{},
-		staking.AppModuleBasic{},
-		mint.AppModuleBasic{},
+		customstaking.AppModuleBasic{},
+		custommint.AppModuleBasic{},
 		distr.AppModuleBasic{},
-		gov.NewAppModuleBasic(getGovProposalHandlers()...),
+		customgov.NewAppModuleBasic(getGovProposalHandlers()...),
 		params.AppModuleBasic{},
-		crisis.AppModuleBasic{},
+		customcrisis.AppModuleBasic{},
 		slashing.AppModuleBasic{},
 		feegrantmodule.AppModuleBasic{},
 		ibc.AppModuleBasic{},
