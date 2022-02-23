@@ -106,6 +106,7 @@ func (k Keeper) MintCoins(ctx sdk.Context, newCoins sdk.Coins) error {
 
 func (k Keeper) AddValAddressToWhitelist(ctx sdk.Context, valAddress sdk.ValAddress) {
 	store := ctx.KVStore(k.storeKey)
+
 	store.Set(types.ValAddressStoreKey(valAddress), []byte{0x11})
 }
 
