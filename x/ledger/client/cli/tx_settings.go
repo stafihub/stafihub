@@ -16,68 +16,6 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdAddNewPool() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "add-new-pool [denom] [addr]",
-		Short: "Broadcast message add_new_pool",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argAddr := args[1]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgAddNewPool(
-				clientCtx.GetFromAddress(),
-				argDenom,
-				argAddr,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdRemovePool() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "remove-pool [denom] [addr]",
-		Short: "Broadcast message remove_pool",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argAddr := args[1]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgRemovePool(
-				clientCtx.GetFromAddress(),
-				argDenom,
-				argAddr,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
 func CmdSetEraUnbondLimit() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-era-unbond-limit [denom] [limit]",

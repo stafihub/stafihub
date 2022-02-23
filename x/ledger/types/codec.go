@@ -9,8 +9,6 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgAddNewPool{}, "ledger/AddNewPool", nil)
-	cdc.RegisterConcrete(&MsgRemovePool{}, "ledger/RemovePool", nil)
 	cdc.RegisterConcrete(&MsgSetEraUnbondLimit{}, "ledger/SetEraUnbondLimit", nil)
 	cdc.RegisterConcrete(&MsgSetInitBond{}, "ledger/SetInitBond", nil)
 	cdc.RegisterConcrete(&MsgSetChainBondingDuration{}, "ledger/SetChainBondingDuration", nil)
@@ -38,8 +36,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddNewPool{},
-		&MsgRemovePool{},
 		&MsgSetEraUnbondLimit{},
 		&MsgSetInitBond{},
 		&MsgSetChainBondingDuration{},

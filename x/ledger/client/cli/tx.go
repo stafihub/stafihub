@@ -34,8 +34,6 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdAddNewPool())
-	cmd.AddCommand(CmdRemovePool())
 	cmd.AddCommand(CmdSetEraUnbondLimit())
 	cmd.AddCommand(CmdSetInitBond())
 	cmd.AddCommand(CmdSetChainBondingDuration())

@@ -28,7 +28,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdShowExchangeRate())
 	cmd.AddCommand(CmdShowEraExchangeRate())
 	cmd.AddCommand(CmdEraExchangeRatesByDenom())
-	cmd.AddCommand(CmdPoolsByDenom())
 	cmd.AddCommand(CmdBondedPoolsByDenom())
 	cmd.AddCommand(CmdGetPoolDetail())
 	cmd.AddCommand(CmdGetChainEra())
@@ -57,38 +56,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 var _ = strconv.Itoa(0)
 
-func CmdPoolsByDenom() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "pools-by-denom [denom]",
-		Short: "Query pools_by_denom",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-
-			params := &types.QueryPoolsByDenomRequest{
-				Denom: reqDenom,
-			}
-
-			res, err := queryClient.PoolsByDenom(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
 
 func CmdBondedPoolsByDenom() *cobra.Command {
 	cmd := &cobra.Command{

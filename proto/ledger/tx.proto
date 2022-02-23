@@ -9,8 +9,6 @@ option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc AddNewPool(MsgAddNewPool) returns (MsgAddNewPoolResponse);
-  rpc RemovePool(MsgRemovePool) returns (MsgRemovePoolResponse);
   rpc SetEraUnbondLimit(MsgSetEraUnbondLimit) returns (MsgSetEraUnbondLimitResponse);
   rpc SetInitBond(MsgSetInitBond) returns (MsgSetInitBondResponse);
   rpc SetChainBondingDuration(MsgSetChainBondingDuration) returns (MsgSetChainBondingDurationResponse);
@@ -25,24 +23,6 @@ service Msg {
   rpc SubmitSignature(MsgSubmitSignature) returns (MsgSubmitSignatureResponse);
   rpc SetRParams(MsgSetRParams) returns (MsgSetRParamsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
-}
-
-message MsgAddNewPool {
-  string creator = 1;
-  string denom = 2;
-  string addr = 3;
-}
-
-message MsgAddNewPoolResponse {
-}
-
-message MsgRemovePool {
-  string creator = 1;
-  string denom = 2;
-  string addr = 3;
-}
-
-message MsgRemovePoolResponse {
 }
 
 message MsgSetEraUnbondLimit {

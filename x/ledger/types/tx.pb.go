@@ -29,198 +29,6 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgAddNewPool struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	Addr    string `protobuf:"bytes,3,opt,name=addr,proto3" json:"addr,omitempty"`
-}
-
-func (m *MsgAddNewPool) Reset()         { *m = MsgAddNewPool{} }
-func (m *MsgAddNewPool) String() string { return proto.CompactTextString(m) }
-func (*MsgAddNewPool) ProtoMessage()    {}
-func (*MsgAddNewPool) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{0}
-}
-func (m *MsgAddNewPool) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgAddNewPool) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgAddNewPool.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgAddNewPool) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddNewPool.Merge(m, src)
-}
-func (m *MsgAddNewPool) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgAddNewPool) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddNewPool.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgAddNewPool proto.InternalMessageInfo
-
-func (m *MsgAddNewPool) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgAddNewPool) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-func (m *MsgAddNewPool) GetAddr() string {
-	if m != nil {
-		return m.Addr
-	}
-	return ""
-}
-
-type MsgAddNewPoolResponse struct {
-}
-
-func (m *MsgAddNewPoolResponse) Reset()         { *m = MsgAddNewPoolResponse{} }
-func (m *MsgAddNewPoolResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgAddNewPoolResponse) ProtoMessage()    {}
-func (*MsgAddNewPoolResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{1}
-}
-func (m *MsgAddNewPoolResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgAddNewPoolResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgAddNewPoolResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgAddNewPoolResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddNewPoolResponse.Merge(m, src)
-}
-func (m *MsgAddNewPoolResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgAddNewPoolResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddNewPoolResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgAddNewPoolResponse proto.InternalMessageInfo
-
-type MsgRemovePool struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	Addr    string `protobuf:"bytes,3,opt,name=addr,proto3" json:"addr,omitempty"`
-}
-
-func (m *MsgRemovePool) Reset()         { *m = MsgRemovePool{} }
-func (m *MsgRemovePool) String() string { return proto.CompactTextString(m) }
-func (*MsgRemovePool) ProtoMessage()    {}
-func (*MsgRemovePool) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{2}
-}
-func (m *MsgRemovePool) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgRemovePool) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgRemovePool.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgRemovePool) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRemovePool.Merge(m, src)
-}
-func (m *MsgRemovePool) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgRemovePool) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRemovePool.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgRemovePool proto.InternalMessageInfo
-
-func (m *MsgRemovePool) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgRemovePool) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-func (m *MsgRemovePool) GetAddr() string {
-	if m != nil {
-		return m.Addr
-	}
-	return ""
-}
-
-type MsgRemovePoolResponse struct {
-}
-
-func (m *MsgRemovePoolResponse) Reset()         { *m = MsgRemovePoolResponse{} }
-func (m *MsgRemovePoolResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRemovePoolResponse) ProtoMessage()    {}
-func (*MsgRemovePoolResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{3}
-}
-func (m *MsgRemovePoolResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgRemovePoolResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgRemovePoolResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgRemovePoolResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRemovePoolResponse.Merge(m, src)
-}
-func (m *MsgRemovePoolResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgRemovePoolResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRemovePoolResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgRemovePoolResponse proto.InternalMessageInfo
-
 type MsgSetEraUnbondLimit struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
@@ -231,7 +39,7 @@ func (m *MsgSetEraUnbondLimit) Reset()         { *m = MsgSetEraUnbondLimit{} }
 func (m *MsgSetEraUnbondLimit) String() string { return proto.CompactTextString(m) }
 func (*MsgSetEraUnbondLimit) ProtoMessage()    {}
 func (*MsgSetEraUnbondLimit) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{4}
+	return fileDescriptor_8b521ea88205ae40, []int{0}
 }
 func (m *MsgSetEraUnbondLimit) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -288,7 +96,7 @@ func (m *MsgSetEraUnbondLimitResponse) Reset()         { *m = MsgSetEraUnbondLim
 func (m *MsgSetEraUnbondLimitResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetEraUnbondLimitResponse) ProtoMessage()    {}
 func (*MsgSetEraUnbondLimitResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{5}
+	return fileDescriptor_8b521ea88205ae40, []int{1}
 }
 func (m *MsgSetEraUnbondLimitResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -328,7 +136,7 @@ func (m *MsgSetInitBond) Reset()         { *m = MsgSetInitBond{} }
 func (m *MsgSetInitBond) String() string { return proto.CompactTextString(m) }
 func (*MsgSetInitBond) ProtoMessage()    {}
 func (*MsgSetInitBond) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{6}
+	return fileDescriptor_8b521ea88205ae40, []int{2}
 }
 func (m *MsgSetInitBond) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -385,7 +193,7 @@ func (m *MsgSetInitBondResponse) Reset()         { *m = MsgSetInitBondResponse{}
 func (m *MsgSetInitBondResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetInitBondResponse) ProtoMessage()    {}
 func (*MsgSetInitBondResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{7}
+	return fileDescriptor_8b521ea88205ae40, []int{3}
 }
 func (m *MsgSetInitBondResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -424,7 +232,7 @@ func (m *MsgSetChainBondingDuration) Reset()         { *m = MsgSetChainBondingDu
 func (m *MsgSetChainBondingDuration) String() string { return proto.CompactTextString(m) }
 func (*MsgSetChainBondingDuration) ProtoMessage()    {}
 func (*MsgSetChainBondingDuration) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{8}
+	return fileDescriptor_8b521ea88205ae40, []int{4}
 }
 func (m *MsgSetChainBondingDuration) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -481,7 +289,7 @@ func (m *MsgSetChainBondingDurationResponse) Reset()         { *m = MsgSetChainB
 func (m *MsgSetChainBondingDurationResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetChainBondingDurationResponse) ProtoMessage()    {}
 func (*MsgSetChainBondingDurationResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{9}
+	return fileDescriptor_8b521ea88205ae40, []int{5}
 }
 func (m *MsgSetChainBondingDurationResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -522,7 +330,7 @@ func (m *MsgSetPoolDetail) Reset()         { *m = MsgSetPoolDetail{} }
 func (m *MsgSetPoolDetail) String() string { return proto.CompactTextString(m) }
 func (*MsgSetPoolDetail) ProtoMessage()    {}
 func (*MsgSetPoolDetail) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{10}
+	return fileDescriptor_8b521ea88205ae40, []int{6}
 }
 func (m *MsgSetPoolDetail) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -593,7 +401,7 @@ func (m *MsgSetPoolDetailResponse) Reset()         { *m = MsgSetPoolDetailRespon
 func (m *MsgSetPoolDetailResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetPoolDetailResponse) ProtoMessage()    {}
 func (*MsgSetPoolDetailResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{11}
+	return fileDescriptor_8b521ea88205ae40, []int{7}
 }
 func (m *MsgSetPoolDetailResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -632,7 +440,7 @@ func (m *MsgSetLeastBond) Reset()         { *m = MsgSetLeastBond{} }
 func (m *MsgSetLeastBond) String() string { return proto.CompactTextString(m) }
 func (*MsgSetLeastBond) ProtoMessage()    {}
 func (*MsgSetLeastBond) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{12}
+	return fileDescriptor_8b521ea88205ae40, []int{8}
 }
 func (m *MsgSetLeastBond) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -682,7 +490,7 @@ func (m *MsgSetLeastBondResponse) Reset()         { *m = MsgSetLeastBondResponse
 func (m *MsgSetLeastBondResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetLeastBondResponse) ProtoMessage()    {}
 func (*MsgSetLeastBondResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{13}
+	return fileDescriptor_8b521ea88205ae40, []int{9}
 }
 func (m *MsgSetLeastBondResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -720,7 +528,7 @@ func (m *MsgClearCurrentEraSnapShots) Reset()         { *m = MsgClearCurrentEraS
 func (m *MsgClearCurrentEraSnapShots) String() string { return proto.CompactTextString(m) }
 func (*MsgClearCurrentEraSnapShots) ProtoMessage()    {}
 func (*MsgClearCurrentEraSnapShots) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{14}
+	return fileDescriptor_8b521ea88205ae40, []int{10}
 }
 func (m *MsgClearCurrentEraSnapShots) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -770,7 +578,7 @@ func (m *MsgClearCurrentEraSnapShotsResponse) Reset()         { *m = MsgClearCur
 func (m *MsgClearCurrentEraSnapShotsResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgClearCurrentEraSnapShotsResponse) ProtoMessage()    {}
 func (*MsgClearCurrentEraSnapShotsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{15}
+	return fileDescriptor_8b521ea88205ae40, []int{11}
 }
 func (m *MsgClearCurrentEraSnapShotsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -808,7 +616,7 @@ func (m *MsgSetCommission) Reset()         { *m = MsgSetCommission{} }
 func (m *MsgSetCommission) String() string { return proto.CompactTextString(m) }
 func (*MsgSetCommission) ProtoMessage()    {}
 func (*MsgSetCommission) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{16}
+	return fileDescriptor_8b521ea88205ae40, []int{12}
 }
 func (m *MsgSetCommission) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -851,7 +659,7 @@ func (m *MsgSetCommissionResponse) Reset()         { *m = MsgSetCommissionRespon
 func (m *MsgSetCommissionResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetCommissionResponse) ProtoMessage()    {}
 func (*MsgSetCommissionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{17}
+	return fileDescriptor_8b521ea88205ae40, []int{13}
 }
 func (m *MsgSetCommissionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -889,7 +697,7 @@ func (m *MsgSetReceiver) Reset()         { *m = MsgSetReceiver{} }
 func (m *MsgSetReceiver) String() string { return proto.CompactTextString(m) }
 func (*MsgSetReceiver) ProtoMessage()    {}
 func (*MsgSetReceiver) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{18}
+	return fileDescriptor_8b521ea88205ae40, []int{14}
 }
 func (m *MsgSetReceiver) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -939,7 +747,7 @@ func (m *MsgSetReceiverResponse) Reset()         { *m = MsgSetReceiverResponse{}
 func (m *MsgSetReceiverResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetReceiverResponse) ProtoMessage()    {}
 func (*MsgSetReceiverResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{19}
+	return fileDescriptor_8b521ea88205ae40, []int{15}
 }
 func (m *MsgSetReceiverResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -978,7 +786,7 @@ func (m *MsgSetUnbondFee) Reset()         { *m = MsgSetUnbondFee{} }
 func (m *MsgSetUnbondFee) String() string { return proto.CompactTextString(m) }
 func (*MsgSetUnbondFee) ProtoMessage()    {}
 func (*MsgSetUnbondFee) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{20}
+	return fileDescriptor_8b521ea88205ae40, []int{16}
 }
 func (m *MsgSetUnbondFee) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1028,7 +836,7 @@ func (m *MsgSetUnbondFeeResponse) Reset()         { *m = MsgSetUnbondFeeResponse
 func (m *MsgSetUnbondFeeResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetUnbondFeeResponse) ProtoMessage()    {}
 func (*MsgSetUnbondFeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{21}
+	return fileDescriptor_8b521ea88205ae40, []int{17}
 }
 func (m *MsgSetUnbondFeeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1068,7 +876,7 @@ func (m *MsgLiquidityUnbond) Reset()         { *m = MsgLiquidityUnbond{} }
 func (m *MsgLiquidityUnbond) String() string { return proto.CompactTextString(m) }
 func (*MsgLiquidityUnbond) ProtoMessage()    {}
 func (*MsgLiquidityUnbond) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{22}
+	return fileDescriptor_8b521ea88205ae40, []int{18}
 }
 func (m *MsgLiquidityUnbond) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1125,7 +933,7 @@ func (m *MsgLiquidityUnbondResponse) Reset()         { *m = MsgLiquidityUnbondRe
 func (m *MsgLiquidityUnbondResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgLiquidityUnbondResponse) ProtoMessage()    {}
 func (*MsgLiquidityUnbondResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{23}
+	return fileDescriptor_8b521ea88205ae40, []int{19}
 }
 func (m *MsgLiquidityUnbondResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1163,7 +971,7 @@ func (m *MsgSetUnbondCommission) Reset()         { *m = MsgSetUnbondCommission{}
 func (m *MsgSetUnbondCommission) String() string { return proto.CompactTextString(m) }
 func (*MsgSetUnbondCommission) ProtoMessage()    {}
 func (*MsgSetUnbondCommission) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{24}
+	return fileDescriptor_8b521ea88205ae40, []int{20}
 }
 func (m *MsgSetUnbondCommission) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1206,7 +1014,7 @@ func (m *MsgSetUnbondCommissionResponse) Reset()         { *m = MsgSetUnbondComm
 func (m *MsgSetUnbondCommissionResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetUnbondCommissionResponse) ProtoMessage()    {}
 func (*MsgSetUnbondCommissionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{25}
+	return fileDescriptor_8b521ea88205ae40, []int{21}
 }
 func (m *MsgSetUnbondCommissionResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1249,7 +1057,7 @@ func (m *MsgSubmitSignature) Reset()         { *m = MsgSubmitSignature{} }
 func (m *MsgSubmitSignature) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitSignature) ProtoMessage()    {}
 func (*MsgSubmitSignature) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{26}
+	return fileDescriptor_8b521ea88205ae40, []int{22}
 }
 func (m *MsgSubmitSignature) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1334,7 +1142,7 @@ func (m *MsgSubmitSignatureResponse) Reset()         { *m = MsgSubmitSignatureRe
 func (m *MsgSubmitSignatureResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSubmitSignatureResponse) ProtoMessage()    {}
 func (*MsgSubmitSignatureResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{27}
+	return fileDescriptor_8b521ea88205ae40, []int{23}
 }
 func (m *MsgSubmitSignatureResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1378,7 +1186,7 @@ func (m *MsgSetRParams) Reset()         { *m = MsgSetRParams{} }
 func (m *MsgSetRParams) String() string { return proto.CompactTextString(m) }
 func (*MsgSetRParams) ProtoMessage()    {}
 func (*MsgSetRParams) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{28}
+	return fileDescriptor_8b521ea88205ae40, []int{24}
 }
 func (m *MsgSetRParams) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1463,7 +1271,7 @@ func (m *MsgSetRParamsResponse) Reset()         { *m = MsgSetRParamsResponse{} }
 func (m *MsgSetRParamsResponse) String() string { return proto.CompactTextString(m) }
 func (*MsgSetRParamsResponse) ProtoMessage()    {}
 func (*MsgSetRParamsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8b521ea88205ae40, []int{29}
+	return fileDescriptor_8b521ea88205ae40, []int{25}
 }
 func (m *MsgSetRParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1493,10 +1301,6 @@ func (m *MsgSetRParamsResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgSetRParamsResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgAddNewPool)(nil), "stafihub.stafihub.ledger.MsgAddNewPool")
-	proto.RegisterType((*MsgAddNewPoolResponse)(nil), "stafihub.stafihub.ledger.MsgAddNewPoolResponse")
-	proto.RegisterType((*MsgRemovePool)(nil), "stafihub.stafihub.ledger.MsgRemovePool")
-	proto.RegisterType((*MsgRemovePoolResponse)(nil), "stafihub.stafihub.ledger.MsgRemovePoolResponse")
 	proto.RegisterType((*MsgSetEraUnbondLimit)(nil), "stafihub.stafihub.ledger.MsgSetEraUnbondLimit")
 	proto.RegisterType((*MsgSetEraUnbondLimitResponse)(nil), "stafihub.stafihub.ledger.MsgSetEraUnbondLimitResponse")
 	proto.RegisterType((*MsgSetInitBond)(nil), "stafihub.stafihub.ledger.MsgSetInitBond")
@@ -1528,78 +1332,73 @@ func init() {
 func init() { proto.RegisterFile("ledger/tx.proto", fileDescriptor_8b521ea88205ae40) }
 
 var fileDescriptor_8b521ea88205ae40 = []byte{
-	// 1125 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x58, 0xcf, 0x6f, 0xdc, 0xc4,
-	0x17, 0x8f, 0x93, 0x4d, 0xda, 0xbc, 0x7e, 0xd3, 0xf4, 0xeb, 0x86, 0xc6, 0x98, 0x68, 0x1b, 0x2d,
-	0x3f, 0x12, 0x7e, 0xed, 0x96, 0x50, 0x10, 0x07, 0x90, 0x68, 0x36, 0x89, 0x14, 0x29, 0x5b, 0x22,
-	0x6f, 0xb9, 0x20, 0x84, 0x34, 0xb1, 0xa7, 0xce, 0x08, 0x7b, 0x66, 0x99, 0x19, 0x87, 0x44, 0x70,
-	0x81, 0x13, 0x1c, 0x90, 0x7a, 0xe2, 0xca, 0x09, 0xf1, 0xaf, 0xf4, 0xd8, 0x23, 0xe2, 0x50, 0xa1,
-	0xe4, 0x1f, 0x41, 0xf6, 0xd8, 0x63, 0xc7, 0xfb, 0xc3, 0xeb, 0x50, 0x89, 0xd3, 0xce, 0x8c, 0x3f,
-	0xef, 0x7d, 0xde, 0xbc, 0xf7, 0xe6, 0xbd, 0xa7, 0x85, 0xe5, 0x00, 0x7b, 0x3e, 0xe6, 0x1d, 0x79,
-	0xda, 0x1e, 0x70, 0x26, 0x99, 0x69, 0x09, 0x89, 0x1e, 0x93, 0xe3, 0xe8, 0xa8, 0xad, 0x17, 0x0a,
-	0x62, 0xaf, 0xf8, 0xcc, 0x67, 0x09, 0xa8, 0x13, 0xaf, 0x14, 0xde, 0xbe, 0x9d, 0x2a, 0x50, 0x3f,
-	0xea, 0xb0, 0xd5, 0x87, 0xa5, 0x9e, 0xf0, 0x1f, 0x78, 0xde, 0x43, 0xfc, 0xed, 0x21, 0x63, 0x81,
-	0x69, 0xc1, 0x35, 0x97, 0x63, 0x24, 0x19, 0xb7, 0x8c, 0x75, 0x63, 0x73, 0xd1, 0xc9, 0xb6, 0xe6,
-	0x0a, 0xcc, 0x7b, 0x98, 0xb2, 0xd0, 0x9a, 0x4d, 0xce, 0xd5, 0xc6, 0x34, 0xa1, 0x81, 0x3c, 0x8f,
-	0x5b, 0x73, 0xc9, 0x61, 0xb2, 0x6e, 0xad, 0xc2, 0x4b, 0x97, 0x94, 0x3a, 0x58, 0x0c, 0x18, 0x15,
-	0x38, 0x65, 0x73, 0x70, 0xc8, 0x4e, 0xf0, 0x0b, 0x66, 0xcb, 0x95, 0x6a, 0xb6, 0x2f, 0x61, 0xa5,
-	0x27, 0xfc, 0x3e, 0x96, 0xbb, 0x1c, 0x7d, 0x4e, 0x8f, 0x18, 0xf5, 0x0e, 0x48, 0x48, 0x64, 0x6d,
-	0xd2, 0x15, 0x98, 0x0f, 0x62, 0xc1, 0x84, 0x75, 0xc9, 0x51, 0x9b, 0x56, 0x13, 0xd6, 0x46, 0x69,
-	0xd7, 0xec, 0xbf, 0x19, 0x70, 0x53, 0x01, 0xf6, 0x29, 0x91, 0xdb, 0x8c, 0x7a, 0x13, 0x88, 0x4d,
-	0x68, 0x0c, 0x18, 0x0b, 0x52, 0xde, 0x64, 0x6d, 0x76, 0xa1, 0xe1, 0x32, 0x42, 0xd5, 0x5d, 0xb7,
-	0x3b, 0x4f, 0x9f, 0xdf, 0x9d, 0xf9, 0xeb, 0xf9, 0xdd, 0x0d, 0x9f, 0xc8, 0x38, 0xd4, 0x2e, 0x0b,
-	0x3b, 0x2e, 0x13, 0x21, 0x13, 0xe9, 0xcf, 0xbb, 0xc2, 0xfb, 0xba, 0x23, 0xcf, 0x06, 0x58, 0xb4,
-	0xbb, 0x8c, 0x50, 0x27, 0x11, 0x36, 0x6d, 0xb8, 0xce, 0xb1, 0x8b, 0xc9, 0x09, 0xe6, 0x56, 0x23,
-	0x51, 0xae, 0xf7, 0x2d, 0x0b, 0xee, 0x5c, 0x36, 0x50, 0xdb, 0xfe, 0x15, 0xd8, 0xea, 0x4b, 0xf7,
-	0x18, 0x11, 0x1a, 0x7f, 0x22, 0xd4, 0xdf, 0x89, 0x38, 0x92, 0x84, 0xd1, 0xda, 0xfe, 0xbb, 0x05,
-	0x73, 0x98, 0xa3, 0xd4, 0x7b, 0xf1, 0xb2, 0xf5, 0x1a, 0xb4, 0xc6, 0xeb, 0xd7, 0x56, 0xfc, 0x6a,
-	0xc0, 0x2d, 0x05, 0x8b, 0xc3, 0xba, 0x83, 0x25, 0x22, 0x57, 0xca, 0x98, 0xc4, 0xb3, 0x73, 0x05,
-	0xcf, 0xae, 0xc3, 0x0d, 0x11, 0x1d, 0x3d, 0x70, 0x5d, 0x16, 0x51, 0x29, 0xac, 0xc6, 0xfa, 0xdc,
-	0xe6, 0xa2, 0x53, 0x3c, 0x32, 0xd7, 0x60, 0x51, 0x1e, 0x73, 0x2c, 0x8e, 0x59, 0xe0, 0x59, 0xf3,
-	0x89, 0xe1, 0xf9, 0x41, 0xcb, 0x06, 0xab, 0x6c, 0x97, 0x36, 0xfa, 0x67, 0x03, 0x96, 0xd5, 0xc7,
-	0x03, 0x8c, 0x44, 0x55, 0xdc, 0x47, 0xdb, 0xbc, 0x07, 0x0b, 0x28, 0x8c, 0x0d, 0x49, 0x63, 0xdf,
-	0x4e, 0x63, 0xff, 0xc6, 0x14, 0xb1, 0xdf, 0xa7, 0xd2, 0x49, 0xa5, 0x5b, 0x2f, 0xc3, 0x6a, 0xc9,
-	0x14, 0x6d, 0x66, 0x0f, 0x5e, 0xe9, 0x09, 0xbf, 0x1b, 0x60, 0xc4, 0xbb, 0x11, 0xe7, 0x98, 0xc6,
-	0x69, 0xdc, 0xa7, 0x68, 0xd0, 0x3f, 0x66, 0x52, 0xd4, 0xb5, 0xb8, 0xf5, 0x3a, 0xbc, 0x3a, 0x41,
-	0x9d, 0x66, 0xfd, 0x3e, 0x0b, 0x68, 0x97, 0x85, 0x21, 0x11, 0x62, 0x72, 0x36, 0x3d, 0x04, 0x70,
-	0x35, 0x4e, 0xf1, 0xd5, 0x72, 0xc5, 0x0e, 0x76, 0x9d, 0x82, 0x86, 0x3c, 0x6c, 0x39, 0xbb, 0xb6,
-	0x6c, 0x2f, 0x7b, 0xac, 0x4e, 0xfa, 0x3a, 0x26, 0xd8, 0x55, 0x7c, 0x53, 0xb3, 0xe3, 0xde, 0x54,
-	0xa6, 0x47, 0x33, 0xfc, 0xa4, 0x13, 0x43, 0x55, 0x8b, 0x3d, 0x8c, 0x6b, 0x27, 0xc6, 0x2e, 0xcc,
-	0x9f, 0xa0, 0x20, 0xc2, 0x57, 0xad, 0x09, 0x4a, 0x3a, 0xcf, 0x0b, 0x6d, 0x89, 0xb6, 0xf2, 0x0f,
-	0x03, 0xcc, 0x9e, 0xf0, 0x0f, 0xc8, 0x37, 0x11, 0xf1, 0x88, 0x3c, 0x53, 0x88, 0x9a, 0x95, 0xeb,
-	0xc5, 0x98, 0x19, 0x3f, 0x42, 0x8e, 0x5d, 0x32, 0x20, 0x98, 0xca, 0xb4, 0x78, 0xe5, 0x07, 0xad,
-	0xb5, 0xa4, 0x46, 0x95, 0x0c, 0xd5, 0xf7, 0xf8, 0xd1, 0xc8, 0x02, 0xa1, 0x3e, 0xfc, 0x27, 0x09,
-	0xb7, 0x0e, 0xcd, 0xd1, 0x36, 0x68, 0x33, 0xcf, 0x95, 0xbb, 0xfb, 0xd1, 0x51, 0x48, 0x64, 0x9f,
-	0xf8, 0x14, 0xc9, 0x88, 0xe3, 0x7f, 0x5f, 0x61, 0x75, 0x58, 0x1a, 0x85, 0xb0, 0x7c, 0x0a, 0x0b,
-	0xf2, 0xf4, 0xd1, 0xd9, 0x00, 0x27, 0x15, 0xed, 0xe6, 0xd6, 0x66, 0x7b, 0xdc, 0x04, 0xd1, 0xfe,
-	0x8c, 0x13, 0x9f, 0x50, 0x14, 0x3c, 0x4a, 0xf0, 0x4e, 0x2a, 0x67, 0xde, 0x81, 0x85, 0x01, 0x67,
-	0x83, 0x7d, 0xcf, 0x5a, 0x48, 0xf4, 0xa6, 0xbb, 0x38, 0x52, 0x22, 0x33, 0xde, 0xba, 0xa6, 0x22,
-	0xa5, 0x0f, 0xd2, 0x48, 0x95, 0xee, 0xa8, 0x5d, 0xf0, 0xfb, 0x6c, 0x32, 0x14, 0xc4, 0x4f, 0xe6,
-	0x10, 0x71, 0x14, 0xd6, 0x2e, 0x3e, 0x09, 0x3e, 0xee, 0x23, 0xfb, 0x5e, 0x5a, 0xe5, 0xb3, 0x6d,
-	0x5c, 0xe8, 0x29, 0x92, 0xe4, 0x04, 0xef, 0x24, 0x52, 0xca, 0x19, 0xc5, 0xa3, 0xf8, 0x2d, 0xfb,
-	0x48, 0x1c, 0x72, 0xe2, 0x2a, 0xaf, 0x2c, 0x3a, 0x7a, 0x6f, 0x36, 0x01, 0x30, 0x47, 0x7d, 0xec,
-	0x32, 0xea, 0x89, 0xf4, 0xc6, 0x85, 0x13, 0xf3, 0x00, 0x16, 0x83, 0xac, 0xb0, 0xaa, 0x5b, 0xd7,
-	0xae, 0xd4, 0xb9, 0x82, 0x98, 0xed, 0x04, 0x05, 0xc4, 0x8b, 0x2f, 0x2a, 0xac, 0xeb, 0x49, 0x4f,
-	0x2a, 0x9c, 0xa4, 0x63, 0x4e, 0xee, 0xa6, 0xcc, 0x81, 0x5b, 0x17, 0x4b, 0x30, 0xd7, 0x13, 0xbe,
-	0xf9, 0x18, 0xa0, 0x30, 0xc7, 0x6d, 0x8c, 0x0f, 0xee, 0xa5, 0xd9, 0xcc, 0xee, 0x4c, 0x09, 0xcc,
-	0xf8, 0x62, 0x9e, 0xc2, 0x04, 0x37, 0x99, 0x27, 0x07, 0x56, 0xf0, 0x0c, 0x8f, 0x6f, 0xe6, 0x77,
-	0xf0, 0xff, 0xe1, 0xd9, 0xad, 0x3d, 0x51, 0xcb, 0x10, 0xde, 0xfe, 0xb0, 0x1e, 0x5e, 0x93, 0x13,
-	0xb8, 0x51, 0x9c, 0xdc, 0x36, 0xab, 0xd4, 0x64, 0x48, 0xfb, 0xde, 0xb4, 0x48, 0x4d, 0xf5, 0x8b,
-	0x01, 0xab, 0xe3, 0x46, 0xad, 0xfb, 0x55, 0xda, 0x46, 0x49, 0xd9, 0x1f, 0x5f, 0x45, 0x4a, 0xdb,
-	0xc3, 0x60, 0xe9, 0xf2, 0xc8, 0xf5, 0x56, 0x95, 0xba, 0x1c, 0x6b, 0x6f, 0x4d, 0x8f, 0xd5, 0x84,
-	0x01, 0xfc, 0xef, 0xd2, 0xb8, 0xf4, 0x66, 0x95, 0x0e, 0x0d, 0xb5, 0xdf, 0x9b, 0x1a, 0xaa, 0xd9,
-	0x9e, 0x18, 0x60, 0x8d, 0x9d, 0x7b, 0x3e, 0x98, 0xa8, 0x6f, 0x9c, 0x98, 0xfd, 0xc9, 0x95, 0xc4,
-	0x4a, 0x1e, 0x2f, 0xb4, 0xa8, 0x4a, 0x8f, 0xe7, 0xd8, 0x6a, 0x8f, 0x0f, 0xb7, 0x9d, 0x34, 0xbb,
-	0xf5, 0xa8, 0x53, 0x99, 0xdd, 0x19, 0xb2, 0x3a, 0xbb, 0xcb, 0x63, 0x4f, 0x1a, 0xdc, 0x7c, 0xe4,
-	0xa9, 0x0c, 0xae, 0x86, 0x56, 0x07, 0x77, 0x68, 0x7c, 0x31, 0x23, 0x58, 0x2e, 0x8f, 0x2e, 0xef,
-	0x4c, 0xd4, 0x52, 0x42, 0xdb, 0xf7, 0xeb, 0xa0, 0x35, 0xed, 0x0f, 0x06, 0xdc, 0x1e, 0x35, 0x6a,
-	0xdc, 0x9b, 0xee, 0x06, 0x85, 0x68, 0x7e, 0x54, 0x57, 0xa2, 0x78, 0xf5, 0xf2, 0x18, 0x31, 0xf9,
-	0xea, 0x25, 0x74, 0xc5, 0xd5, 0xc7, 0xb4, 0xef, 0xb8, 0x1b, 0x14, 0x5a, 0xf7, 0x46, 0x65, 0x7e,
-	0x28, 0x60, 0x45, 0x37, 0x18, 0xee, 0x72, 0xdb, 0xbb, 0x4f, 0xcf, 0x9b, 0xc6, 0xb3, 0xf3, 0xa6,
-	0xf1, 0xf7, 0x79, 0xd3, 0x78, 0x72, 0xd1, 0x9c, 0x79, 0x76, 0xd1, 0x9c, 0xf9, 0xf3, 0xa2, 0x39,
-	0xf3, 0xc5, 0xdb, 0x85, 0x5e, 0x9b, 0xe9, 0xca, 0x17, 0xa7, 0x9d, 0xec, 0x7f, 0x93, 0xb8, 0xe9,
-	0x1e, 0x2d, 0x24, 0x7f, 0x7b, 0xbc, 0xff, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xd8, 0x5a, 0x49,
-	0xb1, 0x4e, 0x11, 0x00, 0x00,
+	// 1055 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x57, 0x4d, 0x6f, 0xe4, 0x44,
+	0x13, 0x8e, 0xf3, 0xb5, 0x3b, 0xb5, 0x9b, 0xcd, 0xbe, 0xde, 0xbc, 0x1b, 0x63, 0xa2, 0xd9, 0xc8,
+	0x7c, 0x6c, 0xf8, 0x9a, 0x59, 0xc2, 0x82, 0x38, 0x80, 0x04, 0x99, 0x24, 0x52, 0xa4, 0x0c, 0x44,
+	0x9e, 0xe5, 0x82, 0x10, 0x52, 0x8f, 0xdd, 0xeb, 0x69, 0xe1, 0xe9, 0x1e, 0xba, 0xdb, 0x51, 0x22,
+	0xb8, 0xc0, 0x09, 0x0e, 0x48, 0x2b, 0x21, 0x71, 0xe5, 0x84, 0xf8, 0x2b, 0x7b, 0xdc, 0x23, 0xe2,
+	0xb0, 0x42, 0xc9, 0x1f, 0x41, 0x76, 0xdb, 0x6d, 0xc7, 0x99, 0x19, 0x8f, 0x03, 0x12, 0xa7, 0xe9,
+	0x6e, 0x3f, 0x55, 0xf5, 0x74, 0x55, 0x75, 0x55, 0x0d, 0xac, 0x86, 0xd8, 0x0f, 0x30, 0x6f, 0xcb,
+	0x93, 0xd6, 0x88, 0x33, 0xc9, 0x4c, 0x4b, 0x48, 0xf4, 0x98, 0x0c, 0xa2, 0x7e, 0x4b, 0x2f, 0x14,
+	0xc4, 0x5e, 0x0b, 0x58, 0xc0, 0x12, 0x50, 0x3b, 0x5e, 0x29, 0xbc, 0x7d, 0x27, 0x55, 0xa0, 0x7e,
+	0xd4, 0xa1, 0xf3, 0x05, 0xac, 0x75, 0x45, 0xd0, 0xc3, 0x72, 0x8f, 0xa3, 0xcf, 0x68, 0x9f, 0x51,
+	0xff, 0x90, 0x0c, 0x89, 0x34, 0x2d, 0xb8, 0xe6, 0x71, 0x8c, 0x24, 0xe3, 0x96, 0xb1, 0x69, 0x6c,
+	0x35, 0xdc, 0x6c, 0x6b, 0xae, 0xc1, 0x92, 0x8f, 0x29, 0x1b, 0x5a, 0xf3, 0xc9, 0xb9, 0xda, 0xc4,
+	0xa7, 0x61, 0x2c, 0x68, 0x2d, 0x6c, 0x1a, 0x5b, 0x2b, 0xae, 0xda, 0x38, 0x4d, 0xd8, 0x18, 0xa7,
+	0xdd, 0xc5, 0x62, 0xc4, 0xa8, 0xc0, 0xce, 0xaf, 0x06, 0xdc, 0x52, 0x80, 0x03, 0x4a, 0xe4, 0x0e,
+	0xa3, 0xfe, 0x14, 0xc3, 0x26, 0x2c, 0x8e, 0x18, 0x0b, 0x53, 0xbb, 0xc9, 0xda, 0xec, 0xc0, 0xa2,
+	0xc7, 0x08, 0x4d, 0xac, 0x36, 0x76, 0xda, 0x4f, 0x9f, 0xdf, 0x9b, 0xfb, 0xf3, 0xf9, 0xbd, 0xfb,
+	0x01, 0x91, 0xb1, 0x3b, 0x3c, 0x36, 0x6c, 0x7b, 0x4c, 0x0c, 0x99, 0x48, 0x7f, 0xde, 0x12, 0xfe,
+	0x57, 0x6d, 0x79, 0x3a, 0xc2, 0xa2, 0xd5, 0x61, 0x84, 0xba, 0x89, 0xb0, 0x69, 0xc3, 0x75, 0x8e,
+	0x3d, 0x4c, 0x8e, 0x31, 0xb7, 0x16, 0x13, 0xe5, 0x7a, 0xef, 0x58, 0x70, 0xf7, 0x22, 0x41, 0xcd,
+	0xfd, 0x4b, 0xb0, 0xd5, 0x97, 0xce, 0x00, 0x11, 0x1a, 0x7f, 0x22, 0x34, 0xd8, 0x8d, 0x38, 0x92,
+	0x84, 0xd1, 0xda, 0xfe, 0xbb, 0x0d, 0x0b, 0x98, 0xa3, 0xd4, 0x7b, 0xf1, 0xd2, 0x79, 0x19, 0x9c,
+	0xc9, 0xfa, 0x35, 0x8b, 0x5f, 0x0c, 0xb8, 0xad, 0x60, 0x47, 0x8c, 0x85, 0xbb, 0x58, 0x22, 0x12,
+	0xd6, 0x36, 0x9e, 0x79, 0x76, 0xa1, 0xe0, 0xd9, 0x4d, 0xb8, 0x21, 0xa2, 0xfe, 0xc7, 0x9e, 0xc7,
+	0x22, 0x2a, 0x85, 0xb5, 0xb8, 0xb9, 0xb0, 0xd5, 0x70, 0x8b, 0x47, 0xe6, 0x06, 0x34, 0xe4, 0x80,
+	0x63, 0x31, 0x60, 0xa1, 0x6f, 0x2d, 0x25, 0xc4, 0xf3, 0x03, 0xc7, 0x06, 0xab, 0xcc, 0x4b, 0x93,
+	0xfe, 0xd1, 0x80, 0x55, 0xf5, 0xf1, 0x10, 0x23, 0x51, 0x15, 0xf7, 0xf1, 0x9c, 0xf7, 0x61, 0x19,
+	0x0d, 0x63, 0x22, 0x69, 0xec, 0x5b, 0x69, 0xec, 0x5f, 0x9d, 0x21, 0xf6, 0x07, 0x54, 0xba, 0xa9,
+	0xb4, 0xf3, 0x02, 0xac, 0x97, 0xa8, 0x68, 0x9a, 0x5d, 0x78, 0xb1, 0x2b, 0x82, 0x4e, 0x88, 0x11,
+	0xef, 0x44, 0x9c, 0x63, 0x1a, 0xa7, 0x71, 0x8f, 0xa2, 0x51, 0x6f, 0xc0, 0xa4, 0xa8, 0xcb, 0xd8,
+	0x79, 0x05, 0x5e, 0x9a, 0xa2, 0x4e, 0x5b, 0xfd, 0x36, 0x0b, 0x68, 0x87, 0x0d, 0x87, 0x44, 0x88,
+	0xe9, 0xd9, 0xf4, 0x09, 0x80, 0xa7, 0x71, 0xca, 0x5e, 0x2d, 0x57, 0xec, 0x62, 0xcf, 0x2d, 0x68,
+	0xc8, 0xc3, 0x96, 0x5b, 0xd7, 0xcc, 0xf6, 0xb3, 0xc7, 0xea, 0xa6, 0xaf, 0x63, 0x0a, 0xaf, 0xe2,
+	0x9b, 0x9a, 0x9f, 0xf4, 0xa6, 0x32, 0x3d, 0xda, 0xc2, 0x0f, 0x3a, 0x31, 0x54, 0xb5, 0xd8, 0xc7,
+	0xb8, 0x76, 0x62, 0xec, 0xc1, 0xd2, 0x31, 0x0a, 0x23, 0x7c, 0xd5, 0x9a, 0xa0, 0xa4, 0xf3, 0xbc,
+	0xd0, 0x4c, 0x34, 0xcb, 0xdf, 0x0d, 0x30, 0xbb, 0x22, 0x38, 0x24, 0x5f, 0x47, 0xc4, 0x27, 0xf2,
+	0x54, 0x21, 0x6a, 0x56, 0xae, 0x7f, 0x87, 0x66, 0xfc, 0x08, 0x39, 0xf6, 0xc8, 0x88, 0x60, 0x2a,
+	0xd3, 0xe2, 0x95, 0x1f, 0x38, 0x1b, 0x49, 0x8d, 0x2a, 0x11, 0xd5, 0xf7, 0xf8, 0xde, 0xc8, 0x02,
+	0xa1, 0x3e, 0xfc, 0x27, 0x09, 0xb7, 0x09, 0xcd, 0xf1, 0x1c, 0x34, 0xcd, 0x33, 0xe5, 0xee, 0x5e,
+	0xd4, 0x1f, 0x12, 0xd9, 0x23, 0x01, 0x45, 0x32, 0xe2, 0xf8, 0x9f, 0x57, 0x58, 0x1d, 0x96, 0xc5,
+	0x42, 0x58, 0x3e, 0x82, 0x65, 0x79, 0xf2, 0xe8, 0x74, 0x84, 0x93, 0x8a, 0x76, 0x6b, 0x7b, 0xab,
+	0x35, 0xa9, 0xcb, 0xb6, 0x3e, 0xe5, 0x24, 0x20, 0x14, 0x85, 0x8f, 0x12, 0xbc, 0x9b, 0xca, 0x99,
+	0x77, 0x61, 0x79, 0xc4, 0xd9, 0xe8, 0xc0, 0xb7, 0x96, 0x13, 0xbd, 0xe9, 0x2e, 0x8e, 0x94, 0xc8,
+	0xc8, 0x5b, 0xd7, 0x54, 0xa4, 0xf4, 0x41, 0x1a, 0xa9, 0xd2, 0x1d, 0xb5, 0x0b, 0x7e, 0x9b, 0x87,
+	0x95, 0xf4, 0xc9, 0x1c, 0x21, 0x8e, 0x86, 0xb5, 0x8b, 0x4f, 0x82, 0x8f, 0xfb, 0xc8, 0x81, 0x9f,
+	0x56, 0xf9, 0x6c, 0x1b, 0x17, 0x7a, 0x8a, 0x24, 0x39, 0xc6, 0xbb, 0x89, 0x94, 0x72, 0x46, 0xf1,
+	0x28, 0x7e, 0xcb, 0x01, 0x12, 0x47, 0x9c, 0x78, 0xca, 0x2b, 0x0d, 0x57, 0xef, 0xcd, 0x26, 0x00,
+	0xe6, 0xa8, 0x87, 0x3d, 0x46, 0x7d, 0x91, 0xde, 0xb8, 0x70, 0x62, 0x1e, 0x42, 0x23, 0xcc, 0x0a,
+	0xab, 0xba, 0x75, 0xed, 0x4a, 0x9d, 0x2b, 0x88, 0xad, 0x1d, 0xa3, 0x90, 0xf8, 0xf1, 0x45, 0x85,
+	0x75, 0x3d, 0xe9, 0x49, 0x85, 0x13, 0x67, 0x1d, 0xfe, 0x7f, 0xc1, 0x4d, 0x99, 0x03, 0xb7, 0x7f,
+	0xbe, 0x09, 0x0b, 0x5d, 0x11, 0x98, 0xdf, 0xc0, 0xff, 0x2e, 0xcf, 0x3a, 0xad, 0xc9, 0x31, 0x1e,
+	0x37, 0xbd, 0xd8, 0xef, 0xd5, 0xc3, 0x67, 0x24, 0x4c, 0x02, 0x37, 0x8a, 0x93, 0xce, 0x56, 0x95,
+	0x9a, 0x0c, 0x69, 0x3f, 0x98, 0x15, 0xa9, 0x4d, 0xfd, 0x64, 0xc0, 0xfa, 0xa4, 0xd1, 0xe4, 0x61,
+	0x95, 0xb6, 0x71, 0x52, 0xf6, 0x07, 0x57, 0x91, 0xd2, 0x7c, 0x18, 0xac, 0x5c, 0x1c, 0x51, 0x5e,
+	0xaf, 0x52, 0x97, 0x63, 0xed, 0xed, 0xd9, 0xb1, 0xda, 0x60, 0x08, 0x37, 0x2f, 0x8c, 0x17, 0xaf,
+	0x55, 0xe9, 0xd0, 0x50, 0xfb, 0xed, 0x99, 0xa1, 0xda, 0xda, 0x13, 0x03, 0xac, 0x89, 0x73, 0xc2,
+	0xbb, 0x53, 0xf5, 0x4d, 0x12, 0xb3, 0x3f, 0xbc, 0x92, 0x58, 0xc9, 0xe3, 0x85, 0x92, 0x5e, 0xe9,
+	0xf1, 0x1c, 0x5b, 0xed, 0xf1, 0xcb, 0x65, 0x3a, 0xcd, 0x6e, 0x3d, 0x1a, 0x54, 0x66, 0x77, 0x86,
+	0xac, 0xce, 0xee, 0xf2, 0x98, 0x90, 0x06, 0x37, 0x1f, 0x11, 0x2a, 0x83, 0xab, 0xa1, 0xd5, 0xc1,
+	0xbd, 0xd4, 0xee, 0xcd, 0x08, 0x56, 0xcb, 0xad, 0xfe, 0xcd, 0xa9, 0x5a, 0x4a, 0x68, 0xfb, 0x61,
+	0x1d, 0xb4, 0x36, 0xfb, 0x9d, 0x01, 0x77, 0xc6, 0xb5, 0xe6, 0x07, 0xb3, 0xdd, 0xa0, 0x10, 0xcd,
+	0xf7, 0xeb, 0x4a, 0x14, 0xaf, 0x5e, 0x6e, 0xbb, 0xd3, 0xaf, 0x5e, 0x42, 0x57, 0x5c, 0x7d, 0x42,
+	0xbb, 0x33, 0x1f, 0x03, 0x14, 0x5a, 0xdd, 0xfd, 0xca, 0xfc, 0x50, 0x40, 0xbb, 0x3d, 0x23, 0x30,
+	0xb3, 0xb3, 0xb3, 0xf7, 0xf4, 0xac, 0x69, 0x3c, 0x3b, 0x6b, 0x1a, 0x7f, 0x9d, 0x35, 0x8d, 0x27,
+	0xe7, 0xcd, 0xb9, 0x67, 0xe7, 0xcd, 0xb9, 0x3f, 0xce, 0x9b, 0x73, 0x9f, 0xbf, 0x51, 0xe8, 0x4d,
+	0x99, 0xae, 0x7c, 0x71, 0xd2, 0xce, 0xfe, 0x8b, 0xc7, 0x4d, 0xaa, 0xbf, 0x9c, 0xfc, 0x95, 0x7e,
+	0xe7, 0xef, 0x00, 0x00, 0x00, 0xff, 0xff, 0xb3, 0x4a, 0xdd, 0x55, 0xa2, 0x0f, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1614,8 +1413,6 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	AddNewPool(ctx context.Context, in *MsgAddNewPool, opts ...grpc.CallOption) (*MsgAddNewPoolResponse, error)
-	RemovePool(ctx context.Context, in *MsgRemovePool, opts ...grpc.CallOption) (*MsgRemovePoolResponse, error)
 	SetEraUnbondLimit(ctx context.Context, in *MsgSetEraUnbondLimit, opts ...grpc.CallOption) (*MsgSetEraUnbondLimitResponse, error)
 	SetInitBond(ctx context.Context, in *MsgSetInitBond, opts ...grpc.CallOption) (*MsgSetInitBondResponse, error)
 	SetChainBondingDuration(ctx context.Context, in *MsgSetChainBondingDuration, opts ...grpc.CallOption) (*MsgSetChainBondingDurationResponse, error)
@@ -1637,24 +1434,6 @@ type msgClient struct {
 
 func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
-}
-
-func (c *msgClient) AddNewPool(ctx context.Context, in *MsgAddNewPool, opts ...grpc.CallOption) (*MsgAddNewPoolResponse, error) {
-	out := new(MsgAddNewPoolResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.ledger.Msg/AddNewPool", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) RemovePool(ctx context.Context, in *MsgRemovePool, opts ...grpc.CallOption) (*MsgRemovePoolResponse, error) {
-	out := new(MsgRemovePoolResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.ledger.Msg/RemovePool", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *msgClient) SetEraUnbondLimit(ctx context.Context, in *MsgSetEraUnbondLimit, opts ...grpc.CallOption) (*MsgSetEraUnbondLimitResponse, error) {
@@ -1776,8 +1555,6 @@ func (c *msgClient) SetRParams(ctx context.Context, in *MsgSetRParams, opts ...g
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	AddNewPool(context.Context, *MsgAddNewPool) (*MsgAddNewPoolResponse, error)
-	RemovePool(context.Context, *MsgRemovePool) (*MsgRemovePoolResponse, error)
 	SetEraUnbondLimit(context.Context, *MsgSetEraUnbondLimit) (*MsgSetEraUnbondLimitResponse, error)
 	SetInitBond(context.Context, *MsgSetInitBond) (*MsgSetInitBondResponse, error)
 	SetChainBondingDuration(context.Context, *MsgSetChainBondingDuration) (*MsgSetChainBondingDurationResponse, error)
@@ -1797,12 +1574,6 @@ type MsgServer interface {
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) AddNewPool(ctx context.Context, req *MsgAddNewPool) (*MsgAddNewPoolResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddNewPool not implemented")
-}
-func (*UnimplementedMsgServer) RemovePool(ctx context.Context, req *MsgRemovePool) (*MsgRemovePoolResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemovePool not implemented")
-}
 func (*UnimplementedMsgServer) SetEraUnbondLimit(ctx context.Context, req *MsgSetEraUnbondLimit) (*MsgSetEraUnbondLimitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetEraUnbondLimit not implemented")
 }
@@ -1845,42 +1616,6 @@ func (*UnimplementedMsgServer) SetRParams(ctx context.Context, req *MsgSetRParam
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
-}
-
-func _Msg_AddNewPool_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddNewPool)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).AddNewPool(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stafihub.stafihub.ledger.Msg/AddNewPool",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddNewPool(ctx, req.(*MsgAddNewPool))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_RemovePool_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRemovePool)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).RemovePool(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stafihub.stafihub.ledger.Msg/RemovePool",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RemovePool(ctx, req.(*MsgRemovePool))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Msg_SetEraUnbondLimit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -2122,14 +1857,6 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AddNewPool",
-			Handler:    _Msg_AddNewPool_Handler,
-		},
-		{
-			MethodName: "RemovePool",
-			Handler:    _Msg_RemovePool_Handler,
-		},
-		{
 			MethodName: "SetEraUnbondLimit",
 			Handler:    _Msg_SetEraUnbondLimit_Handler,
 		},
@@ -2184,140 +1911,6 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "ledger/tx.proto",
-}
-
-func (m *MsgAddNewPool) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgAddNewPool) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgAddNewPool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Addr) > 0 {
-		i -= len(m.Addr)
-		copy(dAtA[i:], m.Addr)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Addr)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgAddNewPoolResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgAddNewPoolResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgAddNewPoolResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgRemovePool) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgRemovePool) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgRemovePool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Addr) > 0 {
-		i -= len(m.Addr)
-		copy(dAtA[i:], m.Addr)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Addr)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgRemovePoolResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgRemovePoolResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgRemovePoolResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
 }
 
 func (m *MsgSetEraUnbondLimit) Marshal() (dAtA []byte, err error) {
@@ -3280,66 +2873,6 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgAddNewPool) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Addr)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgAddNewPoolResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgRemovePool) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Addr)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgRemovePoolResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
 func (m *MsgSetEraUnbondLimit) Size() (n int) {
 	if m == nil {
 		return 0
@@ -3756,398 +3289,6 @@ func sovTx(x uint64) (n int) {
 }
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func (m *MsgAddNewPool) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddNewPool: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddNewPool: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Addr", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Addr = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgAddNewPoolResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddNewPoolResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddNewPoolResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgRemovePool) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRemovePool: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRemovePool: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Addr", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Addr = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgRemovePoolResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRemovePoolResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRemovePoolResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
 }
 func (m *MsgSetEraUnbondLimit) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)

@@ -10,30 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestKeeper_AddPool(t *testing.T) {
-	k, ctx := testkeeper.LedgerKeeper(t)
-
-	pool := sample.AccAddress()
-	require.False(t, k.IsPoolExist(ctx, sample.TestDenom, pool))
-
-	_, found := k.GetPool(ctx, sample.TestDenom)
-	require.False(t, found)
-
-	k.AddPool(ctx, sample.TestDenom, pool)
-	require.True(t, k.IsPoolExist(ctx, sample.TestDenom, pool))
-
-	pl, found := k.GetPool(ctx, sample.TestDenom)
-	require.True(t, found)
-	require.Equal(t, types.Pool{Denom: sample.TestDenom, Addrs: []string{pool}}, pl)
-
-	k.RemovePool(ctx, sample.TestDenom, pool)
-	require.False(t, k.IsPoolExist(ctx, sample.TestDenom, pool))
-
-	pl, found = k.GetPool(ctx, sample.TestDenom)
-	require.True(t, found)
-	require.Equal(t, types.Pool{Denom: sample.TestDenom, Addrs: []string{}}, pl)
-}
-
 func TestKeeper_AddBondedPool(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 

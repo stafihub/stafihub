@@ -30,10 +30,6 @@ service Query {
 	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
 	}
-// Queries a list of poolsByDenom items.
-	rpc PoolsByDenom(QueryPoolsByDenomRequest) returns (QueryPoolsByDenomResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/poolsByDenom/{denom}";
-	}
 
 // Queries a list of bondedPoolsByDenom items.
 	rpc BondedPoolsByDenom(QueryBondedPoolsByDenomRequest) returns (QueryBondedPoolsByDenomResponse) {
@@ -168,14 +164,6 @@ message QueryEraExchangeRatesByDenomRequest {
 
 message QueryEraExchangeRatesByDenomResponse {
     repeated EraExchangeRate eraExchangeRates = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryPoolsByDenomRequest {
-  string denom = 1;
-}
-
-message QueryPoolsByDenomResponse {
-  repeated string addrs = 1;
 }
 
 message QueryBondedPoolsByDenomRequest {

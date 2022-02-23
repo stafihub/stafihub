@@ -13702,45 +13702,6 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/poolsByDenom/{denom}':
-    get:
-      summary: Queries a list of poolsByDenom items.
-      operationId: StafihubStafihubLedgerPoolsByDenom
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              addrs:
-                type: array
-                items:
-                  type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/stafihub/stafihub/relayers/threshold/{denom}':
     get:
       summary: Queries a threshold by denom.
@@ -21884,13 +21845,9 @@ definitions:
         type: string
       active:
         type: string
-  stafihub.stafihub.ledger.MsgAddNewPoolResponse:
-    type: object
   stafihub.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
     type: object
   stafihub.stafihub.ledger.MsgLiquidityUnbondResponse:
-    type: object
-  stafihub.stafihub.ledger.MsgRemovePoolResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetChainBondingDurationResponse:
     type: object
@@ -22285,13 +22242,6 @@ definitions:
             type: string
           value:
             type: string
-  stafihub.stafihub.ledger.QueryPoolsByDenomResponse:
-    type: object
-    properties:
-      addrs:
-        type: array
-        items:
-          type: string
   stafihub.stafihub.ledger.RParams:
     type: object
     properties:
