@@ -92,6 +92,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		if err := k.bankKeeper.SendCoins(ctx, unbonder, receiver, sdk.Coins{unbondFee.Value}); err != nil {
 			panic(err)
 		}
+		k.IncreaseTotalFee(ctx, unbondFee.Value.Denom, unbondFee.Value.Amount)
 	}
 
 	if cmsFee.LT(sdk.ZeroInt()) {
@@ -99,6 +100,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		if err := k.bankKeeper.SendCoins(ctx, unbonder, receiver, sdk.Coins{cmsFeeCoin}); err != nil {
 			panic(err)
 		}
+		k.IncreaseTotalFee(ctx, cmsFeeCoin.Denom, cmsFeeCoin.Amount)
 	}
 
 	burnCoins := sdk.Coins{leftValue}

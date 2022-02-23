@@ -57,8 +57,6 @@ stafihubd tx ledger set-unbond-fee ratom 100000fis --from admin --chain-id local
 
 stafihubd tx ledger set-chain-bonding-duration uratom 2 --chain-id local-stafihub --from admin --keyring-backend file
 
-stafihubd tx ledger add-new-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
-
 stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl+cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx ledger set-init-bond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 0uratom stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file

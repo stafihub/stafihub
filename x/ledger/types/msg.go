@@ -22,7 +22,6 @@ var (
 	_ sdk.Msg = &MsgSetRParams{}
 )
 
-
 func NewMsgSetEraUnbondLimit(creator sdk.AccAddress, denom string, limit uint32) *MsgSetEraUnbondLimit {
 	return &MsgSetEraUnbondLimit{
 		Creator: creator.String(),

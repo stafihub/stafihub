@@ -49,13 +49,14 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetSignature())
 	cmd.AddCommand(CmdGetRParams())
 
+	cmd.AddCommand(CmdTotalFeeList())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd
 }
 
 var _ = strconv.Itoa(0)
-
 
 func CmdBondedPoolsByDenom() *cobra.Command {
 	cmd := &cobra.Command{

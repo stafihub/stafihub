@@ -131,6 +131,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/get_r_params/{denom}";
 	}
 
+// Queries a list of TotalFeeList items.
+	rpc TotalFeeList(QueryTotalFeeListRequest) returns (QueryTotalFeeListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/total_fee_list";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -333,6 +338,13 @@ message QueryGetRParamsRequest {
 
 message QueryGetRParamsResponse {
 	RParams rParams = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryTotalFeeListRequest {
+}
+
+message QueryTotalFeeListResponse {
+	repeated TotalFee totalFeeList = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

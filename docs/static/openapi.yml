@@ -13702,6 +13702,45 @@ paths:
           type: string
       tags:
         - Query
+  /stafihub/stafihub/ledger/total_fee_list:
+    get:
+      summary: Queries a list of TotalFeeList items.
+      operationId: StafihubStafihubLedgerTotalFeeList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              totalFeeList:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    value:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   '/stafihub/stafihub/relayers/threshold/{denom}':
     get:
       summary: Queries a threshold by denom.
@@ -22242,6 +22281,18 @@ definitions:
             type: string
           value:
             type: string
+  stafihub.stafihub.ledger.QueryTotalFeeListResponse:
+    type: object
+    properties:
+      totalFeeList:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            value:
+              type: string
   stafihub.stafihub.ledger.RParams:
     type: object
     properties:
@@ -22289,6 +22340,13 @@ definitions:
         type: array
         items:
           type: string
+  stafihub.stafihub.ledger.TotalFee:
+    type: object
+    properties:
+      denom:
+        type: string
+      value:
+        type: string
   stafihub.stafihub.ledger.UnbondFee:
     type: object
     properties:
