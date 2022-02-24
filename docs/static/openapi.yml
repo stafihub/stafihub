@@ -22219,6 +22219,8 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgLiquidityUnbondResponse:
     type: object
+  stafihub.stafihub.ledger.MsgOnboardResponse:
+    type: object
   stafihub.stafihub.ledger.MsgSetChainBondingDurationResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetCommissionResponse:
@@ -22232,6 +22234,8 @@ definitions:
   stafihub.stafihub.ledger.MsgSetPoolDetailResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRParamsResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgSetRValidatorIndicatorResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetReceiverResponse:
     type: object
