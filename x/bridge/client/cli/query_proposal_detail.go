@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdProposalDetail() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "proposal-detail [chain-id] [deposit-nonce] [resource-id] [amount] [receiver]",
-		Short: "query proposal detail",
+		Short: "Query proposal detail",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqChainId, err := strconv.ParseUint(args[0], 10, 64)

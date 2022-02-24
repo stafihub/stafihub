@@ -19,8 +19,8 @@ import (
 
 func CmdListExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-exchange-rate",
-		Short: "list all ExchangeRate",
+		Use:   "exchange-rate-list",
+		Short: "List all ExchangeRate",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -45,8 +45,8 @@ func CmdListExchangeRate() *cobra.Command {
 
 func CmdShowExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-exchange-rate [denom]",
-		Short: "shows a ExchangeRate",
+		Use:   "exchange-rate [denom]",
+		Short: "Show ExchangeRate",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -73,8 +73,8 @@ func CmdShowExchangeRate() *cobra.Command {
 
 func CmdShowEraExchangeRate() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-era-exchange-rate [denom] [era]",
-		Short: "shows a EraExchangeRate",
+		Use:   "era-exchange-rate [denom] [era]",
+		Short: "Shows a EraExchangeRate",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -109,7 +109,7 @@ func CmdShowEraExchangeRate() *cobra.Command {
 
 func CmdEraExchangeRatesByDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "era-exchange-rates-by-denom [denom]",
+		Use:   "era-exchange-rates [denom]",
 		Short: "Query EraExchangeRatesByDenom",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

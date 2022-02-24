@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdWhitelistSwitch() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "whitelist-switch",
-		Short: "query whitelist switch",
+		Short: "Query whitelist switch",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

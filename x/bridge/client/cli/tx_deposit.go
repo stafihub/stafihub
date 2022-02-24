@@ -17,7 +17,7 @@ var _ = strconv.Itoa(0)
 func CmdDeposit() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "deposit [dest-chain-id] [resource-id] [amount] [receiver]",
-		Short: "initiates a transfer to other chain",
+		Short: "Initiates a transfer to other chain",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDestChainId, err := strconv.ParseUint(args[0], 10, 64)

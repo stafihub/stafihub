@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdInflationBase() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "inflation-base",
-		Short: "query inflation base",
+		Short: "Query inflation base",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

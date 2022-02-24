@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdResourceIdTypes() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "resource-id-types",
-		Short: "query all resourceid types",
+		Short: "Query all resourceid types",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

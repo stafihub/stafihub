@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdChaindIds() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "chaind-ids",
-		Short: "query supported chain ids",
+		Short: "Query supported chain ids",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

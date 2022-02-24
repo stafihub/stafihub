@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdModuleAccount() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "module-account",
-		Short: "query module account",
+		Short: "Query module account",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

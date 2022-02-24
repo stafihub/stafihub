@@ -60,7 +60,7 @@ var _ = strconv.Itoa(0)
 
 func CmdBondedPoolsByDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "bonded-pools-by-denom [denom]",
+		Use:   "bonded-pools [denom]",
 		Short: "Query bonded_pools_by_denom",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -93,7 +93,7 @@ func CmdBondedPoolsByDenom() *cobra.Command {
 
 func CmdGetPoolDetail() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-pool-detail [denom] [pool]",
+		Use:   "pool-detail [denom] [pool]",
 		Short: "Query get_pool_detail",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -128,7 +128,7 @@ func CmdGetPoolDetail() *cobra.Command {
 
 func CmdGetChainEra() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-chain-era [denom]",
+		Use:   "chain-era [denom]",
 		Short: "Query getChainEra",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -161,7 +161,7 @@ func CmdGetChainEra() *cobra.Command {
 
 func CmdGetCurrentEraSnapshot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-current-era-snap-shot [denom]",
+		Use:   "current-era-snap-shot [denom]",
 		Short: "Query getCurrentEraSnapshot",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -194,7 +194,7 @@ func CmdGetCurrentEraSnapshot() *cobra.Command {
 
 func CmdGetReceiver() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-receiver",
+		Use:   "receiver",
 		Short: "Query getReceiver",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -224,7 +224,7 @@ func CmdGetReceiver() *cobra.Command {
 
 func CmdGetCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-commission",
+		Use:   "commission",
 		Short: "Query getCommission",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -253,7 +253,7 @@ func CmdGetCommission() *cobra.Command {
 
 func CmdGetChainBondingDuration() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-chain-bonding-duration [denom]",
+		Use:   "chain-bonding-duration [denom]",
 		Short: "Query getChainBondingDuration",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -286,7 +286,7 @@ func CmdGetChainBondingDuration() *cobra.Command {
 
 func CmdGetUnbondFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-unbond-fee [denom]",
+		Use:   "unbond-fee [denom]",
 		Short: "Query getUnbondFee",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -319,7 +319,7 @@ func CmdGetUnbondFee() *cobra.Command {
 
 func CmdGetUnbondCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-unbond-commission",
+		Use:   "unbond-commission",
 		Short: "Query getUnbondCommission",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -347,7 +347,7 @@ func CmdGetUnbondCommission() *cobra.Command {
 
 func CmdGetLeastBond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-least-bond [denom]",
+		Use:   "least-bond [denom]",
 		Short: "Query getLeastBond",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -378,7 +378,7 @@ func CmdGetLeastBond() *cobra.Command {
 
 func CmdGetEraUnbondLimit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-era-unbond-limit [denom]",
+		Use:   "era-unbond-limit [denom]",
 		Short: "Query getEraUnbondLimit",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -412,7 +412,7 @@ func CmdGetEraUnbondLimit() *cobra.Command {
 
 func CmdGetBondPipeline() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-bond-pipeline [denom] [pool]",
+		Use:   "bond-pipeline [denom] [pool]",
 		Short: "Query GetBondPipeline",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -446,7 +446,7 @@ func CmdGetBondPipeline() *cobra.Command {
 
 func CmdGetEraSnapshot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-era-snap-shot [denom] [era]",
+		Use:   "era-snap-shot [denom] [era]",
 		Short: "Query GetEraSnapshot",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -483,7 +483,7 @@ func CmdGetEraSnapshot() *cobra.Command {
 
 func CmdGetSnapshot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-snap-shot [shot-id]",
+		Use:   "snap-shot [shot-id]",
 		Short: "Query GetSnapShot",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -515,7 +515,7 @@ func CmdGetSnapshot() *cobra.Command {
 
 func CmdGetTotalExpectedActive() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-total-expected-active [denom] [era]",
+		Use:   "total-expected-active [denom] [era]",
 		Short: "Query GetTotalExpectedActive",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -553,7 +553,7 @@ func CmdGetTotalExpectedActive() *cobra.Command {
 
 func CmdGetPoolUnbond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-pool-unbond [denom] [pool] [era]",
+		Use:   "pool-unbond [denom] [pool] [era]",
 		Short: "Query GetPoolUnbond",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -592,7 +592,7 @@ func CmdGetPoolUnbond() *cobra.Command {
 
 func CmdGetAccountUnbond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-account-unbond [denom] [unbonder]",
+		Use:   "account-unbond [denom] [unbonder]",
 		Short: "Query GetAccountUnbond",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -626,7 +626,7 @@ func CmdGetAccountUnbond() *cobra.Command {
 
 func CmdGetBondRecord() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-bond-record [denom] [txhash]",
+		Use:   "bond-record [denom] [txhash]",
 		Short: "Query GetBondRecord",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -659,7 +659,7 @@ func CmdGetBondRecord() *cobra.Command {
 
 func CmdGetSignature() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-signature [denom] [era] [pool] [tx-type] [prop-id]",
+		Use:   "signature [denom] [era] [pool] [tx-type] [prop-id]",
 		Short: "Query GetSignature",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -706,7 +706,7 @@ func CmdGetSignature() *cobra.Command {
 
 func CmdGetRParams() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-r-params [denom]",
+		Use:   "r-params [denom]",
 		Short: "query rParams",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 func CmdAddValToWhitelist() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-val-to-whitelist [val-address]",
-		Short: "add validator address to whitelist",
+		Short: "Add validator address to whitelist",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argValAddress := args[0]

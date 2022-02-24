@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdSetResourceidType() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-resourceid-type [resource-id] [id-type]",
-		Short: "set resource id type support (0,1) default 0",
+		Short: "Set resource id type support (0,1) default 0",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argResourceId := args[0]

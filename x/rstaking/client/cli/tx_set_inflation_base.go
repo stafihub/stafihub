@@ -17,7 +17,7 @@ var _ = strconv.Itoa(0)
 func CmdSetInflationBase() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-inflation-base [inflation-base]",
-		Short: "set inflation base",
+		Short: "Set inflation base",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argInflationBase, ok := sdk.NewIntFromString(args[0])

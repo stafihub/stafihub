@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdValidatorWhitelist() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "validator-whitelist",
-		Short: "query validator whitelist",
+		Short: "Query validator whitelist",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

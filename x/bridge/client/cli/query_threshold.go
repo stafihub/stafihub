@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdThreshold() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "threshold",
-		Short: "query threshold",
+		Short: "Query threshold",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

@@ -30,7 +30,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 func CmdRelayersByDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "relayers-by-denom [denom]",
+		Use:   "relayers [denom]",
 		Short: "Query relayers_by_denom",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -62,8 +62,8 @@ func CmdRelayersByDenom() *cobra.Command {
 
 func CmdShowThreshold() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-threshold [denom]",
-		Short: "shows a threshold",
+		Use:   "threshold [denom]",
+		Short: "Shows threshold",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)

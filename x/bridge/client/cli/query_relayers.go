@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdRelayers() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "relayers",
-		Short: "query relayers",
+		Short: "Query relayers",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 

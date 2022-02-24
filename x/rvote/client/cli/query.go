@@ -37,7 +37,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 func CmdGetProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-proposal [prop-id]",
+		Use:   "proposal [prop-id]",
 		Short: "Query GetProposal",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -69,7 +69,7 @@ func CmdGetProposal() *cobra.Command {
 
 func CmdGetProposalLife() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get-proposal-life",
+		Use:   "proposal-life",
 		Short: "Query GetProposalLife",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
