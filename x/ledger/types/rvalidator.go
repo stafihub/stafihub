@@ -12,21 +12,21 @@ var (
 )
 
 func NewMsgOnboard(creator sdk.AccAddress, denom string, address, operatorAddress string, locked sdk.Coin) *MsgOnboard {
-  return &MsgOnboard{
-		Creator: creator.String(),
-    Denom: denom,
-    Address: address,
-	OperatorAddress:  operatorAddress,
-    Locked: locked,
+	return &MsgOnboard{
+		Creator:         creator.String(),
+		Denom:           denom,
+		Address:         address,
+		OperatorAddress: operatorAddress,
+		Locked:          locked,
 	}
 }
 
 func (msg *MsgOnboard) Route() string {
-  return RouterKey
+	return RouterKey
 }
 
 func (msg *MsgOnboard) Type() string {
-  return "Onboard"
+	return "Onboard"
 }
 
 func (msg *MsgOnboard) GetSigners() []sdk.AccAddress {
@@ -35,8 +35,8 @@ func (msg *MsgOnboard) GetSigners() []sdk.AccAddress {
 }
 
 func (msg *MsgOnboard) GetSignBytes() []byte {
-  bz := ModuleCdc.MustMarshalJSON(msg)
-  return sdk.MustSortJSON(bz)
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
 }
 
 func (msg *MsgOnboard) ValidateBasic() error {
@@ -48,12 +48,12 @@ func (msg *MsgOnboard) ValidateBasic() error {
 
 func NewMsgSetRValidatorIndicator(creator sdk.AccAddress, denom string, commission sdk.Dec, uptime uint32, votingPower int64, locked sdk.Coin) *MsgSetRValidatorIndicator {
 	return &MsgSetRValidatorIndicator{
-		Creator: creator.String(),
-		Denom: denom,
-		Commission: commission,
-		Uptime: uptime,
+		Creator:     creator.String(),
+		Denom:       denom,
+		Commission:  commission,
+		Uptime:      uptime,
 		VotingPower: votingPower,
-		Locked: locked,
+		Locked:      locked,
 	}
 }
 
@@ -94,4 +94,3 @@ func (msg *MsgSetRValidatorIndicator) ValidateBasic() error {
 
 	return nil
 }
-

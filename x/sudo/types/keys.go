@@ -18,7 +18,7 @@ const (
 )
 
 var (
-	AdminPrefix  = []byte{0x00}
+	AdminPrefix   = []byte{0x00}
 	AddressPrefix = []byte{0x01}
 )
 

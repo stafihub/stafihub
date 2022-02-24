@@ -45,8 +45,8 @@ func (msg *MsgUpdateAdmin) ValidateBasic() error {
 
 func NewMsgAddDenom(creator sdk.AccAddress, metadata banktypes.Metadata, prefix string) *MsgAddDenom {
 	return &MsgAddDenom{
-		Creator:  creator.String(),
-		Metadata: metadata,
+		Creator:    creator.String(),
+		Metadata:   metadata,
 		AddrPrefix: prefix,
 	}
 }

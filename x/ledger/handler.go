@@ -38,8 +38,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetCommission:
 			res, err := msgServer.SetCommission(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetReceiver:
-			res, err := msgServer.SetReceiver(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetProtocolFeeReceiver:
+			res, err := msgServer.SetProtocolFeeReceiver(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetUnbondFee:
 			res, err := msgServer.SetUnbondFee(sdk.WrapSDKContext(ctx), msg)
@@ -59,10 +59,13 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgOnboard:
 			res, err := msgServer.Onboard(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-			case *types.MsgSetRValidatorIndicator:
-					res, err := msgServer.SetRValidatorIndicator(sdk.WrapSDKContext(ctx), msg)
-					return sdk.WrapServiceResult(ctx, res, err)
-// this line is used by starport scaffolding # 1
+		case *types.MsgSetRValidatorIndicator:
+			res, err := msgServer.SetRValidatorIndicator(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSetRelayFeeReceiver:
+			res, err := msgServer.SetRelayFeeReceiver(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

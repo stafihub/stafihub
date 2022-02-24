@@ -35,9 +35,13 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		return nil, types.ErrBondingDurationNotSet
 	}
 
-	receiver := k.Keeper.GetReceiver(ctx)
-	if receiver == nil {
-		return nil, types.ErrNoReceiver
+	protocolFeeReceiver, found := k.Keeper.GetProtocolFeeReceiver(ctx)
+	if !found {
+		return nil, types.ErrNoProtocolFeeReceiver
+	}
+	relayFeeReceiver, found := k.Keeper.GetRelayFeeReceiver(ctx)
+	if !found {
+		return nil, types.ErrNoRelayFeeReceiver
 	}
 
 	unbonder, _ := sdk.AccAddressFromBech32(msg.Creator)
@@ -89,18 +93,17 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 			return nil, sdkerrors.ErrInsufficientFunds
 		}
 
-		if err := k.bankKeeper.SendCoins(ctx, unbonder, receiver, sdk.Coins{unbondFee.Value}); err != nil {
+		if err := k.bankKeeper.SendCoins(ctx, unbonder, relayFeeReceiver, sdk.Coins{unbondFee.Value}); err != nil {
 			panic(err)
 		}
-		k.IncreaseTotalFee(ctx, unbondFee.Value.Denom, unbondFee.Value.Amount)
 	}
 
 	if cmsFee.LT(sdk.ZeroInt()) {
 		cmsFeeCoin := sdk.NewCoin(denom, cmsFee)
-		if err := k.bankKeeper.SendCoins(ctx, unbonder, receiver, sdk.Coins{cmsFeeCoin}); err != nil {
+		if err := k.bankKeeper.SendCoins(ctx, unbonder, protocolFeeReceiver, sdk.Coins{cmsFeeCoin}); err != nil {
 			panic(err)
 		}
-		k.IncreaseTotalFee(ctx, cmsFeeCoin.Denom, cmsFeeCoin.Amount)
+		k.IncreaseTotalProtocolFee(ctx, cmsFeeCoin.Denom, cmsFeeCoin.Amount)
 	}
 
 	burnCoins := sdk.Coins{leftValue}

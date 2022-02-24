@@ -277,14 +277,32 @@ func (k Keeper) Commission(ctx sdk.Context) sdk.Dec {
 	return val
 }
 
-func (k Keeper) SetReceiver(ctx sdk.Context, receiver sdk.AccAddress) {
+func (k Keeper) SetProtocolFeeReceiver(ctx sdk.Context, receiver sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ReceiverPrefix, receiver)
+	store.Set(types.ProtocolFeeReceiverPrefix, receiver)
 }
 
-func (k Keeper) GetReceiver(ctx sdk.Context) sdk.AccAddress {
+func (k Keeper) GetProtocolFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
 	store := ctx.KVStore(k.storeKey)
-	return store.Get(types.ReceiverPrefix)
+	bts := store.Get(types.ProtocolFeeReceiverPrefix)
+	if bts == nil {
+		return nil, false
+	}
+	return bts, true
+}
+
+func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, receiver sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.RelayFeeReceiverPrefix, receiver)
+}
+
+func (k Keeper) GetRelayFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.RelayFeeReceiverPrefix)
+	if bts == nil {
+		return nil, false
+	}
+	return bts, true
 }
 
 func (k Keeper) SetTotalExpectedActive(ctx sdk.Context, denom string, era uint32, active sdk.Int) {

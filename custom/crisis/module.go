@@ -18,7 +18,6 @@ type AppModuleBasic struct {
 	crisis.AppModuleBasic
 }
 
-
 // DefaultGenesis returns default genesis state as raw bytes for the gov
 // module.
 func (am AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {

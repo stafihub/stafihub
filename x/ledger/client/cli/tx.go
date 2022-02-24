@@ -55,8 +55,9 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSubmitSignature())
 	cmd.AddCommand(CmdSetRParams())
 	cmd.AddCommand(CmdOnboard())
-cmd.AddCommand(CmdSetRValidatorIndicator())
-// this line is used by starport scaffolding # 1
+	cmd.AddCommand(CmdSetRValidatorIndicator())
+	cmd.AddCommand(CmdSetRelayFeeReceiver())
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }

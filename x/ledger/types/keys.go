@@ -32,7 +32,7 @@ var (
 	ChainEraPrefix             = []byte{0x09}
 	EraSnapshotPrefix          = []byte{0x0a}
 	CommissionPrefix           = []byte{0x0b}
-	ReceiverPrefix             = []byte{0x0c}
+	ProtocolFeeReceiverPrefix  = []byte{0x0c}
 	TotalExpectedActivePrefix  = []byte{0x0d}
 	PoolUnbondPrefix           = []byte{0x0e}
 	ExchangeRateKeyPrefix      = []byte{0x0f}
@@ -45,7 +45,8 @@ var (
 	RParamsPrefix              = []byte{0x16}
 	RValidatorIndicatorPrefix  = []byte{0x17}
 	RValidatorPrefix           = []byte{0x18}
-	TotalFeePrefix             = []byte{0x20}
+	TotalProtocolFeePrefix     = []byte{0x19}
+	RelayFeeReceiverPrefix     = []byte{0x1a}
 )
 
 func KeyPrefix(p string) []byte {

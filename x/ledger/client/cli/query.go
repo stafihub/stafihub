@@ -49,7 +49,9 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetSignature())
 	cmd.AddCommand(CmdGetRParams())
 
-	cmd.AddCommand(CmdTotalFeeList())
+	cmd.AddCommand(CmdTotalProtocolFee())
+
+	cmd.AddCommand(CmdRelayFeeReceiver())
 
 	// this line is used by starport scaffolding # 1
 
@@ -194,8 +196,8 @@ func CmdGetCurrentEraSnapshot() *cobra.Command {
 
 func CmdGetReceiver() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "receiver",
-		Short: "Query getReceiver",
+		Use:   "protocol-fee-receiver",
+		Short: "Query protocol fee receiver",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -206,9 +208,9 @@ func CmdGetReceiver() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetReceiverRequest{}
+			params := &types.QueryGetProtocolFeeReceiverRequest{}
 
-			res, err := queryClient.GetReceiver(cmd.Context(), params)
+			res, err := queryClient.GetProtocolFeeReceiver(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

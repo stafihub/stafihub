@@ -99,21 +99,21 @@ func NewSignature(denom string, era uint32, pool string,
 
 func NewRValidatorIndicator(denom string, commission sdk.Dec, uptime uint32, power int64, locked sdk.Coin) RValidatorIndicator {
 	return RValidatorIndicator{
-		Denom: denom,
-		Commission: commission,
-		Uptime: uptime,
+		Denom:       denom,
+		Commission:  commission,
+		Uptime:      uptime,
 		VotingPower: power,
-		Locked: locked,
+		Locked:      locked,
 	}
 }
 
 func NewRValidator(denom, address, operatorAddress string, locked sdk.Coin) RValidator {
 	return RValidator{
-		Denom: denom,
-		Address: address,
+		Denom:           denom,
+		Address:         address,
 		OperatorAddress: operatorAddress,
-		Status: Onboard,
-		Locked: locked,
+		Status:          Onboard,
+		Locked:          locked,
 	}
 }
 

@@ -21,7 +21,7 @@ var (
 )
 
 const (
-	FlagMetadata = "metadata"
+	FlagMetadata      = "metadata"
 	FlagAddressPrefix = "address_prefix"
 )
 

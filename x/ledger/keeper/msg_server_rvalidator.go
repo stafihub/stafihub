@@ -10,8 +10,7 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-
-func (k msgServer) Onboard(goCtx context.Context,  msg *types.MsgOnboard) (*types.MsgOnboardResponse, error) {
+func (k msgServer) Onboard(goCtx context.Context, msg *types.MsgOnboard) (*types.MsgOnboardResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
@@ -49,7 +48,7 @@ func (k msgServer) Onboard(goCtx context.Context,  msg *types.MsgOnboard) (*type
 	return &types.MsgOnboardResponse{}, nil
 }
 
-func (k msgServer) SetRValidatorIndicator(goCtx context.Context,  msg *types.MsgSetRValidatorIndicator) (*types.MsgSetRValidatorIndicatorResponse, error) {
+func (k msgServer) SetRValidatorIndicator(goCtx context.Context, msg *types.MsgSetRValidatorIndicator) (*types.MsgSetRValidatorIndicatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -66,5 +65,3 @@ func (k msgServer) SetRValidatorIndicator(goCtx context.Context,  msg *types.Msg
 
 	return &types.MsgSetRValidatorIndicatorResponse{}, nil
 }
-
-

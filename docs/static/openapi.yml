@@ -13586,38 +13586,6 @@ paths:
           format: int64
       tags:
         - Query
-  /stafihub/stafihub/ledger/getReceiver:
-    get:
-      summary: Queries a list of getReceiver items.
-      operationId: StafihubStafihubLedgerGetReceiver
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              receiver:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /stafihub/stafihub/ledger/getSignature:
     get:
       summary: Queries a list of getSignature items.
@@ -13941,17 +13909,81 @@ paths:
           type: string
       tags:
         - Query
-  /stafihub/stafihub/ledger/total_fee_list:
+  /stafihub/stafihub/ledger/protocol_fee_receiver:
     get:
-      summary: Queries a list of TotalFeeList items.
-      operationId: StafihubStafihubLedgerTotalFeeList
+      summary: Queries a list of getReceiver items.
+      operationId: StafihubStafihubLedgerGetProtocolFeeReceiver
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              totalFeeList:
+              receiver:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafihub/stafihub/ledger/relay_fee_receiver:
+    get:
+      summary: Queries a list of RelayFeeReceiver items.
+      operationId: StafihubStafihubLedgerRelayFeeReceiver
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              receiver:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafihub/stafihub/ledger/total_protocol_fee:
+    get:
+      summary: Queries a list of TotalFeeList items.
+      operationId: StafihubStafihubLedgerTotalProtocolFee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              totalProtocolFeeList:
                 type: array
                 items:
                   type: object
@@ -22233,11 +22265,13 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetPoolDetailResponse:
     type: object
+  stafihub.stafihub.ledger.MsgSetProtocolFeeReceiverResponse:
+    type: object
   stafihub.stafihub.ledger.MsgSetRParamsResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRValidatorIndicatorResponse:
     type: object
-  stafihub.stafihub.ledger.MsgSetReceiverResponse:
+  stafihub.stafihub.ledger.MsgSetRelayFeeReceiverResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetUnbondCommissionResponse:
     type: object
@@ -22504,6 +22538,11 @@ definitions:
                   type: string
                 recipient:
                   type: string
+  stafihub.stafihub.ledger.QueryGetProtocolFeeReceiverResponse:
+    type: object
+    properties:
+      receiver:
+        type: string
   stafihub.stafihub.ledger.QueryGetRParamsResponse:
     type: object
     properties:
@@ -22528,11 +22567,6 @@ definitions:
             type: array
             items:
               type: string
-  stafihub.stafihub.ledger.QueryGetReceiverResponse:
-    type: object
-    properties:
-      receiver:
-        type: string
   stafihub.stafihub.ledger.QueryGetSignatureResponse:
     type: object
     properties:
@@ -22616,10 +22650,15 @@ definitions:
             type: string
           value:
             type: string
-  stafihub.stafihub.ledger.QueryTotalFeeListResponse:
+  stafihub.stafihub.ledger.QueryRelayFeeReceiverResponse:
     type: object
     properties:
-      totalFeeList:
+      receiver:
+        type: string
+  stafihub.stafihub.ledger.QueryTotalProtocolFeeResponse:
+    type: object
+    properties:
+      totalProtocolFeeList:
         type: array
         items:
           type: object
@@ -22675,7 +22714,7 @@ definitions:
         type: array
         items:
           type: string
-  stafihub.stafihub.ledger.TotalFee:
+  stafihub.stafihub.ledger.TotalProtocolFee:
     type: object
     properties:
       denom:

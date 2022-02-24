@@ -37,5 +37,3 @@ func TestKeeper_SetAddressPrefix(t *testing.T) {
 	require.True(t, found)
 	require.Equal(t, sample.TestAddrPrefix, val)
 }
-
-

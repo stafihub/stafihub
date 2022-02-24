@@ -1,13 +1,11 @@
 package cli
 
 import (
-    "strconv"
-
-
+	"strconv"
 
 	"github.com/spf13/cobra"
 
-    "github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -22,10 +20,10 @@ func CmdOnboard() *cobra.Command {
 		Short: "Broadcast message onboard",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-      		 argDenom := args[0]
-             argAddress := args[1]
-             argOperatorAddress := args[2]
-             argLocked, err := sdk.ParseCoinNormalized(args[3])
+			argDenom := args[0]
+			argAddress := args[1]
+			argOperatorAddress := args[2]
+			argLocked, err := sdk.ParseCoinNormalized(args[3])
 			if err != nil {
 				return err
 			}
@@ -51,7 +49,7 @@ func CmdOnboard() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
 
 func CmdSetRValidatorIndicator() *cobra.Command {

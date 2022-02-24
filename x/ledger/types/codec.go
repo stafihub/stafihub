@@ -16,7 +16,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetLeastBond{}, "ledger/SetLeastBond", nil)
 	cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
 	cdc.RegisterConcrete(&MsgSetCommission{}, "ledger/SetCommission", nil)
-	cdc.RegisterConcrete(&MsgSetReceiver{}, "ledger/SetReceiver", nil)
+	cdc.RegisterConcrete(&MsgSetProtocolFeeReceiver{}, "ledger/SetProtocolFeeReceiver", nil)
 	cdc.RegisterConcrete(&MsgSetUnbondFee{}, "ledger/SetUnbondFee", nil)
 	cdc.RegisterConcrete(&MsgLiquidityUnbond{}, "ledger/LiquidityUnbond", nil)
 	cdc.RegisterConcrete(&MsgSetUnbondCommission{}, "ledger/SetUnbondCommission", nil)
@@ -32,8 +32,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
 	cdc.RegisterConcrete(&MsgSetRParams{}, "ledger/SetRParams", nil)
 	cdc.RegisterConcrete(&MsgOnboard{}, "ledger/Onboard", nil)
-cdc.RegisterConcrete(&MsgSetRValidatorIndicator{}, "ledger/SetRValidatorIndicator", nil)
-// this line is used by starport scaffolding # 2
+	cdc.RegisterConcrete(&MsgSetRValidatorIndicator{}, "ledger/SetRValidatorIndicator", nil)
+	cdc.RegisterConcrete(&MsgSetRelayFeeReceiver{}, "ledger/SetRelayFeeReceiver", nil)
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -45,7 +46,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSetLeastBond{},
 		&MsgClearCurrentEraSnapShots{},
 		&MsgSetCommission{},
-		&MsgSetReceiver{},
+		&MsgSetProtocolFeeReceiver{},
 	)
 
 	registry.RegisterImplementations(
@@ -65,12 +66,15 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSetRParams{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgOnboard{},
-)
-registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgSetRValidatorIndicator{},
-)
-// this line is used by starport scaffolding # 3
+		&MsgOnboard{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetRValidatorIndicator{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetRelayFeeReceiver{},
+	)
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

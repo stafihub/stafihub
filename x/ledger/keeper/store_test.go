@@ -198,18 +198,6 @@ func TestKeeper_Commission(t *testing.T) {
 	require.Equal(t, dec, cms)
 }
 
-func TestKeeper_SetReceiver(t *testing.T) {
-	k, ctx := testkeeper.LedgerKeeper(t)
-
-	rec := k.GetReceiver(ctx)
-	require.Nil(t, rec)
-
-	rec1 := sample.OriginAccAddress()
-	k.SetReceiver(ctx, rec1)
-
-	rec = k.GetReceiver(ctx)
-	require.Equal(t, rec1, rec)
-}
 
 func TestKeeper_SetTotalExpectedActive(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
@@ -287,21 +275,6 @@ func TestKeeper_SetAccountUnbond(t *testing.T) {
 	require.Equal(t, au1, au)
 }
 
-func TestKeeper_SetBondRecord(t *testing.T) {
-	k, ctx := testkeeper.LedgerKeeper(t)
-
-	blockhash := "blockhash"
-	txhash := "txhash"
-	_, found := k.GetBondRecord(ctx, sample.TestDenom, blockhash, txhash)
-	require.False(t, found)
-
-	br1 := types.NewBondRecord(sample.TestDenom, sample.AccAddress(), sample.AccAddress(), blockhash, txhash, sdk.NewInt(100))
-	k.SetBondRecord(ctx, br1)
-
-	br, found := k.GetBondRecord(ctx, sample.TestDenom, blockhash, txhash)
-	require.True(t, found)
-	require.Equal(t, br1, br)
-}
 
 func TestKeeper_SetSignature(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)

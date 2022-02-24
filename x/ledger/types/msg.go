@@ -14,7 +14,7 @@ var (
 	_ sdk.Msg = &MsgSetLeastBond{}
 	_ sdk.Msg = &MsgClearCurrentEraSnapShots{}
 	_ sdk.Msg = &MsgSetCommission{}
-	_ sdk.Msg = &MsgSetReceiver{}
+	_ sdk.Msg = &MsgSetProtocolFeeReceiver{}
 	_ sdk.Msg = &MsgSetUnbondCommission{}
 	_ sdk.Msg = &MsgLiquidityUnbond{}
 	_ sdk.Msg = &MsgSetUnbondFee{}
@@ -275,32 +275,32 @@ func (msg *MsgSetCommission) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetReceiver(creator sdk.AccAddress, receiver sdk.AccAddress) *MsgSetReceiver {
-	return &MsgSetReceiver{
+func NewMsgSetProtocolFeeReceiver(creator sdk.AccAddress, receiver sdk.AccAddress) *MsgSetProtocolFeeReceiver {
+	return &MsgSetProtocolFeeReceiver{
 		Creator:  creator.String(),
 		Receiver: receiver.String(),
 	}
 }
 
-func (msg *MsgSetReceiver) Route() string {
+func (msg *MsgSetProtocolFeeReceiver) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSetReceiver) Type() string {
-	return "SetReceiver"
+func (msg *MsgSetProtocolFeeReceiver) Type() string {
+	return "SetProtocolFeeReceiver"
 }
 
-func (msg *MsgSetReceiver) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetProtocolFeeReceiver) GetSigners() []sdk.AccAddress {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSetReceiver) GetSignBytes() []byte {
+func (msg *MsgSetProtocolFeeReceiver) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSetReceiver) ValidateBasic() error {
+func (msg *MsgSetProtocolFeeReceiver) ValidateBasic() error {
 	if msg.Creator == "" || msg.Receiver == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Receiver)
 	}

@@ -14,7 +14,7 @@ func (k Keeper) SetRValidator(ctx sdk.Context, validator types.RValidator) {
 
 func (k Keeper) RValidator(ctx sdk.Context, denom, address, operatorAddress string) (val types.RValidator, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RValidatorPrefix)
-	b := store.Get([]byte(denom+address+operatorAddress))
+	b := store.Get([]byte(denom + address + operatorAddress))
 	if b == nil {
 		return val, false
 	}
@@ -22,7 +22,6 @@ func (k Keeper) RValidator(ctx sdk.Context, denom, address, operatorAddress stri
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
-
 
 func (k Keeper) SetRValidatorIndicator(ctx sdk.Context, indicator types.RValidatorIndicator) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RValidatorIndicatorPrefix)
@@ -40,5 +39,3 @@ func (k Keeper) RValidatorIndicator(ctx sdk.Context, denom string) (val types.RV
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
 }
-
-

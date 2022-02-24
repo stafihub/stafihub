@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdTotalFeeList() *cobra.Command {
+func CmdTotalProtocolFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "total-fee-list",
-		Short: "query all totalfee",
+		Use:   "total-protocol-fee",
+		Short: "query total protocol fee",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,9 +25,9 @@ func CmdTotalFeeList() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryTotalFeeListRequest{}
+			params := &types.QueryTotalProtocolFeeRequest{}
 
-			res, err := queryClient.TotalFeeList(cmd.Context(), params)
+			res, err := queryClient.TotalProtocolFee(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

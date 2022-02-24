@@ -261,7 +261,7 @@ func CmdSetCommission() *cobra.Command {
 
 func CmdSetReceiver() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-receiver [receiver]",
+		Use:   "set-protocol-fee-receiver [receiver]",
 		Short: "Broadcast message set_receiver",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -275,7 +275,7 @@ func CmdSetReceiver() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetReceiver(
+			msg := types.NewMsgSetProtocolFeeReceiver(
 				clientCtx.GetFromAddress(),
 				argReceiver,
 			)

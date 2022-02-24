@@ -16,7 +16,7 @@ service Msg {
   rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
   rpc SetCommission(MsgSetCommission) returns (MsgSetCommissionResponse);
-  rpc SetReceiver(MsgSetReceiver) returns (MsgSetReceiverResponse);
+  rpc SetProtocolFeeReceiver(MsgSetProtocolFeeReceiver) returns (MsgSetProtocolFeeReceiverResponse);
   rpc SetUnbondFee(MsgSetUnbondFee) returns (MsgSetUnbondFeeResponse);
   rpc LiquidityUnbond(MsgLiquidityUnbond) returns (MsgLiquidityUnbondResponse);
   rpc SetUnbondCommission(MsgSetUnbondCommission) returns (MsgSetUnbondCommissionResponse);
@@ -24,6 +24,7 @@ service Msg {
   rpc SetRParams(MsgSetRParams) returns (MsgSetRParamsResponse);
   rpc Onboard(MsgOnboard) returns (MsgOnboardResponse);
   rpc SetRValidatorIndicator(MsgSetRValidatorIndicator) returns (MsgSetRValidatorIndicatorResponse);
+  rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -91,12 +92,12 @@ message MsgSetCommission {
 message MsgSetCommissionResponse {
 }
 
-message MsgSetReceiver {
+message MsgSetProtocolFeeReceiver {
   string creator = 1;
   string receiver = 2;
 }
 
-message MsgSetReceiverResponse {
+message MsgSetProtocolFeeReceiverResponse {
 }
 
 message MsgSetUnbondFee {
@@ -174,6 +175,14 @@ message MsgSetRValidatorIndicator {
 }
 
 message MsgSetRValidatorIndicatorResponse {
+}
+
+message MsgSetRelayFeeReceiver {
+  string creator = 1;
+  string receiver = 2;
+}
+
+message MsgSetRelayFeeReceiverResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

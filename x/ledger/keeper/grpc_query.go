@@ -82,18 +82,18 @@ func (q Querier) GetChainBondingDuration(goCtx context.Context, req *types.Query
 	return &types.QueryGetChainBondingDurationResponse{Era: cbd.Era}, nil
 }
 
-func (q Querier) GetReceiver(goCtx context.Context, req *types.QueryGetReceiverRequest) (*types.QueryGetReceiverResponse, error) {
+func (q Querier) GetProtocolFeeReceiver(goCtx context.Context, req *types.QueryGetProtocolFeeReceiverRequest) (*types.QueryGetProtocolFeeReceiverResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	rec := q.Keeper.GetReceiver(ctx)
-	if rec == nil {
+	rec, found := q.Keeper.GetProtocolFeeReceiver(ctx)
+	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
-	return &types.QueryGetReceiverResponse{Receiver: rec.String()}, nil
+	return &types.QueryGetProtocolFeeReceiverResponse{Receiver: rec.String()}, nil
 }
 
 func (q Querier) GetCommission(goCtx context.Context, req *types.QueryGetCommissionRequest) (*types.QueryGetCommissionResponse, error) {

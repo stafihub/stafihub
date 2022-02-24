@@ -152,9 +152,9 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		}
 	}
 
-	receiver := k.GetReceiver(ctx)
-	if receiver == nil {
-		return types.ErrNoReceiver
+	protocolFeeReceiver, foundReceiver := k.GetProtocolFeeReceiver(ctx)
+	if !foundReceiver {
+		return types.ErrNoProtocolFeeReceiver
 	}
 
 	eraShots := k.EraSnapshot(ctx, shot.Denom, shot.Era)
@@ -193,10 +193,10 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 			return err
 		}
 
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, sdk.Coins{coin}); err != nil {
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, protocolFeeReceiver, sdk.Coins{coin}); err != nil {
 			return err
 		}
-		k.IncreaseTotalFee(ctx, coin.Denom, coin.Amount)
+		k.IncreaseTotalProtocolFee(ctx, coin.Denom, coin.Amount)
 	}
 
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
@@ -253,9 +253,9 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		return types.ErrLastVoterNobody
 	}
 
-	receiver := k.GetReceiver(ctx)
-	if receiver == nil {
-		return types.ErrNoReceiver
+	protocolFeeReceiver, foundReceiver := k.GetProtocolFeeReceiver(ctx)
+	if !foundReceiver {
+		return types.ErrNoProtocolFeeReceiver
 	}
 
 	eraShots := k.EraSnapshot(ctx, shot.Denom, shot.Era)
@@ -295,10 +295,10 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 			if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
 				return err
 			}
-			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, sdk.Coins{coin}); err != nil {
+			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, protocolFeeReceiver, sdk.Coins{coin}); err != nil {
 				return err
 			}
-			k.IncreaseTotalFee(ctx, coin.Denom, coin.Amount)
+			k.IncreaseTotalProtocolFee(ctx, coin.Denom, coin.Amount)
 		}
 	}
 

@@ -141,17 +141,20 @@ func (k msgServer) SetCommission(goCtx context.Context, msg *types.MsgSetCommiss
 	return &types.MsgSetCommissionResponse{}, nil
 }
 
-func (k msgServer) SetReceiver(goCtx context.Context, msg *types.MsgSetReceiver) (*types.MsgSetReceiverResponse, error) {
+func (k msgServer) SetProtocolFeeReceiver(goCtx context.Context, msg *types.MsgSetProtocolFeeReceiver) (*types.MsgSetProtocolFeeReceiverResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	receiver, _ := sdk.AccAddressFromBech32(msg.Receiver)
-	k.Keeper.SetReceiver(ctx, receiver)
+	receiver, err := sdk.AccAddressFromBech32(msg.Receiver)
+	if err != nil {
+		return nil, err
+	}
+	k.Keeper.SetProtocolFeeReceiver(ctx, receiver)
 
-	return &types.MsgSetReceiverResponse{}, nil
+	return &types.MsgSetProtocolFeeReceiverResponse{}, nil
 }
 
 func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFee) (*types.MsgSetUnbondFeeResponse, error) {

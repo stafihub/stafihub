@@ -52,8 +52,8 @@ service Query {
 	}
 
 // Queries a list of getReceiver items.
-	rpc GetReceiver(QueryGetReceiverRequest) returns (QueryGetReceiverResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getReceiver";
+	rpc GetProtocolFeeReceiver(QueryGetProtocolFeeReceiverRequest) returns (QueryGetProtocolFeeReceiverResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/protocol_fee_receiver";
 	}
 
 // Queries a list of getCommission items.
@@ -132,8 +132,13 @@ service Query {
 	}
 
 // Queries a list of TotalFeeList items.
-	rpc TotalFeeList(QueryTotalFeeListRequest) returns (QueryTotalFeeListResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/total_fee_list";
+	rpc TotalProtocolFee(QueryTotalProtocolFeeRequest) returns (QueryTotalProtocolFeeResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/total_protocol_fee";
+	}
+
+// Queries a list of RelayFeeReceiver items.
+	rpc RelayFeeReceiver(QueryRelayFeeReceiverRequest) returns (QueryRelayFeeReceiverResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/relay_fee_receiver";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -204,10 +209,10 @@ message QueryGetCurrentEraSnapshotResponse {
   repeated string shotIds = 1;
 }
 
-message QueryGetReceiverRequest {
+message QueryGetProtocolFeeReceiverRequest {
 }
 
-message QueryGetReceiverResponse {
+message QueryGetProtocolFeeReceiverResponse {
   string receiver = 1;
 }
 
@@ -340,11 +345,18 @@ message QueryGetRParamsResponse {
 	RParams rParams = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryTotalFeeListRequest {
+message QueryTotalProtocolFeeRequest {
 }
 
-message QueryTotalFeeListResponse {
-	repeated TotalFee totalFeeList = 1 [(gogoproto.nullable) = false];
+message QueryTotalProtocolFeeResponse {
+	repeated TotalProtocolFee totalProtocolFeeList = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRelayFeeReceiverRequest {
+}
+
+message QueryRelayFeeReceiverResponse {
+	string receiver = 1;
 }
 
 // this line is used by starport scaffolding # 3
