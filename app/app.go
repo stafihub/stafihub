@@ -84,7 +84,7 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/tendermint/spm/cosmoscmd"
+	"github.com/stafihub/stafihub/cosmoscmd"
 	"github.com/tendermint/spm/openapiconsole"
 
 	"github.com/stafihub/stafihub/docs"
