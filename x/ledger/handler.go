@@ -35,8 +35,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgClearCurrentEraSnapShots:
 			res, err := msgServer.ClearCurrentEraSnapShots(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetCommission:
-			res, err := msgServer.SetCommission(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetStakingRewardCommission:
+			res, err := msgServer.SetStakingRewardCommission(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetProtocolFeeReceiver:
 			res, err := msgServer.SetProtocolFeeReceiver(sdk.WrapSDKContext(ctx), msg)

@@ -185,7 +185,10 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 	active := sdk.NewInt(p.Staked.Int64()).Add(p.Unstaked)
 	diff := active.Sub(shot.Chunk.Active)
 	if diff.GT(sdk.NewInt(0)) {
-		commission := k.Commission(ctx)
+		commission, found := k.GetStakingRewardCommission(ctx, shot.Denom)
+		if !found {
+			return types.ErrNoStakingRewardCommisson
+		}
 		fee := commission.MulInt(diff).TruncateInt()
 		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
 		coin := sdk.NewCoin(shot.Denom, rfee)
@@ -286,7 +289,10 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	active := sdk.NewInt(p.Staked.Int64()).Add(p.Unstaked)
 	diff := active.Sub(shot.Chunk.Active)
 	if diff.GT(sdk.NewInt(0)) {
-		commission := k.Commission(ctx)
+		commission, found := k.GetStakingRewardCommission(ctx, shot.Denom)
+		if !found {
+			return types.ErrNoStakingRewardCommisson
+		}
 		fee := commission.MulInt(diff).TruncateInt()
 		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
 

@@ -51,7 +51,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
-	genesis.InflationBase = k.GetInflationBase(ctx)
+	inflationBase, found := k.GetInflationBase(ctx)
+	if !found {
+		inflationBase = sdk.ZeroInt()
+	}
+	genesis.InflationBase = inflationBase
 	params := mintKeeper.GetParams(ctx)
 	moduleAddress := authTypes.NewModuleAddress(types.ModuleName)
 	balance := k.GetBankKeeper().GetBalance(ctx, moduleAddress, params.MintDenom)

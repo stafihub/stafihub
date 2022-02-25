@@ -13,7 +13,7 @@ var (
 	_ sdk.Msg = &MsgSetPoolDetail{}
 	_ sdk.Msg = &MsgSetLeastBond{}
 	_ sdk.Msg = &MsgClearCurrentEraSnapShots{}
-	_ sdk.Msg = &MsgSetCommission{}
+	_ sdk.Msg = &MsgSetStakingRewardCommission{}
 	_ sdk.Msg = &MsgSetProtocolFeeReceiver{}
 	_ sdk.Msg = &MsgSetUnbondCommission{}
 	_ sdk.Msg = &MsgLiquidityUnbond{}
@@ -235,32 +235,33 @@ func (msg *MsgClearCurrentEraSnapShots) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetCommission(creator sdk.AccAddress, commission sdk.Dec) *MsgSetCommission {
-	return &MsgSetCommission{
+func NewMsgSetStakingRewardCommission(creator sdk.AccAddress, denom string, commission sdk.Dec) *MsgSetStakingRewardCommission {
+	return &MsgSetStakingRewardCommission{
 		Creator:    creator.String(),
+		Denom:      denom,
 		Commission: commission,
 	}
 }
 
-func (msg *MsgSetCommission) Route() string {
+func (msg *MsgSetStakingRewardCommission) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSetCommission) Type() string {
-	return "SetCommission"
+func (msg *MsgSetStakingRewardCommission) Type() string {
+	return "SetStakingRewardCommission"
 }
 
-func (msg *MsgSetCommission) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetStakingRewardCommission) GetSigners() []sdk.AccAddress {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSetCommission) GetSignBytes() []byte {
+func (msg *MsgSetStakingRewardCommission) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSetCommission) ValidateBasic() error {
+func (msg *MsgSetStakingRewardCommission) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
@@ -307,9 +308,10 @@ func (msg *MsgSetProtocolFeeReceiver) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetUnbondCommission(creator sdk.AccAddress, commission sdk.Dec) *MsgSetUnbondCommission {
+func NewMsgSetUnbondCommission(creator sdk.AccAddress, denom string, commission sdk.Dec) *MsgSetUnbondCommission {
 	return &MsgSetUnbondCommission{
 		Creator:    creator.String(),
+		Denom:      denom,
 		Commission: commission,
 	}
 }

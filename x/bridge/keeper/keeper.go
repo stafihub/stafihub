@@ -171,7 +171,7 @@ func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 	hashBts = append(hashBts, contentBts...)
 	hash := sha256.Sum256(hashBts)
 	bts := store.Get(types.ProposalStoreKey(chainId, depositNonce, hash))
-	if len(bts) == 0 {
+	if bts == nil {
 		return nil, false
 	}
 
@@ -185,7 +185,7 @@ func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 
 func (k Keeper) SetResourceIdType(ctx sdk.Context, resourceId [32]byte, idType types.ResourceIdType) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ResourceIdTypeStoreKey(resourceId), idType)
+	store.Set(types.ResourceIdTypeStoreKey(resourceId), idType[:])
 }
 
 func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.ResourceIdType {
@@ -194,7 +194,9 @@ func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.Re
 	if len(bts) == 0 {
 		return types.ResourceIdTypeForeign
 	}
-	return bts
+	var idType types.ResourceIdType
+	copy(idType[:], bts)
+	return idType
 }
 
 func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
@@ -207,10 +209,10 @@ func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
 
 		value := iterator.Value()
 		if len(value) == 0 {
-			value = []byte{0x00}
+			value = types.ResourceIdTypeForeign[:]
 		}
 
-		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key())+":"+fmt.Sprintf("%d", value[1]))
+		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key())+":"+fmt.Sprintf("%d", value[0]))
 	}
 	return chainIdList
 }

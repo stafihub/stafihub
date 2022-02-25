@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdSetThreshold() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-threshold [threshold]",
-		Short: "Set threshold",
+		Short: "Broadcast message set threshold",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argThreshold, err := strconv.ParseUint(args[0], 10, 64)

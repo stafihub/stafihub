@@ -13273,38 +13273,6 @@ paths:
           type: string
       tags:
         - Query
-  /stafihub/stafihub/ledger/getCommission:
-    get:
-      summary: Queries a list of getCommission items.
-      operationId: StafihubStafihubLedgerGetCommission
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              commission:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   '/stafihub/stafihub/ledger/getCurrentEraSnapshot/{denom}':
     get:
       summary: Queries a list of getCurrentEraSnapshot items.
@@ -13737,6 +13705,43 @@ paths:
           type: string
       tags:
         - Query
+  /stafihub/stafihub/ledger/getStakingRewardCommission:
+    get:
+      summary: Queries a list of getCommission items.
+      operationId: StafihubStafihubLedgerGetStakingRewardCommission
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              commission:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   '/stafihub/stafihub/ledger/getTotalExpectedActive/{denom}/{era}':
     get:
       summary: Queries a list of getTotalExpectedActive items.
@@ -13809,6 +13814,11 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: denom
+          in: query
+          required: false
+          type: string
       tags:
         - Query
   '/stafihub/stafihub/ledger/getUnbondFee/{denom}':
@@ -22255,8 +22265,6 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetChainBondingDurationResponse:
     type: object
-  stafihub.stafihub.ledger.MsgSetCommissionResponse:
-    type: object
   stafihub.stafihub.ledger.MsgSetEraUnbondLimitResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetInitBondResponse:
@@ -22272,6 +22280,8 @@ definitions:
   stafihub.stafihub.ledger.MsgSetRValidatorIndicatorResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRelayFeeReceiverResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgSetStakingRewardCommissionResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetUnbondCommissionResponse:
     type: object
@@ -22439,11 +22449,6 @@ definitions:
       era:
         type: integer
         format: int64
-  stafihub.stafihub.ledger.QueryGetCommissionResponse:
-    type: object
-    properties:
-      commission:
-        type: string
   stafihub.stafihub.ledger.QueryGetCurrentEraSnapshotResponse:
     type: object
     properties:
@@ -22630,6 +22635,11 @@ definitions:
               - WITHDRAW_REPORTED
               - TRANSFER_REPORTED
             default: ERA_UPDATED
+  stafihub.stafihub.ledger.QueryGetStakingRewardCommissionResponse:
+    type: object
+    properties:
+      commission:
+        type: string
   stafihub.stafihub.ledger.QueryGetTotalExpectedActiveResponse:
     type: object
     properties:

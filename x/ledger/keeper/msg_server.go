@@ -55,7 +55,10 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		pipe = types.NewBondPipeline(denom, msg.Pool)
 	}
 
-	cms := k.Keeper.GetUnbondCommission(ctx)
+	cms, found := k.Keeper.GetUnbondCommission(ctx, denom)
+	if !found {
+		return nil, types.ErrNoUnbondCommisson
+	}
 	cmsFee := cms.MulInt(msg.Value.Amount).TruncateInt()
 	leftValue := msg.Value.SubAmount(cmsFee)
 	balance := k.RtokenToToken(ctx, leftValue.Denom, leftValue.Amount)

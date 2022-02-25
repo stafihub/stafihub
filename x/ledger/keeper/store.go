@@ -256,17 +256,20 @@ func (k Keeper) GetChainEra(ctx sdk.Context, denom string) (val types.ChainEra, 
 	return val, true
 }
 
-func (k Keeper) SetCommission(ctx sdk.Context, commission sdk.Dec) {
+func (k Keeper) SetStakingRewardCommission(ctx sdk.Context, denom string, commission sdk.Dec) {
 	store := ctx.KVStore(k.storeKey)
-	b, _ := commission.Marshal()
-	store.Set(types.CommissionPrefix, b)
+	b, err := commission.Marshal()
+	if err != nil {
+		panic(err)
+	}
+	store.Set(types.StakingRewardCommissionStoreKey(denom), b)
 }
 
-func (k Keeper) Commission(ctx sdk.Context) sdk.Dec {
+func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) (sdk.Dec, bool) {
 	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.CommissionPrefix)
+	b := store.Get(types.StakingRewardCommissionStoreKey(denom))
 	if b == nil {
-		return sdk.ZeroDec()
+		return sdk.ZeroDec(), false
 	}
 
 	var val sdk.Dec
@@ -274,7 +277,7 @@ func (k Keeper) Commission(ctx sdk.Context) sdk.Dec {
 		panic(err)
 	}
 
-	return val
+	return val, true
 }
 
 func (k Keeper) SetProtocolFeeReceiver(ctx sdk.Context, receiver sdk.AccAddress) {
@@ -381,27 +384,26 @@ func (k Keeper) GetUnbondFee(ctx sdk.Context, denom string) (val types.UnbondFee
 	return val, true
 }
 
-func (k Keeper) SetUnbondCommission(ctx sdk.Context, value sdk.Dec) {
+func (k Keeper) SetUnbondCommission(ctx sdk.Context, denom string, value sdk.Dec) {
 	store := ctx.KVStore(k.storeKey)
 	b, err := value.Marshal()
 	if err != nil {
 		panic(err)
 	}
-	store.Set(types.UnbondCommissionPrefix, b)
+	store.Set(types.UnbondCommissionStoreKey(denom), b)
 }
 
-func (k Keeper) GetUnbondCommission(ctx sdk.Context) (val sdk.Dec) {
+func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) (sdk.Dec, bool) {
 	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.UnbondCommissionPrefix)
+	b := store.Get(types.UnbondCommissionStoreKey(denom))
 	if b == nil {
-		return sdk.ZeroDec()
+		return sdk.ZeroDec(), false
 	}
-
+	var val sdk.Dec
 	if err := val.Unmarshal(b); err != nil {
 		panic(err)
 	}
-
-	return
+	return val, true
 }
 
 func (k Keeper) SetAccountUnbond(ctx sdk.Context, unbond types.AccountUnbond) {

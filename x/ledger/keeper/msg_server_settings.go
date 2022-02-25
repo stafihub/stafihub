@@ -130,15 +130,15 @@ func (k msgServer) ClearCurrentEraSnapShots(goCtx context.Context, msg *types.Ms
 	return &types.MsgClearCurrentEraSnapShotsResponse{}, nil
 }
 
-func (k msgServer) SetCommission(goCtx context.Context, msg *types.MsgSetCommission) (*types.MsgSetCommissionResponse, error) {
+func (k msgServer) SetStakingRewardCommission(goCtx context.Context, msg *types.MsgSetStakingRewardCommission) (*types.MsgSetStakingRewardCommissionResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.SetCommission(ctx, msg.Commission)
-	return &types.MsgSetCommissionResponse{}, nil
+	k.Keeper.SetStakingRewardCommission(ctx, msg.Denom, msg.Commission)
+	return &types.MsgSetStakingRewardCommissionResponse{}, nil
 }
 
 func (k msgServer) SetProtocolFeeReceiver(goCtx context.Context, msg *types.MsgSetProtocolFeeReceiver) (*types.MsgSetProtocolFeeReceiverResponse, error) {
@@ -183,7 +183,7 @@ func (k msgServer) SetUnbondCommission(goCtx context.Context, msg *types.MsgSetU
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.SetUnbondCommission(ctx, msg.Commission)
+	k.Keeper.SetUnbondCommission(ctx, msg.Denom, msg.Commission)
 
 	return &types.MsgSetUnbondCommissionResponse{}, nil
 }

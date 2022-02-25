@@ -227,13 +227,14 @@ func CmdClearCurrentEraSnapShots() *cobra.Command {
 	return cmd
 }
 
-func CmdSetCommission() *cobra.Command {
+func CmdSetStakingRewardCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-commission [rate]",
-		Short: "Broadcast message set_commission",
-		Args:  cobra.ExactArgs(1),
+		Use:   "set-staking-reward-commission [denom] [rate]",
+		Short: "Broadcast message set staking reward commission",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argCommission, err := sdk.NewDecFromStr(args[0])
+			argDenom := args[0]
+			argCommission, err := sdk.NewDecFromStr(args[1])
 			if err != nil {
 				return err
 			}
@@ -243,8 +244,9 @@ func CmdSetCommission() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetCommission(
+			msg := types.NewMsgSetStakingRewardCommission(
 				clientCtx.GetFromAddress(),
+				argDenom,
 				argCommission,
 			)
 			if err := msg.ValidateBasic(); err != nil {
@@ -259,7 +261,7 @@ func CmdSetCommission() *cobra.Command {
 	return cmd
 }
 
-func CmdSetReceiver() *cobra.Command {
+func CmdSetProtocolFeeReceiver() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-protocol-fee-receiver [receiver]",
 		Short: "Broadcast message set_receiver",
@@ -327,11 +329,12 @@ func CmdSetUnbondFee() *cobra.Command {
 
 func CmdSetUnbondCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-unbond-commission [commission]",
+		Use:   "set-unbond-commission [denom] [commission]",
 		Short: "Broadcast message set_unbond_commission",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argCommission, err := sdk.NewDecFromStr(args[0])
+			argDenom := args[0]
+			argCommission, err := sdk.NewDecFromStr(args[1])
 			if err != nil {
 				return err
 			}
@@ -343,6 +346,7 @@ func CmdSetUnbondCommission() *cobra.Command {
 
 			msg := types.NewMsgSetUnbondCommission(
 				clientCtx.GetFromAddress(),
+				argDenom,
 				argCommission,
 			)
 			if err := msg.ValidateBasic(); err != nil {
@@ -360,7 +364,7 @@ func CmdSetUnbondCommission() *cobra.Command {
 func CmdSetRParams() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-r-params [denom] [chain-id] [native-denom] [gas-price] [era-seconds] [least-bond] [validators]",
-		Short: "set common params of relayers",
+		Short: "Broadcast message set common params of relayers",
 		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]

@@ -57,8 +57,8 @@ service Query {
 	}
 
 // Queries a list of getCommission items.
-	rpc GetCommission(QueryGetCommissionRequest) returns (QueryGetCommissionResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getCommission";
+	rpc GetStakingRewardCommission(QueryGetStakingRewardCommissionRequest) returns (QueryGetStakingRewardCommissionResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getStakingRewardCommission";
 	}
 
 // Queries a list of getChainBondingDuration items.
@@ -216,10 +216,11 @@ message QueryGetProtocolFeeReceiverResponse {
   string receiver = 1;
 }
 
-message QueryGetCommissionRequest {
+message QueryGetStakingRewardCommissionRequest {
+	string denom = 1;
 }
 
-message QueryGetCommissionResponse {
+message QueryGetStakingRewardCommissionResponse {
   string commission = 1;
 }
 
@@ -240,6 +241,7 @@ message QueryGetUnbondFeeResponse {
 }
 
 message QueryGetUnbondCommissionRequest {
+	string denom = 1;
 }
 
 message QueryGetUnbondCommissionResponse {

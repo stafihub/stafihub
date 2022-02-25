@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdAddRelayer() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-relayer [address]",
-		Short: "Add relayer",
+		Short: "Broadcast message add relayer",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argAddress := args[0]

@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdAddChainId() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-chain-id [chain-id]",
-		Short: "Add supported chain id",
+		Short: "Broadcast message add supported chain id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argChainId, err := strconv.ParseUint(args[0], 10, 64)

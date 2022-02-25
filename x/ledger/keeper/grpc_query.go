@@ -96,15 +96,18 @@ func (q Querier) GetProtocolFeeReceiver(goCtx context.Context, req *types.QueryG
 	return &types.QueryGetProtocolFeeReceiverResponse{Receiver: rec.String()}, nil
 }
 
-func (q Querier) GetCommission(goCtx context.Context, req *types.QueryGetCommissionRequest) (*types.QueryGetCommissionResponse, error) {
+func (q Querier) GetStakingRewardCommission(goCtx context.Context, req *types.QueryGetStakingRewardCommissionRequest) (*types.QueryGetStakingRewardCommissionResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	cms := q.Keeper.Commission(ctx)
+	cms, found := q.Keeper.GetStakingRewardCommission(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
+	}
 
-	return &types.QueryGetCommissionResponse{Commission: cms.String()}, nil
+	return &types.QueryGetStakingRewardCommissionResponse{Commission: cms.String()}, nil
 }
 
 func (q Querier) GetUnbondFee(goCtx context.Context, req *types.QueryGetUnbondFeeRequest) (*types.QueryGetUnbondFeeResponse, error) {
@@ -127,7 +130,10 @@ func (q Querier) GetUnbondCommission(goCtx context.Context, req *types.QueryGetU
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	cms := q.Keeper.GetUnbondCommission(ctx)
+	cms, found := q.Keeper.GetUnbondCommission(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
+	}
 
 	return &types.QueryGetUnbondCommissionResponse{Commission: cms.String()}, nil
 }

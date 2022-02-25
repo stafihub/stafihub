@@ -32,8 +32,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetPoolDetail())
 	cmd.AddCommand(CmdGetChainEra())
 	cmd.AddCommand(CmdGetCurrentEraSnapshot())
-	cmd.AddCommand(CmdGetReceiver())
-	cmd.AddCommand(CmdGetCommission())
+	cmd.AddCommand(CmdGetProtocolFeeReceiver())
+	cmd.AddCommand(CmdGetStakingRewardCommission())
 	cmd.AddCommand(CmdGetChainBondingDuration())
 	cmd.AddCommand(CmdGetUnbondFee())
 	cmd.AddCommand(CmdGetUnbondCommission())
@@ -194,7 +194,7 @@ func CmdGetCurrentEraSnapshot() *cobra.Command {
 	return cmd
 }
 
-func CmdGetReceiver() *cobra.Command {
+func CmdGetProtocolFeeReceiver() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "protocol-fee-receiver",
 		Short: "Query protocol fee receiver",
@@ -224,10 +224,10 @@ func CmdGetReceiver() *cobra.Command {
 	return cmd
 }
 
-func CmdGetCommission() *cobra.Command {
+func CmdGetStakingRewardCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "commission",
-		Short: "Query getCommission",
+		Use:   "staking-reward-commission",
+		Short: "Query staking reward commission",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -237,9 +237,9 @@ func CmdGetCommission() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetCommissionRequest{}
+			params := &types.QueryGetStakingRewardCommissionRequest{}
 
-			res, err := queryClient.GetCommission(cmd.Context(), params)
+			res, err := queryClient.GetStakingRewardCommission(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

@@ -34,11 +34,11 @@ var (
 	ThresholdStoreKey = []byte("thresholdStoreKey")
 )
 
-type ResourceIdType []byte
+type ResourceIdType [1]byte
 
 var (
-	ResourceIdTypeForeign = ResourceIdType([]byte{0x00})
-	ResourceIdTypeNative  = ResourceIdType([]byte{0x01})
+	ResourceIdTypeForeign = ResourceIdType([1]byte{0x00})
+	ResourceIdTypeNative  = ResourceIdType([1]byte{0x01})
 )
 
 func KeyPrefix(p string) []byte {

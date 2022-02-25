@@ -15,7 +15,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetPoolDetail{}, "ledger/SetPoolDetail", nil)
 	cdc.RegisterConcrete(&MsgSetLeastBond{}, "ledger/SetLeastBond", nil)
 	cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
-	cdc.RegisterConcrete(&MsgSetCommission{}, "ledger/SetCommission", nil)
+	cdc.RegisterConcrete(&MsgSetStakingRewardCommission{}, "ledger/SetStakingRewardCommission", nil)
 	cdc.RegisterConcrete(&MsgSetProtocolFeeReceiver{}, "ledger/SetProtocolFeeReceiver", nil)
 	cdc.RegisterConcrete(&MsgSetUnbondFee{}, "ledger/SetUnbondFee", nil)
 	cdc.RegisterConcrete(&MsgLiquidityUnbond{}, "ledger/LiquidityUnbond", nil)
@@ -45,7 +45,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgSetPoolDetail{},
 		&MsgSetLeastBond{},
 		&MsgClearCurrentEraSnapShots{},
-		&MsgSetCommission{},
+		&MsgSetStakingRewardCommission{},
 		&MsgSetProtocolFeeReceiver{},
 	)
 

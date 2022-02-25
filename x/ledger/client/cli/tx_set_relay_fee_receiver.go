@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdSetRelayFeeReceiver() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-relay-fee-receiver [receiver]",
-		Short: "Set relay fee receiver",
+		Short: "Broadcast message set relay fee receiver",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argReceiver := args[0]

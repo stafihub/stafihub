@@ -15,7 +15,7 @@ service Msg {
   rpc SetPoolDetail(MsgSetPoolDetail) returns (MsgSetPoolDetailResponse);
   rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
-  rpc SetCommission(MsgSetCommission) returns (MsgSetCommissionResponse);
+  rpc SetStakingRewardCommission(MsgSetStakingRewardCommission) returns (MsgSetStakingRewardCommissionResponse);
   rpc SetProtocolFeeReceiver(MsgSetProtocolFeeReceiver) returns (MsgSetProtocolFeeReceiverResponse);
   rpc SetUnbondFee(MsgSetUnbondFee) returns (MsgSetUnbondFeeResponse);
   rpc LiquidityUnbond(MsgLiquidityUnbond) returns (MsgLiquidityUnbondResponse);
@@ -84,12 +84,13 @@ message MsgClearCurrentEraSnapShots {
 message MsgClearCurrentEraSnapShotsResponse {
 }
 
-message MsgSetCommission {
+message MsgSetStakingRewardCommission {
   string creator = 1;
-  string commission = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+  string denom = 2;
+  string commission = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
 }
 
-message MsgSetCommissionResponse {
+message MsgSetStakingRewardCommissionResponse {
 }
 
 message MsgSetProtocolFeeReceiver {
@@ -121,7 +122,8 @@ message MsgLiquidityUnbondResponse {
 
 message MsgSetUnbondCommission {
   string creator = 1;
-  string commission = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+  string denom = 2;
+  string commission = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
 }
 
 message MsgSetUnbondCommissionResponse {

@@ -15,7 +15,7 @@ var _ = strconv.Itoa(0)
 func CmdSetResourceidToDenom() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-resourceid-to-denom [resource-id] [denom]",
-		Short: "Set resourceid to denom",
+		Short: "Broadcast message set resourceid to denom",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argResourceId := args[0]

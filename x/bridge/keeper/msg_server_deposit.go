@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"bytes"
 	"context"
 	"encoding/hex"
 	"fmt"
@@ -46,7 +45,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, err
 	}
 
-	if bytes.Equal(resourceIdType, types.ResourceIdTypeForeign) {
+	if resourceIdType == types.ResourceIdTypeForeign {
 		err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, shouldBurnedOrLockedCoins)
 		if err != nil {
 			return nil, err

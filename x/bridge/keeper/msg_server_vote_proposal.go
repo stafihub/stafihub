@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"bytes"
 	"context"
 	"encoding/hex"
 
@@ -58,7 +57,7 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 	}
 	if len(proposal.Voters) >= int(threshold) {
 		idType := k.Keeper.GetResourceIdType(ctx, resourceId)
-		if bytes.Equal(idType, types.ResourceIdTypeForeign) {
+		if idType == types.ResourceIdTypeForeign {
 			err := k.bankKeeper.MintCoins(ctx, types.ModuleName, shouldMintOrUnlockCoins)
 			if err != nil {
 				return nil, err
