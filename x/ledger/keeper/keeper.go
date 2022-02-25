@@ -191,7 +191,7 @@ func (k Keeper) GetTotalProtocolFee(ctx sdk.Context, denom string) (val types.To
 	return val, true
 }
 
-func (k Keeper) GetAllTotalFee(ctx sdk.Context) (list []types.TotalProtocolFee) {
+func (k Keeper) GetAllTotalProtocolFee(ctx sdk.Context) (list []types.TotalProtocolFee) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalProtocolFeePrefix)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 	defer iterator.Close()

@@ -13821,10 +13821,10 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getUnbondFee/{denom}':
+  '/stafihub/stafihub/ledger/getUnbondRelayFee/{denom}':
     get:
       summary: Queries a list of getUnbondFee items.
-      operationId: StafihubStafihubLedgerGetUnbondFee
+      operationId: StafihubStafihubLedgerGetUnbondRelayFee
       responses:
         '200':
           description: A successful response.
@@ -22285,7 +22285,7 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetUnbondCommissionResponse:
     type: object
-  stafihub.stafihub.ledger.MsgSetUnbondFeeResponse:
+  stafihub.stafihub.ledger.MsgSetUnbondRelayFeeResponse:
     type: object
   stafihub.stafihub.ledger.MsgSubmitSignatureResponse:
     type: object
@@ -22650,7 +22650,7 @@ definitions:
     properties:
       commission:
         type: string
-  stafihub.stafihub.ledger.QueryGetUnbondFeeResponse:
+  stafihub.stafihub.ledger.QueryGetUnbondRelayFeeResponse:
     type: object
     properties:
       fee:
@@ -22731,7 +22731,7 @@ definitions:
         type: string
       value:
         type: string
-  stafihub.stafihub.ledger.UnbondFee:
+  stafihub.stafihub.ledger.UnbondRelayFee:
     type: object
     properties:
       denom:

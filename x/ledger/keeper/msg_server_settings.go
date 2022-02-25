@@ -157,7 +157,7 @@ func (k msgServer) SetProtocolFeeReceiver(goCtx context.Context, msg *types.MsgS
 	return &types.MsgSetProtocolFeeReceiverResponse{}, nil
 }
 
-func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFee) (*types.MsgSetUnbondFeeResponse, error) {
+func (k msgServer) SetUnbondRelayFee(goCtx context.Context, msg *types.MsgSetUnbondRelayFee) (*types.MsgSetUnbondRelayFeeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -172,8 +172,8 @@ func (k msgServer) SetUnbondFee(goCtx context.Context, msg *types.MsgSetUnbondFe
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	k.Keeper.SetUnbondFee(ctx, msg.Denom, msg.Value)
-	return &types.MsgSetUnbondFeeResponse{}, nil
+	k.Keeper.SetUnbondRelayFee(ctx, msg.Denom, msg.Value)
+	return &types.MsgSetUnbondRelayFeeResponse{}, nil
 }
 
 func (k msgServer) SetUnbondCommission(goCtx context.Context, msg *types.MsgSetUnbondCommission) (*types.MsgSetUnbondCommissionResponse, error) {

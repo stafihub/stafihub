@@ -35,7 +35,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetProtocolFeeReceiver())
 	cmd.AddCommand(CmdGetStakingRewardCommission())
 	cmd.AddCommand(CmdGetChainBondingDuration())
-	cmd.AddCommand(CmdGetUnbondFee())
+	cmd.AddCommand(CmdGetUnbondRelayFee())
 	cmd.AddCommand(CmdGetUnbondCommission())
 	cmd.AddCommand(CmdGetLeastBond())
 	cmd.AddCommand(CmdGetEraUnbondLimit())
@@ -286,10 +286,10 @@ func CmdGetChainBondingDuration() *cobra.Command {
 	return cmd
 }
 
-func CmdGetUnbondFee() *cobra.Command {
+func CmdGetUnbondRelayFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "unbond-fee [denom]",
-		Short: "Query getUnbondFee",
+		Use:   "unbond-relay-fee [denom]",
+		Short: "Query getUnbondRelayFee",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
@@ -301,11 +301,11 @@ func CmdGetUnbondFee() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetUnbondFeeRequest{
+			params := &types.QueryGetUnbondRelayFeeRequest{
 				Denom: reqDenom,
 			}
 
-			res, err := queryClient.GetUnbondFee(cmd.Context(), params)
+			res, err := queryClient.GetUnbondRelayFee(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

@@ -17,7 +17,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
 	cdc.RegisterConcrete(&MsgSetStakingRewardCommission{}, "ledger/SetStakingRewardCommission", nil)
 	cdc.RegisterConcrete(&MsgSetProtocolFeeReceiver{}, "ledger/SetProtocolFeeReceiver", nil)
-	cdc.RegisterConcrete(&MsgSetUnbondFee{}, "ledger/SetUnbondFee", nil)
+	cdc.RegisterConcrete(&MsgSetUnbondRelayFee{}, "ledger/SetUnbondRelayFee", nil)
 	cdc.RegisterConcrete(&MsgLiquidityUnbond{}, "ledger/LiquidityUnbond", nil)
 	cdc.RegisterConcrete(&MsgSetUnbondCommission{}, "ledger/SetUnbondCommission", nil)
 

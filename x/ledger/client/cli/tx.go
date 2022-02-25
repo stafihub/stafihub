@@ -42,7 +42,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdClearCurrentEraSnapShots())
 	cmd.AddCommand(CmdSetStakingRewardCommission())
 	cmd.AddCommand(CmdSetProtocolFeeReceiver())
-	cmd.AddCommand(CmdSetUnbondFee())
+	cmd.AddCommand(CmdSetUnbondRelayFee())
 	cmd.AddCommand(CmdSetUnbondCommission())
 	cmd.AddCommand(CmdSetChainEra())
 	cmd.AddCommand(CmdActiveReport())

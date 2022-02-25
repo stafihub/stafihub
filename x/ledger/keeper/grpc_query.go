@@ -102,26 +102,20 @@ func (q Querier) GetStakingRewardCommission(goCtx context.Context, req *types.Qu
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	cms, found := q.Keeper.GetStakingRewardCommission(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
+	cms := q.Keeper.GetStakingRewardCommission(ctx, req.Denom)
 
 	return &types.QueryGetStakingRewardCommissionResponse{Commission: cms.String()}, nil
 }
 
-func (q Querier) GetUnbondFee(goCtx context.Context, req *types.QueryGetUnbondFeeRequest) (*types.QueryGetUnbondFeeResponse, error) {
+func (q Querier) GetUnbondRelayFee(goCtx context.Context, req *types.QueryGetUnbondRelayFeeRequest) (*types.QueryGetUnbondRelayFeeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	fee, found := q.Keeper.GetUnbondFee(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
+	fee := q.Keeper.GetUnbondRelayFee(ctx, req.Denom)
 
-	return &types.QueryGetUnbondFeeResponse{Fee: fee}, nil
+	return &types.QueryGetUnbondRelayFeeResponse{Fee: fee}, nil
 }
 
 func (q Querier) GetUnbondCommission(goCtx context.Context, req *types.QueryGetUnbondCommissionRequest) (*types.QueryGetUnbondCommissionResponse, error) {
@@ -130,10 +124,7 @@ func (q Querier) GetUnbondCommission(goCtx context.Context, req *types.QueryGetU
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	cms, found := q.Keeper.GetUnbondCommission(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
+	cms := q.Keeper.GetUnbondCommission(ctx, req.Denom)
 
 	return &types.QueryGetUnbondCommissionResponse{Commission: cms.String()}, nil
 }

@@ -17,7 +17,7 @@ var (
 	_ sdk.Msg = &MsgSetProtocolFeeReceiver{}
 	_ sdk.Msg = &MsgSetUnbondCommission{}
 	_ sdk.Msg = &MsgLiquidityUnbond{}
-	_ sdk.Msg = &MsgSetUnbondFee{}
+	_ sdk.Msg = &MsgSetUnbondRelayFee{}
 	_ sdk.Msg = &MsgSubmitSignature{}
 	_ sdk.Msg = &MsgSetRParams{}
 )
@@ -388,33 +388,33 @@ func (msg *MsgLiquidityUnbond) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetUnbondFee(creator sdk.AccAddress, denom string, value sdk.Coin) *MsgSetUnbondFee {
-	return &MsgSetUnbondFee{
+func NewMsgSetUnbondRelayFee(creator sdk.AccAddress, denom string, value sdk.Coin) *MsgSetUnbondRelayFee {
+	return &MsgSetUnbondRelayFee{
 		Creator: creator.String(),
 		Denom:   denom,
 		Value:   value,
 	}
 }
 
-func (msg *MsgSetUnbondFee) Route() string {
+func (msg *MsgSetUnbondRelayFee) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSetUnbondFee) Type() string {
-	return "SetUnbondFee"
+func (msg *MsgSetUnbondRelayFee) Type() string {
+	return "SetUnbondRelayFee"
 }
 
-func (msg *MsgSetUnbondFee) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetUnbondRelayFee) GetSigners() []sdk.AccAddress {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSetUnbondFee) GetSignBytes() []byte {
+func (msg *MsgSetUnbondRelayFee) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSetUnbondFee) ValidateBasic() error {
+func (msg *MsgSetUnbondRelayFee) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}

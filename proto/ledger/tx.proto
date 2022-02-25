@@ -17,7 +17,7 @@ service Msg {
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
   rpc SetStakingRewardCommission(MsgSetStakingRewardCommission) returns (MsgSetStakingRewardCommissionResponse);
   rpc SetProtocolFeeReceiver(MsgSetProtocolFeeReceiver) returns (MsgSetProtocolFeeReceiverResponse);
-  rpc SetUnbondFee(MsgSetUnbondFee) returns (MsgSetUnbondFeeResponse);
+  rpc SetUnbondRelayFee(MsgSetUnbondRelayFee) returns (MsgSetUnbondRelayFeeResponse);
   rpc LiquidityUnbond(MsgLiquidityUnbond) returns (MsgLiquidityUnbondResponse);
   rpc SetUnbondCommission(MsgSetUnbondCommission) returns (MsgSetUnbondCommissionResponse);
   rpc SubmitSignature(MsgSubmitSignature) returns (MsgSubmitSignatureResponse);
@@ -101,13 +101,13 @@ message MsgSetProtocolFeeReceiver {
 message MsgSetProtocolFeeReceiverResponse {
 }
 
-message MsgSetUnbondFee {
+message MsgSetUnbondRelayFee {
   string creator = 1;
   string denom = 2;
   string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
-message MsgSetUnbondFeeResponse {
+message MsgSetUnbondRelayFeeResponse {
 }
 
 message MsgLiquidityUnbond {

@@ -41,8 +41,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetProtocolFeeReceiver:
 			res, err := msgServer.SetProtocolFeeReceiver(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetUnbondFee:
-			res, err := msgServer.SetUnbondFee(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetUnbondRelayFee:
+			res, err := msgServer.SetUnbondRelayFee(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgLiquidityUnbond:
 			res, err := msgServer.LiquidityUnbond(sdk.WrapSDKContext(ctx), msg)

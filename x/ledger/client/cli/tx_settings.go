@@ -293,9 +293,9 @@ func CmdSetProtocolFeeReceiver() *cobra.Command {
 	return cmd
 }
 
-func CmdSetUnbondFee() *cobra.Command {
+func CmdSetUnbondRelayFee() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-unbond-fee [denom] [value]",
+		Use:   "set-unbond-relay-fee [denom] [value]",
 		Short: "Broadcast message set_unbond_fee",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -310,7 +310,7 @@ func CmdSetUnbondFee() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetUnbondFee(
+			msg := types.NewMsgSetUnbondRelayFee(
 				clientCtx.GetFromAddress(),
 				argDenom,
 				argValue,

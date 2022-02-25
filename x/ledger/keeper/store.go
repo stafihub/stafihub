@@ -8,6 +8,12 @@ import (
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
+var (
+	defaultStakingRewardCommission = sdk.MustNewDecFromStr("0.1")
+	defaultUnbondCommission        = sdk.MustNewDecFromStr("0.002")
+	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.NewIntFromUint64(1000000))
+)
+
 func (k Keeper) IsBondedPoolExist(ctx sdk.Context, denom string, addr string) bool {
 	pool, ok := k.GetBondedPool(ctx, denom)
 	if !ok {
@@ -265,11 +271,11 @@ func (k Keeper) SetStakingRewardCommission(ctx sdk.Context, denom string, commis
 	store.Set(types.StakingRewardCommissionStoreKey(denom), b)
 }
 
-func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) (sdk.Dec, bool) {
+func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) sdk.Dec {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.StakingRewardCommissionStoreKey(denom))
 	if b == nil {
-		return sdk.ZeroDec(), false
+		return defaultStakingRewardCommission
 	}
 
 	var val sdk.Dec
@@ -277,7 +283,7 @@ func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) (sdk.D
 		panic(err)
 	}
 
-	return val, true
+	return val
 }
 
 func (k Keeper) SetProtocolFeeReceiver(ctx sdk.Context, receiver sdk.AccAddress) {
@@ -362,9 +368,9 @@ func (k Keeper) GetPoolUnbond(ctx sdk.Context, denom string, pool string, era ui
 	return val, true
 }
 
-func (k Keeper) SetUnbondFee(ctx sdk.Context, denom string, value sdk.Coin) {
+func (k Keeper) SetUnbondRelayFee(ctx sdk.Context, denom string, value sdk.Coin) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UnbondFeePrefix)
-	uf := types.UnbondFee{
+	uf := types.UnbondRelayFee{
 		Denom: denom,
 		Value: value,
 	}
@@ -373,15 +379,17 @@ func (k Keeper) SetUnbondFee(ctx sdk.Context, denom string, value sdk.Coin) {
 	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) GetUnbondFee(ctx sdk.Context, denom string) (val types.UnbondFee, found bool) {
+func (k Keeper) GetUnbondRelayFee(ctx sdk.Context, denom string) (val types.UnbondRelayFee) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UnbondFeePrefix)
 	b := store.Get([]byte(denom))
 	if b == nil {
-		return val, false
+		val.Denom = denom
+		val.Value = defaultUnbondFee
+		return
 	}
 
 	k.cdc.MustUnmarshal(b, &val)
-	return val, true
+	return val
 }
 
 func (k Keeper) SetUnbondCommission(ctx sdk.Context, denom string, value sdk.Dec) {
@@ -393,17 +401,17 @@ func (k Keeper) SetUnbondCommission(ctx sdk.Context, denom string, value sdk.Dec
 	store.Set(types.UnbondCommissionStoreKey(denom), b)
 }
 
-func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) (sdk.Dec, bool) {
+func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) sdk.Dec {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.UnbondCommissionStoreKey(denom))
 	if b == nil {
-		return sdk.ZeroDec(), false
+		return defaultUnbondCommission
 	}
 	var val sdk.Dec
 	if err := val.Unmarshal(b); err != nil {
 		panic(err)
 	}
-	return val, true
+	return val
 }
 
 func (k Keeper) SetAccountUnbond(ctx sdk.Context, unbond types.AccountUnbond) {

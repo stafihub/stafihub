@@ -55,10 +55,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		pipe = types.NewBondPipeline(denom, msg.Pool)
 	}
 
-	cms, found := k.Keeper.GetUnbondCommission(ctx, denom)
-	if !found {
-		return nil, types.ErrNoUnbondCommisson
-	}
+	cms := k.Keeper.GetUnbondCommission(ctx, denom)
 	cmsFee := cms.MulInt(msg.Value.Amount).TruncateInt()
 	leftValue := msg.Value.SubAmount(cmsFee)
 	balance := k.RtokenToToken(ctx, leftValue.Denom, leftValue.Amount)
@@ -89,8 +86,8 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		poolUnbonds.Unbondings = append(poolUnbonds.Unbondings, unbonding)
 	}
 
-	unbondFee, ok := k.Keeper.GetUnbondFee(ctx, denom)
-	if ok && unbondFee.Value.IsPositive() {
+	unbondFee := k.Keeper.GetUnbondRelayFee(ctx, denom)
+	if unbondFee.Value.IsPositive() {
 		feeBal := k.bankKeeper.GetBalance(ctx, unbonder, unbondFee.Value.Denom)
 		if feeBal.IsLT(unbondFee.Value) {
 			return nil, sdkerrors.ErrInsufficientFunds
@@ -101,7 +98,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		}
 	}
 
-	if cmsFee.LT(sdk.ZeroInt()) {
+	if cmsFee.GT(sdk.ZeroInt()) {
 		cmsFeeCoin := sdk.NewCoin(denom, cmsFee)
 		if err := k.bankKeeper.SendCoins(ctx, unbonder, protocolFeeReceiver, sdk.Coins{cmsFeeCoin}); err != nil {
 			panic(err)

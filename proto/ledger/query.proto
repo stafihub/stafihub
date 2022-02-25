@@ -67,8 +67,8 @@ service Query {
 	}
 
 // Queries a list of getUnbondFee items.
-	rpc GetUnbondFee(QueryGetUnbondFeeRequest) returns (QueryGetUnbondFeeResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondFee/{denom}";
+	rpc GetUnbondRelayFee(QueryGetUnbondRelayFeeRequest) returns (QueryGetUnbondRelayFeeResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondRelayFee/{denom}";
 	}
 
 // Queries a list of getUnbondCommission items.
@@ -232,12 +232,12 @@ message QueryGetChainBondingDurationResponse {
   uint32 era = 1;
 }
 
-message QueryGetUnbondFeeRequest {
+message QueryGetUnbondRelayFeeRequest {
    string denom = 1;
 }
 
-message QueryGetUnbondFeeResponse {
-  UnbondFee fee = 1 [(gogoproto.nullable) = false];
+message QueryGetUnbondRelayFeeResponse {
+  UnbondRelayFee fee = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetUnbondCommissionRequest {

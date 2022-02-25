@@ -17,6 +17,6 @@ func (k Keeper) TotalProtocolFee(goCtx context.Context, req *types.QueryTotalPro
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryTotalProtocolFeeResponse{
-		TotalProtocolFeeList: k.GetAllTotalFee(ctx),
+		TotalProtocolFeeList: k.GetAllTotalProtocolFee(ctx),
 	}, nil
 }
