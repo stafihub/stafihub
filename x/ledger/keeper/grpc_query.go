@@ -149,10 +149,7 @@ func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEra
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	eul, found := q.Keeper.GetEraUnbondLimit(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
+	eul := q.Keeper.GetEraUnbondLimit(ctx, req.Denom)
 
 	return &types.QueryGetEraUnbondLimitResponse{Limit: eul.Limit}, nil
 }

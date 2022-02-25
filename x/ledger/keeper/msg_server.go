@@ -79,7 +79,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	if !ok {
 		poolUnbonds = types.NewPoolUnbond(denom, msg.Pool, unlockEra, []types.Unbonding{unbonding})
 	} else {
-		eul, _ := k.Keeper.GetEraUnbondLimit(ctx, denom)
+		eul := k.Keeper.GetEraUnbondLimit(ctx, denom)
 		if uint32(len(poolUnbonds.Unbondings)) > eul.Limit {
 			return nil, types.ErrPoolLimitReached
 		}

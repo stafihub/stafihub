@@ -12,6 +12,7 @@ var (
 	defaultStakingRewardCommission = sdk.MustNewDecFromStr("0.1")
 	defaultUnbondCommission        = sdk.MustNewDecFromStr("0.002")
 	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.NewIntFromUint64(1000000))
+	defaultEraUnbondLimit          = uint32(200)
 )
 
 func (k Keeper) IsBondedPoolExist(ctx sdk.Context, denom string, addr string) bool {
@@ -95,14 +96,16 @@ func (k Keeper) SetEraUnbondLimit(ctx sdk.Context, denom string, limit uint32) {
 	store.Set([]byte(denom), b)
 }
 
-func (k Keeper) GetEraUnbondLimit(ctx sdk.Context, denom string) (val types.EraUnbondLimit, found bool) {
+func (k Keeper) GetEraUnbondLimit(ctx sdk.Context, denom string) (val types.EraUnbondLimit) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.EraUnbondLimitPrefix)
 	b := store.Get([]byte(denom))
 	if b == nil {
-		return val, false
+		val.Denom = denom
+		val.Limit = defaultEraUnbondLimit
+		return val
 	}
 	k.cdc.MustUnmarshal(b, &val)
-	return val, true
+	return val
 }
 
 func (k Keeper) SetChainBondingDuration(ctx sdk.Context, denom string, era uint32) {
