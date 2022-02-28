@@ -38,11 +38,17 @@ global settings:
 
 ```
 
-stafihubd tx ledger set-receiver stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-protocol-fee-receiver stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx ledger set-commission 0.1 --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-relay-fee-receiver stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
 
-## set fis metadata
+# default 0.1
+stafihubd tx ledger set-staking-reward-commission uratom 0.1 --from admin --chain-id local-stafihub --keyring-backend file
+
+# default 0.002
+stafihubd tx ledger set-unbond-commission uratom 0.002 --from admin --chain-id local-stafihub --keyring-backend file
+
+# set fis metadata
 stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
 ```
@@ -50,10 +56,11 @@ stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-
 add new denom setttings:
 
 ```
-## set rtoken metadata
+# set rtoken metadata
 stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
-stafihubd tx ledger set-unbond-fee ratom 100000fis --from admin --chain-id local-stafihub --keyring-backend file
+# default 1000000ufis
+stafihubd tx ledger set-unbond-relay-fee uratom 1000000ufis --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx ledger set-chain-bonding-duration uratom 2 --chain-id local-stafihub --from admin --keyring-backend file
 

@@ -226,10 +226,11 @@ func CmdGetProtocolFeeReceiver() *cobra.Command {
 
 func CmdGetStakingRewardCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "staking-reward-commission",
+		Use:   "staking-reward-commission [denom]",
 		Short: "Query staking reward commission",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -237,7 +238,9 @@ func CmdGetStakingRewardCommission() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetStakingRewardCommissionRequest{}
+			params := &types.QueryGetStakingRewardCommissionRequest{
+				Denom: args[0],
+			}
 
 			res, err := queryClient.GetStakingRewardCommission(cmd.Context(), params)
 			if err != nil {
@@ -321,9 +324,9 @@ func CmdGetUnbondRelayFee() *cobra.Command {
 
 func CmdGetUnbondCommission() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "unbond-commission",
+		Use:   "unbond-commission [denom]",
 		Short: "Query getUnbondCommission",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -331,7 +334,9 @@ func CmdGetUnbondCommission() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryGetUnbondCommissionRequest{}
+			params := &types.QueryGetUnbondCommissionRequest{
+				Denom: args[0],
+			}
 
 			res, err := queryClient.GetUnbondCommission(cmd.Context(), params)
 			if err != nil {
