@@ -198,7 +198,6 @@ func TestKeeper_Commission(t *testing.T) {
 	require.Equal(t, dec, cms)
 }
 
-
 func TestKeeper_SetTotalExpectedActive(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
@@ -274,7 +273,6 @@ func TestKeeper_SetAccountUnbond(t *testing.T) {
 	require.True(t, found)
 	require.Equal(t, au1, au)
 }
-
 
 func TestKeeper_SetSignature(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)

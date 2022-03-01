@@ -12781,6 +12781,40 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/bridge/resourceid_to_denoms:
+    get:
+      summary: Queries a list of ResourceidToDenoms items.
+      operationId: StafihubStafihubBridgeResourceidToDenoms
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              resourceidToDenoms:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/bridge/threshold:
     get:
       summary: Queries a list of Threshold items.
@@ -22135,6 +22169,13 @@ definitions:
     type: object
     properties:
       idTypes:
+        type: array
+        items:
+          type: string
+  stafihub.stafihub.bridge.QueryResourceidToDenomsResponse:
+    type: object
+    properties:
+      resourceidToDenoms:
         type: array
         items:
           type: string

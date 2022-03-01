@@ -94,3 +94,15 @@ liquidity unbond:
 ```
 stafihubd tx ledger liquidity-unbond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100uratom cosmos1j9dues7ey2a39nes4ewfvyma96d3f5zrdhnfan --keyring-backend file --from user --home /Users/tpkeeper/gowork/stafi/rtoken-relay-core/keys/stafihub --chain-id local-stafihub
 ```
+
+## bridge
+
+```
+stafihubd tx bridge add-relayer stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge set-threshold 1 --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge add-chain-id 1 --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 ufis --from admin --keyring-backend file --chain-id local-stafihub
+```

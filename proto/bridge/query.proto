@@ -41,6 +41,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/proposal_detail/{chainId}/{depositNonce}/{resourceId}/{amount}/{receiver}";
 	}
 
+// Queries a list of ResourceidToDenoms items.
+	rpc ResourceidToDenoms(QueryResourceidToDenomsRequest) returns (QueryResourceidToDenomsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/resourceid_to_denoms";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -91,6 +96,13 @@ message QueryProposalDetailRequest {
 
 message QueryProposalDetailResponse {
   Proposal proposal = 1;
+}
+
+message QueryResourceidToDenomsRequest {
+}
+
+message QueryResourceidToDenomsResponse {
+	repeated string resourceidToDenoms = 1;
 }
 
 // this line is used by starport scaffolding # 3

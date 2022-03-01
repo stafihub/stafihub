@@ -70,7 +70,10 @@ func (k Keeper) GetRelayers(ctx sdk.Context) []string {
 
 	relayerList := make([]string, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()).String())
+		if len(iterator.Key()) < 1 {
+			continue
+		}
+		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()[1:]).String())
 	}
 	return relayerList
 }
@@ -92,7 +95,10 @@ func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
 
 	chainIdList := make([]string, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		chainIdList = append(chainIdList, fmt.Sprintf("%d", iterator.Key()[0]))
+		if len(iterator.Key()) != 2 {
+			continue
+		}
+		chainIdList = append(chainIdList, fmt.Sprintf("%d", iterator.Key()[1]))
 	}
 	return chainIdList
 }
@@ -123,6 +129,22 @@ func (k Keeper) GetDenomByResourceId(ctx sdk.Context, resourceId [32]byte) (stri
 		return "", false
 	}
 	return string(bts), true
+}
+
+func (k Keeper) GetAllResourceIdToDenom(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdToDenomStoreKeyPrefix)
+	defer iterator.Close()
+
+	chainIdList := make([]string, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		if len(iterator.Key()) < 1 {
+			continue
+		}
+
+		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key()[1:33])+":"+string(iterator.Value()))
+	}
+	return chainIdList
 }
 
 func (k Keeper) SetDepositCounts(ctx sdk.Context, chainId uint8, count uint64) {
@@ -206,13 +228,15 @@ func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
 
 	chainIdList := make([]string, 0)
 	for ; iterator.Valid(); iterator.Next() {
-
+		if len(iterator.Key()) < 1 {
+			continue
+		}
 		value := iterator.Value()
 		if len(value) == 0 {
 			value = types.ResourceIdTypeForeign[:]
 		}
 
-		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key())+":"+fmt.Sprintf("%d", value[0]))
+		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key()[1:])+":"+fmt.Sprintf("%d", value[0]))
 	}
 	return chainIdList
 }

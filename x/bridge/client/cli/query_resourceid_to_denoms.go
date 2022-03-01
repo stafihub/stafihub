@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdChaindIds() *cobra.Command {
+func CmdResourceidToDenoms() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "chain-ids",
-		Short: "Query supported chain ids",
+		Use:   "resourceid-to-denoms",
+		Short: "Query all resourceid to denoms",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,9 +25,9 @@ func CmdChaindIds() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryChaindIdsRequest{}
+			params := &types.QueryResourceidToDenomsRequest{}
 
-			res, err := queryClient.ChaindIds(cmd.Context(), params)
+			res, err := queryClient.ResourceidToDenoms(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
