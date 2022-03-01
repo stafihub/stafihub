@@ -37,7 +37,9 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 	chainId := uint8(msg.ChainId)
 	proposal, found := k.Keeper.GetProposal(ctx, chainId, msg.DepositNonce, resourceId, content)
 	if !found {
-		proposal.Content = &content
+		proposal = &types.Proposal{
+			Content: &content,
+		}
 	}
 
 	if proposal.Executed {
