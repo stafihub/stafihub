@@ -13,11 +13,14 @@ var _ = strconv.Itoa(0)
 
 func CmdRelayers() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "relayers",
+		Use:   "relayers [chainId]",
 		Short: "Query relayers",
-		Args:  cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
+			argChainid, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -25,7 +28,9 @@ func CmdRelayers() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryRelayersRequest{}
+			params := &types.QueryRelayersRequest{
+				ChainId: uint32(argChainid),
+			}
 
 			res, err := queryClient.Relayers(cmd.Context(), params)
 			if err != nil {

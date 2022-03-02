@@ -53,7 +53,7 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 	}
 	proposal.Voters = append(proposal.Voters, msg.Creator)
 
-	threshold, found := k.Keeper.GetThreshold(ctx)
+	threshold, found := k.Keeper.GetThreshold(ctx, chainId)
 	if !found {
 		return nil, types.ErrThresholdNotSet
 	}

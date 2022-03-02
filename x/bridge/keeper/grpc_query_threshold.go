@@ -17,7 +17,7 @@ func (k Keeper) Threshold(goCtx context.Context, req *types.QueryThresholdReques
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	threshold, found := k.GetThreshold(ctx)
+	threshold, found := k.GetThreshold(ctx, uint8(req.ChainId))
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}

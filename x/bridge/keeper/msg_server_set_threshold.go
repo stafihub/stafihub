@@ -16,7 +16,7 @@ func (k msgServer) SetThreshold(goCtx context.Context, msg *types.MsgSetThreshol
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.SetThreshold(ctx, uint8(msg.Threshold))
+	k.Keeper.SetThreshold(ctx, uint8(msg.ChainId), uint8(msg.Threshold))
 
 	return &types.MsgSetThresholdResponse{}, nil
 }

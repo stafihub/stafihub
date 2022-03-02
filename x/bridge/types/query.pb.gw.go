@@ -55,6 +55,24 @@ func request_Query_Relayers_0(ctx context.Context, marshaler runtime.Marshaler, 
 	var protoReq QueryRelayersRequest
 	var metadata runtime.ServerMetadata
 
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["chainId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chainId")
+	}
+
+	protoReq.ChainId, err = runtime.Uint32(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chainId", err)
+	}
+
 	msg, err := client.Relayers(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -63,6 +81,24 @@ func request_Query_Relayers_0(ctx context.Context, marshaler runtime.Marshaler, 
 func local_request_Query_Relayers_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq QueryRelayersRequest
 	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["chainId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chainId")
+	}
+
+	protoReq.ChainId, err = runtime.Uint32(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chainId", err)
+	}
 
 	msg, err := server.Relayers(ctx, &protoReq)
 	return msg, metadata, err
@@ -73,6 +109,24 @@ func request_Query_Threshold_0(ctx context.Context, marshaler runtime.Marshaler,
 	var protoReq QueryThresholdRequest
 	var metadata runtime.ServerMetadata
 
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["chainId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chainId")
+	}
+
+	protoReq.ChainId, err = runtime.Uint32(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chainId", err)
+	}
+
 	msg, err := client.Threshold(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -81,6 +135,24 @@ func request_Query_Threshold_0(ctx context.Context, marshaler runtime.Marshaler,
 func local_request_Query_Threshold_0(ctx context.Context, marshaler runtime.Marshaler, server QueryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq QueryThresholdRequest
 	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["chainId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chainId")
+	}
+
+	protoReq.ChainId, err = runtime.Uint32(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chainId", err)
+	}
 
 	msg, err := server.Threshold(ctx, &protoReq)
 	return msg, metadata, err
@@ -795,9 +867,9 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "bridge", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Relayers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "bridge", "relayers"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Relayers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "bridge", "relayers", "chainId"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Threshold_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "bridge", "threshold"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Threshold_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "bridge", "threshold", "chainId"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_ChaindIds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "bridge", "chaind_ids"}, "", runtime.AssumeColonVerbOpt(true)))
 

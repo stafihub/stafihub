@@ -17,6 +17,6 @@ func (k Keeper) Relayers(goCtx context.Context, req *types.QueryRelayersRequest)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryRelayersResponse{
-		AddressList: k.GetRelayers(ctx),
+		AddressList: k.GetRelayers(ctx, uint8(req.ChainId)),
 	}, nil
 }

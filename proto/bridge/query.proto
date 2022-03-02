@@ -18,12 +18,12 @@ service Query {
   }
   // Queries a list of Relayers items.
 	rpc Relayers(QueryRelayersRequest) returns (QueryRelayersResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/bridge/relayers";
+		option (google.api.http).get = "/stafihub/stafihub/bridge/relayers/{chainId}";
 	}
 
 // Queries a list of Threshold items.
 	rpc Threshold(QueryThresholdRequest) returns (QueryThresholdResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/bridge/threshold";
+		option (google.api.http).get = "/stafihub/stafihub/bridge/threshold/{chainId}";
 	}
 
 // Queries a list of ChaindIds items.
@@ -69,6 +69,7 @@ message QueryParamsResponse {
 }
 
 message QueryRelayersRequest {
+	uint32 chainId =1;
 }
 
 message QueryRelayersResponse {
@@ -76,6 +77,7 @@ message QueryRelayersResponse {
 }
 
 message QueryThresholdRequest {
+	uint32 chainId = 1;
 }
 
 message QueryThresholdResponse {

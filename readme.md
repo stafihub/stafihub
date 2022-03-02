@@ -32,12 +32,11 @@ Your blockchain in development can be configured with `config.yml`. To learn mor
 `Error: couldn't get client config: open ~/.stafihub/config/client.toml: permission denied`, just add sudo to your command.
 for example, start node: `sudo ./release/stafihubd start`
 
-### Sudo operate example
+### Settings
 
-global settings:
+global:
 
 ```
-
 stafihubd tx ledger set-protocol-fee-receiver stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx ledger set-relay-fee-receiver stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
@@ -53,7 +52,7 @@ stafihubd tx sudo add-denom --metadata ./metadata_example.json --chain-id local-
 
 ```
 
-add new denom setttings:
+add new rtoken:
 
 ```
 # set rtoken metadata
@@ -76,7 +75,26 @@ stafihubd tx ledger set-r-params uratom local-cosmos stake 0.00001stake 600 0 co
 
 ```
 
-liquidity bond:
+
+bridge:
+
+```
+stafihubd tx bridge add-chain-id 1 --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge add-relayer 1 stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge set-threshold 1 1 --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 ufis --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge set-relay-fee-receiver  stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd tx bridge set-relay-fee 1 1000000ufis --from admin --keyring-backend file --chain-id local-stafihub
+```
+
+### user operate
+
+iquidity bond:
 
 ```
 gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
@@ -95,14 +113,7 @@ liquidity unbond:
 stafihubd tx ledger liquidity-unbond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100uratom cosmos1j9dues7ey2a39nes4ewfvyma96d3f5zrdhnfan --keyring-backend file --from user --home /Users/tpkeeper/gowork/stafi/rtoken-relay-core/keys/stafihub --chain-id local-stafihub
 ```
 
-## bridge
-
+deposit:
 ```
-stafihubd tx bridge add-relayer stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
-
-stafihubd tx bridge set-threshold 1 --from admin --keyring-backend file --chain-id local-stafihub
-
-stafihubd tx bridge add-chain-id 1 --from admin --keyring-backend file --chain-id local-stafihub
-
-stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 ufis --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx bridge deposit 1 000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 8000000 dccf954570063847d73746afa0b0878f2c779d42089c5d9a107f2aca176e985f --from my-account --chain-id local-stafihub --keyring-backend file
 ```

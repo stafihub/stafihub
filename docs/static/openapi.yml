@@ -12783,7 +12783,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/bridge/relayers:
+  '/stafihub/stafihub/bridge/relayers/{chainId}':
     get:
       summary: Queries a list of Relayers items.
       operationId: StafihubStafihubBridgeRelayers
@@ -12815,6 +12815,12 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          type: integer
+          format: int64
       tags:
         - Query
   /stafihub/stafihub/bridge/resource_id_types:
@@ -12885,7 +12891,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/bridge/threshold:
+  '/stafihub/stafihub/bridge/threshold/{chainId}':
     get:
       summary: Queries a list of Threshold items.
       operationId: StafihubStafihubBridgeThreshold
@@ -12915,6 +12921,12 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          type: integer
+          format: int64
       tags:
         - Query
   '/stafihub/stafihub/ledger/EraExchangeRate/{denom}/{era}':

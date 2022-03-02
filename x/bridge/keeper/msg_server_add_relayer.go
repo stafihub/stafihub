@@ -20,7 +20,7 @@ func (k msgServer) AddRelayer(goCtx context.Context, msg *types.MsgAddRelayer) (
 	if err != nil {
 		return nil, err
 	}
-	k.Keeper.AddRelayer(ctx, accAddress)
+	k.Keeper.AddRelayer(ctx, uint8(msg.ChainId), accAddress)
 
 	return &types.MsgAddRelayerResponse{}, nil
 }

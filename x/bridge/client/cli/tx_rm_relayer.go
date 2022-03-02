@@ -14,11 +14,15 @@ var _ = strconv.Itoa(0)
 
 func CmdRmRelayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "rm-relayer [address]",
+		Use:   "rm-relayer [chainId] [address]",
 		Short: "Remove relayer",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddress := args[0]
+			argChainId, err := strconv.ParseUint(args[0], 10, 64)
+			if err != nil {
+				return err
+			}
+			argAddress := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,6 +31,7 @@ func CmdRmRelayer() *cobra.Command {
 
 			msg := types.NewMsgRmRelayer(
 				clientCtx.GetFromAddress().String(),
+				uint32(argChainId),
 				argAddress,
 			)
 			if err := msg.ValidateBasic(); err != nil {

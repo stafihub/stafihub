@@ -53,32 +53,32 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) AddRelayer(ctx sdk.Context, address sdk.AccAddress) {
+func (k Keeper) AddRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.RelayStoreKey(address), []byte{})
+	store.Set(types.RelayStoreKey(chainId, address), []byte{})
 }
 
-func (k Keeper) HasRelayer(ctx sdk.Context, address sdk.AccAddress) bool {
+func (k Keeper) HasRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) bool {
 	store := ctx.KVStore(k.storeKey)
-	return store.Has(types.RelayStoreKey(address))
+	return store.Has(types.RelayStoreKey(chainId, address))
 }
 
-func (k Keeper) RmRelayer(ctx sdk.Context, address sdk.AccAddress) {
+func (k Keeper) RmRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
-	store.Delete(types.RelayStoreKey(address))
+	store.Delete(types.RelayStoreKey(chainId, address))
 }
 
-func (k Keeper) GetRelayers(ctx sdk.Context) []string {
+func (k Keeper) GetRelayers(ctx sdk.Context, chainId uint8) []string {
 	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, types.RelayerStoreKeyPrefix)
+	iterator := sdk.KVStorePrefixIterator(store, append(types.RelayerStoreKeyPrefix, chainId))
 	defer iterator.Close()
 
 	relayerList := make([]string, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		if len(iterator.Key()) < 1 {
+		if len(iterator.Key()) < 2 {
 			continue
 		}
-		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()[1:]).String())
+		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()[2:]).String())
 	}
 	return relayerList
 }
@@ -113,14 +113,14 @@ func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
 	return chainIdList
 }
 
-func (k Keeper) SetThreshold(ctx sdk.Context, threshold uint8) {
+func (k Keeper) SetThreshold(ctx sdk.Context, chainId uint8, threshold uint8) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ThresholdStoreKey, []byte{threshold})
+	store.Set(types.ThresholdStoreKey(chainId), []byte{threshold})
 }
 
-func (k Keeper) GetThreshold(ctx sdk.Context) (uint8, bool) {
+func (k Keeper) GetThreshold(ctx sdk.Context, chainId uint8) (uint8, bool) {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.ThresholdStoreKey)
+	bts := store.Get(types.ThresholdStoreKey(chainId))
 	if len(bts) == 0 {
 		return 0, false
 	}

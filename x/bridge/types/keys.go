@@ -29,7 +29,7 @@ var (
 	ChainIdStoreKeyPrefix           = []byte{0x04}
 	ResourceIdTypeStoreKeyPrefix    = []byte{0x05}
 	RelayFeeReceiverStoreKey        = []byte{0x06}
-	ThresholdStoreKey               = []byte{0x07}
+	ThresholdStoreKeyPrefix         = []byte{0x07}
 	RelayFeeStoreKeyPrefix          = []byte{0x08}
 )
 
@@ -44,8 +44,12 @@ func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
 
-func RelayStoreKey(addr sdk.AccAddress) []byte {
-	return append(RelayerStoreKeyPrefix, addr.Bytes()...)
+func RelayStoreKey(chainId uint8, addr sdk.AccAddress) []byte {
+	return append(append(RelayerStoreKeyPrefix, chainId), addr.Bytes()...)
+}
+
+func ThresholdStoreKey(chaindId uint8) []byte {
+	return append(ThresholdStoreKeyPrefix, chaindId)
 }
 
 func ChainIdStoreKey(chaindId uint8) []byte {

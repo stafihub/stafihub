@@ -9,9 +9,10 @@ const TypeMsgSetThreshold = "set_threshold"
 
 var _ sdk.Msg = &MsgSetThreshold{}
 
-func NewMsgSetThreshold(creator string, threshold uint32) *MsgSetThreshold {
+func NewMsgSetThreshold(creator string, chainId, threshold uint32) *MsgSetThreshold {
 	return &MsgSetThreshold{
 		Creator:   creator,
+		ChainId:   chainId,
 		Threshold: threshold,
 	}
 }

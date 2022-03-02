@@ -9,9 +9,10 @@ const TypeMsgRmRelayer = "rm_relayer"
 
 var _ sdk.Msg = &MsgRmRelayer{}
 
-func NewMsgRmRelayer(creator string, address string) *MsgRmRelayer {
+func NewMsgRmRelayer(creator string, chainId uint32, address string) *MsgRmRelayer {
 	return &MsgRmRelayer{
 		Creator: creator,
+		ChainId: chainId,
 		Address: address,
 	}
 }

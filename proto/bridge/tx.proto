@@ -25,7 +25,8 @@ service Msg {
 
 message MsgAddRelayer {
   string creator = 1;
-  string address = 2;
+  uint32 chainId = 2;
+  string address = 3;
 }
 
 message MsgAddRelayerResponse {
@@ -33,7 +34,8 @@ message MsgAddRelayerResponse {
 
 message MsgSetThreshold {
   string creator = 1;
-  uint32 threshold = 2;
+  uint32 chainId = 2;
+  uint32 threshold = 3;
 }
 
 message MsgSetThresholdResponse {
@@ -98,7 +100,8 @@ message MsgRmChainIdResponse {
 
 message MsgRmRelayer {
   string creator = 1;
-  string address = 2;
+  uint32 chainId = 2;
+  string address = 3;
 }
 
 message MsgRmRelayerResponse {
