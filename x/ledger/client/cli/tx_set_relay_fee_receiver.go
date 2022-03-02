@@ -14,11 +14,12 @@ var _ = strconv.Itoa(0)
 
 func CmdSetRelayFeeReceiver() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-relay-fee-receiver [receiver]",
+		Use:   "set-relay-fee-receiver [denom] [receiver]",
 		Short: "Broadcast message set relay fee receiver",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argReceiver := args[0]
+			argDenom := args[0]
+			argReceiver := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,6 +28,7 @@ func CmdSetRelayFeeReceiver() *cobra.Command {
 
 			msg := types.NewMsgSetRelayFeeReceiver(
 				clientCtx.GetFromAddress().String(),
+				argDenom,
 				argReceiver,
 			)
 			if err := msg.ValidateBasic(); err != nil {

@@ -13996,10 +13996,6 @@ paths:
                     type: string
                   denom:
                     type: string
-                  chainId:
-                    type: string
-                  nativeDenom:
-                    type: string
                   gasPrice:
                     type: string
                   eraSeconds:
@@ -14097,6 +14093,11 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: denom
+          in: query
+          required: false
+          type: string
       tags:
         - Query
   /stafihub/stafihub/ledger/total_protocol_fee:
@@ -22699,10 +22700,6 @@ definitions:
             type: string
           denom:
             type: string
-          chainId:
-            type: string
-          nativeDenom:
-            type: string
           gasPrice:
             type: string
           eraSeconds:
@@ -22824,10 +22821,6 @@ definitions:
       creator:
         type: string
       denom:
-        type: string
-      chainId:
-        type: string
-      nativeDenom:
         type: string
       gasPrice:
         type: string

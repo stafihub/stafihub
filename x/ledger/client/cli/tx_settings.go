@@ -52,20 +52,12 @@ func CmdSetEraUnbondLimit() *cobra.Command {
 
 func CmdSetInitBond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-init-bond [pool] [coin] [receiver]",
+		Use:   "set-init-bond [pool] [denom]",
 		Short: "Broadcast message set_init_bond",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argPool := args[0]
-			argCoin, err := sdk.ParseCoinNormalized(args[1])
-			if err != nil {
-				return err
-			}
-
-			argReceiver, err := sdk.AccAddressFromBech32(args[2])
-			if err != nil {
-				return err
-			}
+			argDenom := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -75,8 +67,7 @@ func CmdSetInitBond() *cobra.Command {
 			msg := types.NewMsgSetInitBond(
 				clientCtx.GetFromAddress(),
 				argPool,
-				argCoin,
-				argReceiver,
+				argDenom,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -134,7 +125,7 @@ func CmdSetPoolDetail() *cobra.Command {
 			argDenom := args[0]
 			argPool := args[1]
 
-			argSubAccounts := strings.Split(args[2], "+")
+			argSubAccounts := strings.Split(args[2], ":")
 			argThreshold, err := strconv.ParseUint(args[3], 10, 32)
 			if err != nil {
 				return err
@@ -363,20 +354,18 @@ func CmdSetUnbondCommission() *cobra.Command {
 
 func CmdSetRParams() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-r-params [denom] [chain-id] [native-denom] [gas-price] [era-seconds] [least-bond] [validators]",
+		Use:   "set-r-params [denom] [gas-price] [era-seconds] [least-bond] [validators]",
 		Short: "Broadcast message set common params of relayers",
-		Args:  cobra.ExactArgs(7),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argChainId := args[1]
-			argNativeDenom := args[2]
-			argGasPrice := args[3]
-			argEraSeconds := args[4]
-			argLeastBond, ok := sdk.NewIntFromString(args[5])
+			argGasPrice := args[1]
+			argEraSeconds := args[2]
+			argLeastBond, ok := sdk.NewIntFromString(args[3])
 			if !ok {
-				return fmt.Errorf("amount %s cast error", args[5])
+				return fmt.Errorf("amount %s cast error", args[3])
 			}
-			argValidators := strings.Split(args[6], "+")
+			argValidators := strings.Split(args[4], ":")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -386,8 +375,6 @@ func CmdSetRParams() *cobra.Command {
 			msg := types.NewMsgSetRParams(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
-				argChainId,
-				argNativeDenom,
 				argGasPrice,
 				argEraSeconds,
 				argLeastBond,

@@ -16,7 +16,7 @@ func (k Keeper) RelayFeeReceiver(goCtx context.Context, req *types.QueryRelayFee
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	receiver, found := k.GetRelayFeeReceiver(ctx)
+	receiver, found := k.GetRelayFeeReceiver(ctx, req.Denom)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}

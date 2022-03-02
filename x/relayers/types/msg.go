@@ -11,11 +11,11 @@ var (
 	_ sdk.Msg = &MsgUpdateThreshold{}
 )
 
-func NewMsgCreateRelayer(creator sdk.AccAddress, denom string, address sdk.AccAddress) *MsgCreateRelayer {
+func NewMsgCreateRelayer(creator sdk.AccAddress, denom string, addresses []string) *MsgCreateRelayer {
 	return &MsgCreateRelayer{
-		Creator: creator.String(),
-		Denom:   denom,
-		Address: address.String(),
+		Creator:   creator.String(),
+		Denom:     denom,
+		Addresses: addresses,
 	}
 }
 
@@ -38,8 +38,8 @@ func (msg *MsgCreateRelayer) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateRelayer) ValidateBasic() error {
-	if msg.Creator == "" || msg.Address == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
+	if msg.Creator == "" || len(msg.Addresses) == 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Addresses)
 	}
 	return nil
 }

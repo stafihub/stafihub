@@ -19,7 +19,7 @@ func (k msgServer) SetRelayFeeReceiver(goCtx context.Context, msg *types.MsgSetR
 	if err != nil {
 		return nil, err
 	}
-	k.Keeper.SetRelayFeeReceiver(ctx, receiver)
+	k.Keeper.SetRelayFeeReceiver(ctx, msg.Denom, receiver)
 
 	return &types.MsgSetRelayFeeReceiverResponse{}, nil
 }

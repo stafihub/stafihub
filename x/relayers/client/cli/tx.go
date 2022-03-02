@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -41,8 +42,8 @@ func GetTxCmd() *cobra.Command {
 
 func CmdCreateRelayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-relayer [denom] [address]",
-		Short: "Create a new relayer",
+		Use:   "add-relayers [denom] [addresses]",
+		Short: "Add new relayers",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -50,9 +51,12 @@ func CmdCreateRelayer() *cobra.Command {
 				return nil
 			}
 
-			relAddr, err := sdk.AccAddressFromBech32(args[1])
-			if err != nil {
-				return err
+			argValidators := strings.Split(args[1], ":")
+			for _, v := range argValidators {
+				_, err := sdk.AccAddressFromBech32(v)
+				if err != nil {
+					return err
+				}
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -63,7 +67,7 @@ func CmdCreateRelayer() *cobra.Command {
 			msg := types.NewMsgCreateRelayer(
 				clientCtx.GetFromAddress(),
 				argDenom,
-				relAddr,
+				argValidators,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

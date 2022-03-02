@@ -11,7 +11,7 @@ import (
 var (
 	defaultStakingRewardCommission = sdk.MustNewDecFromStr("0.1")
 	defaultUnbondCommission        = sdk.MustNewDecFromStr("0.002")
-	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.NewIntFromUint64(1000000))
+	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.ZeroInt())
 	defaultEraUnbondLimit          = uint32(200)
 )
 
@@ -303,15 +303,15 @@ func (k Keeper) GetProtocolFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
 	return bts, true
 }
 
-func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, receiver sdk.AccAddress) {
+func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, denom string, receiver sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.RelayFeeReceiverPrefix, receiver)
+	store.Set(types.RelayFeeReceiverStorekey(denom), receiver)
 }
 
-func (k Keeper) GetRelayFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
+func (k Keeper) GetRelayFeeReceiver(ctx sdk.Context, denom string) (sdk.AccAddress, bool) {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.RelayFeeReceiverPrefix)
-	if bts == nil {
+	bts := store.Get(types.RelayFeeReceiverStorekey(denom))
+	if len(bts) == 0 {
 		return nil, false
 	}
 	return bts, true

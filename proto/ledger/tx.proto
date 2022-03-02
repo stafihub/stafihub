@@ -40,8 +40,7 @@ message MsgSetEraUnbondLimitResponse {
 message MsgSetInitBond {
   string creator = 1;
   string pool = 2;
-  string coin = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-  string receiver = 4;
+  string denom = 3;
 }
 
 message MsgSetInitBondResponse {
@@ -145,12 +144,10 @@ message MsgSubmitSignatureResponse {
 message MsgSetRParams {
   string creator = 1;
   string denom = 2;
-  string chainId = 3;
-  string nativeDenom = 4;
-  string gasPrice = 5;
-  string eraSeconds = 6;
-  string leastBond = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  repeated string validators = 8;
+  string gasPrice = 3;
+  string eraSeconds = 4;
+  string leastBond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  repeated string validators = 6;
 }
 
 message MsgSetRParamsResponse {
@@ -181,7 +178,8 @@ message MsgSetRValidatorIndicatorResponse {
 
 message MsgSetRelayFeeReceiver {
   string creator = 1;
-  string receiver = 2;
+  string denom = 2;
+  string receiver = 3;
 }
 
 message MsgSetRelayFeeReceiverResponse {

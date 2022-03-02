@@ -56,12 +56,11 @@ func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetInitBond(creator sdk.AccAddress, pool string, coin sdk.Coin, receiver sdk.AccAddress) *MsgSetInitBond {
+func NewMsgSetInitBond(creator sdk.AccAddress, pool, denom string) *MsgSetInitBond {
 	return &MsgSetInitBond{
-		Creator:  creator.String(),
-		Pool:     pool,
-		Coin:     coin,
-		Receiver: receiver.String(),
+		Creator: creator.String(),
+		Pool:    pool,
+		Denom:   denom,
 	}
 }
 
@@ -84,8 +83,8 @@ func (msg *MsgSetInitBond) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetInitBond) ValidateBasic() error {
-	if msg.Creator == "" || msg.Receiver == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Receiver)
+	if msg.Creator == "" || msg.Denom == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Denom)
 	}
 	return nil
 }
@@ -461,16 +460,14 @@ func (msg *MsgSubmitSignature) ValidateBasic() error {
 
 const TypeMsgSetRParams = "set_r_params"
 
-func NewMsgSetRParams(creator string, denom string, chainId string, nativeDenom string, gasPrice string, eraSeconds string, leastBond sdk.Int, validators []string) *MsgSetRParams {
+func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds string, leastBond sdk.Int, validators []string) *MsgSetRParams {
 	return &MsgSetRParams{
-		Creator:     creator,
-		Denom:       denom,
-		ChainId:     chainId,
-		NativeDenom: nativeDenom,
-		GasPrice:    gasPrice,
-		EraSeconds:  eraSeconds,
-		LeastBond:   leastBond,
-		Validators:  validators,
+		Creator:    creator,
+		Denom:      denom,
+		GasPrice:   gasPrice,
+		EraSeconds: eraSeconds,
+		LeastBond:  leastBond,
+		Validators: validators,
 	}
 }
 

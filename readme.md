@@ -39,7 +39,7 @@ global:
 ```
 stafihubd tx ledger set-protocol-fee-receiver stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx ledger set-relay-fee-receiver stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-relay-fee-receiver uratom stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
 
 # default 0.1
 stafihubd tx ledger set-staking-reward-commission uratom 0.1 --from admin --chain-id local-stafihub --keyring-backend file
@@ -63,15 +63,15 @@ stafihubd tx ledger set-unbond-relay-fee uratom 1000000ufis --from admin --chain
 
 stafihubd tx ledger set-chain-bonding-duration uratom 2 --chain-id local-stafihub --from admin --keyring-backend file
 
-stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl+cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx ledger set-init-bond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 0uratom stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-init-bond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 uratom --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx relayers create-relayer uratom stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --keyring-backend file --from admin --chain-id local-stafihub
+stafihubd tx relayers add-relayers uratom stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --keyring-backend file --from admin --chain-id local-stafihub
 
 stafihubd tx relayers update-threshold uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
 
-stafihubd tx ledger set-r-params uratom local-cosmos stake 0.00001stake 600 0 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre:cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9nprd --from admin --keyring-backend file --chain-id local-stafihub
 
 ```
 
@@ -87,7 +87,7 @@ stafihubd tx bridge set-threshold 1 1 --from admin --keyring-backend file --chai
 
 stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 ufis --from admin --keyring-backend file --chain-id local-stafihub
 
-stafihubd tx bridge set-relay-fee-receiver  stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx bridge set-relay-fee-receiver stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd tx bridge set-relay-fee 1 1000000ufis --from admin --keyring-backend file --chain-id local-stafihub
 ```
@@ -97,13 +97,13 @@ stafihubd tx bridge set-relay-fee 1 1000000ufis --from admin --keyring-backend f
 iquidity bond:
 
 ```
-gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
+gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
 ```
 
 recover:
 
 ```
-gaiad tx bank send validator cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1stake --memo 2:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:9A80F3E6A007E1144BE34F4A0AC35B9288C19641BCAD3464277168000AF5FC66 --keyring-backend file --chain-id local-cosmos
+gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1stake --memo 2:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:9A80F3E6A007E1144BE34F4A0AC35B9288C19641BCAD3464277168000AF5FC66 --keyring-backend file --chain-id local-cosmos
 ```
 
 

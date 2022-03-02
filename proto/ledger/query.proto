@@ -355,6 +355,7 @@ message QueryTotalProtocolFeeResponse {
 }
 
 message QueryRelayFeeReceiverRequest {
+	string denom = 1;
 }
 
 message QueryRelayFeeReceiverResponse {

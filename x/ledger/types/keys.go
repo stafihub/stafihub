@@ -60,3 +60,7 @@ func StakingRewardCommissionStoreKey(denom string) []byte {
 func UnbondCommissionStoreKey(denom string) []byte {
 	return append(UnbondCommissionPrefix, []byte(denom)...)
 }
+
+func RelayFeeReceiverStorekey(denom string) []byte {
+	return append(RelayFeeReceiverPrefix, []byte(denom)...)
+}

@@ -39,10 +39,6 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	if !found {
 		return nil, types.ErrNoProtocolFeeReceiver
 	}
-	relayFeeReceiver, found := k.Keeper.GetRelayFeeReceiver(ctx)
-	if !found {
-		return nil, types.ErrNoRelayFeeReceiver
-	}
 
 	unbonder, _ := sdk.AccAddressFromBech32(msg.Creator)
 	rbalance := k.bankKeeper.GetBalance(ctx, unbonder, denom)
@@ -88,6 +84,10 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 
 	unbondFee := k.Keeper.GetUnbondRelayFee(ctx, denom)
 	if unbondFee.Value.IsPositive() {
+		relayFeeReceiver, found := k.Keeper.GetRelayFeeReceiver(ctx, denom)
+		if !found {
+			return nil, types.ErrNoRelayFeeReceiver
+		}
 		feeBal := k.bankKeeper.GetBalance(ctx, unbonder, unbondFee.Value.Denom)
 		if feeBal.IsLT(unbondFee.Value) {
 			return nil, sdkerrors.ErrInsufficientFunds

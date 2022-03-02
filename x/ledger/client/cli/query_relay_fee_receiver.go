@@ -13,9 +13,9 @@ var _ = strconv.Itoa(0)
 
 func CmdRelayFeeReceiver() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "relay-fee-receiver",
-		Short: "query relay fee receiver",
-		Args:  cobra.ExactArgs(0),
+		Use:   "relay-fee-receiver [denom]",
+		Short: "Query relay fee receiver",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -25,7 +25,9 @@ func CmdRelayFeeReceiver() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryRelayFeeReceiverRequest{}
+			params := &types.QueryRelayFeeReceiverRequest{
+				Denom: args[0],
+			}
 
 			res, err := queryClient.RelayFeeReceiver(cmd.Context(), params)
 			if err != nil {

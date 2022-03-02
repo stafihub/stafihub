@@ -33,7 +33,7 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	denom := msg.Coin.Denom
+	denom := msg.Denom
 	_, ok := k.bankKeeper.GetDenomMetaData(ctx, denom)
 	if !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
@@ -41,19 +41,6 @@ func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond)
 
 	if k.IsBondedPoolExist(ctx, denom, msg.Pool) {
 		return nil, types.ErrRepeatInitBond
-	}
-
-	if msg.Coin.Amount.GT(sdk.ZeroInt()) {
-		rbalance := k.TokenToRtoken(ctx, denom, msg.Coin.Amount)
-		rcoins := sdk.Coins{sdk.NewCoin(denom, rbalance)}
-		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
-			panic(err)
-		}
-
-		rec, _ := sdk.AccAddressFromBech32(msg.Receiver)
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, rec, rcoins); err != nil {
-			panic(err)
-		}
 	}
 
 	k.SetExchangeRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
@@ -196,14 +183,12 @@ func (k msgServer) SetRParams(goCtx context.Context, msg *types.MsgSetRParams) (
 	}
 
 	rParams := types.RParams{
-		Creator:     msg.GetCreator(),
-		Denom:       msg.GetDenom(),
-		ChainId:     msg.GetChainId(),
-		NativeDenom: msg.GetNativeDenom(),
-		GasPrice:    msg.GetGasPrice(),
-		EraSeconds:  msg.GetEraSeconds(),
-		LeastBond:   msg.LeastBond,
-		Validators:  msg.GetValidators(),
+		Creator:    msg.GetCreator(),
+		Denom:      msg.GetDenom(),
+		GasPrice:   msg.GetGasPrice(),
+		EraSeconds: msg.GetEraSeconds(),
+		LeastBond:  msg.LeastBond,
+		Validators: msg.GetValidators(),
 	}
 
 	k.Keeper.SetRParams(ctx, rParams)

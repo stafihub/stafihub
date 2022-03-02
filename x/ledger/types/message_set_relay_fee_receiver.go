@@ -9,9 +9,10 @@ const TypeMsgSetRelayFeeReceiver = "set_relay_fee_receiver"
 
 var _ sdk.Msg = &MsgSetRelayFeeReceiver{}
 
-func NewMsgSetRelayFeeReceiver(creator string, receiver string) *MsgSetRelayFeeReceiver {
+func NewMsgSetRelayFeeReceiver(creator string, denom, receiver string) *MsgSetRelayFeeReceiver {
 	return &MsgSetRelayFeeReceiver{
 		Creator:  creator,
+		Denom:    denom,
 		Receiver: receiver,
 	}
 }

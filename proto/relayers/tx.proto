@@ -16,7 +16,7 @@ service Msg {
 message MsgCreateRelayer {
   string creator = 1;
   string denom = 2;
-  string address = 3;
+  repeated string addresses = 3;
 }
 message MsgCreateRelayerResponse {}
 

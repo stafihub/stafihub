@@ -169,12 +169,10 @@ enum OriginalTxType {
 message RParams {
     string creator = 1;
     string denom = 2;
-    string chainId = 3;
-    string nativeDenom = 4;
-    string gasPrice = 5;
-    string eraSeconds = 6;
-    string leastBond = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-    repeated string validators = 8;
+    string gasPrice = 3;
+    string eraSeconds = 4;
+    string leastBond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    repeated string validators = 6;
 }
 
 message RValidator {
