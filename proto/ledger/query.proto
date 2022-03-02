@@ -138,7 +138,7 @@ service Query {
 
 // Queries a list of RelayFeeReceiver items.
 	rpc RelayFeeReceiver(QueryRelayFeeReceiverRequest) returns (QueryRelayFeeReceiverResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/relay_fee_receiver";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/relay_fee_receiver/{denom}";
 	}
 
 // this line is used by starport scaffolding # 2

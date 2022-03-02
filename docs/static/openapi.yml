@@ -14063,7 +14063,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/ledger/relay_fee_receiver:
+  '/stafihub/stafihub/ledger/relay_fee_receiver/{denom}':
     get:
       summary: Queries a list of RelayFeeReceiver items.
       operationId: StafihubStafihubLedgerRelayFeeReceiver
@@ -14095,8 +14095,8 @@ paths:
                   additionalProperties: {}
       parameters:
         - name: denom
-          in: query
-          required: false
+          in: path
+          required: true
           type: string
       tags:
         - Query
