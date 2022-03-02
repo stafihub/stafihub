@@ -16,6 +16,10 @@ service Msg {
   rpc AddChainId(MsgAddChainId) returns (MsgAddChainIdResponse);
   rpc SetResourceidType(MsgSetResourceidType) returns (MsgSetResourceidTypeResponse);
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
+  rpc RmChainId(MsgRmChainId) returns (MsgRmChainIdResponse);
+  rpc RmRelayer(MsgRmRelayer) returns (MsgRmRelayerResponse);
+  rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
+  rpc SetRelayFee(MsgSetRelayFee) returns (MsgSetRelayFeeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -82,6 +86,39 @@ message MsgVoteProposal {
 }
 
 message MsgVoteProposalResponse {
+}
+
+message MsgRmChainId {
+  string creator = 1;
+  uint32 chainId = 2;
+}
+
+message MsgRmChainIdResponse {
+}
+
+message MsgRmRelayer {
+  string creator = 1;
+  string address = 2;
+}
+
+message MsgRmRelayerResponse {
+}
+
+message MsgSetRelayFeeReceiver {
+  string creator = 1;
+  string address = 2;
+}
+
+message MsgSetRelayFeeReceiverResponse {
+}
+
+message MsgSetRelayFee {
+  string creator = 1;
+  uint32 chainId = 2;
+  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgSetRelayFeeResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

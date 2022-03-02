@@ -31,8 +31,20 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, types.ErrChainIdNotSupport
 	}
 
-	count := k.Keeper.GetDepositCounts(ctx, chainId)
+	relayFeeReceiver, found := k.Keeper.GetRelayFeeReceiver(ctx)
+	if !found {
+		return nil, types.ErrRelayFeeReceiverNotSet
+	}
+	relayFee := k.Keeper.GetRelayFee(ctx, chainId)
 
+	if relayFee.Amount.GT(sdk.ZeroInt()) {
+		err := k.bankKeeper.SendCoins(ctx, userAddress, relayFeeReceiver, sdk.NewCoins(relayFee))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	count := k.Keeper.GetDepositCounts(ctx, chainId)
 	balance := k.bankKeeper.GetBalance(ctx, userAddress, denom)
 	if balance.Amount.LT(msg.Amount) {
 		return nil, types.ErrBalanceNotEnough

@@ -63,6 +63,11 @@ func (k Keeper) HasRelayer(ctx sdk.Context, address sdk.AccAddress) bool {
 	return store.Has(types.RelayStoreKey(address))
 }
 
+func (k Keeper) RmRelayer(ctx sdk.Context, address sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.RelayStoreKey(address))
+}
+
 func (k Keeper) GetRelayers(ctx sdk.Context) []string {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.RelayerStoreKeyPrefix)
@@ -86,6 +91,11 @@ func (k Keeper) AddChainId(ctx sdk.Context, chainId uint8) {
 func (k Keeper) HasChainId(ctx sdk.Context, chainId uint8) bool {
 	store := ctx.KVStore(k.storeKey)
 	return store.Has(types.ChainIdStoreKey(chainId))
+}
+
+func (k Keeper) RmChainId(ctx sdk.Context, chainId uint8) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.ChainIdStoreKey(chainId))
 }
 
 func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
@@ -115,6 +125,20 @@ func (k Keeper) GetThreshold(ctx sdk.Context) (uint8, bool) {
 		return 0, false
 	}
 	return bts[0], true
+}
+
+func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.RelayFeeReceiverStoreKey, address)
+}
+
+func (k Keeper) GetRelayFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.RelayFeeReceiverStoreKey)
+	if len(bts) == 0 {
+		return nil, false
+	}
+	return bts, true
 }
 
 func (k Keeper) SetResourceIdToDenom(ctx sdk.Context, resourceId [32]byte, denom string) {
@@ -239,4 +263,20 @@ func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
 		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key()[1:])+":"+fmt.Sprintf("%d", value[0]))
 	}
 	return chainIdList
+}
+
+func (k Keeper) SetRelayFee(ctx sdk.Context, chainId uint8, value sdk.Coin) {
+	store := ctx.KVStore(k.storeKey)
+	b := k.cdc.MustMarshal(&value)
+	store.Set(types.RelayFeeStoreKey(chainId), b)
+}
+
+func (k Keeper) GetRelayFee(ctx sdk.Context, chainId uint8) (value sdk.Coin) {
+	store := ctx.KVStore(k.storeKey)
+	b := store.Get(types.RelayFeeStoreKey(chainId))
+	if b == nil {
+		return sdk.NewCoin("ufis", sdk.ZeroInt())
+	}
+	k.cdc.MustUnmarshal(b, &value)
+	return value
 }

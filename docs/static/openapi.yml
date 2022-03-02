@@ -12713,6 +12713,76 @@ paths:
           type: string
       tags:
         - Query
+  '/stafihub/stafihub/bridge/relay_fee/{chainId}':
+    get:
+      summary: Queries a list of RelayFee items.
+      operationId: StafihubStafihubBridgeRelayFee
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              value:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Query
+  /stafihub/stafihub/bridge/relay_fee_receiver:
+    get:
+      summary: Queries a list of RelayFeeReceiver items.
+      operationId: StafihubStafihubBridgeRelayFeeReceiver
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              receiver:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/bridge/relayers:
     get:
       summary: Queries a list of Relayers items.
@@ -22091,6 +22161,14 @@ definitions:
     type: object
   stafihub.stafihub.bridge.MsgDepositResponse:
     type: object
+  stafihub.stafihub.bridge.MsgRmChainIdResponse:
+    type: object
+  stafihub.stafihub.bridge.MsgRmRelayerResponse:
+    type: object
+  stafihub.stafihub.bridge.MsgSetRelayFeeReceiverResponse:
+    type: object
+  stafihub.stafihub.bridge.MsgSetRelayFeeResponse:
+    type: object
   stafihub.stafihub.bridge.MsgSetResourceidToDenomResponse:
     type: object
   stafihub.stafihub.bridge.MsgSetResourceidTypeResponse:
@@ -22158,6 +22236,16 @@ definitions:
             type: array
             items:
               type: string
+  stafihub.stafihub.bridge.QueryRelayFeeReceiverResponse:
+    type: object
+    properties:
+      receiver:
+        type: string
+  stafihub.stafihub.bridge.QueryRelayFeeResponse:
+    type: object
+    properties:
+      value:
+        type: string
   stafihub.stafihub.bridge.QueryRelayersResponse:
     type: object
     properties:

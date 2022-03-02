@@ -15,6 +15,10 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgAddChainId{}, "bridge/AddChainId", nil)
 	cdc.RegisterConcrete(&MsgSetResourceidType{}, "bridge/SetResourceidType", nil)
 	cdc.RegisterConcrete(&MsgVoteProposal{}, "bridge/VoteProposal", nil)
+	cdc.RegisterConcrete(&MsgRmChainId{}, "bridge/RmChainId", nil)
+	cdc.RegisterConcrete(&MsgRmRelayer{}, "bridge/RmRelayer", nil)
+	cdc.RegisterConcrete(&MsgSetRelayFeeReceiver{}, "bridge/SetRelayFeeReceiver", nil)
+	cdc.RegisterConcrete(&MsgSetRelayFee{}, "bridge/SetRelayFee", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +43,18 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgVoteProposal{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmChainId{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmRelayer{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetRelayFeeReceiver{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetRelayFee{},
 	)
 	// this line is used by starport scaffolding # 3
 

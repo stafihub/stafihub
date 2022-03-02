@@ -46,6 +46,16 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/resourceid_to_denoms";
 	}
 
+// Queries a list of RelayFeeReceiver items.
+	rpc RelayFeeReceiver(QueryRelayFeeReceiverRequest) returns (QueryRelayFeeReceiverResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/relay_fee_receiver";
+	}
+
+// Queries a list of RelayFee items.
+	rpc RelayFee(QueryRelayFeeRequest) returns (QueryRelayFeeResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/relay_fee/{chainId}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -103,6 +113,21 @@ message QueryResourceidToDenomsRequest {
 
 message QueryResourceidToDenomsResponse {
 	repeated string resourceidToDenoms = 1;
+}
+
+message QueryRelayFeeReceiverRequest {
+}
+
+message QueryRelayFeeReceiverResponse {
+	string receiver = 1;
+}
+
+message QueryRelayFeeRequest {
+  uint32 chainId = 1;
+}
+
+message QueryRelayFeeResponse {
+	string value = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

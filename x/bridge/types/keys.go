@@ -28,10 +28,9 @@ var (
 	ProposalStoreKeyPrefix          = []byte{0x03}
 	ChainIdStoreKeyPrefix           = []byte{0x04}
 	ResourceIdTypeStoreKeyPrefix    = []byte{0x05}
-)
-
-var (
-	ThresholdStoreKey = []byte("thresholdStoreKey")
+	RelayFeeReceiverStoreKey        = []byte{0x06}
+	ThresholdStoreKey               = []byte{0x07}
+	RelayFeeStoreKeyPrefix          = []byte{0x08}
 )
 
 type ResourceIdType [1]byte
@@ -72,4 +71,8 @@ func ProposalStoreKey(chainId uint8, depositNonce uint64, hash [32]byte) []byte 
 	copy(key[9:], hash[:])
 
 	return append(ProposalStoreKeyPrefix, key...)
+}
+
+func RelayFeeStoreKey(chainId uint8) []byte {
+	return append(RelayFeeStoreKeyPrefix, chainId)
 }
