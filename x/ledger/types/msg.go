@@ -8,7 +8,6 @@ import (
 
 var (
 	_ sdk.Msg = &MsgSetEraUnbondLimit{}
-	_ sdk.Msg = &MsgSetInitBond{}
 	_ sdk.Msg = &MsgSetChainBondingDuration{}
 	_ sdk.Msg = &MsgSetPoolDetail{}
 	_ sdk.Msg = &MsgSetLeastBond{}
@@ -53,39 +52,6 @@ func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	return nil
-}
-
-func NewMsgSetInitBond(creator sdk.AccAddress, pool, denom string) *MsgSetInitBond {
-	return &MsgSetInitBond{
-		Creator: creator.String(),
-		Pool:    pool,
-		Denom:   denom,
-	}
-}
-
-func (msg *MsgSetInitBond) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgSetInitBond) Type() string {
-	return "SetInitBond"
-}
-
-func (msg *MsgSetInitBond) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgSetInitBond) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgSetInitBond) ValidateBasic() error {
-	if msg.Creator == "" || msg.Denom == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Denom)
-	}
 	return nil
 }
 
@@ -460,7 +426,7 @@ func (msg *MsgSubmitSignature) ValidateBasic() error {
 
 const TypeMsgSetRParams = "set_r_params"
 
-func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds string, leastBond sdk.Int, validators []string) *MsgSetRParams {
+func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds string, leastBond string, validators []string) *MsgSetRParams {
 	return &MsgSetRParams{
 		Creator:    creator,
 		Denom:      denom,

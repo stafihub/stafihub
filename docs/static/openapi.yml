@@ -22409,8 +22409,6 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetEraUnbondLimitResponse:
     type: object
-  stafihub.stafihub.ledger.MsgSetInitBondResponse:
-    type: object
   stafihub.stafihub.ledger.MsgSetLeastBondResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetPoolDetailResponse:

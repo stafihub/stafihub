@@ -26,30 +26,6 @@ func (k msgServer) SetEraUnbondLimit(goCtx context.Context, msg *types.MsgSetEra
 	return &types.MsgSetEraUnbondLimitResponse{}, nil
 }
 
-func (k msgServer) SetInitBond(goCtx context.Context, msg *types.MsgSetInitBond) (*types.MsgSetInitBondResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudotypes.ErrCreatorNotAdmin
-	}
-
-	denom := msg.Denom
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, denom)
-	if !ok {
-		return nil, banktypes.ErrDenomMetadataNotFound
-	}
-
-	if k.IsBondedPoolExist(ctx, denom, msg.Pool) {
-		return nil, types.ErrRepeatInitBond
-	}
-
-	k.SetExchangeRate(ctx, denom, sdk.NewInt(0), sdk.NewInt(0))
-	k.AddBondedPool(ctx, denom, msg.Pool)
-	k.SetBondPipeline(ctx, types.NewBondPipeline(denom, msg.Pool))
-
-	return &types.MsgSetInitBondResponse{}, nil
-}
-
 func (k msgServer) SetChainBondingDuration(goCtx context.Context, msg *types.MsgSetChainBondingDuration) (*types.MsgSetChainBondingDurationResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -79,6 +55,12 @@ func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDet
 	}
 
 	k.Keeper.SetPoolDetail(ctx, msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold)
+
+	if !k.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
+		k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
+		k.AddBondedPool(ctx, msg.Denom, msg.Pool)
+		k.SetBondPipeline(ctx, types.NewBondPipeline(msg.Denom, msg.Pool))
+	}
 
 	return &types.MsgSetPoolDetailResponse{}, nil
 }

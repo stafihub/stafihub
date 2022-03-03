@@ -35,7 +35,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdSetEraUnbondLimit())
-	cmd.AddCommand(CmdSetInitBond())
 	cmd.AddCommand(CmdSetChainBondingDuration())
 	cmd.AddCommand(CmdSetPoolDetail())
 	cmd.AddCommand(CmdSetLeastBond())

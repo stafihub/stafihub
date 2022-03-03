@@ -50,40 +50,9 @@ func CmdSetEraUnbondLimit() *cobra.Command {
 	return cmd
 }
 
-func CmdSetInitBond() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "set-init-bond [pool] [denom]",
-		Short: "Broadcast message set_init_bond",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argPool := args[0]
-			argDenom := args[1]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgSetInitBond(
-				clientCtx.GetFromAddress(),
-				argPool,
-				argDenom,
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
 func CmdSetChainBondingDuration() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-chain-bonding-duration [denom] [era]",
+		Use:   "set-chain-bonding-duration [denom] [bonding_duration]",
 		Short: "Broadcast message set_chain_bonding_duration",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -361,10 +330,7 @@ func CmdSetRParams() *cobra.Command {
 			argDenom := args[0]
 			argGasPrice := args[1]
 			argEraSeconds := args[2]
-			argLeastBond, ok := sdk.NewIntFromString(args[3])
-			if !ok {
-				return fmt.Errorf("amount %s cast error", args[3])
-			}
+			argLeastBond := args[3]
 			argValidators := strings.Split(args[4], ":")
 
 			clientCtx, err := client.GetClientTxContext(cmd)

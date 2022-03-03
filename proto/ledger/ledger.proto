@@ -171,7 +171,7 @@ message RParams {
     string denom = 2;
     string gasPrice = 3;
     string eraSeconds = 4;
-    string leastBond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string leastBond = 5;
     repeated string validators = 6;
 }
 

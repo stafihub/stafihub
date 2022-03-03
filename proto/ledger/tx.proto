@@ -10,7 +10,6 @@ option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 // Msg defines the Msg service.
 service Msg {
   rpc SetEraUnbondLimit(MsgSetEraUnbondLimit) returns (MsgSetEraUnbondLimitResponse);
-  rpc SetInitBond(MsgSetInitBond) returns (MsgSetInitBondResponse);
   rpc SetChainBondingDuration(MsgSetChainBondingDuration) returns (MsgSetChainBondingDurationResponse);
   rpc SetPoolDetail(MsgSetPoolDetail) returns (MsgSetPoolDetailResponse);
   rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
@@ -35,15 +34,6 @@ message MsgSetEraUnbondLimit {
 }
 
 message MsgSetEraUnbondLimitResponse {
-}
-
-message MsgSetInitBond {
-  string creator = 1;
-  string pool = 2;
-  string denom = 3;
-}
-
-message MsgSetInitBondResponse {
 }
 
 message MsgSetChainBondingDuration {
@@ -146,7 +136,7 @@ message MsgSetRParams {
   string denom = 2;
   string gasPrice = 3;
   string eraSeconds = 4;
-  string leastBond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string leastBond = 5;
   repeated string validators = 6;
 }
 
