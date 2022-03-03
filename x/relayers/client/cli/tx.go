@@ -42,16 +42,18 @@ func GetTxCmd() *cobra.Command {
 
 func CmdCreateRelayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-relayers [denom] [addresses]",
+		Use:   "add-relayers [taipe] [denom] [addresses]",
 		Short: "Add new relayers",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			if sdk.ValidateDenom(argDenom) != nil {
-				return nil
+			argTaipe := args[0]
+
+			argDenom := args[1]
+			if err := sdk.ValidateDenom(argDenom); err != nil {
+				return err
 			}
 
-			argValidators := strings.Split(args[1], ":")
+			argValidators := strings.Split(args[2], ":")
 			for _, v := range argValidators {
 				_, err := sdk.AccAddressFromBech32(v)
 				if err != nil {
@@ -66,6 +68,7 @@ func CmdCreateRelayer() *cobra.Command {
 
 			msg := types.NewMsgCreateRelayer(
 				clientCtx.GetFromAddress(),
+				argTaipe,
 				argDenom,
 				argValidators,
 			)
@@ -83,11 +86,13 @@ func CmdCreateRelayer() *cobra.Command {
 
 func CmdDeleteRelayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-relayer [denom] [address]",
+		Use:   "delete-relayer [taipe] [denom] [address]",
 		Short: "Delete a relayer",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
+			argTaipe := args[0]
+
+			argDenom := args[1]
 			if sdk.ValidateDenom(argDenom) != nil {
 				return nil
 			}
@@ -104,6 +109,7 @@ func CmdDeleteRelayer() *cobra.Command {
 
 			msg := types.NewMsgDeleteRelayer(
 				clientCtx.GetFromAddress(),
+				argTaipe,
 				argDenom,
 				relAddr,
 			)
@@ -121,11 +127,18 @@ func CmdDeleteRelayer() *cobra.Command {
 
 func CmdUpdateThreshold() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-threshold [denom] [value]",
+		Use:   "update-threshold [taipe] [denom] [value]",
 		Short: "Update a threshold",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			value, err := strconv.ParseUint(args[1], 10, 64)
+			argTaipe := args[0]
+
+			argDenom := args[1]
+			if sdk.ValidateDenom(argDenom) != nil {
+				return nil
+			}
+
+			value, err := strconv.ParseUint(args[2], 10, 64)
 			if err != nil {
 				return err
 			}
@@ -137,7 +150,8 @@ func CmdUpdateThreshold() *cobra.Command {
 
 			msg := types.NewMsgUpdateThreshold(
 				clientCtx.GetFromAddress(),
-				args[0],
+				argTaipe,
+				argDenom,
 				uint32(value),
 			)
 			if err := msg.ValidateBasic(); err != nil {

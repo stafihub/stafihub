@@ -6,6 +6,7 @@ const (
 	EventTypeRelayerRemoved   = "relayer_removed"
 	EventTypeThresholdUpdated = "threshold_updated"
 
+	AttributeKeyTaipe            = "taipe"
 	AttributeKeyDenom            = "denom"
 	AttributeKeyRelayer          = "relayer"
 	AttributeKeyLastThreshold    = "last_threshold"

@@ -27,7 +27,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
 	genesis.Relayers = k.GetAllRelayer(ctx)
-	genesis.Thresholds = k.GetAllThreshold(ctx)
+	genesis.Thresholds = k.GetThreshold(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

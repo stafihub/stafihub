@@ -15,22 +15,25 @@ service Msg {
 
 message MsgCreateRelayer {
   string creator = 1;
-  string denom = 2;
-  repeated string addresses = 3;
+  string taipe = 2;
+  string denom = 3;
+  repeated string addresses = 4;
 }
 message MsgCreateRelayerResponse {}
 
 message MsgDeleteRelayer {
   string creator = 1;
-  string denom = 2;
-  string address = 3;
+  string taipe = 2;
+  string denom = 3;
+  string address = 4;
 }
 message MsgDeleteRelayerResponse {}
 
 message MsgUpdateThreshold {
   string creator = 1;
-  string denom = 2;
-  uint32 value = 3;
+  string taipe = 2;
+  string denom = 3;
+  uint32 value = 4;
 }
 message MsgUpdateThresholdResponse {}
 

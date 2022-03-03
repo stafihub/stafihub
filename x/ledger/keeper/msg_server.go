@@ -137,7 +137,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSignature) (*types.MsgSubmitSignatureResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.relayerKeeper.IsRelayer(ctx, msg.Denom, msg.Creator) {
+	if !k.relayerKeeper.HasRelayer(ctx, types.ModuleName, msg.Denom, msg.Creator) {
 		return nil, relayertypes.ErrProposerNotRelayer
 	}
 

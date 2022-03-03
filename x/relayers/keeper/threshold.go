@@ -1,43 +1,28 @@
 package keeper
 
 import (
+	"encoding/binary"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/relayers/types"
 )
 
 // SetThreshold set a specific threshold in the store from its denom
-func (k Keeper) SetThreshold(ctx sdk.Context, threshold types.Threshold) {
+func (k Keeper) SetThreshold(ctx sdk.Context, taipe, denom string, value uint32) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
-	b := k.cdc.MustMarshal(&threshold)
-	store.Set([]byte(threshold.Denom), b)
+	bth := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bth, value)
+	store.Set([]byte(taipe+denom), bth)
 }
 
 // GetThreshold returns a threshold from its index
-func (k Keeper) GetThreshold(ctx sdk.Context, denom string) (val types.Threshold, found bool) {
+func (k Keeper) GetThreshold(ctx sdk.Context, taipe, denom string) (uint32, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
 
-	b := store.Get([]byte(denom))
+	b := store.Get([]byte(taipe+denom))
 	if b == nil {
-		return val, false
+		return 0, false
 	}
 
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
-}
-
-// GetAllThreshold returns all threshold
-func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []types.Threshold) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.Threshold
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
-	}
-
-	return
+	return binary.LittleEndian.Uint32(b), true
 }
