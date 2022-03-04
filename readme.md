@@ -58,15 +58,13 @@ stafihubd tx ledger set-unbond-commission uratom 0.002 --from admin --chain-id l
 # default 1000000ufis
 stafihubd tx ledger set-unbond-relay-fee uratom 1000000ufis --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx ledger set-chain-bonding-duration uratom 2 --chain-id local-stafihub --from admin --keyring-backend file
-
 stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd tx relayers add-relayers uratom stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --keyring-backend file --from admin --chain-id local-stafihub
+stafihubd tx relayers add-relayers ledger uratom stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --from admin --chain-id local-stafihub
 
-stafihubd tx relayers update-threshold uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx relayers set-threshold ledger uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
 
-stafihubd tx ledger set-r-params uratom 0.00001stake 600 0stake cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre:cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9nprd --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --keyring-backend file --chain-id local-stafihub
 
 ```
 
@@ -76,9 +74,9 @@ bridge:
 ```
 stafihubd tx bridge add-chain-id 1 --from admin --keyring-backend file --chain-id local-stafihub
 
-stafihubd tx bridge add-relayer 1 stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx relayers add-relayers bridge 1 stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx --from admin --keyring-backend file --chain-id local-stafihub
 
-stafihubd tx bridge set-threshold 1 1 --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx relayers set-threshold bridge 1 1 --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 ufis --from admin --keyring-backend file --chain-id local-stafihub
 

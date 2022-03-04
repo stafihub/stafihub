@@ -64,15 +64,16 @@ func CmdRelayers() *cobra.Command {
 
 func CmdThreshold() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "threshold [denom]",
+		Use:   "threshold [arena] [denom]",
 		Short: "Query threshold",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryThresholdRequest{
-				Denom: args[0],
+				Arena: args[0],
+				Denom: args[1],
 			}
 			res, err := queryClient.Threshold(context.Background(), params)
 			if err != nil {

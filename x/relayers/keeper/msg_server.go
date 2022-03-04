@@ -100,7 +100,7 @@ func (k msgServer) SetThreshold(goCtx context.Context, msg *types.MsgSetThreshol
 		lastTh = last.Value
 	}
 
-	var threshold = types.Threshold{Denom: msg.Denom, Value: msg.Value}
+	var threshold = types.Threshold{Arena: msg.Arena, Denom: msg.Denom, Value: msg.Value}
 	k.Keeper.SetThreshold(ctx, threshold)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

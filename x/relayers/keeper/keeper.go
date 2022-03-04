@@ -58,7 +58,7 @@ func (k Keeper) SetLastVoter(ctx sdk.Context, arena, denom, voter string) {
 func (k Keeper) LastVoter(ctx sdk.Context, arena, denom string) (val types.LastVoter, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.LastVoterPrefix)
 
-	b := store.Get([]byte(denom))
+	b := store.Get([]byte(arena + denom))
 	if b == nil {
 		return val, false
 	}
