@@ -35,7 +35,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdSetEraUnbondLimit())
-	cmd.AddCommand(CmdSetChainBondingDuration())
 	cmd.AddCommand(CmdSetPoolDetail())
 	cmd.AddCommand(CmdSetLeastBond())
 	cmd.AddCommand(CmdClearCurrentEraSnapShots())
@@ -56,6 +55,9 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdOnboard())
 	cmd.AddCommand(CmdSetRValidatorIndicator())
 	cmd.AddCommand(CmdSetRelayFeeReceiver())
+	cmd.AddCommand(CmdSetRelayGasPrice())
+	cmd.AddCommand(CmdSetEraSeconds())
+	cmd.AddCommand(CmdRmBondedPool())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

@@ -13313,44 +13313,6 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getChainBondingDuration/{denom}':
-    get:
-      summary: Queries a list of getChainBondingDuration items.
-      operationId: StafihubStafihubLedgerGetChainBondingDuration
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              era:
-                type: integer
-                format: int64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/stafihub/stafihub/ledger/getChainEra/{denom}':
     get:
       summary: Queries a list of getChainEra items.
@@ -13485,48 +13447,6 @@ paths:
               limit:
                 type: integer
                 format: int64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/stafihub/stafihub/ledger/getLeastBond/{denom}':
-    get:
-      summary: Queries a list of getLeastBond items.
-      operationId: StafihubStafihubLedgerGetLeastBond
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              leastBond:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  amount:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -13992,14 +13912,17 @@ paths:
               rParams:
                 type: object
                 properties:
-                  creator:
-                    type: string
                   denom:
                     type: string
                   gasPrice:
                     type: string
                   eraSeconds:
                     type: string
+                  offset:
+                    type: string
+                  bondingDuration:
+                    type: integer
+                    format: int64
                   leastBond:
                     type: string
                   validators:
@@ -22383,13 +22306,6 @@ definitions:
         type: string
       value:
         type: string
-  stafihub.stafihub.ledger.LeastBond:
-    type: object
-    properties:
-      denom:
-        type: string
-      amount:
-        type: string
   stafihub.stafihub.ledger.LinkChunk:
     type: object
     properties:
@@ -22405,7 +22321,9 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgOnboardResponse:
     type: object
-  stafihub.stafihub.ledger.MsgSetChainBondingDurationResponse:
+  stafihub.stafihub.ledger.MsgRmBondedPoolResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgSetEraSecondsResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetEraUnbondLimitResponse:
     type: object
@@ -22420,6 +22338,8 @@ definitions:
   stafihub.stafihub.ledger.MsgSetRValidatorIndicatorResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRelayFeeReceiverResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgSetRelayGasPriceResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetStakingRewardCommissionResponse:
     type: object
@@ -22577,12 +22497,6 @@ definitions:
             type: string
           amount:
             type: string
-  stafihub.stafihub.ledger.QueryGetChainBondingDurationResponse:
-    type: object
-    properties:
-      era:
-        type: integer
-        format: int64
   stafihub.stafihub.ledger.QueryGetChainEraResponse:
     type: object
     properties:
@@ -22631,16 +22545,6 @@ definitions:
           denom:
             type: string
           value:
-            type: string
-  stafihub.stafihub.ledger.QueryGetLeastBondResponse:
-    type: object
-    properties:
-      leastBond:
-        type: object
-        properties:
-          denom:
-            type: string
-          amount:
             type: string
   stafihub.stafihub.ledger.QueryGetPoolDetailResponse:
     type: object
@@ -22694,14 +22598,17 @@ definitions:
       rParams:
         type: object
         properties:
-          creator:
-            type: string
           denom:
             type: string
           gasPrice:
             type: string
           eraSeconds:
             type: string
+          offset:
+            type: string
+          bondingDuration:
+            type: integer
+            format: int64
           leastBond:
             type: string
           validators:
@@ -22816,14 +22723,17 @@ definitions:
   stafihub.stafihub.ledger.RParams:
     type: object
     properties:
-      creator:
-        type: string
       denom:
         type: string
       gasPrice:
         type: string
       eraSeconds:
         type: string
+      offset:
+        type: string
+      bondingDuration:
+        type: integer
+        format: int64
       leastBond:
         type: string
       validators:

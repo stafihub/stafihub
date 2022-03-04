@@ -26,22 +26,6 @@ func (k msgServer) SetEraUnbondLimit(goCtx context.Context, msg *types.MsgSetEra
 	return &types.MsgSetEraUnbondLimitResponse{}, nil
 }
 
-func (k msgServer) SetChainBondingDuration(goCtx context.Context, msg *types.MsgSetChainBondingDuration) (*types.MsgSetChainBondingDurationResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudotypes.ErrCreatorNotAdmin
-	}
-
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
-	if !ok {
-		return nil, banktypes.ErrDenomMetadataNotFound
-	}
-
-	k.Keeper.SetChainBondingDuration(ctx, msg.Denom, msg.Era)
-	return &types.MsgSetChainBondingDurationResponse{}, nil
-}
-
 func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDetail) (*types.MsgSetPoolDetailResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -76,9 +60,19 @@ func (k msgServer) SetLeastBond(goCtx context.Context, msg *types.MsgSetLeastBon
 	if !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
+	rparams, found := k.Keeper.GetRParams(ctx, msg.Denom)
+	if !found {
+		rparams.Denom = msg.Denom
+	}
+	rparams.LeastBond = msg.LeastBond
 
-	k.Keeper.SetLeastBond(ctx, msg.Denom, msg.Amount)
-
+	k.Keeper.SetRParams(ctx, rparams)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRParamsChanged,
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+		),
+	)
 	return &types.MsgSetLeastBondResponse{}, nil
 }
 
@@ -165,12 +159,13 @@ func (k msgServer) SetRParams(goCtx context.Context, msg *types.MsgSetRParams) (
 	}
 
 	rParams := types.RParams{
-		Creator:    msg.GetCreator(),
-		Denom:      msg.GetDenom(),
-		GasPrice:   msg.GetGasPrice(),
-		EraSeconds: msg.GetEraSeconds(),
-		LeastBond:  msg.LeastBond,
-		Validators: msg.GetValidators(),
+		Denom:           msg.GetDenom(),
+		GasPrice:        msg.GetGasPrice(),
+		EraSeconds:      msg.GetEraSeconds(),
+		Offset:          msg.Offset,
+		BondingDuration: msg.BondingDuration,
+		LeastBond:       msg.LeastBond,
+		Validators:      msg.GetValidators(),
 	}
 
 	k.Keeper.SetRParams(ctx, rParams)

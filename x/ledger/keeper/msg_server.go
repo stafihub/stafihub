@@ -30,7 +30,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		return nil, types.ErrChainEraNotFound
 	}
 
-	du, ok := k.Keeper.GetChainBondingDuration(ctx, denom)
+	rParams, ok := k.Keeper.GetRParams(ctx, denom)
 	if !ok {
 		return nil, types.ErrBondingDurationNotSet
 	}
@@ -61,7 +61,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	}
 	pipe.Chunk.Unbond = pipe.Chunk.Unbond.Add(balance)
 
-	unlockEra := ce.Era + du.GetEra()
+	unlockEra := ce.Era + rParams.GetBondingDuration()
 	chunk := types.UserUnlockChunk{Pool: msg.Pool, UnlockEra: unlockEra, Value: balance, Recipient: msg.Recipient}
 	unbonds, ok := k.Keeper.GetAccountUnbond(ctx, denom, msg.Creator)
 	if !ok {

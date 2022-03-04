@@ -8,7 +8,6 @@ import (
 
 var (
 	_ sdk.Msg = &MsgSetEraUnbondLimit{}
-	_ sdk.Msg = &MsgSetChainBondingDuration{}
 	_ sdk.Msg = &MsgSetPoolDetail{}
 	_ sdk.Msg = &MsgSetLeastBond{}
 	_ sdk.Msg = &MsgClearCurrentEraSnapShots{}
@@ -48,40 +47,6 @@ func (msg *MsgSetEraUnbondLimit) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
-	if msg.Creator == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
-	}
-
-	return nil
-}
-
-func NewMsgSetChainBondingDuration(creator sdk.AccAddress, denom string, era uint32) *MsgSetChainBondingDuration {
-	return &MsgSetChainBondingDuration{
-		Creator: creator.String(),
-		Denom:   denom,
-		Era:     era,
-	}
-}
-
-func (msg *MsgSetChainBondingDuration) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgSetChainBondingDuration) Type() string {
-	return "SetChainBondingDuration"
-}
-
-func (msg *MsgSetChainBondingDuration) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgSetChainBondingDuration) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgSetChainBondingDuration) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
@@ -133,11 +98,11 @@ func (msg *MsgSetPoolDetail) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetLeastBond(creator sdk.AccAddress, denom string, amount sdk.Int) *MsgSetLeastBond {
+func NewMsgSetLeastBond(creator sdk.AccAddress, denom, leastBond string) *MsgSetLeastBond {
 	return &MsgSetLeastBond{
-		Creator: creator.String(),
-		Denom:   denom,
-		Amount:  amount,
+		Creator:   creator.String(),
+		Denom:     denom,
+		LeastBond: leastBond,
 	}
 }
 
@@ -426,14 +391,16 @@ func (msg *MsgSubmitSignature) ValidateBasic() error {
 
 const TypeMsgSetRParams = "set_r_params"
 
-func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds string, leastBond string, validators []string) *MsgSetRParams {
+func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds string, offset string, bondingDuration uint32, leastBond string, validators []string) *MsgSetRParams {
 	return &MsgSetRParams{
-		Creator:    creator,
-		Denom:      denom,
-		GasPrice:   gasPrice,
-		EraSeconds: eraSeconds,
-		LeastBond:  leastBond,
-		Validators: validators,
+		Creator:         creator,
+		Denom:           denom,
+		GasPrice:        gasPrice,
+		EraSeconds:      eraSeconds,
+		Offset:          offset,
+		BondingDuration: bondingDuration,
+		LeastBond:       leastBond,
+		Validators:      validators,
 	}
 }
 

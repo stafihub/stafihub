@@ -121,8 +121,8 @@ func CmdDeleteRelayer() *cobra.Command {
 
 func CmdUpdateThreshold() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-threshold [denom] [value]",
-		Short: "Update a threshold",
+		Use:   "set-threshold [denom] [value]",
+		Short: "Set threshold",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			value, err := strconv.ParseUint(args[1], 10, 64)

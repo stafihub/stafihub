@@ -34,10 +34,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetCurrentEraSnapshot())
 	cmd.AddCommand(CmdGetProtocolFeeReceiver())
 	cmd.AddCommand(CmdGetStakingRewardCommission())
-	cmd.AddCommand(CmdGetChainBondingDuration())
 	cmd.AddCommand(CmdGetUnbondRelayFee())
 	cmd.AddCommand(CmdGetUnbondCommission())
-	cmd.AddCommand(CmdGetLeastBond())
 	cmd.AddCommand(CmdGetEraUnbondLimit())
 	cmd.AddCommand(CmdGetBondPipeline())
 	cmd.AddCommand(CmdGetEraSnapshot())
@@ -256,39 +254,6 @@ func CmdGetStakingRewardCommission() *cobra.Command {
 	return cmd
 }
 
-func CmdGetChainBondingDuration() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "chain-bonding-duration [denom]",
-		Short: "Query getChainBondingDuration",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-
-			params := &types.QueryGetChainBondingDurationRequest{
-				Denom: reqDenom,
-			}
-
-			res, err := queryClient.GetChainBondingDuration(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
-
 func CmdGetUnbondRelayFee() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "unbond-relay-fee [denom]",
@@ -339,37 +304,6 @@ func CmdGetUnbondCommission() *cobra.Command {
 			}
 
 			res, err := queryClient.GetUnbondCommission(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdGetLeastBond() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "least-bond [denom]",
-		Short: "Query getLeastBond",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryGetLeastBondRequest{
-				Denom: reqDenom,
-			}
-
-			res, err := queryClient.GetLeastBond(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

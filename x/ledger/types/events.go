@@ -13,6 +13,7 @@ const (
 	EventTypeLiquidityUnbond    = "liquidity_unbond"
 	EventTypeSignatureEnough    = "signature_enough"
 	EventTypeSignatureSubmitted = "signature_submitted"
+	EventTypeRParamsChanged     = "rparams_changed"
 
 	AttributeKeyDenom        = "denom"
 	AttributeKeyPool         = "pool"

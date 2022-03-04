@@ -108,28 +108,6 @@ func (k Keeper) GetEraUnbondLimit(ctx sdk.Context, denom string) (val types.EraU
 	return val
 }
 
-func (k Keeper) SetChainBondingDuration(ctx sdk.Context, denom string, era uint32) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ChainBondingDurationPrefix)
-	cbd := &types.ChainBondingDuration{
-		Denom: denom,
-		Era:   era,
-	}
-	b := k.cdc.MustMarshal(cbd)
-	store.Set([]byte(denom), b)
-}
-
-func (k Keeper) GetChainBondingDuration(ctx sdk.Context, denom string) (val types.ChainBondingDuration, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ChainBondingDurationPrefix)
-
-	b := store.Get([]byte(denom))
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
-}
-
 func (k Keeper) SetPoolDetail(ctx sdk.Context, denom string, pool string, subAccounts []string, threshold uint32) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolDetailPrefix)
 	cbd := types.NewPoolDetail(denom, pool, subAccounts, threshold)
@@ -141,28 +119,6 @@ func (k Keeper) GetPoolDetail(ctx sdk.Context, denom string, pool string) (val t
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolDetailPrefix)
 
 	b := store.Get([]byte(denom + pool))
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
-}
-
-func (k Keeper) SetLeastBond(ctx sdk.Context, denom string, amount sdk.Int) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.LeastBondPrefix)
-	lb := &types.LeastBond{
-		Denom:  denom,
-		Amount: amount,
-	}
-	b := k.cdc.MustMarshal(lb)
-	store.Set([]byte(denom), b)
-}
-
-func (k Keeper) LeastBond(ctx sdk.Context, denom string) (val types.LeastBond, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.LeastBondPrefix)
-
-	b := store.Get([]byte(denom))
 	if b == nil {
 		return val, false
 	}

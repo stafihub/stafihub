@@ -10,7 +10,6 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetEraUnbondLimit{}, "ledger/SetEraUnbondLimit", nil)
-	cdc.RegisterConcrete(&MsgSetChainBondingDuration{}, "ledger/SetChainBondingDuration", nil)
 	cdc.RegisterConcrete(&MsgSetPoolDetail{}, "ledger/SetPoolDetail", nil)
 	cdc.RegisterConcrete(&MsgSetLeastBond{}, "ledger/SetLeastBond", nil)
 	cdc.RegisterConcrete(&MsgClearCurrentEraSnapShots{}, "ledger/ClearCurrentEraSnapShots", nil)
@@ -33,13 +32,15 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgOnboard{}, "ledger/Onboard", nil)
 	cdc.RegisterConcrete(&MsgSetRValidatorIndicator{}, "ledger/SetRValidatorIndicator", nil)
 	cdc.RegisterConcrete(&MsgSetRelayFeeReceiver{}, "ledger/SetRelayFeeReceiver", nil)
+	cdc.RegisterConcrete(&MsgSetRelayGasPrice{}, "ledger/SetRelayGasPrice", nil)
+	cdc.RegisterConcrete(&MsgSetEraSeconds{}, "ledger/SetEraSeconds", nil)
+	cdc.RegisterConcrete(&MsgRmBondedPool{}, "ledger/RmBondedPool", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetEraUnbondLimit{},
-		&MsgSetChainBondingDuration{},
 		&MsgSetPoolDetail{},
 		&MsgSetLeastBond{},
 		&MsgClearCurrentEraSnapShots{},
@@ -71,6 +72,15 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetRelayFeeReceiver{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetRelayGasPrice{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetEraSeconds{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmBondedPool{},
 	)
 	// this line is used by starport scaffolding # 3
 

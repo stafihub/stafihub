@@ -61,11 +61,6 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getStakingRewardCommission";
 	}
 
-// Queries a list of getChainBondingDuration items.
-	rpc GetChainBondingDuration(QueryGetChainBondingDurationRequest) returns (QueryGetChainBondingDurationResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getChainBondingDuration/{denom}";
-	}
-
 // Queries a list of getUnbondFee items.
 	rpc GetUnbondRelayFee(QueryGetUnbondRelayFeeRequest) returns (QueryGetUnbondRelayFeeResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondRelayFee/{denom}";
@@ -74,11 +69,6 @@ service Query {
 // Queries a list of getUnbondCommission items.
 	rpc GetUnbondCommission(QueryGetUnbondCommissionRequest) returns (QueryGetUnbondCommissionResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondCommission";
-	}
-
-// Queries a list of getLeastBond items.
-	rpc GetLeastBond(QueryGetLeastBondRequest) returns (QueryGetLeastBondResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getLeastBond/{denom}";
 	}
 
 // Queries a list of getEraUnbondLimit items.
@@ -224,14 +214,6 @@ message QueryGetStakingRewardCommissionResponse {
   string commission = 1;
 }
 
-message QueryGetChainBondingDurationRequest {
-  string denom = 1;
-}
-
-message QueryGetChainBondingDurationResponse {
-  uint32 era = 1;
-}
-
 message QueryGetUnbondRelayFeeRequest {
    string denom = 1;
 }
@@ -248,13 +230,6 @@ message QueryGetUnbondCommissionResponse {
   string commission = 1;
 }
 
-message QueryGetLeastBondRequest {
-  string denom = 1;
-}
-
-message QueryGetLeastBondResponse {
-  LeastBond leastBond = 1;
-}
 
 message QueryGetEraUnbondLimitRequest {
   string denom = 1;

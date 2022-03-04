@@ -10,11 +10,6 @@ message ChainEra {
   uint32 era = 2;
 }
 
-message ChainBondingDuration {
-  string denom = 1;
-  uint32 era = 2;
-}
-
 message Pool {
   string denom = 1;
   repeated string addrs = 2;
@@ -167,12 +162,13 @@ enum OriginalTxType {
 }
 
 message RParams {
-    string creator = 1;
-    string denom = 2;
-    string gasPrice = 3;
-    string eraSeconds = 4;
-    string leastBond = 5;
-    repeated string validators = 6;
+    string denom = 1;
+    string gasPrice = 2;
+    string eraSeconds = 3;
+    string offset = 4;
+    uint32 bondingDuration = 5;
+    string leastBond = 6;
+    repeated string validators = 7;
 }
 
 message RValidator {

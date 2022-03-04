@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -19,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdSetEraUnbondLimit() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-era-unbond-limit [denom] [limit]",
-		Short: "Broadcast message set_era_unbond_limit",
+		Short: "Broadcast message set era unbond limit",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -50,45 +49,10 @@ func CmdSetEraUnbondLimit() *cobra.Command {
 	return cmd
 }
 
-func CmdSetChainBondingDuration() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "set-chain-bonding-duration [denom] [bonding_duration]",
-		Short: "Broadcast message set_chain_bonding_duration",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-
-			argEra, err := strconv.ParseUint(args[1], 10, 64)
-			if err != nil {
-				return err
-			}
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			msg := types.NewMsgSetChainBondingDuration(
-				clientCtx.GetFromAddress(),
-				argDenom,
-				uint32(argEra),
-			)
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
 func CmdSetPoolDetail() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-pool-detail [denom] [pool] [sub-accounts] [threshold]",
-		Short: "Broadcast message set_pool_detail",
+		Short: "Broadcast message set pool detail",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -126,15 +90,12 @@ func CmdSetPoolDetail() *cobra.Command {
 
 func CmdSetLeastBond() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-least-bond [denom] [amount]",
-		Short: "Broadcast message set_least_bond",
+		Use:   "set-least-bond [denom] [least bond]",
+		Short: "Broadcast message set least bond",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argAmount, ok := sdk.NewIntFromString(args[1])
-			if !ok {
-				return fmt.Errorf("amount %s cast error", args[1])
-			}
+			argLeastBond := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -144,7 +105,7 @@ func CmdSetLeastBond() *cobra.Command {
 			msg := types.NewMsgSetLeastBond(
 				clientCtx.GetFromAddress(),
 				argDenom,
-				argAmount,
+				argLeastBond,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -160,8 +121,8 @@ func CmdSetLeastBond() *cobra.Command {
 
 func CmdClearCurrentEraSnapShots() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "clear-current-era-snap-shots [denom]",
-		Short: "Broadcast message clear_current_era_snap_shots",
+		Use:   "clear-current-era-snapshots [denom]",
+		Short: "Broadcast message clear current era snapshots",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -224,7 +185,7 @@ func CmdSetStakingRewardCommission() *cobra.Command {
 func CmdSetProtocolFeeReceiver() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-protocol-fee-receiver [receiver]",
-		Short: "Broadcast message set_receiver",
+		Short: "Broadcast message set protocol fee receiver",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argReceiver, err := sdk.AccAddressFromBech32(args[0])
@@ -256,7 +217,7 @@ func CmdSetProtocolFeeReceiver() *cobra.Command {
 func CmdSetUnbondRelayFee() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-unbond-relay-fee [denom] [value]",
-		Short: "Broadcast message set_unbond_fee",
+		Short: "Broadcast message set unbond relay fee",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -290,7 +251,7 @@ func CmdSetUnbondRelayFee() *cobra.Command {
 func CmdSetUnbondCommission() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-unbond-commission [denom] [commission]",
-		Short: "Broadcast message set_unbond_commission",
+		Short: "Broadcast message set unbond commission",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
@@ -323,15 +284,20 @@ func CmdSetUnbondCommission() *cobra.Command {
 
 func CmdSetRParams() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-r-params [denom] [gas-price] [era-seconds] [least-bond] [validators]",
-		Short: "Broadcast message set common params of relayers",
-		Args:  cobra.ExactArgs(5),
+		Use:   "set-r-params [denom] [gas-price] [era-seconds] [offset] [bonding-duration] [least-bond] [validators]",
+		Short: "Broadcast message set common params of rtoken relayers",
+		Args:  cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argGasPrice := args[1]
 			argEraSeconds := args[2]
-			argLeastBond := args[3]
-			argValidators := strings.Split(args[4], ":")
+			argOffset := args[3]
+			argBondingDuration, err := strconv.ParseUint(args[4], 10, 32)
+			if err != nil {
+				return err
+			}
+			argLeastBond := args[5]
+			argValidators := strings.Split(args[6], ":")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -343,6 +309,8 @@ func CmdSetRParams() *cobra.Command {
 				argDenom,
 				argGasPrice,
 				argEraSeconds,
+				argOffset,
+				uint32(argBondingDuration),
 				argLeastBond,
 				argValidators,
 			)

@@ -68,20 +68,6 @@ func (q Querier) GetChainEra(goCtx context.Context, req *types.QueryGetChainEraR
 	return &types.QueryGetChainEraResponse{Era: ce.Era}, nil
 }
 
-func (q Querier) GetChainBondingDuration(goCtx context.Context, req *types.QueryGetChainBondingDurationRequest) (*types.QueryGetChainBondingDurationResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	cbd, found := q.Keeper.GetChainBondingDuration(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
-
-	return &types.QueryGetChainBondingDurationResponse{Era: cbd.Era}, nil
-}
-
 func (q Querier) GetProtocolFeeReceiver(goCtx context.Context, req *types.QueryGetProtocolFeeReceiverRequest) (*types.QueryGetProtocolFeeReceiverResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
@@ -127,20 +113,6 @@ func (q Querier) GetUnbondCommission(goCtx context.Context, req *types.QueryGetU
 	cms := q.Keeper.GetUnbondCommission(ctx, req.Denom)
 
 	return &types.QueryGetUnbondCommissionResponse{Commission: cms.String()}, nil
-}
-
-func (q Querier) GetLeastBond(goCtx context.Context, req *types.QueryGetLeastBondRequest) (*types.QueryGetLeastBondResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	lb, found := q.Keeper.LeastBond(ctx, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
-
-	return &types.QueryGetLeastBondResponse{LeastBond: &lb}, nil
 }
 
 func (q Querier) GetEraUnbondLimit(goCtx context.Context, req *types.QueryGetEraUnbondLimitRequest) (*types.QueryGetEraUnbondLimitResponse, error) {

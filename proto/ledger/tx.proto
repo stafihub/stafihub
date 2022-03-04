@@ -10,7 +10,6 @@ option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 // Msg defines the Msg service.
 service Msg {
   rpc SetEraUnbondLimit(MsgSetEraUnbondLimit) returns (MsgSetEraUnbondLimitResponse);
-  rpc SetChainBondingDuration(MsgSetChainBondingDuration) returns (MsgSetChainBondingDurationResponse);
   rpc SetPoolDetail(MsgSetPoolDetail) returns (MsgSetPoolDetailResponse);
   rpc SetLeastBond(MsgSetLeastBond) returns (MsgSetLeastBondResponse);
   rpc ClearCurrentEraSnapShots(MsgClearCurrentEraSnapShots) returns (MsgClearCurrentEraSnapShotsResponse);
@@ -24,6 +23,9 @@ service Msg {
   rpc Onboard(MsgOnboard) returns (MsgOnboardResponse);
   rpc SetRValidatorIndicator(MsgSetRValidatorIndicator) returns (MsgSetRValidatorIndicatorResponse);
   rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
+  rpc SetRelayGasPrice(MsgSetRelayGasPrice) returns (MsgSetRelayGasPriceResponse);
+  rpc SetEraSeconds(MsgSetEraSeconds) returns (MsgSetEraSecondsResponse);
+  rpc RmBondedPool(MsgRmBondedPool) returns (MsgRmBondedPoolResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -34,15 +36,6 @@ message MsgSetEraUnbondLimit {
 }
 
 message MsgSetEraUnbondLimitResponse {
-}
-
-message MsgSetChainBondingDuration {
-  string creator = 1;
-  string denom = 2;
-  uint32 era = 3;
-}
-
-message MsgSetChainBondingDurationResponse {
 }
 
 message MsgSetPoolDetail {
@@ -59,7 +52,7 @@ message MsgSetPoolDetailResponse {
 message MsgSetLeastBond {
   string creator = 1;
   string denom = 2;
-  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string leastBond = 3;
 }
 
 message MsgSetLeastBondResponse {
@@ -136,8 +129,10 @@ message MsgSetRParams {
   string denom = 2;
   string gasPrice = 3;
   string eraSeconds = 4;
-  string leastBond = 5;
-  repeated string validators = 6;
+  string offset = 5;
+  uint32 bondingDuration = 6;
+  string leastBond = 7;
+  repeated string validators = 8;
 }
 
 message MsgSetRParamsResponse {
@@ -173,6 +168,35 @@ message MsgSetRelayFeeReceiver {
 }
 
 message MsgSetRelayFeeReceiverResponse {
+}
+
+message MsgSetRelayGasPrice {
+  string creator = 1;
+  string denom = 2;
+  string gasPrice = 3;
+}
+
+message MsgSetRelayGasPriceResponse {
+}
+
+message MsgSetEraSeconds {
+  string creator = 1;
+  string denom = 2;
+  string eraSeconds = 3;
+  uint32 bondingDuration = 4;
+  string offset = 5;
+}
+
+message MsgSetEraSecondsResponse {
+}
+
+message MsgRmBondedPool {
+  string creator = 1;
+  string denom = 2;
+  string address = 3;
+}
+
+message MsgRmBondedPoolResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
