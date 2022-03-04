@@ -4,15 +4,17 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/app"
+	ledgertypes "github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/tendermint/spm/cosmoscmd"
 )
 
 var (
-	TestDenom      = "TestDenom"
-	TestDenom1     = "TestDenom1"
-	TestAddrPrefix = "Tstafi"
-	TestAdmin      string
-	TestAdminAcc   sdk.AccAddress
+	TestDenom       = "TestDenom"
+	TestDenom1      = "TestDenom1"
+	TestAddrPrefix  = "Tstafi"
+	TestLedgerArena = ledgertypes.ModuleName
+	TestAdmin       string
+	TestAdminAcc    sdk.AccAddress
 )
 
 func init() {

@@ -2,6 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	relayertypes "github.com/stafihub/stafihub/x/relayers/types"
 )
 
 type SudoKeeper interface {
@@ -9,7 +10,7 @@ type SudoKeeper interface {
 }
 
 type RelayerKeeper interface {
-	HasRelayer(ctx sdk.Context, taipe, denom, address string) bool
-	GetThreshold(ctx sdk.Context, taipe, denom string) (uint32, bool)
-	SetLastVoter(ctx sdk.Context, denom, voter string)
+	HasRelayer(ctx sdk.Context, arena, denom, address string) bool
+	GetThreshold(ctx sdk.Context, arena, denom string) (relayertypes.Threshold, bool)
+	SetLastVoter(ctx sdk.Context, arena, denom, voter string)
 }

@@ -12,10 +12,10 @@ var (
 	_ sdk.Msg = &MsgUpdateThreshold{}
 )
 
-func NewMsgCreateRelayer(creator sdk.AccAddress, taipe, denom string, addresses []string) *MsgCreateRelayer {
+func NewMsgCreateRelayer(creator sdk.AccAddress, arena, denom string, addresses []string) *MsgCreateRelayer {
 	return &MsgCreateRelayer{
 		Creator:   creator.String(),
-		Taipe: taipe,
+		Arena: arena,
 		Denom:     denom,
 		Addresses: addresses,
 	}
@@ -56,10 +56,10 @@ func (msg *MsgCreateRelayer) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgDeleteRelayer(creator sdk.AccAddress, taipe, denom string, address sdk.AccAddress) *MsgDeleteRelayer {
+func NewMsgDeleteRelayer(creator sdk.AccAddress, arena, denom string, address sdk.AccAddress) *MsgDeleteRelayer {
 	return &MsgDeleteRelayer{
 		Creator: creator.String(),
-		Taipe:taipe,
+		Arena:arena,
 		Denom:   denom,
 		Address: address.String(),
 	}
@@ -89,10 +89,10 @@ func (msg *MsgDeleteRelayer) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgUpdateThreshold(creator sdk.AccAddress, taipe, denom string, value uint32) *MsgUpdateThreshold {
+func NewMsgUpdateThreshold(creator sdk.AccAddress, arena, denom string, value uint32) *MsgUpdateThreshold {
 	return &MsgUpdateThreshold{
 		Creator: creator.String(),
-		Taipe: taipe,
+		Arena: arena,
 		Denom:   denom,
 		Value:   value,
 	}

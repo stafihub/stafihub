@@ -15,7 +15,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 		return types.ErrEraNotContinuable
 	}
 
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
 	if !ok {
 		return types.ErrLastVoterNobody
 	}
@@ -71,7 +71,7 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 		return types.ErrStateNotEraUpdated
 	}
 
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
 	if !ok {
 		return types.ErrLastVoterNobody
 	}
@@ -121,7 +121,7 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 		return types.ErrStateNotEraUpdated
 	}
 
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
 	if !ok {
 		return types.ErrLastVoterNobody
 	}
@@ -248,7 +248,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		return types.ErrStateNotBondReported
 	}
 
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
 	if !ok {
 		return types.ErrLastVoterNobody
 	}
@@ -353,7 +353,7 @@ func (k Keeper) ProcessWithdrawReportProposal(ctx sdk.Context, p *types.Withdraw
 		return types.ErrStateNotActiveReported
 	}
 
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
 	if !ok {
 		return types.ErrLastVoterNobody
 	}
@@ -383,7 +383,7 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 		return types.ErrStateNotTransferable
 	}
 
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.Denom)
+	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
 	if !ok {
 		return types.ErrLastVoterNobody
 	}

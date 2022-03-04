@@ -11,27 +11,29 @@ option go_package = "github.com/stafihub/stafihub/x/relayers/types";
 // Query defines the gRPC querier service.
 service Query {
     // Queries a list of relayersByDenom items.
-	rpc RelayersByDenom(QueryRelayersByDenomRequest) returns (QueryRelayersByDenomResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/relayers/{denom}";
+	rpc Relayers(QueryRelayersRequest) returns (QueryRelayersResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/relayers/{arena}/{denom}";
 	}
 
     // Queries a threshold by denom.
 	rpc Threshold(QueryGetThresholdRequest) returns (QueryGetThresholdResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/relayers/threshold/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/relayers/threshold/{arena}/{denom}";
 	}
 // this line is used by starport scaffolding # 2
 }
 
-message QueryRelayersByDenomRequest {
-    string denom = 1;
+message QueryRelayersRequest {
+    string arena = 1;
+    string denom = 2;
 }
 
-message QueryRelayersByDenomResponse {
+message QueryRelayersResponse {
     repeated string relayers = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetThresholdRequest {
-	  string denom = 1;
+	  string arena = 1;
+      string denom = 2;
 }
 
 message QueryGetThresholdResponse {

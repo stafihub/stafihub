@@ -30,11 +30,12 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 func CmdRelayersByDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "relayers [denom]",
-		Short: "Query relayers_by_denom",
-		Args:  cobra.ExactArgs(1),
+		Use:   "relayers [arena] [denom]",
+		Short: "Query relayers",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
+			reqArena := args[0]
+			reqDenom := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -42,11 +43,12 @@ func CmdRelayersByDenom() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryRelayersByDenomRequest{
+			params := &types.QueryRelayersRequest{
+				Arena: reqArena,
 				Denom: reqDenom,
 			}
 
-			res, err := queryClient.RelayersByDenom(cmd.Context(), params)
+			res, err := queryClient.Relayers(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

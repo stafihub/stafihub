@@ -30,7 +30,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	if msg.Taipe == ledgertypes.ModuleName {
+	if msg.Arena == ledgertypes.ModuleName {
 		_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
 		if !ok {
 			return nil, banktypes.ErrDenomMetadataNotFound
@@ -40,16 +40,16 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 
 	for _, address := range msg.Addresses {
 		// Check if the value already exists
-		if k.Keeper.HasRelayer(ctx, msg.Taipe, msg.Denom, address) {
+		if k.Keeper.HasRelayer(ctx, msg.Arena, msg.Denom, address) {
 			return nil, types.ErrRelayerAlreadySet
 		}
 
-		k.AddRelayer(ctx, msg.Taipe, msg.Denom, address)
+		k.AddRelayer(ctx, msg.Arena, msg.Denom, address)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRelayerAdded,
-				sdk.NewAttribute(types.AttributeKeyTaipe, msg.Taipe),
+				sdk.NewAttribute(types.AttributeKeyArena, msg.Arena),
 				sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
 				sdk.NewAttribute(types.AttributeKeyRelayer, address),
 			),
@@ -65,16 +65,16 @@ func (k msgServer) DeleteRelayer(goCtx context.Context, msg *types.MsgDeleteRela
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	if !k.Keeper.HasRelayer(ctx, msg.Taipe, msg.Denom, msg.Address) {
+	if !k.Keeper.HasRelayer(ctx, msg.Arena, msg.Denom, msg.Address) {
 		return nil, types.ErrRelayerNotFound
 	}
 
-	k.RemoveRelayer(ctx, msg.Taipe, msg.Denom, msg.Address)
+	k.RemoveRelayer(ctx, msg.Arena, msg.Denom, msg.Address)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeRelayerRemoved,
-			sdk.NewAttribute(types.AttributeKeyTaipe, msg.Taipe),
+			sdk.NewAttribute(types.AttributeKeyArena, msg.Arena),
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
 			sdk.NewAttribute(types.AttributeKeyRelayer, msg.Address),
 		),
@@ -89,19 +89,24 @@ func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateTh
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	if msg.Taipe == ledgertypes.ModuleName {
+	if msg.Arena == ledgertypes.ModuleName {
 		_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
 		if !ok {
 			return nil, banktypes.ErrDenomMetadataNotFound
 		}
 	}
 
-	last, _ := k.GetThreshold(ctx, msg.Taipe, msg.Denom)
-	k.SetThreshold(ctx, msg.Taipe, msg.Denom, msg.Value)
+	lastTh := uint32(0)
+	if last, ok := k.GetThreshold(ctx, msg.Arena, msg.Denom); ok {
+		lastTh = last.Value
+	}
+
+	var threshold = types.Threshold{Denom: msg.Denom, Value: msg.Value}
+	k.SetThreshold(ctx, threshold)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeThresholdUpdated,
-			sdk.NewAttribute(types.AttributeKeyLastThreshold, strconv.FormatUint(uint64(last), 10)),
+			sdk.NewAttribute(types.AttributeKeyLastThreshold, strconv.FormatUint(uint64(lastTh), 10)),
 			sdk.NewAttribute(types.AttributeKeyCurrentThreshold, strconv.FormatUint(uint64(msg.Value), 10)),
 		),
 	)

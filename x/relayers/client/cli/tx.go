@@ -42,11 +42,11 @@ func GetTxCmd() *cobra.Command {
 
 func CmdCreateRelayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-relayers [taipe] [denom] [addresses]",
+		Use:   "add-relayers [arena] [denom] [addresses]",
 		Short: "Add new relayers",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argTaipe := args[0]
+			argArena := args[0]
 
 			argDenom := args[1]
 			if err := sdk.ValidateDenom(argDenom); err != nil {
@@ -68,7 +68,7 @@ func CmdCreateRelayer() *cobra.Command {
 
 			msg := types.NewMsgCreateRelayer(
 				clientCtx.GetFromAddress(),
-				argTaipe,
+				argArena,
 				argDenom,
 				argValidators,
 			)
@@ -86,11 +86,11 @@ func CmdCreateRelayer() *cobra.Command {
 
 func CmdDeleteRelayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-relayer [taipe] [denom] [address]",
+		Use:   "delete-relayer [arena] [denom] [address]",
 		Short: "Delete a relayer",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argTaipe := args[0]
+			argArena := args[0]
 
 			argDenom := args[1]
 			if sdk.ValidateDenom(argDenom) != nil {
@@ -109,7 +109,7 @@ func CmdDeleteRelayer() *cobra.Command {
 
 			msg := types.NewMsgDeleteRelayer(
 				clientCtx.GetFromAddress(),
-				argTaipe,
+				argArena,
 				argDenom,
 				relAddr,
 			)
@@ -127,11 +127,11 @@ func CmdDeleteRelayer() *cobra.Command {
 
 func CmdUpdateThreshold() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-threshold [taipe] [denom] [value]",
+		Use:   "update-threshold [arena] [denom] [value]",
 		Short: "Update a threshold",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argTaipe := args[0]
+			argArena := args[0]
 
 			argDenom := args[1]
 			if sdk.ValidateDenom(argDenom) != nil {
@@ -150,7 +150,7 @@ func CmdUpdateThreshold() *cobra.Command {
 
 			msg := types.NewMsgUpdateThreshold(
 				clientCtx.GetFromAddress(),
-				argTaipe,
+				argArena,
 				argDenom,
 				uint32(value),
 			)

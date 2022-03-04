@@ -12,7 +12,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set all the relayer
 	for _, rel := range genState.Relayers {
 		for _, addr := range rel.Addrs {
-			k.AddRelayer(ctx, rel.Denom, addr)
+			k.AddRelayer(ctx, rel.Arena, rel.Denom, addr)
 		}
 	}
 	// Set all the threshold
@@ -27,7 +27,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
 	genesis.Relayers = k.GetAllRelayer(ctx)
-	genesis.Thresholds = k.GetThreshold(ctx)
+	genesis.Thresholds = k.GetAllThreshold(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
