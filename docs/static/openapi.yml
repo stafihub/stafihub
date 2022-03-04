@@ -12783,46 +12783,6 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafihub/stafihub/bridge/relayers/{chainId}':
-    get:
-      summary: Queries a list of Relayers items.
-      operationId: StafihubStafihubBridgeRelayers
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              addressList:
-                type: array
-                items:
-                  type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: chainId
-          in: path
-          required: true
-          type: integer
-          format: int64
-      tags:
-        - Query
   /stafihub/stafihub/bridge/resource_id_types:
     get:
       summary: Queries a list of ResourceIdTypes items.
@@ -12889,44 +12849,6 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
-      tags:
-        - Query
-  '/stafihub/stafihub/bridge/threshold/{chainId}':
-    get:
-      summary: Queries a list of Threshold items.
-      operationId: StafihubStafihubBridgeThreshold
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              threshold:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: chainId
-          in: path
-          required: true
-          type: integer
-          format: int64
       tags:
         - Query
   '/stafihub/stafihub/ledger/EraExchangeRate/{denom}/{era}':
@@ -22101,13 +22023,9 @@ definitions:
       freezing clients
   stafihub.stafihub.bridge.MsgAddChainIdResponse:
     type: object
-  stafihub.stafihub.bridge.MsgAddRelayerResponse:
-    type: object
   stafihub.stafihub.bridge.MsgDepositResponse:
     type: object
   stafihub.stafihub.bridge.MsgRmChainIdResponse:
-    type: object
-  stafihub.stafihub.bridge.MsgRmRelayerResponse:
     type: object
   stafihub.stafihub.bridge.MsgSetRelayFeeReceiverResponse:
     type: object
@@ -22116,8 +22034,6 @@ definitions:
   stafihub.stafihub.bridge.MsgSetResourceidToDenomResponse:
     type: object
   stafihub.stafihub.bridge.MsgSetResourceidTypeResponse:
-    type: object
-  stafihub.stafihub.bridge.MsgSetThresholdResponse:
     type: object
   stafihub.stafihub.bridge.MsgVoteProposalResponse:
     type: object
@@ -22190,13 +22106,6 @@ definitions:
     properties:
       value:
         type: string
-  stafihub.stafihub.bridge.QueryRelayersResponse:
-    type: object
-    properties:
-      addressList:
-        type: array
-        items:
-          type: string
   stafihub.stafihub.bridge.QueryResourceIdTypesResponse:
     type: object
     properties:
@@ -22211,11 +22120,6 @@ definitions:
         type: array
         items:
           type: string
-  stafihub.stafihub.bridge.QueryThresholdResponse:
-    type: object
-    properties:
-      threshold:
-        type: string
   stafihub.stafihub.ledger.AccountUnbond:
     type: object
     properties:

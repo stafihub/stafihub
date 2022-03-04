@@ -20,8 +20,9 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		bankKeeper types.BankKeeper
-		sudoKeeper types.SudoKeeper
+		bankKeeper     types.BankKeeper
+		sudoKeeper     types.SudoKeeper
+		relayersKeeper types.RelayersKeeper
 	}
 )
 
@@ -53,35 +54,35 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) AddRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
-	store := ctx.KVStore(k.storeKey)
-	store.Set(types.RelayStoreKey(chainId, address), []byte{})
-}
+// func (k Keeper) AddRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
+// 	store := ctx.KVStore(k.storeKey)
+// 	store.Set(types.RelayStoreKey(chainId, address), []byte{})
+// }
 
-func (k Keeper) HasRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) bool {
-	store := ctx.KVStore(k.storeKey)
-	return store.Has(types.RelayStoreKey(chainId, address))
-}
+// func (k Keeper) HasRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) bool {
+// 	store := ctx.KVStore(k.storeKey)
+// 	return store.Has(types.RelayStoreKey(chainId, address))
+// }
 
-func (k Keeper) RmRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
-	store := ctx.KVStore(k.storeKey)
-	store.Delete(types.RelayStoreKey(chainId, address))
-}
+// func (k Keeper) RmRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
+// 	store := ctx.KVStore(k.storeKey)
+// 	store.Delete(types.RelayStoreKey(chainId, address))
+// }
 
-func (k Keeper) GetRelayers(ctx sdk.Context, chainId uint8) []string {
-	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, append(types.RelayerStoreKeyPrefix, chainId))
-	defer iterator.Close()
+// func (k Keeper) GetRelayers(ctx sdk.Context, chainId uint8) []string {
+// 	store := ctx.KVStore(k.storeKey)
+// 	iterator := sdk.KVStorePrefixIterator(store, append(types.RelayerStoreKeyPrefix, chainId))
+// 	defer iterator.Close()
 
-	relayerList := make([]string, 0)
-	for ; iterator.Valid(); iterator.Next() {
-		if len(iterator.Key()) < 2 {
-			continue
-		}
-		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()[2:]).String())
-	}
-	return relayerList
-}
+// 	relayerList := make([]string, 0)
+// 	for ; iterator.Valid(); iterator.Next() {
+// 		if len(iterator.Key()) < 2 {
+// 			continue
+// 		}
+// 		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()[2:]).String())
+// 	}
+// 	return relayerList
+// }
 
 func (k Keeper) AddChainId(ctx sdk.Context, chainId uint8) {
 	store := ctx.KVStore(k.storeKey)
@@ -113,19 +114,19 @@ func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
 	return chainIdList
 }
 
-func (k Keeper) SetThreshold(ctx sdk.Context, chainId uint8, threshold uint8) {
-	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ThresholdStoreKey(chainId), []byte{threshold})
-}
+// func (k Keeper) SetThreshold(ctx sdk.Context, chainId uint8, threshold uint8) {
+// 	store := ctx.KVStore(k.storeKey)
+// 	store.Set(types.ThresholdStoreKey(chainId), []byte{threshold})
+// }
 
-func (k Keeper) GetThreshold(ctx sdk.Context, chainId uint8) (uint8, bool) {
-	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.ThresholdStoreKey(chainId))
-	if len(bts) == 0 {
-		return 0, false
-	}
-	return bts[0], true
-}
+// func (k Keeper) GetThreshold(ctx sdk.Context, chainId uint8) (uint8, bool) {
+// 	store := ctx.KVStore(k.storeKey)
+// 	bts := store.Get(types.ThresholdStoreKey(chainId))
+// 	if len(bts) == 0 {
+// 		return 0, false
+// 	}
+// 	return bts[0], true
+// }
 
 func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)

@@ -17,4 +17,5 @@ var (
 	ErrAlreadyExecuted        = sdkerrors.Register(ModuleName, 1106, "voter already executed")
 	ErrThresholdNotSet        = sdkerrors.Register(ModuleName, 1107, "threshold not set")
 	ErrRelayFeeReceiverNotSet = sdkerrors.Register(ModuleName, 1108, "relay fee receiver not set")
+	ErrRelayerNotExist        = sdkerrors.Register(ModuleName, 1109, "relay not exist")
 )

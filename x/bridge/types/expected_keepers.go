@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	relayerTypes "github.com/stafihub/stafihub/x/relayers/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -24,4 +25,9 @@ type BankKeeper interface {
 type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
 	GetAdmin(ctx sdk.Context) sdk.AccAddress
+}
+
+type RelayersKeeper interface {
+	HasRelayer(ctx sdk.Context, arena, denom, addr string) bool
+	GetThreshold(ctx sdk.Context, arena, denom string) (relayerTypes.Threshold, bool)
 }

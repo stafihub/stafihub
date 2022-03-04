@@ -16,15 +16,6 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/stafihub/stafihub/bridge/params";
   }
-  // Queries a list of Relayers items.
-	rpc Relayers(QueryRelayersRequest) returns (QueryRelayersResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/bridge/relayers/{chainId}";
-	}
-
-// Queries a list of Threshold items.
-	rpc Threshold(QueryThresholdRequest) returns (QueryThresholdResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/bridge/threshold/{chainId}";
-	}
 
 // Queries a list of ChaindIds items.
 	rpc ChaindIds(QueryChaindIdsRequest) returns (QueryChaindIdsResponse) {
@@ -68,21 +59,6 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryRelayersRequest {
-	uint32 chainId =1;
-}
-
-message QueryRelayersResponse {
-  repeated string addressList = 1;
-}
-
-message QueryThresholdRequest {
-	uint32 chainId = 1;
-}
-
-message QueryThresholdResponse {
-  string threshold = 1;
-}
 
 message QueryChaindIdsRequest {
 }

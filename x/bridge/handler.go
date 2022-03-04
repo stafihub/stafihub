@@ -17,12 +17,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgAddRelayer:
-			res, err := msgServer.AddRelayer(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetThreshold:
-			res, err := msgServer.SetThreshold(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetResourceidToDenom:
 			res, err := msgServer.SetResourceidToDenom(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
@@ -40,9 +34,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRmChainId:
 			res, err := msgServer.RmChainId(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRmRelayer:
-			res, err := msgServer.RmRelayer(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetRelayFeeReceiver:
 			res, err := msgServer.SetRelayFeeReceiver(sdk.WrapSDKContext(ctx), msg)

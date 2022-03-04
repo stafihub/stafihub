@@ -9,37 +9,17 @@ option go_package = "github.com/stafihub/stafihub/x/bridge/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc AddRelayer(MsgAddRelayer) returns (MsgAddRelayerResponse);
-  rpc SetThreshold(MsgSetThreshold) returns (MsgSetThresholdResponse);
   rpc SetResourceidToDenom(MsgSetResourceidToDenom) returns (MsgSetResourceidToDenomResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc AddChainId(MsgAddChainId) returns (MsgAddChainIdResponse);
   rpc SetResourceidType(MsgSetResourceidType) returns (MsgSetResourceidTypeResponse);
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
   rpc RmChainId(MsgRmChainId) returns (MsgRmChainIdResponse);
-  rpc RmRelayer(MsgRmRelayer) returns (MsgRmRelayerResponse);
   rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
   rpc SetRelayFee(MsgSetRelayFee) returns (MsgSetRelayFeeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgAddRelayer {
-  string creator = 1;
-  uint32 chainId = 2;
-  string address = 3;
-}
-
-message MsgAddRelayerResponse {
-}
-
-message MsgSetThreshold {
-  string creator = 1;
-  uint32 chainId = 2;
-  uint32 threshold = 3;
-}
-
-message MsgSetThresholdResponse {
-}
 
 message MsgSetResourceidToDenom {
   string creator = 1;
@@ -96,15 +76,6 @@ message MsgRmChainId {
 }
 
 message MsgRmChainIdResponse {
-}
-
-message MsgRmRelayer {
-  string creator = 1;
-  uint32 chainId = 2;
-  string address = 3;
-}
-
-message MsgRmRelayerResponse {
 }
 
 message MsgSetRelayFeeReceiver {

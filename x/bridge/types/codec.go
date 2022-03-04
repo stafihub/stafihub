@@ -8,27 +8,18 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgAddRelayer{}, "bridge/AddRelayer", nil)
-	cdc.RegisterConcrete(&MsgSetThreshold{}, "bridge/SetThreshold", nil)
 	cdc.RegisterConcrete(&MsgSetResourceidToDenom{}, "bridge/SetResourceidToDenom", nil)
 	cdc.RegisterConcrete(&MsgDeposit{}, "bridge/Deposit", nil)
 	cdc.RegisterConcrete(&MsgAddChainId{}, "bridge/AddChainId", nil)
 	cdc.RegisterConcrete(&MsgSetResourceidType{}, "bridge/SetResourceidType", nil)
 	cdc.RegisterConcrete(&MsgVoteProposal{}, "bridge/VoteProposal", nil)
 	cdc.RegisterConcrete(&MsgRmChainId{}, "bridge/RmChainId", nil)
-	cdc.RegisterConcrete(&MsgRmRelayer{}, "bridge/RmRelayer", nil)
 	cdc.RegisterConcrete(&MsgSetRelayFeeReceiver{}, "bridge/SetRelayFeeReceiver", nil)
 	cdc.RegisterConcrete(&MsgSetRelayFee{}, "bridge/SetRelayFee", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddRelayer{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSetThreshold{},
-	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetResourceidToDenom{},
 	)
@@ -46,9 +37,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRmChainId{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRmRelayer{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetRelayFeeReceiver{},

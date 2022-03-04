@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/bridge/types"
@@ -35,6 +36,11 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 	}
 
 	chainId := uint8(msg.ChainId)
+	chainIdStr := fmt.Sprintf("%d", chainId)
+	hasRelayer := k.Keeper.relayersKeeper.HasRelayer(ctx, types.ModuleName, chainIdStr, msg.Creator)
+	if !hasRelayer {
+		return nil, types.ErrRelayerNotExist
+	}
 	proposal, found := k.Keeper.GetProposal(ctx, chainId, msg.DepositNonce, resourceId, content)
 	if !found {
 		proposal = &types.Proposal{
@@ -53,11 +59,11 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 	}
 	proposal.Voters = append(proposal.Voters, msg.Creator)
 
-	threshold, found := k.Keeper.GetThreshold(ctx, chainId)
+	threshold, found := k.Keeper.relayersKeeper.GetThreshold(ctx, types.ModuleName, chainIdStr)
 	if !found {
 		return nil, types.ErrThresholdNotSet
 	}
-	if len(proposal.Voters) >= int(threshold) {
+	if len(proposal.Voters) >= int(threshold.Value) {
 		idType := k.Keeper.GetResourceIdType(ctx, resourceId)
 		if idType == types.ResourceIdTypeForeign {
 			err := k.bankKeeper.MintCoins(ctx, types.ModuleName, shouldMintOrUnlockCoins)
