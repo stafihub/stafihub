@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -11,9 +12,10 @@ var (
 	_ sdk.Msg = &MsgUpdateThreshold{}
 )
 
-func NewMsgCreateRelayer(creator sdk.AccAddress, denom string, addresses []string) *MsgCreateRelayer {
+func NewMsgCreateRelayer(creator sdk.AccAddress, arena, denom string, addresses []string) *MsgCreateRelayer {
 	return &MsgCreateRelayer{
 		Creator:   creator.String(),
+		Arena: arena,
 		Denom:     denom,
 		Addresses: addresses,
 	}
@@ -38,15 +40,26 @@ func (msg *MsgCreateRelayer) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateRelayer) ValidateBasic() error {
-	if msg.Creator == "" || len(msg.Addresses) == 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Addresses)
+	if msg.Creator == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
+	if len(msg.Addresses) == 0 {
+		return fmt.Errorf("Addresses should not be empty")
+	}
+
+	for _, addr := range msg.Addresses {
+		if _, err := sdk.AccAddressFromBech32(addr); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid relayer address %s", addr)
+		}
 	}
 	return nil
 }
 
-func NewMsgDeleteRelayer(creator sdk.AccAddress, denom string, address sdk.AccAddress) *MsgDeleteRelayer {
+func NewMsgDeleteRelayer(creator sdk.AccAddress, arena, denom string, address sdk.AccAddress) *MsgDeleteRelayer {
 	return &MsgDeleteRelayer{
 		Creator: creator.String(),
+		Arena:arena,
 		Denom:   denom,
 		Address: address.String(),
 	}
@@ -76,9 +89,10 @@ func (msg *MsgDeleteRelayer) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgUpdateThreshold(creator sdk.AccAddress, denom string, value uint32) *MsgUpdateThreshold {
+func NewMsgUpdateThreshold(creator sdk.AccAddress, arena, denom string, value uint32) *MsgUpdateThreshold {
 	return &MsgUpdateThreshold{
 		Creator: creator.String(),
+		Arena: arena,
 		Denom:   denom,
 		Value:   value,
 	}

@@ -6,6 +6,7 @@ const (
 	EventTypeRelayerRemoved   = "relayer_removed"
 	EventTypeThresholdUpdated = "threshold_updated"
 
+	AttributeKeyArena            = "arena"
 	AttributeKeyDenom            = "denom"
 	AttributeKeyRelayer          = "relayer"
 	AttributeKeyLastThreshold    = "last_threshold"

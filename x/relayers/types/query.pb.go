@@ -30,22 +30,23 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type QueryRelayersByDenomRequest struct {
-	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+type QueryRelayersRequest struct {
+	Arena string `protobuf:"bytes,1,opt,name=arena,proto3" json:"arena,omitempty"`
+	Denom string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
 }
 
-func (m *QueryRelayersByDenomRequest) Reset()         { *m = QueryRelayersByDenomRequest{} }
-func (m *QueryRelayersByDenomRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryRelayersByDenomRequest) ProtoMessage()    {}
-func (*QueryRelayersByDenomRequest) Descriptor() ([]byte, []int) {
+func (m *QueryRelayersRequest) Reset()         { *m = QueryRelayersRequest{} }
+func (m *QueryRelayersRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryRelayersRequest) ProtoMessage()    {}
+func (*QueryRelayersRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e796b53400be0772, []int{0}
 }
-func (m *QueryRelayersByDenomRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryRelayersRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRelayersByDenomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryRelayersRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRelayersByDenomRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryRelayersRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,41 +56,48 @@ func (m *QueryRelayersByDenomRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryRelayersByDenomRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRelayersByDenomRequest.Merge(m, src)
+func (m *QueryRelayersRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRelayersRequest.Merge(m, src)
 }
-func (m *QueryRelayersByDenomRequest) XXX_Size() int {
+func (m *QueryRelayersRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRelayersByDenomRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRelayersByDenomRequest.DiscardUnknown(m)
+func (m *QueryRelayersRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRelayersRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRelayersByDenomRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryRelayersRequest proto.InternalMessageInfo
 
-func (m *QueryRelayersByDenomRequest) GetDenom() string {
+func (m *QueryRelayersRequest) GetArena() string {
+	if m != nil {
+		return m.Arena
+	}
+	return ""
+}
+
+func (m *QueryRelayersRequest) GetDenom() string {
 	if m != nil {
 		return m.Denom
 	}
 	return ""
 }
 
-type QueryRelayersByDenomResponse struct {
+type QueryRelayersResponse struct {
 	Relayers []string `protobuf:"bytes,1,rep,name=relayers,proto3" json:"relayers,omitempty"`
 }
 
-func (m *QueryRelayersByDenomResponse) Reset()         { *m = QueryRelayersByDenomResponse{} }
-func (m *QueryRelayersByDenomResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryRelayersByDenomResponse) ProtoMessage()    {}
-func (*QueryRelayersByDenomResponse) Descriptor() ([]byte, []int) {
+func (m *QueryRelayersResponse) Reset()         { *m = QueryRelayersResponse{} }
+func (m *QueryRelayersResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryRelayersResponse) ProtoMessage()    {}
+func (*QueryRelayersResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e796b53400be0772, []int{1}
 }
-func (m *QueryRelayersByDenomResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryRelayersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRelayersByDenomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryRelayersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRelayersByDenomResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryRelayersResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -99,19 +107,19 @@ func (m *QueryRelayersByDenomResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *QueryRelayersByDenomResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRelayersByDenomResponse.Merge(m, src)
+func (m *QueryRelayersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRelayersResponse.Merge(m, src)
 }
-func (m *QueryRelayersByDenomResponse) XXX_Size() int {
+func (m *QueryRelayersResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRelayersByDenomResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRelayersByDenomResponse.DiscardUnknown(m)
+func (m *QueryRelayersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRelayersResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRelayersByDenomResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryRelayersResponse proto.InternalMessageInfo
 
-func (m *QueryRelayersByDenomResponse) GetRelayers() []string {
+func (m *QueryRelayersResponse) GetRelayers() []string {
 	if m != nil {
 		return m.Relayers
 	}
@@ -119,7 +127,8 @@ func (m *QueryRelayersByDenomResponse) GetRelayers() []string {
 }
 
 type QueryGetThresholdRequest struct {
-	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Arena string `protobuf:"bytes,1,opt,name=arena,proto3" json:"arena,omitempty"`
+	Denom string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
 }
 
 func (m *QueryGetThresholdRequest) Reset()         { *m = QueryGetThresholdRequest{} }
@@ -154,6 +163,13 @@ func (m *QueryGetThresholdRequest) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_QueryGetThresholdRequest proto.InternalMessageInfo
+
+func (m *QueryGetThresholdRequest) GetArena() string {
+	if m != nil {
+		return m.Arena
+	}
+	return ""
+}
 
 func (m *QueryGetThresholdRequest) GetDenom() string {
 	if m != nil {
@@ -207,8 +223,8 @@ func (m *QueryGetThresholdResponse) GetThreshold() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*QueryRelayersByDenomRequest)(nil), "stafihub.stafihub.relayers.QueryRelayersByDenomRequest")
-	proto.RegisterType((*QueryRelayersByDenomResponse)(nil), "stafihub.stafihub.relayers.QueryRelayersByDenomResponse")
+	proto.RegisterType((*QueryRelayersRequest)(nil), "stafihub.stafihub.relayers.QueryRelayersRequest")
+	proto.RegisterType((*QueryRelayersResponse)(nil), "stafihub.stafihub.relayers.QueryRelayersResponse")
 	proto.RegisterType((*QueryGetThresholdRequest)(nil), "stafihub.stafihub.relayers.QueryGetThresholdRequest")
 	proto.RegisterType((*QueryGetThresholdResponse)(nil), "stafihub.stafihub.relayers.QueryGetThresholdResponse")
 }
@@ -216,7 +232,7 @@ func init() {
 func init() { proto.RegisterFile("relayers/query.proto", fileDescriptor_e796b53400be0772) }
 
 var fileDescriptor_e796b53400be0772 = []byte{
-	// 384 bytes of a gzipped FileDescriptorProto
+	// 395 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x29, 0x4a, 0xcd, 0x49,
 	0xac, 0x4c, 0x2d, 0x2a, 0xd6, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
 	0x17, 0x92, 0x2a, 0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2, 0x83, 0x33, 0x60, 0xea, 0xa4,
@@ -224,23 +240,24 @@ var fileDescriptor_e796b53400be0772 = []byte{
 	0x4b, 0x12, 0x4b, 0x32, 0xf3, 0xf3, 0x8a, 0x21, 0x3a, 0xa5, 0xb4, 0x92, 0xf3, 0x8b, 0x73, 0xf3,
 	0x8b, 0xf5, 0x93, 0x12, 0x8b, 0x53, 0x21, 0x46, 0xea, 0x97, 0x19, 0x26, 0xa5, 0x96, 0x24, 0x1a,
 	0xea, 0x17, 0x24, 0xa6, 0x67, 0xe6, 0x81, 0x15, 0x43, 0xd5, 0x8a, 0xa4, 0xe7, 0xa7, 0xe7, 0x83,
-	0x99, 0xfa, 0x20, 0x16, 0x44, 0x54, 0xc9, 0x98, 0x4b, 0x3a, 0x10, 0xa4, 0x2f, 0x08, 0x6a, 0xa1,
-	0x53, 0xa5, 0x4b, 0x6a, 0x5e, 0x7e, 0x6e, 0x50, 0x6a, 0x61, 0x69, 0x6a, 0x71, 0x89, 0x90, 0x08,
-	0x17, 0x6b, 0x0a, 0x88, 0x2f, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x19, 0x04, 0xe1, 0x28, 0x39, 0x70,
-	0xc9, 0x60, 0xd7, 0x54, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x2a, 0xa4, 0xc0, 0xc5, 0x01, 0xf3, 0x80,
-	0x04, 0xa3, 0x02, 0xb3, 0x06, 0xa7, 0x13, 0xcb, 0x89, 0x7b, 0xf2, 0x0c, 0x41, 0x70, 0x51, 0x25,
-	0x03, 0x2e, 0x09, 0xb0, 0x09, 0xee, 0xa9, 0x25, 0x21, 0x19, 0x45, 0xa9, 0xc5, 0x19, 0xf9, 0x39,
-	0x29, 0xf8, 0xed, 0xb4, 0xe4, 0x92, 0xc4, 0xa2, 0x03, 0x6a, 0xa1, 0x0c, 0x17, 0x67, 0x09, 0x4c,
-	0x10, 0xac, 0x8d, 0x37, 0x08, 0x21, 0x60, 0xf4, 0x96, 0x89, 0x8b, 0x15, 0xac, 0x57, 0x68, 0x23,
-	0x23, 0x17, 0x3f, 0x9a, 0xa3, 0x85, 0xcc, 0xf5, 0x70, 0x07, 0xbf, 0x1e, 0x9e, 0xb0, 0x91, 0xb2,
-	0x20, 0x5d, 0x23, 0xc4, 0xb9, 0x4a, 0xda, 0x4d, 0x97, 0x9f, 0x4c, 0x66, 0x52, 0x15, 0x52, 0xd6,
-	0x87, 0x69, 0x44, 0x30, 0xe0, 0x29, 0xa4, 0x1a, 0xec, 0xef, 0x5a, 0xa1, 0xf5, 0x8c, 0x5c, 0x9c,
-	0x70, 0x1f, 0x0b, 0x99, 0x10, 0xb4, 0x14, 0x4b, 0x90, 0x4a, 0x99, 0x92, 0xa8, 0x0b, 0xea, 0x4e,
-	0x53, 0xb0, 0x3b, 0xf5, 0x85, 0x74, 0xf1, 0xb9, 0x13, 0x1e, 0xce, 0x30, 0x17, 0x3b, 0xb9, 0x9f,
-	0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31,
-	0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c, 0x43, 0x94, 0x6e, 0x7a, 0x66, 0x09, 0xc8, 0xee,
-	0xe4, 0xfc, 0x5c, 0x2c, 0x46, 0x56, 0x20, 0x19, 0x5a, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06, 0x4e,
-	0xa3, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0xb1, 0x4e, 0x79, 0xf9, 0x37, 0x03, 0x00, 0x00,
+	0x99, 0xfa, 0x20, 0x16, 0x44, 0x54, 0xc9, 0x89, 0x4b, 0x24, 0x10, 0xa4, 0x2f, 0x08, 0x6a, 0x61,
+	0x50, 0x6a, 0x61, 0x69, 0x6a, 0x71, 0x89, 0x90, 0x08, 0x17, 0x6b, 0x62, 0x51, 0x6a, 0x5e, 0xa2,
+	0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67, 0x10, 0x84, 0x03, 0x12, 0x4d, 0x49, 0xcd, 0xcb, 0xcf, 0x95,
+	0x60, 0x82, 0x88, 0x82, 0x39, 0x4a, 0x96, 0x5c, 0xa2, 0x68, 0x66, 0x14, 0x17, 0xe4, 0xe7, 0x15,
+	0xa7, 0x0a, 0x29, 0x70, 0x71, 0xc0, 0x3c, 0x22, 0xc1, 0xa8, 0xc0, 0xac, 0xc1, 0xe9, 0xc4, 0x72,
+	0xe2, 0x9e, 0x3c, 0x43, 0x10, 0x5c, 0x54, 0xc9, 0x8d, 0x4b, 0x02, 0xac, 0xd5, 0x3d, 0xb5, 0x24,
+	0x24, 0xa3, 0x28, 0xb5, 0x38, 0x23, 0x3f, 0x27, 0x85, 0x3c, 0x27, 0x48, 0x62, 0x31, 0x07, 0xea,
+	0x0c, 0x19, 0x2e, 0xce, 0x12, 0x98, 0x20, 0xd8, 0x30, 0xde, 0x20, 0x84, 0x80, 0xd1, 0x0b, 0x26,
+	0x2e, 0x56, 0xb0, 0x5e, 0xa1, 0x25, 0x8c, 0x5c, 0x1c, 0x30, 0x3f, 0x08, 0x19, 0xe8, 0xe1, 0x8e,
+	0x15, 0x3d, 0x6c, 0x41, 0x26, 0x65, 0x48, 0x82, 0x0e, 0x88, 0xcb, 0x94, 0x8c, 0x9b, 0x2e, 0x3f,
+	0x99, 0xcc, 0xa4, 0x2b, 0xa4, 0xad, 0x0f, 0xd3, 0x81, 0x60, 0xc0, 0x93, 0x4a, 0x35, 0xd8, 0xe3,
+	0xb5, 0xfa, 0xd5, 0x60, 0xaf, 0xd6, 0x0a, 0x6d, 0x67, 0xe4, 0xe2, 0x84, 0x7b, 0x52, 0xc8, 0x84,
+	0xa0, 0xad, 0x58, 0xc2, 0x56, 0xca, 0x94, 0x44, 0x5d, 0x50, 0xf7, 0xda, 0x82, 0xdd, 0x6b, 0x2e,
+	0x64, 0x8a, 0xcf, 0xbd, 0xf0, 0xa0, 0x45, 0x77, 0xb9, 0x93, 0xfb, 0x89, 0x47, 0x72, 0x8c, 0x17,
+	0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c,
+	0x37, 0x1e, 0xcb, 0x31, 0x44, 0xe9, 0xa6, 0x67, 0x96, 0x80, 0xdc, 0x90, 0x9c, 0x9f, 0x8b, 0xc5,
+	0xe8, 0x0a, 0x24, 0xc3, 0x2b, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x89, 0xd7, 0x18, 0x10, 0x00,
+	0x00, 0xff, 0xff, 0x84, 0x39, 0x71, 0x5c, 0x50, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -256,7 +273,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
 	// Queries a list of relayersByDenom items.
-	RelayersByDenom(ctx context.Context, in *QueryRelayersByDenomRequest, opts ...grpc.CallOption) (*QueryRelayersByDenomResponse, error)
+	Relayers(ctx context.Context, in *QueryRelayersRequest, opts ...grpc.CallOption) (*QueryRelayersResponse, error)
 	// Queries a threshold by denom.
 	Threshold(ctx context.Context, in *QueryGetThresholdRequest, opts ...grpc.CallOption) (*QueryGetThresholdResponse, error)
 }
@@ -269,9 +286,9 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) RelayersByDenom(ctx context.Context, in *QueryRelayersByDenomRequest, opts ...grpc.CallOption) (*QueryRelayersByDenomResponse, error) {
-	out := new(QueryRelayersByDenomResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.relayers.Query/RelayersByDenom", in, out, opts...)
+func (c *queryClient) Relayers(ctx context.Context, in *QueryRelayersRequest, opts ...grpc.CallOption) (*QueryRelayersResponse, error) {
+	out := new(QueryRelayersResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.relayers.Query/Relayers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -290,7 +307,7 @@ func (c *queryClient) Threshold(ctx context.Context, in *QueryGetThresholdReques
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a list of relayersByDenom items.
-	RelayersByDenom(context.Context, *QueryRelayersByDenomRequest) (*QueryRelayersByDenomResponse, error)
+	Relayers(context.Context, *QueryRelayersRequest) (*QueryRelayersResponse, error)
 	// Queries a threshold by denom.
 	Threshold(context.Context, *QueryGetThresholdRequest) (*QueryGetThresholdResponse, error)
 }
@@ -299,8 +316,8 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) RelayersByDenom(ctx context.Context, req *QueryRelayersByDenomRequest) (*QueryRelayersByDenomResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RelayersByDenom not implemented")
+func (*UnimplementedQueryServer) Relayers(ctx context.Context, req *QueryRelayersRequest) (*QueryRelayersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Relayers not implemented")
 }
 func (*UnimplementedQueryServer) Threshold(ctx context.Context, req *QueryGetThresholdRequest) (*QueryGetThresholdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Threshold not implemented")
@@ -310,20 +327,20 @@ func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func _Query_RelayersByDenom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRelayersByDenomRequest)
+func _Query_Relayers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRelayersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).RelayersByDenom(ctx, in)
+		return srv.(QueryServer).Relayers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafihub.stafihub.relayers.Query/RelayersByDenom",
+		FullMethod: "/stafihub.stafihub.relayers.Query/Relayers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).RelayersByDenom(ctx, req.(*QueryRelayersByDenomRequest))
+		return srv.(QueryServer).Relayers(ctx, req.(*QueryRelayersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -351,8 +368,8 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "RelayersByDenom",
-			Handler:    _Query_RelayersByDenom_Handler,
+			MethodName: "Relayers",
+			Handler:    _Query_Relayers_Handler,
 		},
 		{
 			MethodName: "Threshold",
@@ -363,7 +380,7 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	Metadata: "relayers/query.proto",
 }
 
-func (m *QueryRelayersByDenomRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryRelayersRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -373,12 +390,12 @@ func (m *QueryRelayersByDenomRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRelayersByDenomRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryRelayersRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRelayersByDenomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryRelayersRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -388,12 +405,19 @@ func (m *QueryRelayersByDenomRequest) MarshalToSizedBuffer(dAtA []byte) (int, er
 		copy(dAtA[i:], m.Denom)
 		i = encodeVarintQuery(dAtA, i, uint64(len(m.Denom)))
 		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Arena) > 0 {
+		i -= len(m.Arena)
+		copy(dAtA[i:], m.Arena)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Arena)))
+		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRelayersByDenomResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryRelayersResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -403,12 +427,12 @@ func (m *QueryRelayersByDenomResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRelayersByDenomResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryRelayersResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRelayersByDenomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryRelayersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -449,6 +473,13 @@ func (m *QueryGetThresholdRequest) MarshalToSizedBuffer(dAtA []byte) (int, error
 		i -= len(m.Denom)
 		copy(dAtA[i:], m.Denom)
 		i = encodeVarintQuery(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Arena) > 0 {
+		i -= len(m.Arena)
+		copy(dAtA[i:], m.Arena)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Arena)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -494,12 +525,16 @@ func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *QueryRelayersByDenomRequest) Size() (n int) {
+func (m *QueryRelayersRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
+	l = len(m.Arena)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
 	l = len(m.Denom)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
@@ -507,7 +542,7 @@ func (m *QueryRelayersByDenomRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryRelayersByDenomResponse) Size() (n int) {
+func (m *QueryRelayersResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -528,6 +563,10 @@ func (m *QueryGetThresholdRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.Arena)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
 	l = len(m.Denom)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
@@ -553,7 +592,7 @@ func sovQuery(x uint64) (n int) {
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *QueryRelayersByDenomRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryRelayersRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -576,13 +615,45 @@ func (m *QueryRelayersByDenomRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRelayersByDenomRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryRelayersRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRelayersByDenomRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryRelayersRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Arena", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Arena = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
 			}
@@ -635,7 +706,7 @@ func (m *QueryRelayersByDenomRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRelayersByDenomResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryRelayersResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -658,10 +729,10 @@ func (m *QueryRelayersByDenomResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRelayersByDenomResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryRelayersResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRelayersByDenomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryRelayersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -747,6 +818,38 @@ func (m *QueryGetThresholdRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Arena", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Arena = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
 			}

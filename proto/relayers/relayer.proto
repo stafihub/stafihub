@@ -4,16 +4,19 @@ package stafihub.stafihub.relayers;
 option go_package = "github.com/stafihub/stafihub/x/relayers/types";
 
 message Relayer {
-    string denom = 1;
-    repeated string addrs = 2;
+    string arena = 1;
+    string denom = 2;
+    repeated string addrs = 3;
 }
 
 message Threshold {
-    string denom = 1;
-    uint32 value = 2;
+    string arena = 1;
+    string denom = 2;
+    uint32 value = 3;
 }
 
 message LastVoter {
-    string denom = 1;
-    string voter = 2;
+    string arena = 1;
+    string denom = 2;
+    string voter = 3;
 }

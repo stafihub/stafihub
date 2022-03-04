@@ -6,6 +6,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	ledgertypes "github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stafihub/stafihub/x/relayers/types"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
@@ -29,21 +30,26 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
-	if !ok {
-		return nil, banktypes.ErrDenomMetadataNotFound
+	if msg.Arena == ledgertypes.ModuleName {
+		_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+		if !ok {
+			return nil, banktypes.ErrDenomMetadataNotFound
+		}
 	}
+
+
 	for _, address := range msg.Addresses {
 		// Check if the value already exists
-		if k.Keeper.IsRelayer(ctx, msg.Denom, address) {
+		if k.Keeper.HasRelayer(ctx, msg.Arena, msg.Denom, address) {
 			return nil, types.ErrRelayerAlreadySet
 		}
 
-		k.AddRelayer(ctx, msg.Denom, address)
+		k.AddRelayer(ctx, msg.Arena, msg.Denom, address)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
 				types.EventTypeRelayerAdded,
+				sdk.NewAttribute(types.AttributeKeyArena, msg.Arena),
 				sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
 				sdk.NewAttribute(types.AttributeKeyRelayer, address),
 			),
@@ -59,15 +65,16 @@ func (k msgServer) DeleteRelayer(goCtx context.Context, msg *types.MsgDeleteRela
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	if !k.Keeper.IsRelayer(ctx, msg.Denom, msg.Address) {
+	if !k.Keeper.HasRelayer(ctx, msg.Arena, msg.Denom, msg.Address) {
 		return nil, types.ErrRelayerNotFound
 	}
 
-	k.RemoveRelayer(ctx, msg.Denom, msg.Address)
+	k.RemoveRelayer(ctx, msg.Arena, msg.Denom, msg.Address)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeRelayerRemoved,
+			sdk.NewAttribute(types.AttributeKeyArena, msg.Arena),
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
 			sdk.NewAttribute(types.AttributeKeyRelayer, msg.Address),
 		),
@@ -82,13 +89,15 @@ func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateTh
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
-	if !ok {
-		return nil, banktypes.ErrDenomMetadataNotFound
+	if msg.Arena == ledgertypes.ModuleName {
+		_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+		if !ok {
+			return nil, banktypes.ErrDenomMetadataNotFound
+		}
 	}
 
 	lastTh := uint32(0)
-	if last, ok := k.GetThreshold(ctx, msg.Denom); ok {
+	if last, ok := k.GetThreshold(ctx, msg.Arena, msg.Denom); ok {
 		lastTh = last.Value
 	}
 

@@ -37,9 +37,10 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	content := msg.GetContent()
+	arena := content.ProposalRoute()
 
 	adminFlag := k.sudoKeeper.IsAdmin(ctx, msg.Proposer)
-	relayerFlag := k.relayerKeeper.IsRelayer(ctx, content.GetDenom(), msg.Proposer)
+	relayerFlag := k.relayerKeeper.HasRelayer(ctx, arena, content.GetDenom(), msg.Proposer)
 
 	if !adminFlag && !relayerFlag {
 		return nil, types.ErrInvalidProposer
@@ -62,7 +63,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		return nil, types.ErrProposalAlreadyExpired
 	}
 
-	threshold, ok := k.relayerKeeper.GetThreshold(ctx, content.GetDenom())
+	threshold, ok := k.relayerKeeper.GetThreshold(ctx, arena, content.GetDenom())
 	if !ok {
 		return nil, relayerstypes.ErrThresholdNotFound
 	}
@@ -78,7 +79,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	}
 	// should not set admin to last voter
 	if !adminFlag {
-		k.relayerKeeper.SetLastVoter(ctx, prop.GetContent().GetDenom(), msg.Proposer)
+		k.relayerKeeper.SetLastVoter(ctx, arena, content.GetDenom(), msg.Proposer)
 	}
 
 	rtr := k.Keeper.Router()

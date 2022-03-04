@@ -11,15 +11,18 @@ import (
 
 var _ types.QueryServer = Keeper{}
 
-func (k Keeper) RelayersByDenom(c context.Context, req *types.QueryRelayersByDenomRequest) (*types.QueryRelayersByDenomResponse, error) {
+func (k Keeper) Relayers(c context.Context, req *types.QueryRelayersRequest) (*types.QueryRelayersResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
-	rel, _ := k.GetRelayerByDenom(ctx, req.Denom)
+	rel, found := k.GetRelayer(ctx, req.Arena, req.Denom)
+	if !found {
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
+	}
 
-	return &types.QueryRelayersByDenomResponse{Relayers: rel.Addrs}, nil
+	return &types.QueryRelayersResponse{Relayers: rel.Addrs}, nil
 }
 
 func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest) (*types.QueryGetThresholdResponse, error) {
@@ -29,6 +32,7 @@ func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest
 	ctx := sdk.UnwrapSDKContext(c)
 	val, found := k.GetThreshold(
 		ctx,
+		req.Arena,
 		req.Denom,
 	)
 	if !found {
