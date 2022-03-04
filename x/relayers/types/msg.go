@@ -7,39 +7,39 @@ import (
 )
 
 var (
-	_ sdk.Msg = &MsgCreateRelayer{}
+	_ sdk.Msg = &MsgAddRelayer{}
 	_ sdk.Msg = &MsgDeleteRelayer{}
-	_ sdk.Msg = &MsgUpdateThreshold{}
+	_ sdk.Msg = &MsgSetThreshold{}
 )
 
-func NewMsgCreateRelayer(creator sdk.AccAddress, arena, denom string, addresses []string) *MsgCreateRelayer {
-	return &MsgCreateRelayer{
+func NewMsgCreateRelayer(creator sdk.AccAddress, arena, denom string, addresses []string) *MsgAddRelayer {
+	return &MsgAddRelayer{
 		Creator:   creator.String(),
-		Arena: arena,
+		Arena:     arena,
 		Denom:     denom,
 		Addresses: addresses,
 	}
 }
 
-func (msg *MsgCreateRelayer) Route() string {
+func (msg *MsgAddRelayer) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgCreateRelayer) Type() string {
-	return "CreateRelayer"
+func (msg *MsgAddRelayer) Type() string {
+	return "AddRelayer"
 }
 
-func (msg *MsgCreateRelayer) GetSigners() []sdk.AccAddress {
+func (msg *MsgAddRelayer) GetSigners() []sdk.AccAddress {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgCreateRelayer) GetSignBytes() []byte {
+func (msg *MsgAddRelayer) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgCreateRelayer) ValidateBasic() error {
+func (msg *MsgAddRelayer) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
@@ -59,7 +59,7 @@ func (msg *MsgCreateRelayer) ValidateBasic() error {
 func NewMsgDeleteRelayer(creator sdk.AccAddress, arena, denom string, address sdk.AccAddress) *MsgDeleteRelayer {
 	return &MsgDeleteRelayer{
 		Creator: creator.String(),
-		Arena:arena,
+		Arena:   arena,
 		Denom:   denom,
 		Address: address.String(),
 	}
@@ -89,34 +89,34 @@ func (msg *MsgDeleteRelayer) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgUpdateThreshold(creator sdk.AccAddress, arena, denom string, value uint32) *MsgUpdateThreshold {
-	return &MsgUpdateThreshold{
+func NewMsgSetThreshold(creator sdk.AccAddress, arena, denom string, value uint32) *MsgSetThreshold {
+	return &MsgSetThreshold{
 		Creator: creator.String(),
-		Arena: arena,
+		Arena:   arena,
 		Denom:   denom,
 		Value:   value,
 	}
 }
 
-func (msg *MsgUpdateThreshold) Route() string {
+func (msg *MsgSetThreshold) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgUpdateThreshold) Type() string {
-	return "UpdateThreshold"
+func (msg *MsgSetThreshold) Type() string {
+	return "SetThreshold"
 }
 
-func (msg *MsgUpdateThreshold) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetThreshold) GetSigners() []sdk.AccAddress {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgUpdateThreshold) GetSignBytes() []byte {
+func (msg *MsgSetThreshold) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgUpdateThreshold) ValidateBasic() error {
+func (msg *MsgSetThreshold) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}

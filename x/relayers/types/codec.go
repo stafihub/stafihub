@@ -8,19 +8,19 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreateRelayer{}, "relayers/CreateRelayer", nil)
+	cdc.RegisterConcrete(&MsgAddRelayer{}, "relayers/AddRelayer", nil)
 	cdc.RegisterConcrete(&MsgDeleteRelayer{}, "relayers/DeleteRelayer", nil)
-	cdc.RegisterConcrete(&MsgUpdateThreshold{}, "relayers/UpdateThreshold", nil)
+	cdc.RegisterConcrete(&MsgSetThreshold{}, "relayers/SetThreshold", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateRelayer{},
+		&MsgAddRelayer{},
 		&MsgDeleteRelayer{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgUpdateThreshold{},
+		&MsgSetThreshold{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -27,25 +27,25 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgCreateRelayer struct {
+type MsgAddRelayer struct {
 	Creator   string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Arena     string   `protobuf:"bytes,2,opt,name=arena,proto3" json:"arena,omitempty"`
 	Denom     string   `protobuf:"bytes,3,opt,name=denom,proto3" json:"denom,omitempty"`
 	Addresses []string `protobuf:"bytes,4,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (m *MsgCreateRelayer) Reset()         { *m = MsgCreateRelayer{} }
-func (m *MsgCreateRelayer) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateRelayer) ProtoMessage()    {}
-func (*MsgCreateRelayer) Descriptor() ([]byte, []int) {
+func (m *MsgAddRelayer) Reset()         { *m = MsgAddRelayer{} }
+func (m *MsgAddRelayer) String() string { return proto.CompactTextString(m) }
+func (*MsgAddRelayer) ProtoMessage()    {}
+func (*MsgAddRelayer) Descriptor() ([]byte, []int) {
 	return fileDescriptor_858ee6e4c5f310aa, []int{0}
 }
-func (m *MsgCreateRelayer) XXX_Unmarshal(b []byte) error {
+func (m *MsgAddRelayer) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateRelayer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddRelayer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateRelayer.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgAddRelayer.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -55,61 +55,61 @@ func (m *MsgCreateRelayer) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateRelayer) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateRelayer.Merge(m, src)
+func (m *MsgAddRelayer) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddRelayer.Merge(m, src)
 }
-func (m *MsgCreateRelayer) XXX_Size() int {
+func (m *MsgAddRelayer) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateRelayer) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateRelayer.DiscardUnknown(m)
+func (m *MsgAddRelayer) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddRelayer.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateRelayer proto.InternalMessageInfo
+var xxx_messageInfo_MsgAddRelayer proto.InternalMessageInfo
 
-func (m *MsgCreateRelayer) GetCreator() string {
+func (m *MsgAddRelayer) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgCreateRelayer) GetArena() string {
+func (m *MsgAddRelayer) GetArena() string {
 	if m != nil {
 		return m.Arena
 	}
 	return ""
 }
 
-func (m *MsgCreateRelayer) GetDenom() string {
+func (m *MsgAddRelayer) GetDenom() string {
 	if m != nil {
 		return m.Denom
 	}
 	return ""
 }
 
-func (m *MsgCreateRelayer) GetAddresses() []string {
+func (m *MsgAddRelayer) GetAddresses() []string {
 	if m != nil {
 		return m.Addresses
 	}
 	return nil
 }
 
-type MsgCreateRelayerResponse struct {
+type MsgAddRelayerResponse struct {
 }
 
-func (m *MsgCreateRelayerResponse) Reset()         { *m = MsgCreateRelayerResponse{} }
-func (m *MsgCreateRelayerResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgCreateRelayerResponse) ProtoMessage()    {}
-func (*MsgCreateRelayerResponse) Descriptor() ([]byte, []int) {
+func (m *MsgAddRelayerResponse) Reset()         { *m = MsgAddRelayerResponse{} }
+func (m *MsgAddRelayerResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgAddRelayerResponse) ProtoMessage()    {}
+func (*MsgAddRelayerResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_858ee6e4c5f310aa, []int{1}
 }
-func (m *MsgCreateRelayerResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgAddRelayerResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgCreateRelayerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgAddRelayerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgCreateRelayerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgAddRelayerResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -119,17 +119,17 @@ func (m *MsgCreateRelayerResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgCreateRelayerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgCreateRelayerResponse.Merge(m, src)
+func (m *MsgAddRelayerResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddRelayerResponse.Merge(m, src)
 }
-func (m *MsgCreateRelayerResponse) XXX_Size() int {
+func (m *MsgAddRelayerResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgCreateRelayerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgCreateRelayerResponse.DiscardUnknown(m)
+func (m *MsgAddRelayerResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddRelayerResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgCreateRelayerResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgAddRelayerResponse proto.InternalMessageInfo
 
 type MsgDeleteRelayer struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
@@ -235,25 +235,25 @@ func (m *MsgDeleteRelayerResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgDeleteRelayerResponse proto.InternalMessageInfo
 
-type MsgUpdateThreshold struct {
+type MsgSetThreshold struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Arena   string `protobuf:"bytes,2,opt,name=arena,proto3" json:"arena,omitempty"`
 	Denom   string `protobuf:"bytes,3,opt,name=denom,proto3" json:"denom,omitempty"`
 	Value   uint32 `protobuf:"varint,4,opt,name=value,proto3" json:"value,omitempty"`
 }
 
-func (m *MsgUpdateThreshold) Reset()         { *m = MsgUpdateThreshold{} }
-func (m *MsgUpdateThreshold) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateThreshold) ProtoMessage()    {}
-func (*MsgUpdateThreshold) Descriptor() ([]byte, []int) {
+func (m *MsgSetThreshold) Reset()         { *m = MsgSetThreshold{} }
+func (m *MsgSetThreshold) String() string { return proto.CompactTextString(m) }
+func (*MsgSetThreshold) ProtoMessage()    {}
+func (*MsgSetThreshold) Descriptor() ([]byte, []int) {
 	return fileDescriptor_858ee6e4c5f310aa, []int{4}
 }
-func (m *MsgUpdateThreshold) XXX_Unmarshal(b []byte) error {
+func (m *MsgSetThreshold) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateThreshold) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSetThreshold) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateThreshold.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSetThreshold.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -263,61 +263,61 @@ func (m *MsgUpdateThreshold) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateThreshold) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateThreshold.Merge(m, src)
+func (m *MsgSetThreshold) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetThreshold.Merge(m, src)
 }
-func (m *MsgUpdateThreshold) XXX_Size() int {
+func (m *MsgSetThreshold) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateThreshold) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateThreshold.DiscardUnknown(m)
+func (m *MsgSetThreshold) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetThreshold.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateThreshold proto.InternalMessageInfo
+var xxx_messageInfo_MsgSetThreshold proto.InternalMessageInfo
 
-func (m *MsgUpdateThreshold) GetCreator() string {
+func (m *MsgSetThreshold) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-func (m *MsgUpdateThreshold) GetArena() string {
+func (m *MsgSetThreshold) GetArena() string {
 	if m != nil {
 		return m.Arena
 	}
 	return ""
 }
 
-func (m *MsgUpdateThreshold) GetDenom() string {
+func (m *MsgSetThreshold) GetDenom() string {
 	if m != nil {
 		return m.Denom
 	}
 	return ""
 }
 
-func (m *MsgUpdateThreshold) GetValue() uint32 {
+func (m *MsgSetThreshold) GetValue() uint32 {
 	if m != nil {
 		return m.Value
 	}
 	return 0
 }
 
-type MsgUpdateThresholdResponse struct {
+type MsgSetThresholdResponse struct {
 }
 
-func (m *MsgUpdateThresholdResponse) Reset()         { *m = MsgUpdateThresholdResponse{} }
-func (m *MsgUpdateThresholdResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateThresholdResponse) ProtoMessage()    {}
-func (*MsgUpdateThresholdResponse) Descriptor() ([]byte, []int) {
+func (m *MsgSetThresholdResponse) Reset()         { *m = MsgSetThresholdResponse{} }
+func (m *MsgSetThresholdResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetThresholdResponse) ProtoMessage()    {}
+func (*MsgSetThresholdResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_858ee6e4c5f310aa, []int{5}
 }
-func (m *MsgUpdateThresholdResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSetThresholdResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgUpdateThresholdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSetThresholdResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgUpdateThresholdResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSetThresholdResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -327,53 +327,53 @@ func (m *MsgUpdateThresholdResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *MsgUpdateThresholdResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateThresholdResponse.Merge(m, src)
+func (m *MsgSetThresholdResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetThresholdResponse.Merge(m, src)
 }
-func (m *MsgUpdateThresholdResponse) XXX_Size() int {
+func (m *MsgSetThresholdResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgUpdateThresholdResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateThresholdResponse.DiscardUnknown(m)
+func (m *MsgSetThresholdResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetThresholdResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgUpdateThresholdResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSetThresholdResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgCreateRelayer)(nil), "stafihub.stafihub.relayers.MsgCreateRelayer")
-	proto.RegisterType((*MsgCreateRelayerResponse)(nil), "stafihub.stafihub.relayers.MsgCreateRelayerResponse")
+	proto.RegisterType((*MsgAddRelayer)(nil), "stafihub.stafihub.relayers.MsgAddRelayer")
+	proto.RegisterType((*MsgAddRelayerResponse)(nil), "stafihub.stafihub.relayers.MsgAddRelayerResponse")
 	proto.RegisterType((*MsgDeleteRelayer)(nil), "stafihub.stafihub.relayers.MsgDeleteRelayer")
 	proto.RegisterType((*MsgDeleteRelayerResponse)(nil), "stafihub.stafihub.relayers.MsgDeleteRelayerResponse")
-	proto.RegisterType((*MsgUpdateThreshold)(nil), "stafihub.stafihub.relayers.MsgUpdateThreshold")
-	proto.RegisterType((*MsgUpdateThresholdResponse)(nil), "stafihub.stafihub.relayers.MsgUpdateThresholdResponse")
+	proto.RegisterType((*MsgSetThreshold)(nil), "stafihub.stafihub.relayers.MsgSetThreshold")
+	proto.RegisterType((*MsgSetThresholdResponse)(nil), "stafihub.stafihub.relayers.MsgSetThresholdResponse")
 }
 
 func init() { proto.RegisterFile("relayers/tx.proto", fileDescriptor_858ee6e4c5f310aa) }
 
 var fileDescriptor_858ee6e4c5f310aa = []byte{
-	// 344 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x93, 0xcf, 0x6a, 0xf2, 0x40,
-	0x14, 0xc5, 0x8d, 0x7f, 0x3e, 0xf1, 0x82, 0x7c, 0xed, 0xe0, 0x62, 0x08, 0x12, 0x24, 0x2b, 0x17,
-	0x6d, 0x84, 0xb6, 0xf4, 0x01, 0xda, 0x42, 0x57, 0x6e, 0x42, 0xbb, 0xe9, 0x6e, 0x34, 0xb7, 0x51,
-	0x88, 0x4e, 0x98, 0x3b, 0x8a, 0xbe, 0x45, 0x1f, 0xab, 0x4b, 0x97, 0x5d, 0x16, 0xdd, 0xf5, 0x29,
-	0x4a, 0x12, 0x47, 0x49, 0xda, 0x22, 0x82, 0xbb, 0x39, 0x87, 0xc3, 0x3d, 0x3f, 0xe6, 0x72, 0xe1,
-	0x5c, 0x61, 0x24, 0x96, 0xa8, 0xa8, 0xa7, 0x17, 0x5e, 0xac, 0xa4, 0x96, 0xcc, 0x26, 0x2d, 0x5e,
-	0xc7, 0xa3, 0xd9, 0xc0, 0xdb, 0x3d, 0x4c, 0xc8, 0x9d, 0xc3, 0x59, 0x9f, 0xc2, 0x7b, 0x85, 0x42,
-	0xa3, 0x9f, 0x99, 0x8c, 0x43, 0x7d, 0x98, 0x18, 0x52, 0x71, 0xab, 0x63, 0x75, 0x1b, 0xbe, 0x91,
-	0xac, 0x05, 0x35, 0xa1, 0x70, 0x2a, 0x78, 0x39, 0xf5, 0x33, 0x91, 0xb8, 0x01, 0x4e, 0xe5, 0x84,
-	0x57, 0x32, 0x37, 0x15, 0xac, 0x0d, 0x0d, 0x11, 0x04, 0x0a, 0x89, 0x90, 0x78, 0xb5, 0x53, 0xe9,
-	0x36, 0xfc, 0xbd, 0xe1, 0xda, 0xc0, 0x8b, 0xbd, 0x3e, 0x52, 0x2c, 0xa7, 0x84, 0xae, 0x4a, 0x99,
-	0x1e, 0x30, 0xc2, 0x53, 0x33, 0x71, 0xa8, 0x6f, 0x11, 0x78, 0x35, 0x9b, 0xb2, 0x95, 0x5b, 0x9e,
-	0x5c, 0xe7, 0x8e, 0x27, 0x06, 0xd6, 0xa7, 0xf0, 0x39, 0x0e, 0x84, 0xc6, 0xa7, 0x91, 0x42, 0x1a,
-	0xc9, 0x28, 0x38, 0x11, 0x51, 0x0b, 0x6a, 0x73, 0x11, 0xcd, 0x30, 0xe5, 0x69, 0xfa, 0x99, 0x70,
-	0xdb, 0x60, 0xff, 0x6c, 0x34, 0x3c, 0x57, 0x5f, 0x65, 0xa8, 0xf4, 0x29, 0x64, 0x04, 0xcd, 0xfc,
-	0xe2, 0x2e, 0xbc, 0xbf, 0x37, 0xed, 0x15, 0xbf, 0xdb, 0xbe, 0x39, 0x26, 0x6d, 0xca, 0x93, 0xd2,
-	0xfc, 0x66, 0x0e, 0x95, 0xe6, 0xd2, 0x07, 0x4b, 0x7f, 0xdd, 0x00, 0x5b, 0xc2, 0xff, 0xe2, 0xf7,
-	0x7b, 0x07, 0x06, 0x15, 0xf2, 0xf6, 0xed, 0x71, 0x79, 0x53, 0x7d, 0xf7, 0xf8, 0xbe, 0x76, 0xac,
-	0xd5, 0xda, 0xb1, 0x3e, 0xd7, 0x8e, 0xf5, 0xb6, 0x71, 0x4a, 0xab, 0x8d, 0x53, 0xfa, 0xd8, 0x38,
-	0xa5, 0x97, 0xcb, 0x70, 0xac, 0x93, 0x29, 0x43, 0x39, 0xe9, 0x99, 0x91, 0xfb, 0xc7, 0xa2, 0xb7,
-	0x3f, 0xc4, 0x65, 0x8c, 0x34, 0xf8, 0x97, 0x1e, 0xe3, 0xf5, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0xd9, 0x0e, 0x71, 0x69, 0xa1, 0x03, 0x00, 0x00,
+	// 346 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x53, 0xcd, 0x4e, 0xf2, 0x50,
+	0x10, 0xa5, 0xfc, 0x7c, 0x84, 0xc9, 0x47, 0xd4, 0x06, 0xc3, 0xb5, 0x31, 0x0d, 0xe9, 0x0a, 0xa3,
+	0x96, 0x28, 0xbe, 0x80, 0xc6, 0xc4, 0x55, 0x37, 0xd5, 0x95, 0xbb, 0x0b, 0x1d, 0x0b, 0xa6, 0x70,
+	0x9b, 0x3b, 0x17, 0x03, 0x6f, 0xe1, 0x63, 0xb9, 0x64, 0xc9, 0xd2, 0xc0, 0x8b, 0x18, 0x5a, 0x4a,
+	0x29, 0x89, 0x41, 0x12, 0x76, 0x73, 0x4e, 0x4e, 0xce, 0x39, 0x99, 0xc9, 0xc0, 0x89, 0xc4, 0x80,
+	0x4f, 0x50, 0x52, 0x4b, 0x8d, 0xed, 0x50, 0x0a, 0x25, 0x74, 0x83, 0x14, 0x7f, 0xeb, 0xf7, 0x46,
+	0x1d, 0x7b, 0x3d, 0x24, 0x22, 0x8b, 0xa0, 0xea, 0x90, 0x7f, 0xef, 0x79, 0x6e, 0xcc, 0xe8, 0x0c,
+	0xca, 0x5d, 0x89, 0x5c, 0x09, 0xc9, 0xb4, 0x86, 0xd6, 0xac, 0xb8, 0x09, 0xd4, 0x6b, 0x50, 0xe2,
+	0x12, 0x87, 0x9c, 0xe5, 0x23, 0x3e, 0x06, 0x4b, 0xd6, 0xc3, 0xa1, 0x18, 0xb0, 0x42, 0xcc, 0x46,
+	0x40, 0x3f, 0x87, 0x0a, 0xf7, 0x3c, 0x89, 0x44, 0x48, 0xac, 0xd8, 0x28, 0x34, 0x2b, 0x6e, 0x4a,
+	0x58, 0x75, 0x38, 0xcd, 0x84, 0xba, 0x48, 0xa1, 0x18, 0x12, 0x5a, 0x12, 0x8e, 0x1d, 0xf2, 0x1f,
+	0x31, 0x40, 0x85, 0x87, 0x2d, 0xc4, 0xa0, 0xbc, 0xca, 0x67, 0xc5, 0xd8, 0x65, 0x05, 0x2d, 0x03,
+	0xd8, 0x76, 0xe6, 0xba, 0xcf, 0x00, 0x8e, 0x1c, 0xf2, 0x9f, 0x51, 0xbd, 0xf4, 0x24, 0x52, 0x4f,
+	0x04, 0xde, 0x81, 0xea, 0xd4, 0xa0, 0xf4, 0xc1, 0x83, 0x11, 0x46, 0x65, 0xaa, 0x6e, 0x0c, 0xac,
+	0x33, 0xa8, 0x6f, 0xc5, 0x25, 0x4d, 0x6e, 0x67, 0x79, 0x28, 0x38, 0xe4, 0xeb, 0xef, 0x00, 0x1b,
+	0xc7, 0xba, 0xb0, 0x7f, 0x3f, 0xad, 0x9d, 0x59, 0xb1, 0x71, 0xf3, 0x67, 0x69, 0x92, 0xa9, 0x13,
+	0x54, 0xb3, 0xa7, 0xb8, 0xda, 0xe1, 0x91, 0x51, 0x1b, 0x77, 0xfb, 0xa8, 0xd7, 0xa1, 0x21, 0xfc,
+	0xcf, 0xec, 0xfb, 0x72, 0x87, 0xcb, 0xa6, 0xd8, 0x68, 0xef, 0x21, 0x4e, 0x12, 0x1f, 0x9e, 0xbe,
+	0xe6, 0xa6, 0x36, 0x9d, 0x9b, 0xda, 0xf7, 0xdc, 0xd4, 0x3e, 0x17, 0x66, 0x6e, 0xba, 0x30, 0x73,
+	0xb3, 0x85, 0x99, 0x7b, 0xbd, 0xf6, 0xfb, 0x6a, 0x69, 0xd1, 0x15, 0x83, 0x56, 0xe2, 0x97, 0x0e,
+	0xe3, 0x56, 0xfa, 0x6a, 0x93, 0x10, 0xa9, 0xf3, 0x2f, 0x7a, 0xb7, 0xf6, 0x4f, 0x00, 0x00, 0x00,
+	0xff, 0xff, 0xff, 0x01, 0xa0, 0x0b, 0x83, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -388,9 +388,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	CreateRelayer(ctx context.Context, in *MsgCreateRelayer, opts ...grpc.CallOption) (*MsgCreateRelayerResponse, error)
+	AddRelayer(ctx context.Context, in *MsgAddRelayer, opts ...grpc.CallOption) (*MsgAddRelayerResponse, error)
 	DeleteRelayer(ctx context.Context, in *MsgDeleteRelayer, opts ...grpc.CallOption) (*MsgDeleteRelayerResponse, error)
-	UpdateThreshold(ctx context.Context, in *MsgUpdateThreshold, opts ...grpc.CallOption) (*MsgUpdateThresholdResponse, error)
+	SetThreshold(ctx context.Context, in *MsgSetThreshold, opts ...grpc.CallOption) (*MsgSetThresholdResponse, error)
 }
 
 type msgClient struct {
@@ -401,9 +401,9 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) CreateRelayer(ctx context.Context, in *MsgCreateRelayer, opts ...grpc.CallOption) (*MsgCreateRelayerResponse, error) {
-	out := new(MsgCreateRelayerResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.relayers.Msg/CreateRelayer", in, out, opts...)
+func (c *msgClient) AddRelayer(ctx context.Context, in *MsgAddRelayer, opts ...grpc.CallOption) (*MsgAddRelayerResponse, error) {
+	out := new(MsgAddRelayerResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.relayers.Msg/AddRelayer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -419,9 +419,9 @@ func (c *msgClient) DeleteRelayer(ctx context.Context, in *MsgDeleteRelayer, opt
 	return out, nil
 }
 
-func (c *msgClient) UpdateThreshold(ctx context.Context, in *MsgUpdateThreshold, opts ...grpc.CallOption) (*MsgUpdateThresholdResponse, error) {
-	out := new(MsgUpdateThresholdResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.relayers.Msg/UpdateThreshold", in, out, opts...)
+func (c *msgClient) SetThreshold(ctx context.Context, in *MsgSetThreshold, opts ...grpc.CallOption) (*MsgSetThresholdResponse, error) {
+	out := new(MsgSetThresholdResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.relayers.Msg/SetThreshold", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -430,43 +430,43 @@ func (c *msgClient) UpdateThreshold(ctx context.Context, in *MsgUpdateThreshold,
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	CreateRelayer(context.Context, *MsgCreateRelayer) (*MsgCreateRelayerResponse, error)
+	AddRelayer(context.Context, *MsgAddRelayer) (*MsgAddRelayerResponse, error)
 	DeleteRelayer(context.Context, *MsgDeleteRelayer) (*MsgDeleteRelayerResponse, error)
-	UpdateThreshold(context.Context, *MsgUpdateThreshold) (*MsgUpdateThresholdResponse, error)
+	SetThreshold(context.Context, *MsgSetThreshold) (*MsgSetThresholdResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) CreateRelayer(ctx context.Context, req *MsgCreateRelayer) (*MsgCreateRelayerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateRelayer not implemented")
+func (*UnimplementedMsgServer) AddRelayer(ctx context.Context, req *MsgAddRelayer) (*MsgAddRelayerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddRelayer not implemented")
 }
 func (*UnimplementedMsgServer) DeleteRelayer(ctx context.Context, req *MsgDeleteRelayer) (*MsgDeleteRelayerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRelayer not implemented")
 }
-func (*UnimplementedMsgServer) UpdateThreshold(ctx context.Context, req *MsgUpdateThreshold) (*MsgUpdateThresholdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateThreshold not implemented")
+func (*UnimplementedMsgServer) SetThreshold(ctx context.Context, req *MsgSetThreshold) (*MsgSetThresholdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetThreshold not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_CreateRelayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgCreateRelayer)
+func _Msg_AddRelayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddRelayer)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).CreateRelayer(ctx, in)
+		return srv.(MsgServer).AddRelayer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafihub.stafihub.relayers.Msg/CreateRelayer",
+		FullMethod: "/stafihub.stafihub.relayers.Msg/AddRelayer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).CreateRelayer(ctx, req.(*MsgCreateRelayer))
+		return srv.(MsgServer).AddRelayer(ctx, req.(*MsgAddRelayer))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -489,20 +489,20 @@ func _Msg_DeleteRelayer_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateThreshold_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateThreshold)
+func _Msg_SetThreshold_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetThreshold)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).UpdateThreshold(ctx, in)
+		return srv.(MsgServer).SetThreshold(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafihub.stafihub.relayers.Msg/UpdateThreshold",
+		FullMethod: "/stafihub.stafihub.relayers.Msg/SetThreshold",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateThreshold(ctx, req.(*MsgUpdateThreshold))
+		return srv.(MsgServer).SetThreshold(ctx, req.(*MsgSetThreshold))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -512,23 +512,23 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateRelayer",
-			Handler:    _Msg_CreateRelayer_Handler,
+			MethodName: "AddRelayer",
+			Handler:    _Msg_AddRelayer_Handler,
 		},
 		{
 			MethodName: "DeleteRelayer",
 			Handler:    _Msg_DeleteRelayer_Handler,
 		},
 		{
-			MethodName: "UpdateThreshold",
-			Handler:    _Msg_UpdateThreshold_Handler,
+			MethodName: "SetThreshold",
+			Handler:    _Msg_SetThreshold_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "relayers/tx.proto",
 }
 
-func (m *MsgCreateRelayer) Marshal() (dAtA []byte, err error) {
+func (m *MsgAddRelayer) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -538,12 +538,12 @@ func (m *MsgCreateRelayer) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateRelayer) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgAddRelayer) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateRelayer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddRelayer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -581,7 +581,7 @@ func (m *MsgCreateRelayer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgCreateRelayerResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgAddRelayerResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -591,12 +591,12 @@ func (m *MsgCreateRelayerResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgCreateRelayerResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgAddRelayerResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgCreateRelayerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgAddRelayerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -678,7 +678,7 @@ func (m *MsgDeleteRelayerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateThreshold) Marshal() (dAtA []byte, err error) {
+func (m *MsgSetThreshold) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -688,12 +688,12 @@ func (m *MsgUpdateThreshold) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateThreshold) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSetThreshold) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateThreshold) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSetThreshold) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -727,7 +727,7 @@ func (m *MsgUpdateThreshold) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateThresholdResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSetThresholdResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -737,12 +737,12 @@ func (m *MsgUpdateThresholdResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgUpdateThresholdResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSetThresholdResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgUpdateThresholdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSetThresholdResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -761,7 +761,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgCreateRelayer) Size() (n int) {
+func (m *MsgAddRelayer) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -788,7 +788,7 @@ func (m *MsgCreateRelayer) Size() (n int) {
 	return n
 }
 
-func (m *MsgCreateRelayerResponse) Size() (n int) {
+func (m *MsgAddRelayerResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -831,7 +831,7 @@ func (m *MsgDeleteRelayerResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateThreshold) Size() (n int) {
+func (m *MsgSetThreshold) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -855,7 +855,7 @@ func (m *MsgUpdateThreshold) Size() (n int) {
 	return n
 }
 
-func (m *MsgUpdateThresholdResponse) Size() (n int) {
+func (m *MsgSetThresholdResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -870,7 +870,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgCreateRelayer) Unmarshal(dAtA []byte) error {
+func (m *MsgAddRelayer) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -893,10 +893,10 @@ func (m *MsgCreateRelayer) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateRelayer: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgAddRelayer: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateRelayer: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgAddRelayer: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1048,7 +1048,7 @@ func (m *MsgCreateRelayer) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgCreateRelayerResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgAddRelayerResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1071,10 +1071,10 @@ func (m *MsgCreateRelayerResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgCreateRelayerResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgAddRelayerResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgCreateRelayerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgAddRelayerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1326,7 +1326,7 @@ func (m *MsgDeleteRelayerResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateThreshold) Unmarshal(dAtA []byte) error {
+func (m *MsgSetThreshold) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1349,10 +1349,10 @@ func (m *MsgUpdateThreshold) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateThreshold: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSetThreshold: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateThreshold: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSetThreshold: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1491,7 +1491,7 @@ func (m *MsgUpdateThreshold) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgUpdateThresholdResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSetThresholdResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1514,10 +1514,10 @@ func (m *MsgUpdateThresholdResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateThresholdResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSetThresholdResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateThresholdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSetThresholdResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

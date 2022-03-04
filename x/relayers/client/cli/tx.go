@@ -32,15 +32,15 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdCreateRelayer())
+	cmd.AddCommand(CmdAddRelayer())
 	cmd.AddCommand(CmdDeleteRelayer())
-	cmd.AddCommand(CmdUpdateThreshold())
+	cmd.AddCommand(CmdSetThreshold())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
 }
 
-func CmdCreateRelayer() *cobra.Command {
+func CmdAddRelayer() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add-relayers [arena] [denom] [addresses]",
 		Short: "Add new relayers",
@@ -125,10 +125,10 @@ func CmdDeleteRelayer() *cobra.Command {
 	return cmd
 }
 
-func CmdUpdateThreshold() *cobra.Command {
+func CmdSetThreshold() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "set-threshold [arena] [denom] [value]",
-		Short: "Set a threshold",
+		Short: "Set threshold",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argArena := args[0]
@@ -148,7 +148,7 @@ func CmdUpdateThreshold() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgUpdateThreshold(
+			msg := types.NewMsgSetThreshold(
 				clientCtx.GetFromAddress(),
 				argArena,
 				argDenom,

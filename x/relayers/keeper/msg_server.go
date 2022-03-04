@@ -23,7 +23,7 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRelayer) (*types.MsgCreateRelayerResponse, error) {
+func (k msgServer) AddRelayer(goCtx context.Context, msg *types.MsgAddRelayer) (*types.MsgAddRelayerResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -37,14 +37,13 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 		}
 	}
 
-
 	for _, address := range msg.Addresses {
 		// Check if the value already exists
 		if k.Keeper.HasRelayer(ctx, msg.Arena, msg.Denom, address) {
 			return nil, types.ErrRelayerAlreadySet
 		}
 
-		k.AddRelayer(ctx, msg.Arena, msg.Denom, address)
+		k.Keeper.AddRelayer(ctx, msg.Arena, msg.Denom, address)
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
@@ -55,7 +54,7 @@ func (k msgServer) CreateRelayer(goCtx context.Context, msg *types.MsgCreateRela
 			),
 		)
 	}
-	return &types.MsgCreateRelayerResponse{}, nil
+	return &types.MsgAddRelayerResponse{}, nil
 }
 
 func (k msgServer) DeleteRelayer(goCtx context.Context, msg *types.MsgDeleteRelayer) (*types.MsgDeleteRelayerResponse, error) {
@@ -82,7 +81,7 @@ func (k msgServer) DeleteRelayer(goCtx context.Context, msg *types.MsgDeleteRela
 	return &types.MsgDeleteRelayerResponse{}, nil
 }
 
-func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateThreshold) (*types.MsgUpdateThresholdResponse, error) {
+func (k msgServer) SetThreshold(goCtx context.Context, msg *types.MsgSetThreshold) (*types.MsgSetThresholdResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -102,7 +101,7 @@ func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateTh
 	}
 
 	var threshold = types.Threshold{Denom: msg.Denom, Value: msg.Value}
-	k.SetThreshold(ctx, threshold)
+	k.Keeper.SetThreshold(ctx, threshold)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeThresholdUpdated,
@@ -110,5 +109,5 @@ func (k msgServer) UpdateThreshold(goCtx context.Context, msg *types.MsgUpdateTh
 			sdk.NewAttribute(types.AttributeKeyCurrentThreshold, strconv.FormatUint(uint64(msg.Value), 10)),
 		),
 	)
-	return &types.MsgUpdateThresholdResponse{}, nil
+	return &types.MsgSetThresholdResponse{}, nil
 }

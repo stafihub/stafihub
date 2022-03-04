@@ -16,7 +16,7 @@ service Query {
 	}
 
     // Queries a threshold by denom.
-	rpc Threshold(QueryGetThresholdRequest) returns (QueryGetThresholdResponse) {
+	rpc Threshold(QueryThresholdRequest) returns (QueryThresholdResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/relayers/threshold/{arena}/{denom}";
 	}
 // this line is used by starport scaffolding # 2
@@ -31,12 +31,12 @@ message QueryRelayersResponse {
     repeated string relayers = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetThresholdRequest {
+message QueryThresholdRequest {
 	  string arena = 1;
       string denom = 2;
 }
 
-message QueryGetThresholdResponse {
+message QueryThresholdResponse {
 	uint32 threshold = 1;
 }
 // this line is used by starport scaffolding # 3

@@ -25,7 +25,7 @@ func (k Keeper) Relayers(c context.Context, req *types.QueryRelayersRequest) (*t
 	return &types.QueryRelayersResponse{Relayers: rel.Addrs}, nil
 }
 
-func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest) (*types.QueryGetThresholdResponse, error) {
+func (k Keeper) Threshold(c context.Context, req *types.QueryThresholdRequest) (*types.QueryThresholdResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
@@ -39,5 +39,5 @@ func (k Keeper) Threshold(c context.Context, req *types.QueryGetThresholdRequest
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
-	return &types.QueryGetThresholdResponse{Threshold: val.Value}, nil
+	return &types.QueryThresholdResponse{Threshold: val.Value}, nil
 }

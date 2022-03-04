@@ -21,14 +21,14 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdRelayersByDenom())
-	cmd.AddCommand(CmdShowThreshold())
+	cmd.AddCommand(CmdRelayers())
+	cmd.AddCommand(CmdThreshold())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
 }
 
-func CmdRelayersByDenom() *cobra.Command {
+func CmdRelayers() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "relayers [arena] [denom]",
 		Short: "Query relayers",
@@ -62,16 +62,16 @@ func CmdRelayersByDenom() *cobra.Command {
 	return cmd
 }
 
-func CmdShowThreshold() *cobra.Command {
+func CmdThreshold() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "threshold [denom]",
-		Short: "Shows threshold",
+		Short: "Query threshold",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetThresholdRequest{
+			params := &types.QueryThresholdRequest{
 				Denom: args[0],
 			}
 			res, err := queryClient.Threshold(context.Background(), params)

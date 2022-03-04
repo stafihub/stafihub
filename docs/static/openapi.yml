@@ -14062,7 +14062,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafihub/stafihub/relayers/threshold/{denom}':
+  '/stafihub/stafihub/relayers/threshold/{arena}/{denom}':
     get:
       summary: Queries a threshold by denom.
       operationId: StafihubStafihubRelayersThreshold
@@ -14094,16 +14094,20 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
+        - name: arena
+          in: path
+          required: true
+          type: string
         - name: denom
           in: path
           required: true
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/relayers/{denom}':
+  '/stafihub/stafihub/relayers/{arena}/{denom}':
     get:
       summary: Queries a list of relayersByDenom items.
-      operationId: StafihubStafihubRelayersRelayersByDenom
+      operationId: StafihubStafihubRelayersRelayers
       responses:
         '200':
           description: A successful response.
@@ -14133,6 +14137,10 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
+        - name: arena
+          in: path
+          required: true
+          type: string
         - name: denom
           in: path
           required: true
@@ -22801,25 +22809,25 @@ definitions:
         type: string
       recipient:
         type: string
-  stafihub.stafihub.relayers.MsgCreateRelayerResponse:
+  stafihub.stafihub.relayers.MsgAddRelayerResponse:
     type: object
   stafihub.stafihub.relayers.MsgDeleteRelayerResponse:
     type: object
-  stafihub.stafihub.relayers.MsgUpdateThresholdResponse:
+  stafihub.stafihub.relayers.MsgSetThresholdResponse:
     type: object
-  stafihub.stafihub.relayers.QueryGetThresholdResponse:
-    type: object
-    properties:
-      threshold:
-        type: integer
-        format: int64
-  stafihub.stafihub.relayers.QueryRelayersByDenomResponse:
+  stafihub.stafihub.relayers.QueryRelayersResponse:
     type: object
     properties:
       relayers:
         type: array
         items:
           type: string
+  stafihub.stafihub.relayers.QueryThresholdResponse:
+    type: object
+    properties:
+      threshold:
+        type: integer
+        format: int64
   stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse:
     type: object
   stafihub.stafihub.rstaking.MsgSetInflationBaseResponse:

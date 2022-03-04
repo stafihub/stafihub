@@ -17,14 +17,14 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgCreateRelayer:
-			res, err := msgServer.CreateRelayer(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgAddRelayer:
+			res, err := msgServer.AddRelayer(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgDeleteRelayer:
 			res, err := msgServer.DeleteRelayer(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateThreshold:
-			res, err := msgServer.UpdateThreshold(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetThreshold:
+			res, err := msgServer.SetThreshold(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
