@@ -51,11 +51,6 @@ message PoolDetail {
     uint32 threshold = 4;
 }
 
-message LeastBond {
-    string denom = 1;
-    string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-}
-
 message LinkChunk {
     string bond = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
     string unbond = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
