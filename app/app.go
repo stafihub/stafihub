@@ -101,6 +101,9 @@ import (
 	rstakingmodule "github.com/stafihub/stafihub/x/rstaking"
 	rstakingmodulekeeper "github.com/stafihub/stafihub/x/rstaking/keeper"
 	rstakingmoduletypes "github.com/stafihub/stafihub/x/rstaking/types"
+	rvalidatormodule "github.com/stafihub/stafihub/x/rvalidator"
+	rvalidatormodulekeeper "github.com/stafihub/stafihub/x/rvalidator/keeper"
+	rvalidatormoduletypes "github.com/stafihub/stafihub/x/rvalidator/types"
 	"github.com/stafihub/stafihub/x/rvote"
 	rvotekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -168,6 +171,7 @@ var (
 		rvote.AppModuleBasic{},
 		rstakingmodule.AppModuleBasic{},
 		bridgemodule.AppModuleBasic{},
+		rvalidatormodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -250,6 +254,8 @@ type App struct {
 	RStakingKeeper rstakingmodulekeeper.Keeper
 
 	BridgeKeeper bridgemodulekeeper.Keeper
+
+	RvalidatorKeeper rvalidatormodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -287,6 +293,7 @@ func New(
 		rvotetypes.StoreKey,
 		rstakingmoduletypes.StoreKey,
 		bridgemoduletypes.StoreKey,
+		rvalidatormoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -431,6 +438,17 @@ func New(
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.RvalidatorKeeper = *rvalidatormodulekeeper.NewKeeper(
+		appCodec,
+		keys[rvalidatormoduletypes.StoreKey],
+		keys[rvalidatormoduletypes.MemStoreKey],
+
+		app.SudoKeeper,
+		app.BankKeeper,
+		app.RelayersKeeper,
+	)
+	rvalidatorModule := rvalidatormodule.NewAppModule(appCodec, app.RvalidatorKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -476,6 +494,7 @@ func New(
 
 		rstakingModule,
 		bridgeModule,
+		rvalidatorModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -535,6 +554,7 @@ func New(
 		ledgertypes.ModuleName,
 		rvotetypes.ModuleName,
 		bridgemoduletypes.ModuleName,
+		rvalidatormoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -729,6 +749,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 
 	paramsKeeper.Subspace(rstakingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
+	paramsKeeper.Subspace(rvalidatormoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

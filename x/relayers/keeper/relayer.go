@@ -6,7 +6,6 @@ import (
 	"github.com/stafihub/stafihub/x/relayers/types"
 )
 
-
 func (k Keeper) AddRelayer(ctx sdk.Context, arena, denom, addr string) {
 	rel, _ := k.GetRelayer(ctx, arena, denom)
 	rel.Addrs = append(rel.Addrs, addr)
@@ -53,7 +52,7 @@ func (k Keeper) setRelayer(ctx sdk.Context, rel types.Relayer) {
 func (k Keeper) GetRelayer(ctx sdk.Context, arena, denom string) (types.Relayer, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
 	val := types.Relayer{Arena: arena, Denom: denom, Addrs: []string{}}
-	b := store.Get([]byte(arena+denom))
+	b := store.Get([]byte(arena + denom))
 
 	if b == nil {
 		return val, false

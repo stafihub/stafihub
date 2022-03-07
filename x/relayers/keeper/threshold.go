@@ -17,7 +17,7 @@ func (k Keeper) SetThreshold(ctx sdk.Context, threshold types.Threshold) {
 func (k Keeper) GetThreshold(ctx sdk.Context, arena, denom string) (val types.Threshold, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ThresholdPrefix)
 
-	b := store.Get([]byte(arena+denom))
+	b := store.Get([]byte(arena + denom))
 	if b == nil {
 		return val, false
 	}
@@ -41,4 +41,3 @@ func (k Keeper) GetAllThreshold(ctx sdk.Context) (list []types.Threshold) {
 
 	return
 }
-
