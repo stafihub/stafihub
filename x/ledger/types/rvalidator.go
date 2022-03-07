@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	utils "github.com/stafihub/stafihub/utils"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
@@ -46,7 +47,7 @@ func (msg *MsgOnboard) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetRValidatorIndicator(creator sdk.AccAddress, denom string, commission sdk.Dec, uptime uint32, votingPower int64, locked sdk.Coin) *MsgSetRValidatorIndicator {
+func NewMsgSetRValidatorIndicator(creator sdk.AccAddress, denom string, commission utils.Dec, uptime uint32, votingPower int64, locked sdk.Coin) *MsgSetRValidatorIndicator {
 	return &MsgSetRValidatorIndicator{
 		Creator:     creator.String(),
 		Denom:       denom,
@@ -80,11 +81,11 @@ func (msg *MsgSetRValidatorIndicator) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.LT(sdk.ZeroDec()) {
+	if msg.Commission.LT(utils.ZeroDec()) {
 		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
 	}
 
-	if msg.Commission.GTE(sdk.OneDec()) {
+	if msg.Commission.GTE(utils.OneDec()) {
 		return fmt.Errorf("commission %s bigger than oneDec", msg.Commission.String())
 	}
 

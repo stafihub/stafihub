@@ -11,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/utils"
 )
 
 var _ = strconv.Itoa(0)
@@ -155,7 +156,7 @@ func CmdSetStakingRewardCommission() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argCommission, err := sdk.NewDecFromStr(args[1])
+			argCommission, err := utils.NewDecFromStr(args[1])
 			if err != nil {
 				return err
 			}
@@ -255,7 +256,7 @@ func CmdSetUnbondCommission() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argCommission, err := sdk.NewDecFromStr(args[1])
+			argCommission, err := utils.NewDecFromStr(args[1])
 			if err != nil {
 				return err
 			}

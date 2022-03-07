@@ -11,6 +11,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/utils"
 )
 
 type (
@@ -50,9 +51,9 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 func (k Keeper) SetExchangeRate(ctx sdk.Context, denom string, total, rtotal sdk.Int) {
-	dec := sdk.OneDec()
+	dec := utils.OneDec()
 	if total.Int64() != 0 && rtotal.Int64() != 0 {
-		dec = dec.MulInt(rtotal).QuoInt(total)
+		dec = dec.MulInt(total).QuoInt(rtotal)
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ExchangeRateKeyPrefix)
@@ -92,7 +93,7 @@ func (k Keeper) GetAllExchangeRate(ctx sdk.Context) (list []types.ExchangeRate) 
 	return
 }
 
-func (k Keeper) SetEraExchangeRate(ctx sdk.Context, denom string, era uint32, rate sdk.Dec) {
+func (k Keeper) SetEraExchangeRate(ctx sdk.Context, denom string, era uint32, rate utils.Dec) {
 	pre := append(types.EraExchangeRateKeyPrefix, types.KeyPrefix(denom)...)
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), pre)
 	e := types.EraExchangeRate{
@@ -145,7 +146,7 @@ func (k Keeper) TokenToRtoken(ctx sdk.Context, denom string, balance sdk.Int) sd
 		return balance
 	}
 
-	return er.Value.MulInt(balance).TruncateInt()
+	return utils.OneDec().MulInt(balance).Quo(er.Value).TruncateInt()
 }
 
 // rtoken to token
@@ -155,7 +156,7 @@ func (k Keeper) RtokenToToken(ctx sdk.Context, denom string, rbalance sdk.Int) s
 		return rbalance
 	}
 
-	return sdk.OneDec().MulInt(rbalance).Quo(er.Value).TruncateInt()
+	return er.Value.MulInt(rbalance).TruncateInt()
 }
 
 func (k Keeper) IncreaseTotalProtocolFee(ctx sdk.Context, denom string, increase sdk.Int) {

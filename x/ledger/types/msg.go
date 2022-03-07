@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	utils "github.com/stafihub/stafihub/utils"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
@@ -165,7 +166,7 @@ func (msg *MsgClearCurrentEraSnapShots) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetStakingRewardCommission(creator sdk.AccAddress, denom string, commission sdk.Dec) *MsgSetStakingRewardCommission {
+func NewMsgSetStakingRewardCommission(creator sdk.AccAddress, denom string, commission utils.Dec) *MsgSetStakingRewardCommission {
 	return &MsgSetStakingRewardCommission{
 		Creator:    creator.String(),
 		Denom:      denom,
@@ -196,11 +197,11 @@ func (msg *MsgSetStakingRewardCommission) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.LT(sdk.ZeroDec()) {
+	if msg.Commission.LT(utils.ZeroDec()) {
 		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
 	}
 
-	if msg.Commission.GTE(sdk.OneDec()) {
+	if msg.Commission.GTE(utils.OneDec()) {
 		return fmt.Errorf("commission %s bigger than oneDec", msg.Commission.String())
 	}
 	return nil
@@ -238,7 +239,7 @@ func (msg *MsgSetProtocolFeeReceiver) ValidateBasic() error {
 	return nil
 }
 
-func NewMsgSetUnbondCommission(creator sdk.AccAddress, denom string, commission sdk.Dec) *MsgSetUnbondCommission {
+func NewMsgSetUnbondCommission(creator sdk.AccAddress, denom string, commission utils.Dec) *MsgSetUnbondCommission {
 	return &MsgSetUnbondCommission{
 		Creator:    creator.String(),
 		Denom:      denom,
@@ -269,11 +270,11 @@ func (msg *MsgSetUnbondCommission) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.LT(sdk.ZeroDec()) {
+	if msg.Commission.LT(utils.ZeroDec()) {
 		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
 	}
 
-	if msg.Commission.GTE(sdk.OneDec()) {
+	if msg.Commission.GTE(utils.OneDec()) {
 		return fmt.Errorf("commission %s bigger than oneDec", msg.Commission.String())
 	}
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
@@ -221,7 +222,7 @@ func (k Keeper) GetChainEra(ctx sdk.Context, denom string) (val types.ChainEra, 
 	return val, true
 }
 
-func (k Keeper) SetStakingRewardCommission(ctx sdk.Context, denom string, commission sdk.Dec) {
+func (k Keeper) SetStakingRewardCommission(ctx sdk.Context, denom string, commission utils.Dec) {
 	store := ctx.KVStore(k.storeKey)
 	b, err := commission.Marshal()
 	if err != nil {
@@ -351,7 +352,7 @@ func (k Keeper) GetUnbondRelayFee(ctx sdk.Context, denom string) (val types.Unbo
 	return val
 }
 
-func (k Keeper) SetUnbondCommission(ctx sdk.Context, denom string, value sdk.Dec) {
+func (k Keeper) SetUnbondCommission(ctx sdk.Context, denom string, value utils.Dec) {
 	store := ctx.KVStore(k.storeKey)
 	b, err := value.Marshal()
 	if err != nil {

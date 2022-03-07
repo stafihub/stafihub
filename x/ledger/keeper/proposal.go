@@ -212,6 +212,8 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 	if len(shots) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
 		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		newRate, _ := k.GetExchangeRate(ctx, shot.Denom)
+		k.SetEraExchangeRate(ctx, shot.Denom, shot.Era, newRate.Value)
 	}
 
 	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shots})
@@ -317,6 +319,8 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	if len(shotIds) == 0 {
 		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
 		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		newRate, _ := k.GetExchangeRate(ctx, shot.Denom)
+		k.SetEraExchangeRate(ctx, shot.Denom, shot.Era, newRate.Value)
 	}
 
 	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shotIds})

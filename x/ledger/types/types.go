@@ -2,6 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	utils "github.com/stafihub/stafihub/utils"
 )
 
 func NewPoolDetail(denom, pool string, subAccounts []string, threshold uint32) PoolDetail {
@@ -97,7 +98,7 @@ func NewSignature(denom string, era uint32, pool string,
 	}
 }
 
-func NewRValidatorIndicator(denom string, commission sdk.Dec, uptime uint32, power int64, locked sdk.Coin) RValidatorIndicator {
+func NewRValidatorIndicator(denom string, commission utils.Dec, uptime uint32, power int64, locked sdk.Coin) RValidatorIndicator {
 	return RValidatorIndicator{
 		Denom:       denom,
 		Commission:  commission,
