@@ -14639,6 +14639,43 @@ paths:
                         }
       tags:
         - Query
+  '/stafihub/stafihub/sudo/address_prefix/{denom}':
+    get:
+      summary: Queries a list of AddressPrefix items.
+      operationId: StafihubStafihubSudoAddressPrefix
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              addressPrefix:
+                type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /stafihub/stafihub/sudo/admin:
     get:
       summary: Queries a list of admin items.
@@ -22823,6 +22860,11 @@ definitions:
     type: object
   stafihub.stafihub.sudo.MsgUpdateAdminResponse:
     type: object
+  stafihub.stafihub.sudo.QueryAddressPrefixResponse:
+    type: object
+    properties:
+      addressPrefix:
+        type: string
   stafihub.stafihub.sudo.QueryAdminResponse:
     type: object
     properties:

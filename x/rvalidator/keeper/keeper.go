@@ -125,5 +125,3 @@ func (k Keeper) UpdateRValidatorSet(ctx sdk.Context, rset types.RValidatorSet) {
 	b := k.cdc.MustMarshal(&rset)
 	store.Set([]byte(rset.Denom), b)
 }
-
-

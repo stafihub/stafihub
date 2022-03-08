@@ -13,7 +13,7 @@ import (
 
 func (k Keeper) ProposalDetail(goCtx context.Context, req *types.QueryProposalDetailRequest) (*types.QueryProposalDetailResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)

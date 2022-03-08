@@ -11,7 +11,7 @@ import (
 
 func (k Keeper) RelayFee(goCtx context.Context, req *types.QueryRelayFeeRequest) (*types.QueryRelayFeeResponse, error) {
 	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid request")
+		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)

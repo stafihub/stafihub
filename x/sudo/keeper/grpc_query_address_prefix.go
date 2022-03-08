@@ -4,24 +4,24 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafihub/stafihub/x/ledger/types"
+	"github.com/stafihub/stafihub/x/sudo/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) RelayFeeReceiver(goCtx context.Context, req *types.QueryRelayFeeReceiverRequest) (*types.QueryRelayFeeReceiverResponse, error) {
+func (k Keeper) AddressPrefix(goCtx context.Context, req *types.QueryAddressPrefixRequest) (*types.QueryAddressPrefixResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	receiver, found := k.GetRelayFeeReceiver(ctx, req.Denom)
+	prefix, found := k.GetAddressPrefix(ctx, req.Denom)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
-	return &types.QueryRelayFeeReceiverResponse{
-		Receiver: receiver.String(),
+	return &types.QueryAddressPrefixResponse{
+		AddressPrefix: prefix,
 	}, nil
 }
