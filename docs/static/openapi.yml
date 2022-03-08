@@ -22235,8 +22235,6 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgMigrateUnbondingsResponse:
     type: object
-  stafihub.stafihub.ledger.MsgOnboardResponse:
-    type: object
   stafihub.stafihub.ledger.MsgRmBondedPoolResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetEraSecondsResponse:
@@ -22250,8 +22248,6 @@ definitions:
   stafihub.stafihub.ledger.MsgSetProtocolFeeReceiverResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRParamsResponse:
-    type: object
-  stafihub.stafihub.ledger.MsgSetRValidatorIndicatorResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRelayFeeReceiverResponse:
     type: object

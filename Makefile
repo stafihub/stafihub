@@ -67,7 +67,7 @@ BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
 all: tools install lint
 
 # The below include contains the tools.
-
+.PHONY:build
 build: go.sum
 ifeq ($(OS),Windows_NT)
 	go build $(BUILD_FLAGS) -o build/stafihubd.exe ./cmd/stafihubd
