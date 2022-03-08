@@ -18,7 +18,7 @@ func (k msgServer) SetResourceidToDenom(goCtx context.Context, msg *types.MsgSet
 	}
 	resourceIdBts, err := hex.DecodeString(msg.ResourceId)
 	if err != nil {
-		return nil, err
+		return nil, types.ErrResourceIdFormatNotRight
 	}
 	var resourceId [32]byte
 	copy(resourceId[:], resourceIdBts)

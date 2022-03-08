@@ -22,12 +22,19 @@ func (k msgServer) MigrateUnbondings(goCtx context.Context, msg *types.MsgMigrat
 	}
 
 	for _, poolUnbonds := range msg.PoolUnbonds {
-
-		poolUnbondsUse, ok := k.Keeper.GetPoolUnbond(ctx, msg.Denom, poolUnbonds.Pool, poolUnbonds.Era)
-		if !ok {
-			poolUnbondsUse = *poolUnbonds
+		err := k.Keeper.CheckAddress(ctx, msg.Denom, poolUnbonds.Pool)
+		if err != nil {
+			return nil, err
 		}
-		k.SetPoolUnbond(ctx, poolUnbondsUse)
+		for _, p := range poolUnbonds.Unbondings {
+			err := k.Keeper.CheckAddress(ctx, msg.Denom, p.Recipient)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		// coverable here
+		k.SetPoolUnbond(ctx, *poolUnbonds)
 	}
 
 	return &types.MsgMigrateUnbondingsResponse{}, nil

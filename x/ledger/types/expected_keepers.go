@@ -10,6 +10,7 @@ type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
 	GetAdmin(ctx sdk.Context) sdk.AccAddress
 	GetAddressPrefix(ctx sdk.Context, denom string) (val string, found bool)
+	CheckAddress(ctx sdk.Context, denom, address string) error
 }
 
 // BankKeeper defines the contract needed to be fulfilled for banking and supply

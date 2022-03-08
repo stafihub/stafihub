@@ -16,7 +16,12 @@ func (k msgServer) SetRelayFee(goCtx context.Context, msg *types.MsgSetRelayFee)
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.SetRelayFee(ctx, uint8(msg.ChainId), msg.Value)
+	chainId := uint8(msg.ChainId)
+	if !k.Keeper.HasChainId(ctx, chainId) {
+		return nil, types.ErrChainIdNotSupport
+	}
+
+	k.Keeper.SetRelayFee(ctx, chainId, msg.Value)
 
 	return &types.MsgSetRelayFeeResponse{}, nil
 }

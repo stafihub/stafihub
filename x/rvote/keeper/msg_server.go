@@ -58,8 +58,6 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	}
 
 	if prop.IsExpired(ctx.BlockHeight()) {
-		prop.Status = types.StatusExpired
-		k.SetProposal(ctx, prop)
 		return nil, types.ErrProposalAlreadyExpired
 	}
 

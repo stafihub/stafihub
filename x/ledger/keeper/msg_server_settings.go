@@ -37,6 +37,17 @@ func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDet
 	if !ok {
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
+	err := k.Keeper.CheckAddress(ctx, msg.Denom, msg.Pool)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, subAccount := range msg.SubAccounts {
+		err := k.Keeper.CheckAddress(ctx, msg.Denom, subAccount)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	k.Keeper.SetPoolDetail(ctx, msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold)
 
