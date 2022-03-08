@@ -50,12 +50,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetRParams:
 			res, err := msgServer.SetRParams(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgOnboard:
-			res, err := msgServer.Onboard(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetRValidatorIndicator:
-			res, err := msgServer.SetRValidatorIndicator(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetRelayFeeReceiver:
 			res, err := msgServer.SetRelayFeeReceiver(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

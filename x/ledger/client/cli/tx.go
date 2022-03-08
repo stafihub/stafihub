@@ -52,8 +52,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdExecuteBondProposal())
 	cmd.AddCommand(CmdSubmitSignature())
 	cmd.AddCommand(CmdSetRParams())
-	cmd.AddCommand(CmdOnboard())
-	cmd.AddCommand(CmdSetRValidatorIndicator())
 	cmd.AddCommand(CmdSetRelayFeeReceiver())
 	cmd.AddCommand(CmdSetRelayGasPrice())
 	cmd.AddCommand(CmdSetEraSeconds())

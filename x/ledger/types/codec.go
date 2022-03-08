@@ -29,8 +29,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
 	cdc.RegisterConcrete(&MsgSetRParams{}, "ledger/SetRParams", nil)
-	cdc.RegisterConcrete(&MsgOnboard{}, "ledger/Onboard", nil)
-	cdc.RegisterConcrete(&MsgSetRValidatorIndicator{}, "ledger/SetRValidatorIndicator", nil)
 	cdc.RegisterConcrete(&MsgSetRelayFeeReceiver{}, "ledger/SetRelayFeeReceiver", nil)
 	cdc.RegisterConcrete(&MsgSetRelayGasPrice{}, "ledger/SetRelayGasPrice", nil)
 	cdc.RegisterConcrete(&MsgSetEraSeconds{}, "ledger/SetEraSeconds", nil)
@@ -65,12 +63,6 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetRParams{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgOnboard{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSetRValidatorIndicator{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetRelayFeeReceiver{},

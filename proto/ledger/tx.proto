@@ -20,8 +20,6 @@ service Msg {
   rpc SetUnbondCommission(MsgSetUnbondCommission) returns (MsgSetUnbondCommissionResponse);
   rpc SubmitSignature(MsgSubmitSignature) returns (MsgSubmitSignatureResponse);
   rpc SetRParams(MsgSetRParams) returns (MsgSetRParamsResponse);
-  rpc Onboard(MsgOnboard) returns (MsgOnboardResponse);
-  rpc SetRValidatorIndicator(MsgSetRValidatorIndicator) returns (MsgSetRValidatorIndicatorResponse);
   rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
   rpc SetRelayGasPrice(MsgSetRelayGasPrice) returns (MsgSetRelayGasPriceResponse);
   rpc SetEraSeconds(MsgSetEraSeconds) returns (MsgSetEraSecondsResponse);
@@ -138,29 +136,6 @@ message MsgSetRParams {
 }
 
 message MsgSetRParamsResponse {
-}
-
-message MsgOnboard {
-  string creator = 1;
-  string denom = 2;
-  string address = 3;
-  string operatorAddress = 4;
-  string locked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-}
-
-message MsgOnboardResponse {
-}
-
-message MsgSetRValidatorIndicator {
-  string creator = 1;
-  string denom = 2;
-  string commission = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
-  uint32 uptime = 4;
-  int64 votingPower = 5;
-  string locked = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-}
-
-message MsgSetRValidatorIndicatorResponse {
 }
 
 message MsgSetRelayFeeReceiver {
