@@ -214,3 +214,13 @@ func (k Keeper) GetAllTotalProtocolFee(ctx sdk.Context) (list []types.TotalProto
 	}
 	return
 }
+
+func (k Keeper) CheckAddress(ctx sdk.Context, denom string, addresses ...string) error {
+	for _, addr := range addresses {
+		err := k.sudoKeeper.CheckAddress(ctx, denom, addr)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

@@ -11,9 +11,18 @@ import (
 
 func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types.MsgDepositResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	_, err := hex.DecodeString(msg.Receiver)
+	if err != nil {
+		return nil, types.ErrReceiverFormatNotRight
+	}
+	chainId := uint8(msg.DestChainId)
+	if !k.Keeper.HasChainId(ctx, chainId) {
+		return nil, types.ErrChainIdNotSupport
+	}
+
 	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
 	if err != nil {
-		return nil, err
+		return nil, types.ErrResourceIdFormatNotRight
 	}
 	var resourceId [32]byte
 	copy(resourceId[:], resourceIdSlice)
@@ -25,10 +34,6 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	userAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, err
-	}
-	chainId := uint8(msg.DestChainId)
-	if !k.Keeper.HasChainId(ctx, chainId) {
-		return nil, types.ErrChainIdNotSupport
 	}
 
 	relayFeeReceiver, found := k.Keeper.GetRelayFeeReceiver(ctx)

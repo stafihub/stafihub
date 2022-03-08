@@ -14,7 +14,7 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 
 	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
 	if err != nil {
-		return nil, err
+		return nil, types.ErrResourceIdFormatNotRight
 	}
 	var resourceId [32]byte
 	copy(resourceId[:], resourceIdSlice)
@@ -25,7 +25,7 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 	}
 	receiver, err := sdk.AccAddressFromBech32(msg.Receiver)
 	if err != nil {
-		return nil, err
+		return nil, types.ErrReceiverFormatNotRight
 	}
 
 	shouldMintOrUnlockCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))

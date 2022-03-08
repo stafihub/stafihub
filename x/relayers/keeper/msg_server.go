@@ -38,6 +38,10 @@ func (k msgServer) AddRelayer(goCtx context.Context, msg *types.MsgAddRelayer) (
 	}
 
 	for _, address := range msg.Addresses {
+		_, err := sdk.AccAddressFromBech32(address)
+		if err != nil {
+			return nil, err
+		}
 		// Check if the value already exists
 		if k.Keeper.HasRelayer(ctx, msg.Arena, msg.Denom, address) {
 			return nil, types.ErrRelayerAlreadySet

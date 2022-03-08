@@ -25,6 +25,11 @@ var _ types.MsgServer = msgServer{}
 func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidityUnbond) (*types.MsgLiquidityUnbondResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	denom := msg.Value.Denom
+	err := k.CheckAddress(ctx, denom, msg.GetRecipient(), msg.GetPool())
+	if err != nil {
+		return nil, err
+	}
+
 	ce, ok := k.Keeper.GetChainEra(ctx, denom)
 	if !ok {
 		return nil, types.ErrChainEraNotFound
@@ -139,6 +144,11 @@ func (k msgServer) SubmitSignature(goCtx context.Context, msg *types.MsgSubmitSi
 
 	if !k.relayerKeeper.HasRelayer(ctx, types.ModuleName, msg.Denom, msg.Creator) {
 		return nil, relayertypes.ErrProposerNotRelayer
+	}
+
+	err := k.Keeper.CheckAddress(ctx, msg.Denom, msg.Pool)
+	if err != nil {
+		return nil, err
 	}
 
 	if _, ok := k.GetBondedPool(ctx, msg.Denom); !ok {

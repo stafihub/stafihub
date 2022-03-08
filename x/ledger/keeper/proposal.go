@@ -423,6 +423,15 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 }
 
 func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBondProposal) error {
+	err := k.CheckAddress(ctx, p.Denom, p.Pool)
+	if err != nil {
+		return err
+	}
+	bonder, err := sdk.AccAddressFromBech32(p.Bonder)
+	if err != nil {
+		return err
+	}
+
 	br, ok := k.GetBondRecord(ctx, p.Denom, p.Txhash)
 	if ok {
 		return types.ErrBondRepeated
@@ -444,7 +453,6 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 		panic(err)
 	}
 
-	bonder, _ := sdk.AccAddressFromBech32(p.Bonder)
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins); err != nil {
 		panic(err)
 	}

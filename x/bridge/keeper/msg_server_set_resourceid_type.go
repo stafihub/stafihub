@@ -17,7 +17,7 @@ func (k msgServer) SetResourceidType(goCtx context.Context, msg *types.MsgSetRes
 	}
 	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
 	if err != nil {
-		return nil, err
+		return nil, types.ErrResourceIdFormatNotRight
 	}
 	var resourceId [32]byte
 	copy(resourceId[:], resourceIdSlice)
