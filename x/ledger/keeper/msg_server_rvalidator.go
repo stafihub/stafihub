@@ -24,7 +24,7 @@ func (k msgServer) Onboard(goCtx context.Context, msg *types.MsgOnboard) (*types
 	}
 
 	if !strings.HasPrefix(msg.Address, addrPfx) {
-		return nil, types.ErrAddrPrefixNotMatched
+		return nil, sudotypes.ErrAddrPrefixNotMatched
 	}
 
 	if _, found := k.Keeper.RValidator(ctx, msg.Denom, msg.Address, msg.OperatorAddress); found {

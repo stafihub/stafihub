@@ -13,11 +13,10 @@ import (
 
 type (
 	Keeper struct {
-		cdc              codec.BinaryCodec
-		storeKey         sdk.StoreKey
-		memKey           sdk.StoreKey
-		feeCollectorName string
-		bankKeeper       types.BankKeeper
+		cdc        codec.BinaryCodec
+		storeKey   sdk.StoreKey
+		memKey     sdk.StoreKey
+		bankKeeper types.BankKeeper
 	}
 )
 
@@ -65,6 +64,17 @@ func (k Keeper) GetAddressPrefix(ctx sdk.Context, denom string) (val string, fou
 	if b == nil {
 		return val, false
 	}
-
 	return string(b), true
+}
+
+func (k Keeper) CheckAddress(ctx sdk.Context, denom, address string) error {
+	prefix, found := k.GetAddressPrefix(ctx, denom)
+	if !found {
+		return types.ErrAddrPrefixNotExist
+	}
+	_, err := sdk.GetFromBech32(address, prefix)
+	if err != nil {
+		return err
+	}
+	return nil
 }

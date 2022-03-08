@@ -22774,6 +22774,21 @@ definitions:
     properties:
       isOpen:
         type: boolean
+  stafihub.stafihub.rvalidator.MsgOnboardResponse:
+    type: object
+  stafihub.stafihub.rvalidator.MsgSetRValidatorIndicatorResponse:
+    type: object
+  stafihub.stafihub.rvalidator.MsgVoteStatusProposalResponse:
+    type: object
+  stafihub.stafihub.rvalidator.RValidatorStatus:
+    type: string
+    enum:
+      - RVALIDATOR_STATUS_ONBOARD
+      - RVALIDATOR_STATUS_PICKABLE
+      - RVALIDATOR_STATUS_PICKED
+      - RVALIDATOR_STATUS_UNPICKABLE
+      - RVALIDATOR_STATUS_OFFBOARD
+    default: RVALIDATOR_STATUS_ONBOARD
   stafihub.stafihub.rvote.MsgSetProposalLifeResponse:
     type: object
   stafihub.stafihub.rvote.MsgSubmitProposalResponse:
