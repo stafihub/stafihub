@@ -10,8 +10,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stafihub/stafihub/utils"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var _ = strconv.Itoa(0)

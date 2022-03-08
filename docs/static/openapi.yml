@@ -22231,6 +22231,10 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgLiquidityUnbondResponse:
     type: object
+  stafihub.stafihub.ledger.MsgMigrateInitResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgMigrateUnbondingsResponse:
+    type: object
   stafihub.stafihub.ledger.MsgOnboardResponse:
     type: object
   stafihub.stafihub.ledger.MsgRmBondedPoolResponse:

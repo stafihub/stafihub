@@ -35,6 +35,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetRelayGasPrice{}, "ledger/SetRelayGasPrice", nil)
 	cdc.RegisterConcrete(&MsgSetEraSeconds{}, "ledger/SetEraSeconds", nil)
 	cdc.RegisterConcrete(&MsgRmBondedPool{}, "ledger/RmBondedPool", nil)
+	cdc.RegisterConcrete(&MsgMigrateInit{}, "ledger/MigrateInit", nil)
+	cdc.RegisterConcrete(&MsgMigrateUnbondings{}, "ledger/MigrateUnbondings", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -81,6 +83,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRmBondedPool{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgMigrateInit{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgMigrateUnbondings{},
 	)
 	// this line is used by starport scaffolding # 3
 

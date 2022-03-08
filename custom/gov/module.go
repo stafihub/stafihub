@@ -8,6 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
 	"github.com/cosmos/cosmos-sdk/x/gov/types"
+	"github.com/stafihub/stafihub/utils"
 )
 
 var (
@@ -30,7 +31,7 @@ func NewAppModuleBasic(proposalHandlers ...govclient.ProposalHandler) AppModuleB
 // module.
 func (am AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 	defaultGenesisState := types.DefaultGenesisState()
-	defaultGenesisState.DepositParams.MinDeposit[0].Denom = "ufis"
+	defaultGenesisState.DepositParams.MinDeposit[0].Denom = utils.FisDenom
 
 	return cdc.MustMarshalJSON(defaultGenesisState)
 }

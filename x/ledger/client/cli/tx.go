@@ -58,6 +58,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSetRelayGasPrice())
 	cmd.AddCommand(CmdSetEraSeconds())
 	cmd.AddCommand(CmdRmBondedPool())
+	cmd.AddCommand(CmdMigrateInit())
+	cmd.AddCommand(CmdMigrateUnbondings())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

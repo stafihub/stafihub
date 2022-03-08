@@ -3,8 +3,8 @@ package types
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	utils "github.com/stafihub/stafihub/utils"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	utils "github.com/stafihub/stafihub/utils"
 )
 
 var (

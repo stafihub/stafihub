@@ -41,4 +41,5 @@ var (
 	ErrNoStakingRewardCommisson = sdkerrors.Register(ModuleName, 32, "no staking reward commission error")
 	ErrNoUnbondCommisson        = sdkerrors.Register(ModuleName, 33, "no unbond commission error")
 	ErrBondPipelineAlreadyWork  = sdkerrors.Register(ModuleName, 34, "bond pipeline already work error")
+	ErrExchangeRateAlreadyExist = sdkerrors.Register(ModuleName, 35, "exchange rate already exist error")
 )

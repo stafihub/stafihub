@@ -7,6 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	"github.com/cosmos/cosmos-sdk/x/crisis/types"
+	"github.com/stafihub/stafihub/utils"
 )
 
 var (
@@ -22,7 +23,7 @@ type AppModuleBasic struct {
 // module.
 func (am AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 	defaultGenesisState := types.DefaultGenesisState()
-	defaultGenesisState.ConstantFee.Denom = "ufis"
+	defaultGenesisState.ConstantFee.Denom = utils.FisDenom
 
 	return cdc.MustMarshalJSON(defaultGenesisState)
 }

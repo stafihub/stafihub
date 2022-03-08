@@ -131,7 +131,7 @@ Where metadata.json could be like this:
 				return err
 			}
 
-			prefix, _ := cmd.Flags().GetString(FlagMetadata)
+			prefix, _ := cmd.Flags().GetString(FlagAddressPrefix)
 			if prefix == "" {
 				return fmt.Errorf("prefix not give")
 			}

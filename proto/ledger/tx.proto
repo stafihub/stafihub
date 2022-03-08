@@ -26,6 +26,8 @@ service Msg {
   rpc SetRelayGasPrice(MsgSetRelayGasPrice) returns (MsgSetRelayGasPriceResponse);
   rpc SetEraSeconds(MsgSetEraSeconds) returns (MsgSetEraSecondsResponse);
   rpc RmBondedPool(MsgRmBondedPool) returns (MsgRmBondedPoolResponse);
+  rpc MigrateInit(MsgMigrateInit) returns (MsgMigrateInitResponse);
+  rpc MigrateUnbondings(MsgMigrateUnbondings) returns (MsgMigrateUnbondingsResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -197,6 +199,25 @@ message MsgRmBondedPool {
 }
 
 message MsgRmBondedPoolResponse {
+}
+
+message MsgMigrateInit {
+  string creator = 1;
+  string denom = 2;
+  string totalSupply = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string exchangeRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+}
+
+message MsgMigrateInitResponse {
+}
+
+message MsgMigrateUnbondings {
+  string creator = 1;
+  string denom = 2;
+  repeated PoolUnbond poolUnbonds = 3;
+}
+
+message MsgMigrateUnbondingsResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

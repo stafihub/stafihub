@@ -7,6 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stafihub/stafihub/utils"
 )
 
 var (
@@ -54,7 +55,7 @@ func (am AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 			Description: "The native staking token of the StaFi Hub",
 			DenomUnits: []*types.DenomUnit{
 				{
-					Denom:    "ufis",
+					Denom:    utils.FisDenom,
 					Exponent: 0,
 					Aliases:  []string{"microfis"},
 				},
@@ -68,7 +69,7 @@ func (am AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 					Exponent: 6,
 				},
 			},
-			Base:    "ufis",
+			Base:    utils.FisDenom,
 			Display: "fis",
 			Name:    "FIS",
 			Symbol:  "FIS",

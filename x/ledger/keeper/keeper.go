@@ -10,8 +10,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stafihub/stafihub/utils"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 type (
@@ -60,6 +60,16 @@ func (k Keeper) SetExchangeRate(ctx sdk.Context, denom string, total, rtotal sdk
 	e := types.ExchangeRate{
 		Denom: denom,
 		Value: dec,
+	}
+	b := k.cdc.MustMarshal(&e)
+	store.Set([]byte(denom), b)
+}
+
+func (k Keeper) MigrateExchangeRate(ctx sdk.Context, denom string, rate utils.Dec) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ExchangeRateKeyPrefix)
+	e := types.ExchangeRate{
+		Denom: denom,
+		Value: rate,
 	}
 	b := k.cdc.MustMarshal(&e)
 	store.Set([]byte(denom), b)
