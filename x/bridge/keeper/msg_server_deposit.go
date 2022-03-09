@@ -15,6 +15,10 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	if err != nil {
 		return nil, types.ErrReceiverFormatNotRight
 	}
+	if msg.Amount.LTE(sdk.ZeroInt()) {
+		return nil, types.ErrDepositAmountZero
+	}
+
 	chainId := uint8(msg.DestChainId)
 	if !k.Keeper.HasChainId(ctx, chainId) {
 		return nil, types.ErrChainIdNotSupport
@@ -36,12 +40,12 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, err
 	}
 
+	// relay fee
 	relayFeeReceiver, found := k.Keeper.GetRelayFeeReceiver(ctx)
 	if !found {
 		return nil, types.ErrRelayFeeReceiverNotSet
 	}
 	relayFee := k.Keeper.GetRelayFee(ctx, chainId)
-
 	if relayFee.Amount.GT(sdk.ZeroInt()) {
 		err := k.bankKeeper.SendCoins(ctx, userAddress, relayFeeReceiver, sdk.NewCoins(relayFee))
 		if err != nil {
@@ -49,12 +53,11 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		}
 	}
 
-	count := k.Keeper.GetDepositCounts(ctx, chainId)
+	// lock or burn token
 	balance := k.bankKeeper.GetBalance(ctx, userAddress, denom)
 	if balance.Amount.LT(msg.Amount) {
 		return nil, types.ErrBalanceNotEnough
 	}
-	resourceIdType := k.Keeper.GetResourceIdType(ctx, resourceId)
 
 	shouldBurnedOrLockedCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))
 	err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, shouldBurnedOrLockedCoins)
@@ -62,12 +65,16 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, err
 	}
 
+	resourceIdType := k.Keeper.GetResourceIdType(ctx, resourceId)
 	if resourceIdType == types.ResourceIdTypeForeign {
 		err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, shouldBurnedOrLockedCoins)
 		if err != nil {
 			return nil, err
 		}
 	}
+
+	//update deposit count
+	count := k.Keeper.GetDepositCounts(ctx, chainId)
 	k.Keeper.SetDepositCounts(ctx, chainId, count+1)
 
 	ctx.EventManager().EmitEvent(

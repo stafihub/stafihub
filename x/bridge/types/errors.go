@@ -20,4 +20,6 @@ var (
 	ErrRelayerNotExist          = sdkerrors.Register(ModuleName, 1109, "relay not exist")
 	ErrReceiverFormatNotRight   = sdkerrors.Register(ModuleName, 1110, "receiver format not right")
 	ErrResourceIdFormatNotRight = sdkerrors.Register(ModuleName, 1111, "resource id format not right")
+	ErrDepositAmountZero        = sdkerrors.Register(ModuleName, 1112, "deposit amount zero")
+	ErrVoteProposalAmountZero   = sdkerrors.Register(ModuleName, 1113, "vote proposal amount zero")
 )

@@ -27,6 +27,10 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 		return nil, types.ErrReceiverFormatNotRight
 	}
 
+	if msg.Amount.LTE(sdk.ZeroInt()) {
+		return nil, types.ErrVoteProposalAmountZero
+	}
+
 	shouldMintOrUnlockCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))
 
 	content := types.ProposalContent{
