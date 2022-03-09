@@ -146,11 +146,13 @@ stafihubd query bridge  relay-fee 1
 migrate rtoken (after adding new rtoken step):
 
 ```
-stafihubd tx ledger migrate-init uratom 100000000 1.23 --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx ledger migrate-init uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100000000 150000000 200000000 300000000 1.23 --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query bank  total 
 
 stafihubd query ledger exchange-rate uratom
+
+stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
 
 
 

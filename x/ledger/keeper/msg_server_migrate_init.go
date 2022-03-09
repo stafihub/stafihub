@@ -17,8 +17,32 @@ func (k msgServer) MigrateInit(goCtx context.Context, msg *types.MsgMigrateInit)
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	k.MigrateExchangeRate(ctx, msg.Denom, msg.ExchangeRate)
+	err := k.CheckAddress(ctx, msg.Denom, msg.GetPool())
+	if err != nil {
+		return nil, err
+	}
 
+	if !k.Keeper.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
+		return nil, types.ErrPoolNotBonded
+	}
+
+	//init exchange rate
+	k.Keeper.MigrateExchangeRate(ctx, msg.Denom, msg.ExchangeRate)
+
+	//init pipeline
+	pipeline, found := k.GetBondPipeline(ctx, msg.Denom, msg.Pool)
+	if !found {
+		pipeline = types.BondPipeline{
+			Denom: msg.Denom,
+			Pool:  msg.Pool,
+		}
+	}
+	pipeline.Chunk.Active = msg.Active
+	pipeline.Chunk.Bond = msg.Bond
+	pipeline.Chunk.Unbond = msg.Unbond
+	k.Keeper.SetBondPipeline(ctx, pipeline)
+
+	//init supply
 	shouldMintCoins := sdk.NewCoins(sdk.NewCoin(msg.Denom, msg.TotalSupply))
 	moduleAddress := authTypes.NewModuleAddress(xBridgeTypes.ModuleName)
 	balance := k.bankKeeper.GetBalance(ctx, moduleAddress, msg.Denom)

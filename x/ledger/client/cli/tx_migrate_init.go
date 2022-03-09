@@ -22,17 +22,30 @@ var FlagUnbondings = "unbondings"
 
 func CmdMigrateInit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "migrate-init [denom] [total-supply] [exchange-rate]",
+		Use:   "migrate-init [denom] [pool] [total-supply] [active] [bond] [unbond] [exchange-rate]",
 		Short: "Migrate init",
 
-		Args: cobra.ExactArgs(3),
+		Args: cobra.ExactArgs(7),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argTotalSupply, ok := sdk.NewIntFromString(args[1])
+			argPool := args[1]
+			argTotalSupply, ok := sdk.NewIntFromString(args[2])
 			if !ok {
 				return fmt.Errorf("argDenom format err")
 			}
-			argExchangeRate, err := utils.NewDecFromStr(args[2])
+			argActive, ok := sdk.NewIntFromString(args[3])
+			if !ok {
+				return fmt.Errorf("argActive format err")
+			}
+			argBond, ok := sdk.NewIntFromString(args[4])
+			if !ok {
+				return fmt.Errorf("argBond format err")
+			}
+			argUnbond, ok := sdk.NewIntFromString(args[5])
+			if !ok {
+				return fmt.Errorf("argUnbond format err")
+			}
+			argExchangeRate, err := utils.NewDecFromStr(args[6])
 			if err != nil {
 				return err
 			}
@@ -45,7 +58,11 @@ func CmdMigrateInit() *cobra.Command {
 			msg := types.NewMsgMigrateInit(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
+				argPool,
 				argTotalSupply,
+				argActive,
+				argBond,
+				argUnbond,
 				argExchangeRate,
 			)
 			if err := msg.ValidateBasic(); err != nil {
