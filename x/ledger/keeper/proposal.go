@@ -28,30 +28,31 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 		return types.ErrEraSkipped
 	}
 
-	bpool, ok := k.GetBondedPool(ctx, p.Denom)
-	if ok {
-		for _, addr := range bpool.Addrs {
-			pipe, _ := k.GetBondPipeline(ctx, p.Denom, addr)
-			bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
-			bshot, err := bondShot.Marshal()
-			if err != nil {
-				return err
-			}
-
-			shotId := hex.EncodeToString(crypto.Sha256(bshot))
-			eraShot.ShotIds = append(eraShot.ShotIds, shotId)
-			k.SetSnapshot(ctx, shotId, bondShot)
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(
-					types.EventTypeEraPoolUpdated,
-					sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-					sdk.NewAttribute(types.AttributeKeyLastEra, strconv.FormatUint(uint64(ce.Era), 10)),
-					sdk.NewAttribute(types.AttributeKeyCurrentEra, strconv.FormatUint(uint64(p.Era), 10)),
-					sdk.NewAttribute(types.AttributeKeyShotId, shotId),
-					sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
-				),
-			)
+	bpool, found := k.GetBondedPool(ctx, p.Denom)
+	if !found || len(bpool.GetAddrs()) == 0 {
+		return types.ErrPoolNotBonded
+	}
+	for _, addr := range bpool.Addrs {
+		pipe, _ := k.GetBondPipeline(ctx, p.Denom, addr)
+		bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
+		bshot, err := bondShot.Marshal()
+		if err != nil {
+			return err
 		}
+
+		shotId := hex.EncodeToString(crypto.Sha256(bshot))
+		eraShot.ShotIds = append(eraShot.ShotIds, shotId)
+		k.SetSnapshot(ctx, shotId, bondShot)
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeEraPoolUpdated,
+				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+				sdk.NewAttribute(types.AttributeKeyLastEra, strconv.FormatUint(uint64(ce.Era), 10)),
+				sdk.NewAttribute(types.AttributeKeyCurrentEra, strconv.FormatUint(uint64(p.Era), 10)),
+				sdk.NewAttribute(types.AttributeKeyShotId, shotId),
+				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
+			),
+		)
 	}
 
 	k.SetEraSnapshot(ctx, p.Era, eraShot)
@@ -76,7 +77,10 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 		return types.ErrLastVoterNobody
 	}
 
-	pipe, _ := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
+	pipe, found := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
+	if !found {
+		return types.ErrBondPipelineNotFound
+	}
 	switch p.Action {
 	case types.BondOnly:
 		pipe.Chunk.Bond = pipe.Chunk.Bond.Sub(shot.Chunk.Bond)
@@ -184,19 +188,21 @@ func (k Keeper) ProcessBondAndReportActiveProposal(ctx sdk.Context, p *types.Bon
 
 	active := sdk.NewInt(p.Staked.Int64()).Add(p.Unstaked)
 	diff := active.Sub(shot.Chunk.Active)
-	if diff.GT(sdk.NewInt(0)) {
+	if diff.GT(sdk.ZeroInt()) {
 		commission := k.GetStakingRewardCommission(ctx, shot.Denom)
 		fee := commission.MulInt(diff).TruncateInt()
 		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
-		coin := sdk.NewCoin(shot.Denom, rfee)
-		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
-			return err
-		}
+		if rfee.GT(sdk.ZeroInt()) {
+			coin := sdk.NewCoin(shot.Denom, rfee)
+			if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
+				return err
+			}
 
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, protocolFeeReceiver, sdk.Coins{coin}); err != nil {
-			return err
+			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, protocolFeeReceiver, sdk.Coins{coin}); err != nil {
+				return err
+			}
+			k.IncreaseTotalProtocolFee(ctx, coin.Denom, coin.Amount)
 		}
-		k.IncreaseTotalProtocolFee(ctx, coin.Denom, coin.Amount)
 	}
 
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
@@ -287,7 +293,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 
 	active := sdk.NewInt(p.Staked.Int64()).Add(p.Unstaked)
 	diff := active.Sub(shot.Chunk.Active)
-	if diff.GT(sdk.NewInt(0)) {
+	if diff.GT(sdk.ZeroInt()) {
 		commission := k.GetStakingRewardCommission(ctx, shot.Denom)
 		fee := commission.MulInt(diff).TruncateInt()
 		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
@@ -304,7 +310,10 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		}
 	}
 
-	pipe, _ := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
+	pipe, found := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
+	if !found {
+		return types.ErrBondPipelineNotFound
+	}
 	pipe.Chunk.Active = pipe.Chunk.Active.Add(diff)
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Unstaked)
 	totalExpectedActive := k.TotalExpectedActive(ctx, shot.Denom, shot.Era).Add(pipe.Chunk.Active)
@@ -446,15 +455,17 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.Amount)
 
 	rbalance := k.TokenToRtoken(ctx, p.Denom, p.Amount)
-	rcoins := sdk.Coins{
-		sdk.NewCoin(p.Denom, rbalance),
-	}
-	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
-		panic(err)
-	}
+	if rbalance.GT(sdk.ZeroInt()) {
+		rcoins := sdk.Coins{
+			sdk.NewCoin(p.Denom, rbalance),
+		}
+		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
+			panic(err)
+		}
 
-	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins); err != nil {
-		panic(err)
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins); err != nil {
+			panic(err)
+		}
 	}
 
 	k.SetBondRecord(ctx, br)
