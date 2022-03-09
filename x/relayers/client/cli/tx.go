@@ -49,8 +49,10 @@ func CmdAddRelayer() *cobra.Command {
 			argArena := args[0]
 
 			argDenom := args[1]
-			if err := sdk.ValidateDenom(argDenom); err != nil {
-				return err
+			if argArena != "bridge" {
+				if err := sdk.ValidateDenom(argDenom); err != nil {
+					return err
+				}
 			}
 
 			argValidators := strings.Split(args[2], ":")
@@ -134,8 +136,10 @@ func CmdSetThreshold() *cobra.Command {
 			argArena := args[0]
 
 			argDenom := args[1]
-			if sdk.ValidateDenom(argDenom) != nil {
-				return nil
+			if argArena != "bridge" {
+				if sdk.ValidateDenom(argDenom) != nil {
+					return nil
+				}
 			}
 
 			value, err := strconv.ParseUint(args[2], 10, 64)

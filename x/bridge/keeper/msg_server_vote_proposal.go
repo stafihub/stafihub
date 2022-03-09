@@ -11,7 +11,6 @@ import (
 
 func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposal) (*types.MsgVoteProposalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
 	if err != nil {
 		return nil, types.ErrResourceIdFormatNotRight
@@ -58,7 +57,6 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 		}
 	}
 	proposal.Voters = append(proposal.Voters, msg.Creator)
-
 	threshold, found := k.Keeper.relayersKeeper.GetThreshold(ctx, types.ModuleName, chainIdStr)
 	if !found {
 		return nil, types.ErrThresholdNotSet

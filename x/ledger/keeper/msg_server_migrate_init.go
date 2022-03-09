@@ -5,7 +5,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/stafihub/stafihub/utils"
 	xBridgeTypes "github.com/stafihub/stafihub/x/bridge/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
@@ -16,12 +15,6 @@ func (k msgServer) MigrateInit(goCtx context.Context, msg *types.MsgMigrateInit)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
-	}
-
-	//should return if exist&&exchangeRate != 1
-	rate, found := k.GetExchangeRate(ctx, msg.Denom)
-	if found && !rate.Value.Equal(utils.OneDec()) {
-		return nil, types.ErrExchangeRateAlreadyExist
 	}
 
 	k.MigrateExchangeRate(ctx, msg.Denom, msg.ExchangeRate)

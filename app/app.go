@@ -435,6 +435,7 @@ func New(
 		app.GetSubspace(bridgemoduletypes.ModuleName),
 		app.BankKeeper,
 		app.SudoKeeper,
+		app.RelayersKeeper,
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
 

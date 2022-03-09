@@ -33,6 +33,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	bankKeeper types.BankKeeper,
 	sudoKeeper types.SudoKeeper,
+	relayersKeeper types.RelayersKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -41,12 +42,13 @@ func NewKeeper(
 
 	return &Keeper{
 
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		bankKeeper: bankKeeper,
-		sudoKeeper: sudoKeeper,
+		cdc:            cdc,
+		storeKey:       storeKey,
+		memKey:         memKey,
+		paramstore:     ps,
+		bankKeeper:     bankKeeper,
+		sudoKeeper:     sudoKeeper,
+		relayersKeeper: relayersKeeper,
 	}
 }
 

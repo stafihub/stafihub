@@ -83,6 +83,7 @@ Where unbondings.json could be like this:
 		},
 	}
 
+	cmd.Flags().String(FlagUnbondings, "", "unbondings file path")
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
