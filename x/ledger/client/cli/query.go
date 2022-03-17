@@ -161,7 +161,7 @@ func CmdGetChainEra() *cobra.Command {
 
 func CmdGetCurrentEraSnapshot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "current-era-snap-shot [denom]",
+		Use:   "current-era-snapshot [denom]",
 		Short: "Query getCurrentEraSnapshot",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -387,7 +387,7 @@ func CmdGetBondPipeline() *cobra.Command {
 
 func CmdGetEraSnapshot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "era-snap-shot [denom] [era]",
+		Use:   "era-snapshot [denom] [era]",
 		Short: "Query GetEraSnapshot",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -424,7 +424,7 @@ func CmdGetEraSnapshot() *cobra.Command {
 
 func CmdGetSnapshot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "snap-shot [shot-id]",
+		Use:   "snapshot [shot-id]",
 		Short: "Query GetSnapShot",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
