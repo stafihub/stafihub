@@ -69,14 +69,14 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 	upgradekeeper "github.com/cosmos/cosmos-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	"github.com/cosmos/ibc-go/v2/modules/apps/transfer"
-	ibctransferkeeper "github.com/cosmos/ibc-go/v2/modules/apps/transfer/keeper"
-	ibctransfertypes "github.com/cosmos/ibc-go/v2/modules/apps/transfer/types"
-	ibc "github.com/cosmos/ibc-go/v2/modules/core"
-	ibcclient "github.com/cosmos/ibc-go/v2/modules/core/02-client"
-	ibcporttypes "github.com/cosmos/ibc-go/v2/modules/core/05-port/types"
-	ibchost "github.com/cosmos/ibc-go/v2/modules/core/24-host"
-	ibckeeper "github.com/cosmos/ibc-go/v2/modules/core/keeper"
+	"github.com/cosmos/ibc-go/v3/modules/apps/transfer"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v3/modules/apps/transfer/keeper"
+	ibctransfertypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v3/modules/core"
+	ibcclient "github.com/cosmos/ibc-go/v3/modules/core/02-client"
+	ibcporttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
+	ibckeeper "github.com/cosmos/ibc-go/v3/modules/core/keeper"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
@@ -325,16 +325,31 @@ func New(
 
 	// add keepers
 	app.AccountKeeper = authkeeper.NewAccountKeeper(
-		appCodec, keys[authtypes.StoreKey], app.GetSubspace(authtypes.ModuleName), authtypes.ProtoBaseAccount, maccPerms,
+		appCodec,
+		keys[authtypes.StoreKey],
+		app.GetSubspace(authtypes.ModuleName),
+		authtypes.ProtoBaseAccount,
+		maccPerms,
 	)
 	app.BankKeeper = bankkeeper.NewBaseKeeper(
-		appCodec, keys[banktypes.StoreKey], app.AccountKeeper, app.GetSubspace(banktypes.ModuleName), app.ModuleAccountAddrs(),
+		appCodec,
+		keys[banktypes.StoreKey],
+		app.AccountKeeper,
+		app.GetSubspace(banktypes.ModuleName),
+		app.ModuleAccountAddrs(),
 	)
 	stakingKeeper := stakingkeeper.NewKeeper(
-		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName),
+		appCodec,
+		keys[stakingtypes.StoreKey],
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.GetSubspace(stakingtypes.ModuleName),
 	)
 	sudoKeeper := sudokeeper.NewKeeper(
-		appCodec, keys[sudotypes.StoreKey], keys[sudotypes.MemStoreKey], app.BankKeeper,
+		appCodec,
+		keys[sudotypes.StoreKey],
+		keys[sudotypes.MemStoreKey],
+		app.BankKeeper,
 	)
 
 	rstakingKeeper := rstakingmodulekeeper.NewKeeper(
@@ -348,22 +363,47 @@ func New(
 	)
 
 	app.MintKeeper = mintkeeper.NewKeeper(
-		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), rstakingKeeper,
-		app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName,
+		appCodec,
+		keys[minttypes.StoreKey],
+		app.GetSubspace(minttypes.ModuleName),
+		rstakingKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		authtypes.FeeCollectorName,
 	)
 	app.DistrKeeper = distrkeeper.NewKeeper(
-		appCodec, keys[distrtypes.StoreKey], app.GetSubspace(distrtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
-		&stakingKeeper, authtypes.FeeCollectorName, app.ModuleAccountAddrs(),
+		appCodec,
+		keys[distrtypes.StoreKey],
+		app.GetSubspace(distrtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		&stakingKeeper,
+		authtypes.FeeCollectorName,
+		app.ModuleAccountAddrs(),
 	)
 	app.SlashingKeeper = slashingkeeper.NewKeeper(
-		appCodec, keys[slashingtypes.StoreKey], &stakingKeeper, app.GetSubspace(slashingtypes.ModuleName),
+		appCodec,
+		keys[slashingtypes.StoreKey],
+		&stakingKeeper,
+		app.GetSubspace(slashingtypes.ModuleName),
 	)
 	app.CrisisKeeper = crisiskeeper.NewKeeper(
-		app.GetSubspace(crisistypes.ModuleName), invCheckPeriod, app.BankKeeper, authtypes.FeeCollectorName,
+		app.GetSubspace(crisistypes.ModuleName),
+		invCheckPeriod,
+		app.BankKeeper,
+		authtypes.FeeCollectorName,
 	)
 
-	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegrant.StoreKey], app.AccountKeeper)
-	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
+	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(
+		appCodec,
+		keys[feegrant.StoreKey],
+		app.AccountKeeper)
+	app.UpgradeKeeper = upgradekeeper.NewKeeper(
+		skipUpgradeHeights,
+		keys[upgradetypes.StoreKey],
+		appCodec,
+		homePath,
+		app.BaseApp)
 
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
@@ -375,12 +415,18 @@ func New(
 
 	// Create IBC Keeper
 	app.IBCKeeper = ibckeeper.NewKeeper(
-		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
+		appCodec,
+		keys[ibchost.StoreKey],
+		app.GetSubspace(ibchost.ModuleName),
+		app.StakingKeeper,
+		app.UpgradeKeeper,
+		scopedIBCKeeper,
 	)
 
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
-	govRouter.AddRoute(govtypes.RouterKey, govtypes.ProposalHandler).
+	govRouter.
+		AddRoute(govtypes.RouterKey, govtypes.ProposalHandler).
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
@@ -388,41 +434,67 @@ func New(
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
-		appCodec, keys[ibctransfertypes.StoreKey], app.GetSubspace(ibctransfertypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
-		app.AccountKeeper, app.BankKeeper, scopedTransferKeeper,
+		appCodec,
+		keys[ibctransfertypes.StoreKey],
+		app.GetSubspace(ibctransfertypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		scopedTransferKeeper,
 	)
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
+	transferIBCModule := transfer.NewIBCModule(app.TransferKeeper)
 
 	// Create evidence Keeper for to register the IBC light client misbehaviour evidence route
 	evidenceKeeper := evidencekeeper.NewKeeper(
-		appCodec, keys[evidencetypes.StoreKey], &app.StakingKeeper, app.SlashingKeeper,
+		appCodec,
+		keys[evidencetypes.StoreKey],
+		&app.StakingKeeper,
+		app.SlashingKeeper,
 	)
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
 	app.GovKeeper = govkeeper.NewKeeper(
-		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
-		&stakingKeeper, govRouter,
+		appCodec,
+		keys[govtypes.StoreKey],
+		app.GetSubspace(govtypes.ModuleName),
+		app.AccountKeeper,
+		app.BankKeeper,
+		&stakingKeeper,
+		govRouter,
 	)
 
 	app.SudoKeeper = *sudoKeeper
 
 	app.RelayersKeeper = *relayerskeeper.NewKeeper(
-		appCodec, keys[relayerstypes.StoreKey], keys[relayerstypes.MemStoreKey],
-		app.SudoKeeper, app.BankKeeper,
+		appCodec,
+		keys[relayerstypes.StoreKey],
+		keys[relayerstypes.MemStoreKey],
+		app.SudoKeeper,
+		app.BankKeeper,
 	)
 
 	app.LedgerKeeper = *ledgerkeeper.NewKeeper(
-		appCodec, keys[ledgertypes.StoreKey], keys[ledgertypes.MemStoreKey],
-		app.SudoKeeper, app.BankKeeper, app.RelayersKeeper,
+		appCodec,
+		keys[ledgertypes.StoreKey],
+		keys[ledgertypes.MemStoreKey],
+		app.SudoKeeper,
+		app.BankKeeper,
+		app.RelayersKeeper,
 	)
 
 	rvoteRouter := rvotetypes.NewRouter()
 	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledger.NewProposalHandler(app.LedgerKeeper))
 	app.RvoteKeeper = *rvotekeeper.NewKeeper(
-		appCodec, keys[rvotetypes.StoreKey], keys[rvotetypes.MemStoreKey],
-		app.SudoKeeper, app.RelayersKeeper, rvoteRouter,
+		appCodec,
+		keys[rvotetypes.StoreKey],
+		keys[rvotetypes.MemStoreKey],
+		app.SudoKeeper,
+		app.RelayersKeeper,
+		rvoteRouter,
 	)
 
 	app.RStakingKeeper = *rstakingKeeper
@@ -443,7 +515,6 @@ func New(
 		appCodec,
 		keys[rvalidatormoduletypes.StoreKey],
 		keys[rvalidatormoduletypes.MemStoreKey],
-
 		app.SudoKeeper,
 		app.BankKeeper,
 		app.RelayersKeeper,
@@ -454,7 +525,7 @@ func New(
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
-	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
+	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -505,23 +576,57 @@ func New(
 	// NOTE: staking module is required if HistoricalEntries param > 0
 	// NOTE: rstaking module should happens after mint module and before distribution module, as it will burn minted coins
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, rstakingmoduletypes.ModuleName,
-		distrtypes.ModuleName, slashingtypes.ModuleName,
-		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
-		feegrant.ModuleName, ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
-		sudotypes.ModuleName, authtypes.ModuleName, crisistypes.ModuleName, vestingtypes.ModuleName,
-		banktypes.ModuleName, govtypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName,
-		rvotetypes.ModuleName, bridgemoduletypes.ModuleName, rvalidatormoduletypes.ModuleName,
+		upgradetypes.ModuleName,
+		capabilitytypes.ModuleName,
+		minttypes.ModuleName,
+		rstakingmoduletypes.ModuleName,
+		distrtypes.ModuleName,
+		slashingtypes.ModuleName,
+		evidencetypes.ModuleName,
+		stakingtypes.ModuleName,
+		ibchost.ModuleName,
+		feegrant.ModuleName,
+		ledgertypes.ModuleName,
+		genutiltypes.ModuleName,
+		paramstypes.ModuleName,
+		sudotypes.ModuleName,
+		authtypes.ModuleName,
+		crisistypes.ModuleName,
+		vestingtypes.ModuleName,
+		banktypes.ModuleName,
+		govtypes.ModuleName,
+		ibctransfertypes.ModuleName,
+		relayerstypes.ModuleName,
+		rvotetypes.ModuleName,
+		bridgemoduletypes.ModuleName,
+		rvalidatormoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
-		crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName,
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, rstakingmoduletypes.ModuleName, distrtypes.ModuleName,
-		slashingtypes.ModuleName, evidencetypes.ModuleName, ibchost.ModuleName, feegrant.ModuleName,
-		ledgertypes.ModuleName, genutiltypes.ModuleName, paramstypes.ModuleName,
-		sudotypes.ModuleName, authtypes.ModuleName, vestingtypes.ModuleName,
-		banktypes.ModuleName, ibctransfertypes.ModuleName, relayerstypes.ModuleName, rvotetypes.ModuleName,
-		bridgemoduletypes.ModuleName, rvalidatormoduletypes.ModuleName,
+		crisistypes.ModuleName,
+		govtypes.ModuleName,
+		stakingtypes.ModuleName,
+		upgradetypes.ModuleName,
+		capabilitytypes.ModuleName,
+		minttypes.ModuleName,
+		rstakingmoduletypes.ModuleName,
+		distrtypes.ModuleName,
+		slashingtypes.ModuleName,
+		evidencetypes.ModuleName,
+		ibchost.ModuleName,
+		feegrant.ModuleName,
+		ledgertypes.ModuleName,
+		genutiltypes.ModuleName,
+		paramstypes.ModuleName,
+		sudotypes.ModuleName,
+		authtypes.ModuleName,
+		vestingtypes.ModuleName,
+		banktypes.ModuleName,
+		ibctransfertypes.ModuleName,
+		relayerstypes.ModuleName,
+		rvotetypes.ModuleName,
+		bridgemoduletypes.ModuleName,
+		rvalidatormoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
