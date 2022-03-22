@@ -19551,7 +19551,6 @@ paths:
                       - LIQUIDITY_BOND_STATE_POOL_UNMATCH
                       - LIQUIDITY_BOND_STATE_AMOUNT_UNMATCH
                       - LIQUIDITY_BOND_STATE_MEMO_UNMATCH
-                      - LIQUIDITY_BOND_STATE_EXECUTED
                     default: LIQUIDITY_BOND_STATE_VERIFY_OK
         default:
           description: An unexpected error response.
@@ -35523,7 +35522,6 @@ definitions:
           - LIQUIDITY_BOND_STATE_POOL_UNMATCH
           - LIQUIDITY_BOND_STATE_AMOUNT_UNMATCH
           - LIQUIDITY_BOND_STATE_MEMO_UNMATCH
-          - LIQUIDITY_BOND_STATE_EXECUTED
         default: LIQUIDITY_BOND_STATE_VERIFY_OK
   stafihub.stafihub.ledger.BondSnapshot:
     type: object
@@ -35591,7 +35589,6 @@ definitions:
       - LIQUIDITY_BOND_STATE_POOL_UNMATCH
       - LIQUIDITY_BOND_STATE_AMOUNT_UNMATCH
       - LIQUIDITY_BOND_STATE_MEMO_UNMATCH
-      - LIQUIDITY_BOND_STATE_EXECUTED
     default: LIQUIDITY_BOND_STATE_VERIFY_OK
   stafihub.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
     type: object
@@ -35784,7 +35781,6 @@ definitions:
               - LIQUIDITY_BOND_STATE_POOL_UNMATCH
               - LIQUIDITY_BOND_STATE_AMOUNT_UNMATCH
               - LIQUIDITY_BOND_STATE_MEMO_UNMATCH
-              - LIQUIDITY_BOND_STATE_EXECUTED
             default: LIQUIDITY_BOND_STATE_VERIFY_OK
   stafihub.stafihub.ledger.QueryGetChainEraResponse:
     type: object

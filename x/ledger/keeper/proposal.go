@@ -446,7 +446,7 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 	}
 
 	br, found := k.GetBondRecord(ctx, p.Denom, p.Txhash)
-	if found && br.State == types.LiquidityBondStateExecuted {
+	if found && br.State == types.LiquidityBondStateVerifyOk {
 		return types.ErrLiquidityBondAlreadyExecuted
 	}
 	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Txhash, p.Amount, p.State)
@@ -477,7 +477,6 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 		}
 	}
 
-	br.State = types.LiquidityBondStateExecuted
 	k.SetBondRecord(ctx, br)
 	k.SetBondPipeline(ctx, pipe)
 

@@ -146,7 +146,6 @@ enum LiquidityBondState {
     LIQUIDITY_BOND_STATE_POOL_UNMATCH = 3 [(gogoproto.enumvalue_customname) = "LiquidityBondStatePoolUnmatch"];
     LIQUIDITY_BOND_STATE_AMOUNT_UNMATCH = 4 [(gogoproto.enumvalue_customname) = "LiquidityBondStateAmountUnmatch"];
     LIQUIDITY_BOND_STATE_MEMO_UNMATCH = 5 [(gogoproto.enumvalue_customname) = "LiquidityBondStateMemoUnmatch"];
-    LIQUIDITY_BOND_STATE_EXECUTED = 6 [(gogoproto.enumvalue_customname) = "LiquidityBondStateExecuted"];
 }
 
 message Signature {
