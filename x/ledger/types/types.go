@@ -75,13 +75,14 @@ func NewEraSnapshot(denom string) EraSnapshot {
 	}
 }
 
-func NewBondRecord(denom, bonder, pool, txhash string, amount sdk.Int) BondRecord {
+func NewBondRecord(denom, bonder, pool, txhash string, amount sdk.Int, state LiquidityBondState) BondRecord {
 	return BondRecord{
 		Denom:  denom,
 		Bonder: bonder,
 		Pool:   pool,
 		Txhash: txhash,
 		Amount: amount,
+		State:  state,
 	}
 }
 

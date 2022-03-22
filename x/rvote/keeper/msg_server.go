@@ -46,7 +46,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		return nil, types.ErrInvalidProposer
 	}
 
-	prop, err := k.Keeper.SubmitProposal(ctx, content, msg.Proposer)
+	prop, err := k.PreSubmitProposal(ctx, content, msg.Proposer)
 	if err != nil {
 		return nil, err
 	}
@@ -96,4 +96,26 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	// write state to the underlying multi-store
 	writeCache()
 	return res, nil
+}
+
+func (k msgServer) PreSubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
+	propId := content.GetPropId()
+	prop, ok := k.GetProposal(ctx, propId)
+	if !ok {
+		prop = &types.Proposal{
+			Status:     types.StatusInitiated,
+			StartBlock: ctx.BlockHeight(),
+			Voted:      []string{proposer},
+		}
+		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
+		if err := prop.SetContent(content); err != nil {
+			return nil, err
+		}
+	} else {
+		if prop.HasVoted(proposer) {
+			return nil, relayerstypes.ErrAlreadyVoted
+		}
+		prop.Voted = append(prop.Voted, proposer)
+	}
+	return prop, nil
 }

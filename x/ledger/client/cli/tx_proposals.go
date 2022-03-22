@@ -244,9 +244,9 @@ func CmdTransferReport() *cobra.Command {
 
 func CmdExecuteBondProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "execute-bond-proposal [denom] [bonder] [pool] [txhash] [amount]",
+		Use:   "execute-bond-proposal [denom] [bonder] [pool] [txhash] [amount] [state]",
 		Short: "Broadcast message execute_bond_proposal",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argBonder, err := sdk.AccAddressFromBech32(args[1])
@@ -259,6 +259,10 @@ func CmdExecuteBondProposal() *cobra.Command {
 			if !ok {
 				return fmt.Errorf("cast amount %s into Int error", args[4])
 			}
+			bondState, exist := types.LiquidityBondState_value[args[5]]
+			if !exist {
+				return fmt.Errorf("liquidityBondSate arg not found")
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -266,7 +270,7 @@ func CmdExecuteBondProposal() *cobra.Command {
 			}
 
 			from := clientCtx.GetFromAddress()
-			content := types.NewExecuteBondProposal(from, argDenom, argBonder, argPool, argTxHash, argAmount)
+			content := types.NewExecuteBondProposal(from, argDenom, argBonder, argPool, argTxHash, argAmount, types.LiquidityBondState(bondState))
 			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
 			if err != nil {
 				return err

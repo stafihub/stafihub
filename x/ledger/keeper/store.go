@@ -12,7 +12,7 @@ import (
 var (
 	defaultStakingRewardCommission = sdk.MustNewDecFromStr("0.1")
 	defaultUnbondCommission        = sdk.MustNewDecFromStr("0.002")
-	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.ZeroInt())
+	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.NewInt(1000000))
 	defaultEraUnbondLimit          = uint32(200)
 )
 

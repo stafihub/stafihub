@@ -134,6 +134,19 @@ message BondRecord {
     string pool = 3;
     string txhash = 4;
     string amount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    LiquidityBondState state = 6;
+}
+
+enum LiquidityBondState {
+    option (gogoproto.goproto_enum_prefix) = false;
+
+    LIQUIDITY_BOND_STATE_VERIFY_OK = 0 [(gogoproto.enumvalue_customname) = "LiquidityBondStateVerifyOk"];
+    LIQUIDITY_BOND_STATE_DENOM_UNMATCH = 1 [(gogoproto.enumvalue_customname) = "LiquidityBondStateDenomUnmatch"];
+    LIQUIDITY_BOND_STATE_BONDER_UNMATCH = 2 [(gogoproto.enumvalue_customname) = "LiquidityBondStateBonderUnmatch"];
+    LIQUIDITY_BOND_STATE_POOL_UNMATCH = 3 [(gogoproto.enumvalue_customname) = "LiquidityBondStatePoolUnmatch"];
+    LIQUIDITY_BOND_STATE_AMOUNT_UNMATCH = 4 [(gogoproto.enumvalue_customname) = "LiquidityBondStateAmountUnmatch"];
+    LIQUIDITY_BOND_STATE_MEMO_UNMATCH = 5 [(gogoproto.enumvalue_customname) = "LiquidityBondStateMemoUnmatch"];
+    LIQUIDITY_BOND_STATE_EXECUTED = 6 [(gogoproto.enumvalue_customname) = "LiquidityBondStateExecuted"];
 }
 
 message Signature {

@@ -3,31 +3,8 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
 	"github.com/stafihub/stafihub/x/rvote/types"
 )
-
-func (k Keeper) SubmitProposal(ctx sdk.Context, content types.Content, proposer string) (*types.Proposal, error) {
-	propId := content.GetPropId()
-	prop, ok := k.GetProposal(ctx, propId)
-	if !ok {
-		prop = &types.Proposal{
-			Status:     types.StatusInitiated,
-			StartBlock: ctx.BlockHeight(),
-			Voted:      []string{proposer},
-		}
-		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
-		if err := prop.SetContent(content); err != nil {
-			return nil, err
-		}
-	} else {
-		if prop.HasVoted(proposer) {
-			return nil, relayerstypes.ErrAlreadyVoted
-		}
-		prop.Voted = append(prop.Voted, proposer)
-	}
-	return prop, nil
-}
 
 func (k Keeper) SetProposal(ctx sdk.Context, proposal *types.Proposal) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)

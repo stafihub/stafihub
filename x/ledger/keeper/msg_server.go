@@ -75,10 +75,11 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		unbonds.Chunks = append(unbonds.Chunks, chunk)
 	}
 	// check limit
-	if len(unbonds.Chunks) > types.AccountMaxUnbondChunks {
+	unbondChunksLen := len(unbonds.Chunks)
+	if unbondChunksLen > types.AccountMaxUnbondChunks {
 		index := 0
-		for i := 0; i < len(unbonds.Chunks); i++ {
-			if index+types.AccountMinUnbondChunks >= len(unbonds.Chunks) {
+		for i := 0; i < unbondChunksLen; i++ {
+			if index+types.AccountMinUnbondChunks >= unbondChunksLen {
 				break
 			}
 			if unbonds.Chunks[i].UnlockEra < ce.Era {

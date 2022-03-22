@@ -436,16 +436,25 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 	if err != nil {
 		return err
 	}
-	bonder, err := sdk.AccAddressFromBech32(p.Bonder)
-	if err != nil {
-		return err
+
+	var bonder sdk.AccAddress
+	if p.State == types.LiquidityBondStateVerifyOk {
+		bonder, err = sdk.AccAddressFromBech32(p.Bonder)
+		if err != nil {
+			return err
+		}
 	}
 
-	br, ok := k.GetBondRecord(ctx, p.Denom, p.Txhash)
-	if ok {
-		return types.ErrBondRepeated
+	br, found := k.GetBondRecord(ctx, p.Denom, p.Txhash)
+	if found && br.State == types.LiquidityBondStateExecuted {
+		return types.ErrLiquidityBondAlreadyExecuted
 	}
-	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Txhash, p.Amount)
+	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Txhash, p.Amount, p.State)
+
+	if br.State != types.LiquidityBondStateVerifyOk {
+		k.SetBondRecord(ctx, br)
+		return nil
+	}
 
 	pipe, ok := k.GetBondPipeline(ctx, p.Denom, p.Pool)
 	if !ok {
@@ -460,14 +469,15 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 			sdk.NewCoin(p.Denom, rbalance),
 		}
 		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
-			panic(err)
+			return err
 		}
 
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins); err != nil {
-			panic(err)
+			return err
 		}
 	}
 
+	br.State = types.LiquidityBondStateExecuted
 	k.SetBondRecord(ctx, br)
 	k.SetBondPipeline(ctx, pipe)
 

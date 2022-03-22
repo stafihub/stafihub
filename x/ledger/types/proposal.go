@@ -289,13 +289,14 @@ func (p *TransferReportProposal) ValidateBasic() error {
 
 func NewExecuteBondProposal(
 	proposer sdk.AccAddress, denom string, bonder sdk.AccAddress,
-	pool string, txhash string, amount sdk.Int) *ExecuteBondProposal {
+	pool string, txhash string, amount sdk.Int, state LiquidityBondState) *ExecuteBondProposal {
 	p := &ExecuteBondProposal{
 		Denom:  denom,
 		Bonder: bonder.String(),
 		Pool:   pool,
 		Txhash: txhash,
 		Amount: amount,
+		State:  state,
 	}
 
 	p.setPropId()
