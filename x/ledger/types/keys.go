@@ -45,6 +45,11 @@ var (
 	RelayFeeReceiverPrefix        = []byte{0x1a}
 )
 
+const (
+	AccountMaxUnbondChunks = 32
+	AccountMinUnbondChunks = 16
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

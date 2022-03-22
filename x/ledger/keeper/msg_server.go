@@ -68,12 +68,32 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 
 	unlockEra := ce.Era + rParams.GetBondingDuration()
 	chunk := types.UserUnlockChunk{Pool: msg.Pool, UnlockEra: unlockEra, Value: balance, Recipient: msg.Recipient}
-	unbonds, ok := k.Keeper.GetAccountUnbond(ctx, denom, msg.Creator)
-	if !ok {
+	unbonds, found := k.Keeper.GetAccountUnbond(ctx, denom, msg.Creator)
+	if !found {
 		unbonds = types.NewAccountUnbond(denom, msg.Creator, []types.UserUnlockChunk{chunk})
 	} else {
 		unbonds.Chunks = append(unbonds.Chunks, chunk)
 	}
+	// check limit
+	if len(unbonds.Chunks) > types.AccountMaxUnbondChunks {
+		index := 0
+		for i := 0; i < len(unbonds.Chunks); i++ {
+			if index+types.AccountMinUnbondChunks >= len(unbonds.Chunks) {
+				break
+			}
+			if unbonds.Chunks[i].UnlockEra < ce.Era {
+				index = i + 1
+			} else {
+				break
+			}
+		}
+		if index == 0 {
+			return nil, types.ErrAccountUnbondReachLimit
+		}
+		unbonds.Chunks = unbonds.Chunks[index:]
+	}
+
+	k.Keeper.SetAccountUnbond(ctx, unbonds)
 
 	unbonding := types.NewUnbonding(msg.Creator, msg.Recipient, balance)
 	poolUnbonds, ok := k.Keeper.GetPoolUnbond(ctx, denom, msg.Pool, unlockEra)
@@ -99,29 +119,28 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		}
 
 		if err := k.bankKeeper.SendCoins(ctx, unbonder, relayFeeReceiver, sdk.Coins{unbondFee.Value}); err != nil {
-			panic(err)
+			return nil, err
 		}
 	}
 
 	if cmsFee.GT(sdk.ZeroInt()) {
 		cmsFeeCoin := sdk.NewCoin(denom, cmsFee)
 		if err := k.bankKeeper.SendCoins(ctx, unbonder, protocolFeeReceiver, sdk.Coins{cmsFeeCoin}); err != nil {
-			panic(err)
+			return nil, err
 		}
 		k.IncreaseTotalProtocolFee(ctx, cmsFeeCoin.Denom, cmsFeeCoin.Amount)
 	}
 
 	burnCoins := sdk.Coins{leftValue}
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, unbonder, types.ModuleName, burnCoins); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, burnCoins); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	k.Keeper.SetBondPipeline(ctx, pipe)
-	k.Keeper.SetAccountUnbond(ctx, unbonds)
 	k.Keeper.SetPoolUnbond(ctx, poolUnbonds)
 
 	ctx.EventManager().EmitEvent(
