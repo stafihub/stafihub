@@ -82,7 +82,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 			if index+types.AccountMinUnbondChunks >= unbondChunksLen {
 				break
 			}
-			if unbonds.Chunks[i].UnlockEra < ce.Era {
+			if unbonds.Chunks[i].UnlockEra <= ce.Era {
 				index = i + 1
 			} else {
 				break
