@@ -20415,6 +20415,115 @@ paths:
           type: string
       tags:
         - Query
+  '/stafihub/stafihub/rmintreward/act_detail/{denom}/{cycle}':
+    get:
+      summary: Queries a list of ActDetail items.
+      operationId: StafihubStafihubRmintrewardActDetail
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              act:
+                type: object
+                properties:
+                  begin:
+                    type: string
+                    format: int64
+                  end:
+                    type: string
+                    format: int64
+                  lockedBlocks:
+                    type: string
+                    format: int64
+                  totalRTokenAmount:
+                    type: string
+                  totalNativeTokenAmount:
+                    type: string
+                  tokenRewardInfos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        rewardRate:
+                          type: string
+                        totalRewardAmount:
+                          type: string
+                        leftAmount:
+                          type: string
+                        userLimit:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: cycle
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  '/stafihub/stafihub/rmintreward/act_latest_cycle/{denom}':
+    get:
+      summary: Queries a list of ActLatestCycle items.
+      operationId: StafihubStafihubRmintrewardActLatestCycle
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              latestCycle:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /stafihub/stafihub/rmintreward/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -36179,6 +36288,46 @@ definitions:
   stafihub.stafihub.rmintreward.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.rmintreward.QueryActDetailResponse:
+    type: object
+    properties:
+      act:
+        type: object
+        properties:
+          begin:
+            type: string
+            format: int64
+          end:
+            type: string
+            format: int64
+          lockedBlocks:
+            type: string
+            format: int64
+          totalRTokenAmount:
+            type: string
+          totalNativeTokenAmount:
+            type: string
+          tokenRewardInfos:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                rewardRate:
+                  type: string
+                totalRewardAmount:
+                  type: string
+                leftAmount:
+                  type: string
+                userLimit:
+                  type: string
+  stafihub.stafihub.rmintreward.QueryActLatestCycleResponse:
+    type: object
+    properties:
+      latestCycle:
+        type: string
+        format: uint64
   stafihub.stafihub.rmintreward.QueryParamsResponse:
     type: object
     properties:
