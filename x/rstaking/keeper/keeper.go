@@ -146,7 +146,7 @@ func (k Keeper) SetWhitelistSwitch(ctx sdk.Context, isOpen bool) {
 func (k Keeper) GetWhitelistSwitch(ctx sdk.Context) bool {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.WhitelistSwitchKey)
-	if len(bts) == 0 {
+	if bts == nil {
 		return true
 	}
 	return bytes.Equal(bts, types.SwitchStateOpen)

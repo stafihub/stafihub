@@ -1,0 +1,35 @@
+syntax = "proto3";
+package stafihub.stafihub.rmintreward;
+
+import "rmintreward/models.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/stafihub/stafihub/x/rmintreward/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc AddMintRewardAct(MsgAddMintRewardAct) returns (MsgAddMintRewardActResponse);
+  rpc UpdateMintRewardAct(MsgUpdateMintRewardAct) returns (MsgUpdateMintRewardActResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgAddMintRewardAct {
+  string creator = 1;
+  string denom = 2;
+  MintRewardAct act = 3;
+}
+
+message MsgAddMintRewardActResponse {
+}
+
+message MsgUpdateMintRewardAct {
+  string creator = 1;
+  string denom = 2;
+  uint64 cycle = 3;
+  MintRewardAct act = 4;
+}
+
+message MsgUpdateMintRewardActResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

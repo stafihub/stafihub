@@ -20415,6 +20415,42 @@ paths:
           type: string
       tags:
         - Query
+  /stafihub/stafihub/rmintreward/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: StafihubStafihubRmintrewardParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/rstaking/inflation_base:
     get:
       summary: Queries a list of InflationBase items.
@@ -36105,6 +36141,64 @@ definitions:
       threshold:
         type: integer
         format: int64
+  stafihub.stafihub.rmintreward.MintRewardAct:
+    type: object
+    properties:
+      begin:
+        type: string
+        format: int64
+      end:
+        type: string
+        format: int64
+      lockedBlocks:
+        type: string
+        format: int64
+      totalRTokenAmount:
+        type: string
+      totalNativeTokenAmount:
+        type: string
+      tokenRewardInfos:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            rewardRate:
+              type: string
+            totalRewardAmount:
+              type: string
+            leftAmount:
+              type: string
+            userLimit:
+              type: string
+  stafihub.stafihub.rmintreward.MsgAddMintRewardActResponse:
+    type: object
+  stafihub.stafihub.rmintreward.MsgUpdateMintRewardActResponse:
+    type: object
+  stafihub.stafihub.rmintreward.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  stafihub.stafihub.rmintreward.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.rmintreward.TokenRewardInfo:
+    type: object
+    properties:
+      denom:
+        type: string
+      rewardRate:
+        type: string
+      totalRewardAmount:
+        type: string
+      leftAmount:
+        type: string
+      userLimit:
+        type: string
   stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse:
     type: object
   stafihub.stafihub.rstaking.MsgSetInflationBaseResponse:

@@ -56,36 +56,6 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-// func (k Keeper) AddRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
-// 	store := ctx.KVStore(k.storeKey)
-// 	store.Set(types.RelayStoreKey(chainId, address), []byte{})
-// }
-
-// func (k Keeper) HasRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) bool {
-// 	store := ctx.KVStore(k.storeKey)
-// 	return store.Has(types.RelayStoreKey(chainId, address))
-// }
-
-// func (k Keeper) RmRelayer(ctx sdk.Context, chainId uint8, address sdk.AccAddress) {
-// 	store := ctx.KVStore(k.storeKey)
-// 	store.Delete(types.RelayStoreKey(chainId, address))
-// }
-
-// func (k Keeper) GetRelayers(ctx sdk.Context, chainId uint8) []string {
-// 	store := ctx.KVStore(k.storeKey)
-// 	iterator := sdk.KVStorePrefixIterator(store, append(types.RelayerStoreKeyPrefix, chainId))
-// 	defer iterator.Close()
-
-// 	relayerList := make([]string, 0)
-// 	for ; iterator.Valid(); iterator.Next() {
-// 		if len(iterator.Key()) < 2 {
-// 			continue
-// 		}
-// 		relayerList = append(relayerList, sdk.AccAddress(iterator.Key()[2:]).String())
-// 	}
-// 	return relayerList
-// }
-
 func (k Keeper) AddChainId(ctx sdk.Context, chainId uint8) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.ChainIdStoreKey(chainId), []byte{})
@@ -116,20 +86,6 @@ func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
 	return chainIdList
 }
 
-// func (k Keeper) SetThreshold(ctx sdk.Context, chainId uint8, threshold uint8) {
-// 	store := ctx.KVStore(k.storeKey)
-// 	store.Set(types.ThresholdStoreKey(chainId), []byte{threshold})
-// }
-
-// func (k Keeper) GetThreshold(ctx sdk.Context, chainId uint8) (uint8, bool) {
-// 	store := ctx.KVStore(k.storeKey)
-// 	bts := store.Get(types.ThresholdStoreKey(chainId))
-// 	if len(bts) == 0 {
-// 		return 0, false
-// 	}
-// 	return bts[0], true
-// }
-
 func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.RelayFeeReceiverStoreKey, address)
@@ -138,7 +94,7 @@ func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {
 func (k Keeper) GetRelayFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.RelayFeeReceiverStoreKey)
-	if len(bts) == 0 {
+	if bts == nil {
 		return nil, false
 	}
 	return bts, true
@@ -152,7 +108,7 @@ func (k Keeper) SetResourceIdToDenom(ctx sdk.Context, resourceId [32]byte, denom
 func (k Keeper) GetDenomByResourceId(ctx sdk.Context, resourceId [32]byte) (string, bool) {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.ResourceIdToDenomStoreKey(resourceId))
-	if len(bts) == 0 {
+	if bts == nil {
 		return "", false
 	}
 	return string(bts), true
@@ -183,7 +139,7 @@ func (k Keeper) SetDepositCounts(ctx sdk.Context, chainId uint8, count uint64) {
 func (k Keeper) GetDepositCounts(ctx sdk.Context, chainId uint8) uint64 {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.DepositCountsStoreKey(chainId))
-	if len(bts) == 0 {
+	if bts == nil {
 		return 0
 	}
 	return sdk.BigEndianToUint64(bts)
@@ -192,29 +148,20 @@ func (k Keeper) GetDepositCounts(ctx sdk.Context, chainId uint8) uint64 {
 func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, prop *types.Proposal) {
 	store := ctx.KVStore(k.storeKey)
 
-	contentBts, err := prop.Content.Marshal()
-	if err != nil {
-		panic(err)
-	}
+	contentBts := k.cdc.MustMarshal(prop.Content)
 	hashBts := make([]byte, 0)
 	hashBts = append(hashBts, resourceId[:]...)
 	hashBts = append(hashBts, contentBts...)
 	hash := sha256.Sum256(hashBts)
 
-	propBts, err := prop.Marshal()
-	if err != nil {
-		panic(err)
-	}
+	propBts := k.cdc.MustMarshal(prop)
 	store.Set(types.ProposalStoreKey(chainId, depositNonce, hash), propBts)
 }
 
 func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, content types.ProposalContent) (*types.Proposal, bool) {
 	store := ctx.KVStore(k.storeKey)
 
-	contentBts, err := content.Marshal()
-	if err != nil {
-		panic(err)
-	}
+	contentBts := k.cdc.MustMarshal(&content)
 	hashBts := make([]byte, 0)
 	hashBts = append(hashBts, resourceId[:]...)
 	hashBts = append(hashBts, contentBts...)
@@ -225,10 +172,7 @@ func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 	}
 
 	proposal := new(types.Proposal)
-	err = proposal.Unmarshal(bts)
-	if err != nil {
-		panic(err)
-	}
+	k.cdc.MustUnmarshal(bts, proposal)
 	return proposal, true
 }
 

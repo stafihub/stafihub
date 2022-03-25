@@ -1,0 +1,38 @@
+syntax = "proto3";
+package stafihub.stafihub.rmintreward;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafihub/stafihub/x/rmintreward/types";
+
+message MintRewardAct {
+    int64 begin = 1;
+    int64 end = 2;
+    int64 lockedBlocks = 3;
+    string totalRTokenAmount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+    string totalNativeTokenAmount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+    repeated TokenRewardInfo tokenRewardInfos = 7;
+}
+
+message TokenRewardInfo {
+    string denom = 1;
+    string rewardRate = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+    string totalRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string leftAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string userLimit = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+
+message UserClaimInfo {
+    string mintRTokenAmount = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+    string nativeTokenAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+    int64 mintBLock = 3;
+    int64 latestClaimedBlock = 4;
+    repeated TokenClaimInfo TokenClaimInfos = 5;
+}
+
+message TokenClaimInfo {
+    string denom = 1;
+    string totalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+    string totalClaimedAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+}
