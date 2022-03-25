@@ -10,6 +10,9 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
+// Notice:
+// - ensure pool is bonded before migrateInit
+// - it will replace pre value with latest vaue if you call migrateInit multi times
 func (k msgServer) MigrateInit(goCtx context.Context, msg *types.MsgMigrateInit) (*types.MsgMigrateInitResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -50,6 +53,9 @@ func (k msgServer) MigrateInit(goCtx context.Context, msg *types.MsgMigrateInit)
 		k.bankKeeper.BurnCoins(ctx, xBridgeTypes.ModuleName, sdk.NewCoins(balance))
 	}
 	k.bankKeeper.MintCoins(ctx, xBridgeTypes.ModuleName, shouldMintCoins)
+
+	// init total protocol fee
+	k.Keeper.SetTotalProtocolFee(ctx, msg.Denom, msg.TotalProtocolFee)
 
 	return &types.MsgMigrateInitResponse{}, nil
 }

@@ -10,16 +10,17 @@ const TypeMsgMigrateInit = "migrate_init"
 
 var _ sdk.Msg = &MsgMigrateInit{}
 
-func NewMsgMigrateInit(creator string, denom, pool string, totalSupply, active, bond, unbond sdk.Int, exchangeRate utils.Dec) *MsgMigrateInit {
+func NewMsgMigrateInit(creator string, denom, pool string, totalSupply, active, bond, unbond sdk.Int, exchangeRate utils.Dec, totalProtocolFee sdk.Int) *MsgMigrateInit {
 	return &MsgMigrateInit{
-		Creator:      creator,
-		Denom:        denom,
-		Pool:         pool,
-		TotalSupply:  totalSupply,
-		Active:       active,
-		Bond:         bond,
-		Unbond:       unbond,
-		ExchangeRate: exchangeRate,
+		Creator:          creator,
+		Denom:            denom,
+		Pool:             pool,
+		TotalSupply:      totalSupply,
+		Active:           active,
+		Bond:             bond,
+		Unbond:           unbond,
+		ExchangeRate:     exchangeRate,
+		TotalProtocolFee: totalProtocolFee,
 	}
 }
 

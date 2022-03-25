@@ -1,7 +1,9 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -10,10 +12,12 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var _ = strconv.Itoa(0)
+var FlagUnbondings = "unbondings"
 
 func CmdMigrateUnbondings() *cobra.Command {
 	cmd := &cobra.Command{
@@ -87,4 +91,27 @@ Where unbondings.json could be like this:
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
+}
+
+func parseUnbondingsFlags(fs *pflag.FlagSet) ([]*types.PoolUnbond, error) {
+	ud := make([]*types.PoolUnbond, 0)
+	udFile, err := fs.GetString(FlagUnbondings)
+	if err != nil {
+		return nil, err
+	}
+	if len(udFile) == 0 {
+		return nil, fmt.Errorf("unbondings json file not give")
+	}
+
+	contents, err := os.ReadFile(udFile)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(contents, &ud)
+	if err != nil {
+		return nil, err
+	}
+
+	return ud, nil
 }
