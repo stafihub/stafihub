@@ -26,6 +26,16 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rmintreward/act_detail/{denom}/{cycle}";
 	}
 
+// Queries a list of UserMintCount items.
+	rpc UserMintCount(QueryUserMintCountRequest) returns (QueryUserMintCountResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rmintreward/user_mint_count/{address}/{denom}/{cycle}";
+	}
+
+// Queries a list of UserActs items.
+	rpc UserActs(QueryUserActsRequest) returns (QueryUserActsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rmintreward/user_acts/{address}/{denom}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -53,6 +63,25 @@ message QueryActDetailRequest {
 
 message QueryActDetailResponse {
   MintRewardAct act = 4;
+}
+
+message QueryUserMintCountRequest {
+  string address = 1;
+  string denom = 2;
+  uint64 cycle = 3;
+}
+
+message QueryUserMintCountResponse {
+  uint64 count = 1;
+}
+
+message QueryUserActsRequest {
+  string address = 1;
+  string denom = 2;
+}
+
+message QueryUserActsResponse {
+  Acts acts = 1;
 }
 
 // this line is used by starport scaffolding # 3

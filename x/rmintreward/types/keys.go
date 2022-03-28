@@ -20,8 +20,13 @@ const (
 )
 
 var (
-	MintRewardActStoreKeyPrefix  = []byte{0x01}
-	ActLatestCycleStoreKeyPrefix = []byte{0x02}
+	MintRewardActStoreKeyPrefix   = []byte{0x01}
+	ActLatestCycleStoreKeyPrefix  = []byte{0x02}
+	UserClaimInofStoreKeyPrefix   = []byte{0x03}
+	UserActsStoreKeyPrefix        = []byte{0x04}
+	UserMintCountStoreKeyPrefix   = []byte{0x05}
+	ActDenomsStoreKeyPrefix       = []byte{0x06}
+	ActCurrentCycleStoreKeyPrefix = []byte{0x07}
 )
 
 func KeyPrefix(p string) []byte {
@@ -41,4 +46,40 @@ func MintRewardActStoreKey(denom string, cycle uint64) []byte {
 
 func ActLatestCycleStoreKey(denom string) []byte {
 	return append(ActLatestCycleStoreKeyPrefix, []byte(denom)...)
+}
+func ActCurrentCycleStoreKey(denom string) []byte {
+	return append(ActCurrentCycleStoreKeyPrefix, []byte(denom)...)
+}
+
+func UserClaimInforStoreKey(account sdk.AccAddress, denom string, cycle uint64, mintIndex uint64) []byte {
+	prefixLen := len(UserClaimInofStoreKeyPrefix)
+	accountLen := len(account)
+	denomLen := len([]byte(denom))
+	key := make([]byte, prefixLen+accountLen+denomLen+8+8)
+	copy(key, UserClaimInofStoreKeyPrefix)
+	copy(key[prefixLen:], account)
+	copy(key[prefixLen+accountLen:], []byte(denom))
+	copy(key[prefixLen+accountLen+denomLen:], sdk.Uint64ToBigEndian(cycle))
+	copy(key[prefixLen+accountLen+denomLen+8:], sdk.Uint64ToBigEndian(mintIndex))
+	return key
+}
+
+func UserActsStoreKey(account sdk.AccAddress, denom string) []byte {
+	return append(UserActsStoreKeyPrefix, append(account, []byte(denom)...)...)
+}
+
+func UserMintCountStoreKey(account sdk.AccAddress, denom string, cycle uint64) []byte {
+	prefixLen := len(UserMintCountStoreKeyPrefix)
+	accountLen := len(account)
+	denomLen := len([]byte(denom))
+	key := make([]byte, prefixLen+accountLen+denomLen+8)
+	copy(key, UserMintCountStoreKeyPrefix)
+	copy(key[prefixLen:], account)
+	copy(key[prefixLen+accountLen:], []byte(denom))
+	copy(key[prefixLen+accountLen+denomLen:], sdk.Uint64ToBigEndian(cycle))
+	return key
+}
+
+func ActDenomsStoreKey(denom string) []byte {
+	return append(ActDenomsStoreKeyPrefix, []byte(denom)...)
 }

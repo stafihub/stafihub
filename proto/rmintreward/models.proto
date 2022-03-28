@@ -36,3 +36,7 @@ message TokenClaimInfo {
     string totalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
     string totalClaimedAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
 }
+
+message Acts {
+    repeated uint64 acts = 1;
+}

@@ -20560,6 +20560,100 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/stafihub/stafihub/rmintreward/user_acts/{address}/{denom}':
+    get:
+      summary: Queries a list of UserActs items.
+      operationId: StafihubStafihubRmintrewardUserActs
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              acts:
+                type: object
+                properties:
+                  acts:
+                    type: array
+                    items:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafihub/stafihub/rmintreward/user_mint_count/{address}/{denom}/{cycle}':
+    get:
+      summary: Queries a list of UserMintCount items.
+      operationId: StafihubStafihubRmintrewardUserMintCount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              count:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: cycle
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /stafihub/stafihub/rstaking/inflation_base:
     get:
       summary: Queries a list of InflationBase items.
@@ -36250,6 +36344,14 @@ definitions:
       threshold:
         type: integer
         format: int64
+  stafihub.stafihub.rmintreward.Acts:
+    type: object
+    properties:
+      acts:
+        type: array
+        items:
+          type: string
+          format: uint64
   stafihub.stafihub.rmintreward.MintRewardAct:
     type: object
     properties:
@@ -36335,6 +36437,23 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.rmintreward.QueryUserActsResponse:
+    type: object
+    properties:
+      acts:
+        type: object
+        properties:
+          acts:
+            type: array
+            items:
+              type: string
+              format: uint64
+  stafihub.stafihub.rmintreward.QueryUserMintCountResponse:
+    type: object
+    properties:
+      count:
+        type: string
+        format: uint64
   stafihub.stafihub.rmintreward.TokenRewardInfo:
     type: object
     properties:
