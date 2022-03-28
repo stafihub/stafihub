@@ -32,3 +32,7 @@ type RelayerKeeper interface {
 	HasRelayer(ctx sdk.Context, arena, denom, address string) bool
 	LastVoter(ctx sdk.Context, arena, denom string) (val relayertypes.LastVoter, found bool)
 }
+
+type MintRewardKeeper interface {
+	UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom string, mintRTokenAmount, nativeTokenAmount sdk.Int)
+}

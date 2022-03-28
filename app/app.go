@@ -484,6 +484,15 @@ func New(
 		app.BankKeeper,
 	)
 
+	app.RmintrewardKeeper = *rmintrewardmodulekeeper.NewKeeper(
+		appCodec,
+		keys[rmintrewardmoduletypes.StoreKey],
+		keys[rmintrewardmoduletypes.MemStoreKey],
+		app.GetSubspace(rmintrewardmoduletypes.ModuleName),
+		app.SudoKeeper,
+		app.BankKeeper,
+	)
+
 	app.LedgerKeeper = *ledgerkeeper.NewKeeper(
 		appCodec,
 		keys[ledgertypes.StoreKey],
@@ -491,6 +500,7 @@ func New(
 		app.SudoKeeper,
 		app.BankKeeper,
 		app.RelayersKeeper,
+		app.RmintrewardKeeper,
 	)
 
 	rvoteRouter := rvotetypes.NewRouter()
@@ -528,12 +538,6 @@ func New(
 	)
 	rvalidatorModule := rvalidatormodule.NewAppModule(appCodec, app.RvalidatorKeeper)
 
-	app.RmintrewardKeeper = *rmintrewardmodulekeeper.NewKeeper(
-		appCodec,
-		keys[rmintrewardmoduletypes.StoreKey],
-		keys[rmintrewardmoduletypes.MemStoreKey],
-		app.GetSubspace(rmintrewardmoduletypes.ModuleName),
-	)
 	rmintrewardModule := rmintrewardmodule.NewAppModule(appCodec, app.RmintrewardKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition

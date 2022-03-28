@@ -20,9 +20,10 @@ type (
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
 
-		sudoKeeper    types.SudoKeeper
-		bankKeeper    types.BankKeeper
-		relayerKeeper types.RelayerKeeper
+		sudoKeeper       types.SudoKeeper
+		bankKeeper       types.BankKeeper
+		relayerKeeper    types.RelayerKeeper
+		mintrewardKeeper types.MintRewardKeeper
 	}
 )
 
@@ -34,15 +35,17 @@ func NewKeeper(
 	sudoKeeper types.SudoKeeper,
 	bankKeeper types.BankKeeper,
 	relayerKeeper types.RelayerKeeper,
+	mintrewardKeeper types.MintRewardKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
 
-		sudoKeeper:    sudoKeeper,
-		bankKeeper:    bankKeeper,
-		relayerKeeper: relayerKeeper,
+		sudoKeeper:       sudoKeeper,
+		bankKeeper:       bankKeeper,
+		relayerKeeper:    relayerKeeper,
+		mintrewardKeeper: mintrewardKeeper,
 	}
 }
 

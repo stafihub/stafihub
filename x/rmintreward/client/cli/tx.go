@@ -32,6 +32,8 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdAddMintRewardAct())
 	cmd.AddCommand(CmdUpdateMintRewardAct())
+	cmd.AddCommand(CmdClaimMintReward())
+	cmd.AddCommand(CmdProvideRewardToken())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

@@ -36385,6 +36385,10 @@ definitions:
               type: string
   stafihub.stafihub.rmintreward.MsgAddMintRewardActResponse:
     type: object
+  stafihub.stafihub.rmintreward.MsgClaimMintRewardResponse:
+    type: object
+  stafihub.stafihub.rmintreward.MsgProvideRewardTokenResponse:
+    type: object
   stafihub.stafihub.rmintreward.MsgUpdateMintRewardActResponse:
     type: object
   stafihub.stafihub.rmintreward.Params:

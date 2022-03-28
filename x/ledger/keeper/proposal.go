@@ -479,6 +479,7 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 
 	k.SetBondRecord(ctx, br)
 	k.SetBondPipeline(ctx, pipe)
+	k.mintrewardKeeper.UpdateUserClaimInfo(ctx, bonder, p.Denom, rbalance, p.Amount)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

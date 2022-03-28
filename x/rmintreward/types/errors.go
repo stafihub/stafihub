@@ -18,4 +18,6 @@ var (
 	ErrLatestMintRewardActNotExist      = sdkerrors.Register(ModuleName, 1107, "latest mint reward act not exist")
 	ErrActBeginBlockLTLatestActEndBlock = sdkerrors.Register(ModuleName, 1108, "act begin block less than latest act end block")
 	ErrActNotExist                      = sdkerrors.Register(ModuleName, 1109, "act not exist")
+	ErrUserClaimInfoNotExist            = sdkerrors.Register(ModuleName, 1110, "user claim info not exist")
+	ErrMintRewardActNotExist            = sdkerrors.Register(ModuleName, 1111, "user mint reward act not exist")
 )

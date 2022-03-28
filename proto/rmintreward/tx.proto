@@ -1,6 +1,7 @@
 syntax = "proto3";
 package stafihub.stafihub.rmintreward;
 
+import "gogoproto/gogo.proto";
 import "rmintreward/models.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -10,6 +11,8 @@ option go_package = "github.com/stafihub/stafihub/x/rmintreward/types";
 service Msg {
   rpc AddMintRewardAct(MsgAddMintRewardAct) returns (MsgAddMintRewardActResponse);
   rpc UpdateMintRewardAct(MsgUpdateMintRewardAct) returns (MsgUpdateMintRewardActResponse);
+  rpc ClaimMintReward(MsgClaimMintReward) returns (MsgClaimMintRewardResponse);
+  rpc ProvideRewardToken(MsgProvideRewardToken) returns (MsgProvideRewardTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -30,6 +33,24 @@ message MsgUpdateMintRewardAct {
 }
 
 message MsgUpdateMintRewardActResponse {
+}
+
+message MsgClaimMintReward {
+  string creator = 1;
+  string denom = 2;
+  uint64 cycle = 3;
+  uint64 mintIndex = 4;
+}
+
+message MsgClaimMintRewardResponse {
+}
+
+message MsgProvideRewardToken {
+  string creator = 1;
+  string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgProvideRewardTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
