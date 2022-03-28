@@ -3,14 +3,15 @@
 
 ## Run node 
 
-- [install](./doc/install.md)
-- [join mainnet](./doc/join-mainnet.md)
-- [join testnet](./doc/join-testnet.md)
-- [your own testnet](./doc/your-own-testnet.md)
+- [`install`](./doc/install.md)
+- [`join mainnet`](./doc/join-mainnet.md)
+- [`join testnet`](./doc/join-testnet.md)
+- [`your own testnet`](./doc/your-own-testnet.md)
 
 
 ##  Genesis
 
 If you are looking for historical genesis files and other data
--[`stafihub/mainnet`](http://github.com/stafihub/mainnet) 
--[`stafihub/testnet`](http://github.com/stafihub/testnet) 
+
+- [`stafihub/mainnet`](http://github.com/stafihub/mainnet) 
+- [`stafihub/testnet`](http://github.com/stafihub/testnet) 
