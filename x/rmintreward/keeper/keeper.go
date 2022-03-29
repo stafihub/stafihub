@@ -153,7 +153,8 @@ func (k Keeper) GetActDenoms(ctx sdk.Context) []string {
 
 	denoms := []string{}
 	for ; iterator.Valid(); iterator.Next() {
-		denoms = append(denoms, string(iterator.Key()))
+		key := iterator.Key()
+		denoms = append(denoms, string(key[len(types.ActDenomsStoreKeyPrefix):]))
 	}
 	return denoms
 }

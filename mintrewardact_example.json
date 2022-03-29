@@ -1,13 +1,15 @@
 {
-    "begin": 1000,
-    "end": 2000,
-    "lockedBlocks": 100,
+    "begin": 1730,
+    "end": 1800,
+    "lockedBlocks": 10,
+    "totalRTokenAmount": "0",
+    "totalNativeTokenAmount": "0",
     "tokenRewardInfos": [
         {
             "denom": "ufis",
-            "rewardRate": "0.000001",
-            "totalRewardAmount": "10000000",
-            "leftAmount": "10000000",
+            "rewardRate": "0.001",
+            "totalRewardAmount": "100000000",
+            "leftAmount": "100000000",
             "userLimit": "100"
         }
     ]

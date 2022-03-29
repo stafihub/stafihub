@@ -20415,6 +20415,44 @@ paths:
           type: string
       tags:
         - Query
+  '/stafihub/stafihub/rmintreward/act_current_cycle/{denom}':
+    get:
+      summary: Queries a list of ActCurrentCycle items.
+      operationId: StafihubStafihubRmintrewardActCurrentCycle
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              currentCycle:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/stafihub/stafihub/rmintreward/act_detail/{denom}/{cycle}':
     get:
       summary: Queries a list of ActDetail items.
@@ -20522,6 +20560,79 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  '/stafihub/stafihub/rmintreward/claim_info_detail/{address}/{denom}/{cycle}/{mintIndex}':
+    get:
+      summary: Queries a list of ClaimInfoDetail items.
+      operationId: StafihubStafihubRmintrewardClaimInfoDetail
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              claimInfo:
+                type: object
+                properties:
+                  mintRTokenAmount:
+                    type: string
+                  nativeTokenAmount:
+                    type: string
+                  mintBLock:
+                    type: string
+                    format: int64
+                  latestClaimedBlock:
+                    type: string
+                    format: int64
+                  TokenClaimInfos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        totalRewardAmount:
+                          type: string
+                        totalClaimedAmount:
+                          type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: cycle
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: mintIndex
+          in: path
+          required: true
+          type: string
+          format: uint64
       tags:
         - Query
   /stafihub/stafihub/rmintreward/params:
@@ -36394,6 +36505,12 @@ definitions:
   stafihub.stafihub.rmintreward.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.rmintreward.QueryActCurrentCycleResponse:
+    type: object
+    properties:
+      currentCycle:
+        type: string
+        format: uint64
   stafihub.stafihub.rmintreward.QueryActDetailResponse:
     type: object
     properties:
@@ -36434,6 +36551,33 @@ definitions:
       latestCycle:
         type: string
         format: uint64
+  stafihub.stafihub.rmintreward.QueryClaimInfoDetailResponse:
+    type: object
+    properties:
+      claimInfo:
+        type: object
+        properties:
+          mintRTokenAmount:
+            type: string
+          nativeTokenAmount:
+            type: string
+          mintBLock:
+            type: string
+            format: int64
+          latestClaimedBlock:
+            type: string
+            format: int64
+          TokenClaimInfos:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                totalRewardAmount:
+                  type: string
+                totalClaimedAmount:
+                  type: string
   stafihub.stafihub.rmintreward.QueryParamsResponse:
     type: object
     properties:
@@ -36458,6 +36602,15 @@ definitions:
       count:
         type: string
         format: uint64
+  stafihub.stafihub.rmintreward.TokenClaimInfo:
+    type: object
+    properties:
+      denom:
+        type: string
+      totalRewardAmount:
+        type: string
+      totalClaimedAmount:
+        type: string
   stafihub.stafihub.rmintreward.TokenRewardInfo:
     type: object
     properties:
@@ -36471,6 +36624,30 @@ definitions:
         type: string
       userLimit:
         type: string
+  stafihub.stafihub.rmintreward.UserClaimInfo:
+    type: object
+    properties:
+      mintRTokenAmount:
+        type: string
+      nativeTokenAmount:
+        type: string
+      mintBLock:
+        type: string
+        format: int64
+      latestClaimedBlock:
+        type: string
+        format: int64
+      TokenClaimInfos:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            totalRewardAmount:
+              type: string
+            totalClaimedAmount:
+              type: string
   stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse:
     type: object
   stafihub.stafihub.rstaking.MsgSetInflationBaseResponse:

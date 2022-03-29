@@ -36,6 +36,16 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rmintreward/user_acts/{address}/{denom}";
 	}
 
+// Queries a list of ActCurrentCycle items.
+	rpc ActCurrentCycle(QueryActCurrentCycleRequest) returns (QueryActCurrentCycleResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rmintreward/act_current_cycle/{denom}";
+	}
+
+// Queries a list of ClaimInfoDetail items.
+	rpc ClaimInfoDetail(QueryClaimInfoDetailRequest) returns (QueryClaimInfoDetailResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rmintreward/claim_info_detail/{address}/{denom}/{cycle}/{mintIndex}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -82,6 +92,25 @@ message QueryUserActsRequest {
 
 message QueryUserActsResponse {
   Acts acts = 1;
+}
+
+message QueryActCurrentCycleRequest {
+  string denom = 1;
+}
+
+message QueryActCurrentCycleResponse {
+  uint64 currentCycle = 1;
+}
+
+message QueryClaimInfoDetailRequest {
+  string address = 1;
+  string denom = 2;
+  uint64 cycle = 3;
+  uint64 mintIndex = 4;
+}
+
+message QueryClaimInfoDetailResponse {
+  UserClaimInfo claimInfo = 1;
 }
 
 // this line is used by starport scaffolding # 3

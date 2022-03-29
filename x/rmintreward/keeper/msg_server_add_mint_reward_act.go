@@ -58,6 +58,7 @@ func (k msgServer) AddMintRewardAct(goCtx context.Context, msg *types.MsgAddMint
 
 	k.Keeper.SetMintRewardAct(ctx, msg.Denom, willUseCycle, msg.Act)
 	k.Keeper.SetActLatestCycle(ctx, msg.Denom, willUseCycle)
+	k.Keeper.AddActDenom(ctx, msg.Denom)
 
 	return &types.MsgAddMintRewardActResponse{}, nil
 }

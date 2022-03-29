@@ -14,13 +14,13 @@ func (k Keeper) UpdateActLatestCycle(ctx sdk.Context) {
 			continue
 		}
 
-		lastCurrentCycle, found := k.GetActCurrenttCycle(ctx, denom)
-		if found && lastCurrentCycle == latestCycle {
+		lastCurrentCycle, foundCur := k.GetActCurrenttCycle(ctx, denom)
+		if foundCur && lastCurrentCycle == latestCycle {
 			continue
 		}
 
 		begin := lastCurrentCycle + 1
-		if !found {
+		if !foundCur {
 			begin = 0
 		}
 		for i := begin; i <= latestCycle; i++ {
@@ -32,9 +32,14 @@ func (k Keeper) UpdateActLatestCycle(ctx sdk.Context) {
 				break
 			}
 			if act.Begin <= now && act.End >= now {
-				if i != lastCurrentCycle {
+				if foundCur {
+					if i != lastCurrentCycle {
+						k.SetActCurrentCycle(ctx, denom, i)
+					}
+				} else {
 					k.SetActCurrentCycle(ctx, denom, i)
 				}
+
 				break
 			}
 		}
@@ -80,7 +85,7 @@ func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom 
 
 		rewardInfo.LeftAmount = rewardInfo.LeftAmount.Sub(shouldRewardAmount)
 		userClaimInfo.TokenClaimInfos = append(userClaimInfo.TokenClaimInfos, &types.TokenClaimInfo{
-			Denom:              denom,
+			Denom:              rewardInfo.Denom,
 			TotalRewardAmount:  shouldRewardAmount,
 			TotalClaimedAmount: sdk.ZeroInt(),
 		})
