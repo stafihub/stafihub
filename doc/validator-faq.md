@@ -58,7 +58,7 @@ Out of all validator candidates that signaled themselves, the 125 with the most 
 
 The Testnet is a great environment to test your validator setup before launch.
 
-We view testnet participation as a great way to signal to the community that you are ready and able to operate a validator. You can find all relevant information about the testnet [here](./join-testnet.md) and [here](https://github.com/stafihub/testnets).
+We view testnet participation as a great way to signal to the community that you are ready and able to operate a validator. You can find all relevant information about the testnet [here](./join-testnet.md) and [here](https://github.com/stafihub/network/tree/main/testnets).
 
 ### What are the different types of keys?
 

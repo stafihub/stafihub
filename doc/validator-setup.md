@@ -90,7 +90,7 @@ stafihubd gentx \
 When specifying commission parameters, the `commission-max-change-rate` is used to measure % _point_ change over the `commission-rate`. E.g. 1% to 2% is a 100% rate increase, but only 1 percentage point.
 :::
 
-You can then submit your `gentx` on the [launch repository](https://github.com/cosmos/launch). These `gentx` will be used to form the final genesis file. 
+You can then submit your `gentx` on the [repository](https://github.com/stafihub/network). These `gentx` will be used to form the final genesis file. 
 
 ## Edit Validator Description
 
@@ -103,7 +103,7 @@ The `--identity` can be used as to verify identity with systems like Keybase or 
 ```bash
 stafihubd tx staking edit-validator
   --moniker="choose a moniker" \
-  --website="https://cosmos.network" \
+  --website="https://stafihub.network" \
   --identity=6A0D65E29A4CBC8E \
   --details="To infinity and beyond!" \
   --chain-id=<chain_id> \
@@ -125,7 +125,7 @@ __Note__: The `commission-rate` value must adhere to the following invariants:
 View the validator's information with this command:
 
 ```bash
-stafihubd query staking validator <account_cosmos>
+stafihubd query staking validator <account_stafihub>
 ```
 
 ## Track Validator Signing Information
@@ -199,7 +199,7 @@ The default number of files Linux can open (per-process) is `1024`. `stafihubd` 
 ```toml
 # /etc/systemd/system/stafihubd.service
 [Unit]
-Description=Cosmos Gaia Node
+Description=Stafihub Node
 After=network.target
 
 [Service]

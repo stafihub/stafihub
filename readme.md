@@ -13,5 +13,5 @@
 
 If you are looking for historical genesis files and other data
 
-- [`stafihub/mainnet`](http://github.com/stafihub/mainnet) 
-- [`stafihub/testnet`](http://github.com/stafihub/testnet) 
+- [`stafihub/mainnet`](https://github.com/stafihub/network/tree/main/mainnets) 
+- [`stafihub/testnet`](https://github.com/stafihub/network/tree/main/testnets) 
