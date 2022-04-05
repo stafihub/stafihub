@@ -45,8 +45,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSetChainEra())
 	cmd.AddCommand(CmdActiveReport())
 	cmd.AddCommand(CmdBondReport())
-	cmd.AddCommand(CmdBondAndReportActive())
-	cmd.AddCommand(CmdWithdrawReport())
 	cmd.AddCommand(CmdTransferReport())
 	cmd.AddCommand(CmdLiquidityUnbond())
 	cmd.AddCommand(CmdExecuteBondProposal())

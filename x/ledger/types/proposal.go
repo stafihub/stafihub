@@ -24,11 +24,9 @@ func init() {
 	rvotetypes.RegisterProposalType(BondReportProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&BondReportProposal{}, "ledger/BondReportProposal")
 	rvotetypes.RegisterProposalType(BondAndReportActiveProposalType)
-	rvotetypes.RegisterProposalTypeCodec(&BondAndReportActiveProposal{}, "ledger/BondAndReportActiveProposal")
 	rvotetypes.RegisterProposalType(ActiveReportProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&ActiveReportProposal{}, "ledger/ActiveReportProposal")
 	rvotetypes.RegisterProposalType(WithdrawReportProposalType)
-	rvotetypes.RegisterProposalTypeCodec(&WithdrawReportProposal{}, "ledger/WithdrawReportProposal")
 	rvotetypes.RegisterProposalType(TransferReportProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&TransferReportProposal{}, "ledger/TransferReportProposal")
 	rvotetypes.RegisterProposalType(ExecuteBondProposalType)
@@ -118,50 +116,6 @@ func (p *BondReportProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewBondAndReportActiveProposal(proposer sdk.AccAddress, denom string, shotId string, action BondAction, staked, unstaked sdk.Int) *BondAndReportActiveProposal {
-	p := &BondAndReportActiveProposal{
-		Denom:    denom,
-		ShotId:   shotId,
-		Action:   action,
-		Staked:   staked,
-		Unstaked: unstaked,
-	}
-
-	p.setPropId()
-	p.Proposer = proposer.String()
-	return p
-}
-
-func (p *BondAndReportActiveProposal) setPropId() {
-	b, err := p.Marshal()
-	if err != nil {
-		panic(err)
-	}
-
-	p.PropId = hex.EncodeToString(crypto.Sha256(b))
-}
-
-func (p *BondAndReportActiveProposal) ProposalRoute() string {
-	return ModuleName
-}
-
-func (p *BondAndReportActiveProposal) ProposalType() string {
-	return BondAndReportActiveProposalType
-}
-
-func (p *BondAndReportActiveProposal) InFavour() bool {
-	return true
-}
-
-func (p *BondAndReportActiveProposal) ValidateBasic() error {
-	err := rvotetypes.ValidateAbstract(p)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func NewActiveReportProposal(proposer sdk.AccAddress, denom string, shotId string, staked, unstaked sdk.Int) *ActiveReportProposal {
 	p := &ActiveReportProposal{
 		Denom:    denom,
@@ -197,47 +151,6 @@ func (p *ActiveReportProposal) InFavour() bool {
 }
 
 func (p *ActiveReportProposal) ValidateBasic() error {
-	err := rvotetypes.ValidateAbstract(p)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func NewWithdrawReportProposal(proposer sdk.AccAddress, denom string, shotId string) *WithdrawReportProposal {
-	p := &WithdrawReportProposal{
-		Denom:  denom,
-		ShotId: shotId,
-	}
-
-	p.setPropId()
-	p.Proposer = proposer.String()
-	return p
-}
-
-func (p *WithdrawReportProposal) setPropId() {
-	b, err := p.Marshal()
-	if err != nil {
-		panic(err)
-	}
-
-	p.PropId = hex.EncodeToString(crypto.Sha256(b))
-}
-
-func (p *WithdrawReportProposal) ProposalRoute() string {
-	return ModuleName
-}
-
-func (p *WithdrawReportProposal) ProposalType() string {
-	return WithdrawReportProposalType
-}
-
-func (p *WithdrawReportProposal) InFavour() bool {
-	return true
-}
-
-func (p *WithdrawReportProposal) ValidateBasic() error {
 	err := rvotetypes.ValidateAbstract(p)
 	if err != nil {
 		return err

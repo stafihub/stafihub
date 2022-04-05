@@ -88,52 +88,6 @@ func CmdBondReport() *cobra.Command {
 	return cmd
 }
 
-func CmdBondAndReportActive() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "bond-and-report-active [denom] [shot-id] [action] [staked] [unstaked]",
-		Short: "Broadcast message bond_and_report_active",
-		Args:  cobra.ExactArgs(5),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argShotId := args[1]
-			argAction, ok := types.BondAction_value[args[2]]
-			if !ok {
-				return fmt.Errorf("cannot cast %s into bondAction", args[2])
-			}
-
-			argStaked, ok := sdk.NewIntFromString(args[3])
-			if !ok {
-				return fmt.Errorf("cast staked %s into Int error", args[3])
-			}
-			argUnstaked, ok := sdk.NewIntFromString(args[4])
-			if !ok {
-				return fmt.Errorf("cast unstaked %s into Int error", args[4])
-			}
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			from := clientCtx.GetFromAddress()
-			content := types.NewBondAndReportActiveProposal(from, argDenom, argShotId, types.BondAction(argAction), argStaked, argUnstaked)
-			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
-			if err != nil {
-				return err
-			}
-
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
 func CmdActiveReport() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "active-report [denom] [shot-id] [staked] [unstaked]",
@@ -166,40 +120,6 @@ func CmdActiveReport() *cobra.Command {
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdWithdrawReport() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "withdraw-report [denom] [shot-id]",
-		Short: "Broadcast message withdraw_report",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argShotId := args[1]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			from := clientCtx.GetFromAddress()
-			content := types.NewWithdrawReportProposal(from, argDenom, argShotId)
-			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
-			if err != nil {
-				return err
-			}
-
-			if err := msg.ValidateBasic(); err != nil {
-				return err
-			}
-
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

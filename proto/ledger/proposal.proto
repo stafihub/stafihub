@@ -21,16 +21,6 @@ message BondReportProposal {
     string propId = 5;
 }
 
-message BondAndReportActiveProposal {
-  string proposer = 1;
-  string denom = 2;
-  string shotId = 3;
-  BondAction action = 4;
-  string staked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string unstaked = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string propId = 7;
-}
-
 message ActiveReportProposal {
   string proposer = 1;
   string denom = 2;
@@ -38,13 +28,6 @@ message ActiveReportProposal {
   string staked = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string unstaked = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string propId = 6;
-}
-
-message WithdrawReportProposal {
-    string proposer = 1;
-    string denom = 2;
-    string shotId = 3;
-    string propId = 4;
 }
 
 message TransferReportProposal {

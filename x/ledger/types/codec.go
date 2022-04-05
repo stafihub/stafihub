@@ -21,9 +21,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 	cdc.RegisterConcrete(&SetChainEraProposal{}, "ledger/SetChainEraProposal", nil)
 	cdc.RegisterConcrete(&BondReportProposal{}, "ledger/BondReportProposal", nil)
-	cdc.RegisterConcrete(&BondAndReportActiveProposal{}, "ledger/BondAndReportActiveProposal", nil)
 	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
-	cdc.RegisterConcrete(&WithdrawReportProposal{}, "ledger/WithdrawReportProposal", nil)
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
 	cdc.RegisterConcrete(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal", nil)
 
@@ -52,9 +50,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		(*rvotetypes.Content)(nil),
 		&SetChainEraProposal{},
 		&BondReportProposal{},
-		&BondAndReportActiveProposal{},
 		&ActiveReportProposal{},
-		&WithdrawReportProposal{},
 		&TransferReportProposal{},
 		&ExecuteBondProposal{},
 	)

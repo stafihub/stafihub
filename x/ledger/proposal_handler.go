@@ -16,12 +16,8 @@ func NewProposalHandler(k keeper.Keeper) rvotetypes.Handler {
 			return k.ProcessSetChainEraProposal(ctx, c)
 		case *types.BondReportProposal:
 			return k.ProcessBondReportProposal(ctx, c)
-		case *types.BondAndReportActiveProposal:
-			return k.ProcessBondAndReportActiveProposal(ctx, c)
 		case *types.ActiveReportProposal:
 			return k.ProcessActiveReportProposal(ctx, c)
-		case *types.WithdrawReportProposal:
-			return k.ProcessWithdrawReportProposal(ctx, c)
 		case *types.TransferReportProposal:
 			return k.ProcessTransferReportProposal(ctx, c)
 		case *types.ExecuteBondProposal:
