@@ -1,0 +1,20 @@
+{
+    "description": "The derivative of staking IRIS",
+    "denom_units": [
+        {
+            "denom": "uriris",
+            "exponent": 0,
+            "aliases": [
+                "microriris"
+            ]
+        },
+        {
+            "denom": "riris",
+            "exponent": 6
+        }
+    ],
+    "base": "uriris",
+    "display": "riris",
+    "name": "rIRIS",
+    "symbol": "rIRIS"
+}
