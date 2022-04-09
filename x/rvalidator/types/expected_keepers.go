@@ -7,6 +7,9 @@ import (
 
 type SudoKeeper interface {
 	IsAdmin(ctx sdk.Context, address string) bool
+}
+
+type RBankKeeper interface {
 	GetAddressPrefix(ctx sdk.Context, denom string) (val string, found bool)
 }
 

@@ -3,12 +3,10 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 var (
 	_ sdk.Msg = &MsgUpdateAdmin{}
-	_ sdk.Msg = &MsgAddDenom{}
 )
 
 func NewMsgUpdateAdmin(creator sdk.AccAddress, address sdk.AccAddress) *MsgUpdateAdmin {
@@ -39,39 +37,6 @@ func (msg *MsgUpdateAdmin) GetSignBytes() []byte {
 func (msg *MsgUpdateAdmin) ValidateBasic() error {
 	if msg.Creator == "" || msg.Address == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
-	}
-	return nil
-}
-
-func NewMsgAddDenom(creator sdk.AccAddress, metadata banktypes.Metadata, prefix string) *MsgAddDenom {
-	return &MsgAddDenom{
-		Creator:    creator.String(),
-		Metadata:   metadata,
-		AddrPrefix: prefix,
-	}
-}
-
-func (msg *MsgAddDenom) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgAddDenom) Type() string {
-	return "AddDenom"
-}
-
-func (msg *MsgAddDenom) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgAddDenom) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
-}
-
-func (msg *MsgAddDenom) ValidateBasic() error {
-	if msg.Creator == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s)", msg.Creator)
 	}
 	return nil
 }

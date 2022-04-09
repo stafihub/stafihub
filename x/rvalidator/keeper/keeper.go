@@ -20,6 +20,7 @@ type (
 		sudoKeeper    types.SudoKeeper
 		bankKeeper    types.BankKeeper
 		relayerKeeper types.RelayersKeeper
+		rbankKeeper   types.RBankKeeper
 	}
 )
 
@@ -31,7 +32,7 @@ func NewKeeper(
 	sudoKeeper types.SudoKeeper,
 	bankKeeper types.BankKeeper,
 	relayerKeeper types.RelayersKeeper,
-
+	rbankKeeper types.RBankKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
@@ -41,6 +42,7 @@ func NewKeeper(
 		sudoKeeper:    sudoKeeper,
 		bankKeeper:    bankKeeper,
 		relayerKeeper: relayerKeeper,
+		rbankKeeper:   rbankKeeper,
 	}
 }
 

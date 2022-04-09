@@ -6,7 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"github.com/stafihub/stafihub/x/sudo/types"
+	"github.com/stafihub/stafihub/x/rbank/types"
 )
 
 var _ = strconv.Itoa(0)
@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 func CmdAddressPrefix() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "address-prefix [denom]",
-		Short: "Query addrss prefix",
+		Short: "Query address prefix of denom",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]

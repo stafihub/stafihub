@@ -11,7 +11,6 @@ option go_package = "github.com/stafihub/stafihub/x/sudo/types";
 // Msg defines the Msg service.
 service Msg {
   rpc UpdateAdmin(MsgUpdateAdmin) returns (MsgUpdateAdminResponse);
-  rpc AddDenom(MsgAddDenom) returns (MsgAddDenomResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -22,14 +21,3 @@ message MsgUpdateAdmin {
 
 message MsgUpdateAdminResponse {
 }
-
-message MsgAddDenom {
-  string creator = 1;
-  cosmos.bank.v1beta1.Metadata Metadata = 2 [(gogoproto.nullable) = false];
-  string addrPrefix = 3;
-}
-
-message MsgAddDenomResponse {
-}
-
-// this line is used by starport scaffolding # proto/tx/message

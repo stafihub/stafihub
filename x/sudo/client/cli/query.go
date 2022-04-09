@@ -3,16 +3,9 @@ package cli
 import (
 	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/client/flags"
-
-	// "strings"
-
-	"github.com/spf13/cobra"
-
 	"github.com/cosmos/cosmos-sdk/client"
-	// "github.com/cosmos/cosmos-sdk/client/flags"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
-
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/sudo/types"
 )
 
@@ -28,9 +21,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdAdmin())
-
-	cmd.AddCommand(CmdAddressPrefix())
-
 	// this line is used by starport scaffolding # 1
 
 	return cmd

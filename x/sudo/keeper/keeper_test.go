@@ -25,15 +25,3 @@ func TestAdmin(t *testing.T) {
 	require.NotEqual(t, addr.String(), addr1)
 	require.False(t, k.IsAdmin(ctx, addr1))
 }
-
-func TestKeeper_SetAddressPrefix(t *testing.T) {
-	k, ctx := testkeeper.SudoKeeper(t)
-
-	_, found := k.GetAddressPrefix(ctx, sample.TestDenom)
-	require.False(t, found)
-
-	k.SetAddressPrefix(ctx, sample.TestDenom, sample.TestAddrPrefix)
-	val, found := k.GetAddressPrefix(ctx, sample.TestDenom)
-	require.True(t, found)
-	require.Equal(t, sample.TestAddrPrefix, val)
-}

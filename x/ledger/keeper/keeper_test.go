@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/stafihub/stafihub/testutil/keeper"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stretchr/testify/require"
 )
 
@@ -43,13 +44,13 @@ func Test_EraExchangeRate(t *testing.T) {
 	_, found := k.GetEraExchangeRate(ctx, sample.TestDenom, 1)
 	require.False(t, found)
 
-	k.SetEraExchangeRate(ctx, sample.TestDenom, 1, sdk.OneDec())
+	k.SetEraExchangeRate(ctx, sample.TestDenom, 1, utils.OneDec())
 	rate, found := k.GetEraExchangeRate(ctx, sample.TestDenom, 1)
 	require.True(t, found)
 	require.Equal(t, sample.TestDenom, rate.Denom)
 	require.Equal(t, sdk.OneDec(), rate.Value)
 
-	k.SetEraExchangeRate(ctx, sample.TestDenom, 2, sdk.OneDec())
+	k.SetEraExchangeRate(ctx, sample.TestDenom, 2, utils.OneDec())
 
 	rates = k.GetEraExchangeRateByDenom(ctx, sample.TestDenom)
 	require.True(t, len(rates) == 2)

@@ -115,7 +115,6 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 	return nil
 }
 
-
 func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveReportProposal) error {
 	shot, ok := k.Snapshot(ctx, p.ShotId)
 	if !ok {
@@ -225,7 +224,6 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 
 	return nil
 }
-
 
 func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.TransferReportProposal) error {
 	shot, ok := k.Snapshot(ctx, p.ShotId)

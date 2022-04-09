@@ -41,16 +41,3 @@ func (k msgServer) UpdateAdmin(goCtx context.Context, msg *types.MsgUpdateAdmin)
 
 	return &types.MsgUpdateAdminResponse{}, nil
 }
-
-func (k msgServer) AddDenom(goCtx context.Context, msg *types.MsgAddDenom) (*types.MsgAddDenomResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	isAdmin := k.IsAdmin(ctx, msg.Creator)
-	if !isAdmin {
-		return nil, types.ErrCreatorNotAdmin
-	}
-
-	k.SetAddressPrefix(ctx, msg.Metadata.Base, msg.AddrPrefix)
-	k.bankKeeper.SetDenomMetaData(ctx, msg.Metadata)
-	return &types.MsgAddDenomResponse{}, nil
-}

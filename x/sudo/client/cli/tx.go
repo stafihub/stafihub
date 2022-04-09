@@ -2,12 +2,8 @@ package cli
 
 import (
 	"fmt"
-	"strings"
-	"time"
-
-	"github.com/cosmos/cosmos-sdk/version"
-
 	"github.com/spf13/cobra"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -18,11 +14,6 @@ import (
 
 var (
 	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
-)
-
-const (
-	FlagMetadata      = "metadata"
-	FlagAddressPrefix = "address_prefix"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -36,7 +27,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdUpdateAdmin())
-	cmd.AddCommand(CmdAddDenom())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
@@ -69,80 +59,6 @@ func CmdUpdateAdmin() *cobra.Command {
 		},
 	}
 
-	flags.AddTxFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdAddDenom() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "add-denom",
-		Short: "Broadcast message add_denom with an denom_metadata",
-		Long: strings.TrimSpace(
-			fmt.Sprintf(`Broadcast message add_denom with an denom_metadata which can be given through a metadata JSON file.
-
-Example:
-$ %s tx sudo add-denom --metadata="path/to/metadata.json" --address_prefix="cosmos" --from mykey
-
-Where metadata.json could be like this:
-
-{
-	"description": "The native staking token of the StaFiHub.",
-	"denom_units": [
-        {
-			"denom": "ufis",
-          	"exponent": 0,
-          	"aliases": [
-            	"microfis"
-          	]
-        },
-        {
-          "denom": "mfis",
-          "exponent": 3,
-          "aliases": [
-            "millifis"
-          ]
-        },
-        {
-          "denom": "fis",
-          "exponent": 6,
-          "aliases": []
-        }
-      ],
-      "base": "ufis",
-      "display": "fis",
-      "name": "",
-      "symbol": ""
-    }
-`, version.AppName),
-		),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			md, err := parseMetadataFlags(cmd.Flags())
-			if err != nil {
-				return fmt.Errorf("failed to parse metadata: %w", err)
-			}
-
-			if err := md.Validate(); err != nil {
-				return err
-			}
-
-			prefix, _ := cmd.Flags().GetString(FlagAddressPrefix)
-			if prefix == "" {
-				return fmt.Errorf("prefix not give")
-			}
-
-			msg := types.NewMsgAddDenom(clientCtx.GetFromAddress(), *md, prefix)
-			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
-		},
-	}
-
-	cmd.Flags().String(FlagMetadata, "", "Metadata file path")
-	cmd.Flags().String(FlagAddressPrefix, "", "address prefix of the denom, such like `cosmos` for uatom")
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd

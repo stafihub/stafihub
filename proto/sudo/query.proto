@@ -11,11 +11,6 @@ service Query {
 	rpc Admin(QueryAdminRequest) returns (QueryAdminResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/sudo/admin";
 	}
-// Queries a list of AddressPrefix items.
-	rpc AddressPrefix(QueryAddressPrefixRequest) returns (QueryAddressPrefixResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/sudo/address_prefix/{denom}";
-	}
-
 // this line is used by starport scaffolding # 2
 }
 
@@ -25,13 +20,3 @@ message QueryAdminRequest {
 message QueryAdminResponse {
   string address = 1;
 }
-
-message QueryAddressPrefixRequest {
-  string denom = 1;
-}
-
-message QueryAddressPrefixResponse {
-  string addressPrefix = 1;
-}
-
-// this line is used by starport scaffolding # 3

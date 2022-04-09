@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	rBankTypes "github.com/stafihub/stafihub/x/rbank/types"
 	"github.com/stafihub/stafihub/x/rvalidator/types"
-	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) Onboard(goCtx context.Context, msg *types.MsgOnboard) (*types.MsgOnboardResponse, error) {
@@ -19,13 +19,13 @@ func (k msgServer) Onboard(goCtx context.Context, msg *types.MsgOnboard) (*types
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	addrPfx, found := k.sudoKeeper.GetAddressPrefix(ctx, msg.Denom)
+	addrPfx, found := k.rbankKeeper.GetAddressPrefix(ctx, msg.Denom)
 	if !found {
-		return nil, sudotypes.ErrAddrPrefixNotExist
+		return nil, rBankTypes.ErrAddrPrefixNotExist
 	}
 
 	if !strings.HasPrefix(msg.Address, addrPfx) {
-		return nil, sudotypes.ErrAddrPrefixNotMatched
+		return nil, rBankTypes.ErrAddrPrefixNotMatched
 	}
 
 	rv, found := k.Keeper.GetRValidator(ctx, msg.Denom, msg.Address)
@@ -39,7 +39,7 @@ func (k msgServer) Onboard(goCtx context.Context, msg *types.MsgOnboard) (*types
 	}
 
 	if msg.Locked.Denom != ind.Locked.Denom {
-		return nil, sudotypes.ErrDenomNotMatched
+		return nil, rBankTypes.ErrDenomNotMatched
 	}
 
 	if ind.Locked.IsPositive() {

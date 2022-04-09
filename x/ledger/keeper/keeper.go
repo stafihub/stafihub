@@ -24,6 +24,7 @@ type (
 		bankKeeper       types.BankKeeper
 		relayerKeeper    types.RelayerKeeper
 		mintrewardKeeper types.MintRewardKeeper
+		rbankKeeper      types.RBankKeeper
 	}
 )
 
@@ -36,6 +37,7 @@ func NewKeeper(
 	bankKeeper types.BankKeeper,
 	relayerKeeper types.RelayerKeeper,
 	mintrewardKeeper types.MintRewardKeeper,
+	rbankKeeepr types.RBankKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
@@ -46,6 +48,7 @@ func NewKeeper(
 		bankKeeper:       bankKeeper,
 		relayerKeeper:    relayerKeeper,
 		mintrewardKeeper: mintrewardKeeper,
+		rbankKeeper:      rbankKeeepr,
 	}
 }
 
@@ -220,7 +223,7 @@ func (k Keeper) GetAllTotalProtocolFee(ctx sdk.Context) (list []types.TotalProto
 
 func (k Keeper) CheckAddress(ctx sdk.Context, denom string, addresses ...string) error {
 	for _, addr := range addresses {
-		err := k.sudoKeeper.CheckAddress(ctx, denom, addr)
+		err := k.rbankKeeper.CheckAddress(ctx, denom, addr)
 		if err != nil {
 			return err
 		}
