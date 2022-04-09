@@ -2,7 +2,6 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 var (
@@ -25,7 +24,10 @@ func (msg *MsgUpdateAdmin) Type() string {
 }
 
 func (msg *MsgUpdateAdmin) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic("invalid creator address")
+	}
 	return []sdk.AccAddress{creator}
 }
 
@@ -35,8 +37,13 @@ func (msg *MsgUpdateAdmin) GetSignBytes() []byte {
 }
 
 func (msg *MsgUpdateAdmin) ValidateBasic() error {
-	if msg.Creator == "" || msg.Address == "" {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return err
+	}
+	_, err = sdk.AccAddressFromBech32(msg.Address)
+	if err != nil {
+		return err
 	}
 	return nil
 }

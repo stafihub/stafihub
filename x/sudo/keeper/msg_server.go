@@ -22,8 +22,16 @@ var _ types.MsgServer = msgServer{}
 func (k msgServer) UpdateAdmin(goCtx context.Context, msg *types.MsgUpdateAdmin) (*types.MsgUpdateAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	lastAdmin := k.GetAdmin(ctx).String()
-	newAdmin, _ := sdk.AccAddressFromBech32(msg.Address)
+	lastAdmin := k.GetAdmin(ctx)
+	newAdmin, err := sdk.AccAddressFromBech32(msg.Address)
+	if err != nil {
+		return nil, err
+	}
+
+	if lastAdmin.Equals(newAdmin) {
+		return nil, types.ErrLastAdminEqualNewAdmin
+	}
+
 	isAdmin := k.IsAdmin(ctx, msg.Creator)
 	if !isAdmin {
 		return nil, types.ErrCreatorNotAdmin
@@ -34,7 +42,7 @@ func (k msgServer) UpdateAdmin(goCtx context.Context, msg *types.MsgUpdateAdmin)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeAdminUpdated,
-			sdk.NewAttribute(types.AttributeKeyLastAdmin, lastAdmin),
+			sdk.NewAttribute(types.AttributeKeyLastAdmin, lastAdmin.String()),
 			sdk.NewAttribute(types.AttributeKeyCurrentAdmin, msg.Address),
 		),
 	)
