@@ -12,6 +12,7 @@ service Msg {
   rpc SetInflationBase(MsgSetInflationBase) returns (MsgSetInflationBaseResponse);
   rpc AddValToWhitelist(MsgAddValToWhitelist) returns (MsgAddValToWhitelistResponse);
   rpc ToggleWhitelistSwitch(MsgToggleWhitelistSwitch) returns (MsgToggleWhitelistSwitchResponse);
+  rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -36,6 +37,15 @@ message MsgToggleWhitelistSwitch {
 }
 
 message MsgToggleWhitelistSwitchResponse {
+}
+
+message MsgWithdraw {
+  string creator = 1;
+  string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  string recipient = 3;
+}
+
+message MsgWithdrawResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

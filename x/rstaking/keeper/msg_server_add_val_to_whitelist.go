@@ -19,6 +19,10 @@ func (k msgServer) AddValToWhitelist(goCtx context.Context, msg *types.MsgAddVal
 	if err != nil {
 		return nil, err
 	}
+	if k.Keeper.HasValAddressInWhitelist(ctx, valAddress) {
+		return nil, types.ErrValAlreadyInWhitelist
+	}
+
 	k.AddValAddressToWhitelist(ctx, valAddress)
 
 	return &types.MsgAddValToWhitelistResponse{}, nil

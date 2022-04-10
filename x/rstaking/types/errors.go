@@ -8,5 +8,6 @@ import (
 
 // x/rstaking module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrValAlreadyInWhitelist = sdkerrors.Register(ModuleName, 1100, "validator already in whitelist error")
+	ErrInsufficientFunds     = sdkerrors.Register(ModuleName, 1101, "insufficient funds error")
 )

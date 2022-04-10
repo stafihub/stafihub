@@ -24,19 +24,3 @@ func (k Keeper) GetProposal(ctx sdk.Context, propId string) (val *types.Proposal
 	k.cdc.MustUnmarshal(b, val)
 	return val, true
 }
-
-// GetAllProposal returns all proposal
-func (k Keeper) GetAllProposal(ctx sdk.Context) (list []types.Proposal) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ProposalPrefix)
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
-	defer iterator.Close()
-
-	for ; iterator.Valid(); iterator.Next() {
-		var val types.Proposal
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
-	}
-
-	return
-}

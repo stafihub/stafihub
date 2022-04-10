@@ -37686,6 +37686,8 @@ definitions:
     type: object
   stafihub.stafihub.rstaking.MsgToggleWhitelistSwitchResponse:
     type: object
+  stafihub.stafihub.rstaking.MsgWithdrawResponse:
+    type: object
   stafihub.stafihub.rstaking.Params:
     type: object
     description: Params defines the parameters for the module.

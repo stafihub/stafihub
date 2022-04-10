@@ -278,6 +278,95 @@ func (m *MsgToggleWhitelistSwitchResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgToggleWhitelistSwitchResponse proto.InternalMessageInfo
 
+type MsgWithdraw struct {
+	Creator   string                                  `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Amount    github_com_cosmos_cosmos_sdk_types.Coin `protobuf:"bytes,2,opt,name=amount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Coin" json:"amount"`
+	Recipient string                                  `protobuf:"bytes,3,opt,name=recipient,proto3" json:"recipient,omitempty"`
+}
+
+func (m *MsgWithdraw) Reset()         { *m = MsgWithdraw{} }
+func (m *MsgWithdraw) String() string { return proto.CompactTextString(m) }
+func (*MsgWithdraw) ProtoMessage()    {}
+func (*MsgWithdraw) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dc4bfb0e643e29ba, []int{6}
+}
+func (m *MsgWithdraw) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgWithdraw) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgWithdraw.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgWithdraw) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgWithdraw.Merge(m, src)
+}
+func (m *MsgWithdraw) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgWithdraw) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgWithdraw.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgWithdraw proto.InternalMessageInfo
+
+func (m *MsgWithdraw) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgWithdraw) GetRecipient() string {
+	if m != nil {
+		return m.Recipient
+	}
+	return ""
+}
+
+type MsgWithdrawResponse struct {
+}
+
+func (m *MsgWithdrawResponse) Reset()         { *m = MsgWithdrawResponse{} }
+func (m *MsgWithdrawResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgWithdrawResponse) ProtoMessage()    {}
+func (*MsgWithdrawResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_dc4bfb0e643e29ba, []int{7}
+}
+func (m *MsgWithdrawResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgWithdrawResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgWithdrawResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgWithdrawResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgWithdrawResponse.Merge(m, src)
+}
+func (m *MsgWithdrawResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgWithdrawResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgWithdrawResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgWithdrawResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgSetInflationBase)(nil), "stafihub.stafihub.rstaking.MsgSetInflationBase")
 	proto.RegisterType((*MsgSetInflationBaseResponse)(nil), "stafihub.stafihub.rstaking.MsgSetInflationBaseResponse")
@@ -285,36 +374,43 @@ func init() {
 	proto.RegisterType((*MsgAddValToWhitelistResponse)(nil), "stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse")
 	proto.RegisterType((*MsgToggleWhitelistSwitch)(nil), "stafihub.stafihub.rstaking.MsgToggleWhitelistSwitch")
 	proto.RegisterType((*MsgToggleWhitelistSwitchResponse)(nil), "stafihub.stafihub.rstaking.MsgToggleWhitelistSwitchResponse")
+	proto.RegisterType((*MsgWithdraw)(nil), "stafihub.stafihub.rstaking.MsgWithdraw")
+	proto.RegisterType((*MsgWithdrawResponse)(nil), "stafihub.stafihub.rstaking.MsgWithdrawResponse")
 }
 
 func init() { proto.RegisterFile("rstaking/tx.proto", fileDescriptor_dc4bfb0e643e29ba) }
 
 var fileDescriptor_dc4bfb0e643e29ba = []byte{
-	// 384 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0x2a, 0x2e, 0x49,
-	0xcc, 0xce, 0xcc, 0x4b, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x2a,
-	0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2, 0x83, 0x33, 0x60, 0x8a, 0xa4, 0x44, 0xd2, 0xf3,
-	0xd3, 0xf3, 0xc1, 0xca, 0xf4, 0x41, 0x2c, 0x88, 0x0e, 0xa5, 0x56, 0x46, 0x2e, 0x61, 0xdf, 0xe2,
-	0xf4, 0xe0, 0xd4, 0x12, 0xcf, 0xbc, 0xb4, 0x9c, 0xc4, 0x92, 0xcc, 0xfc, 0x3c, 0xa7, 0xc4, 0xe2,
-	0x54, 0x21, 0x09, 0x2e, 0xf6, 0xe4, 0xa2, 0xd4, 0xc4, 0x92, 0xfc, 0x22, 0x09, 0x46, 0x05, 0x46,
-	0x0d, 0xce, 0x20, 0x18, 0x57, 0x28, 0x84, 0x8b, 0x37, 0x13, 0x59, 0xa9, 0x04, 0x13, 0x48, 0xde,
-	0x49, 0xef, 0xc4, 0x3d, 0x79, 0x86, 0x5b, 0xf7, 0xe4, 0xd5, 0xd2, 0x33, 0x4b, 0x40, 0xf6, 0x26,
-	0xe7, 0xe7, 0xea, 0x27, 0xe7, 0x17, 0xe7, 0xe6, 0x17, 0x43, 0x29, 0xdd, 0xe2, 0x94, 0x6c, 0xfd,
-	0x92, 0xca, 0x82, 0xd4, 0x62, 0x3d, 0xcf, 0xbc, 0x92, 0x20, 0x54, 0x43, 0x94, 0x64, 0xb9, 0xa4,
-	0xb1, 0x38, 0x23, 0x28, 0xb5, 0xb8, 0x20, 0x3f, 0xaf, 0x38, 0x55, 0x29, 0x80, 0x4b, 0xc4, 0xb7,
-	0x38, 0xdd, 0x31, 0x25, 0x25, 0x2c, 0x31, 0x27, 0x24, 0x3f, 0x3c, 0x23, 0xb3, 0x24, 0x35, 0x27,
-	0xb3, 0xb8, 0x04, 0x8f, 0x33, 0xe5, 0xb8, 0xb8, 0xca, 0x12, 0x73, 0x1c, 0x53, 0x52, 0x8a, 0x52,
-	0x8b, 0x8b, 0x21, 0x6e, 0x0c, 0x42, 0x12, 0x51, 0x92, 0xe3, 0x92, 0xc1, 0x66, 0x22, 0xdc, 0x46,
-	0x13, 0x2e, 0x09, 0xdf, 0xe2, 0xf4, 0x90, 0xfc, 0xf4, 0xf4, 0x9c, 0x54, 0xb8, 0x6c, 0x70, 0x79,
-	0x66, 0x49, 0x72, 0x06, 0x6e, 0x5b, 0x95, 0x94, 0xb8, 0x14, 0x70, 0xe9, 0x82, 0x99, 0x6c, 0x34,
-	0x89, 0x99, 0x8b, 0xd9, 0xb7, 0x38, 0x5d, 0xa8, 0x86, 0x4b, 0x00, 0x23, 0xd8, 0xf5, 0xf5, 0x70,
-	0xc7, 0xa0, 0x1e, 0x96, 0x00, 0x92, 0x32, 0x27, 0x51, 0x03, 0xcc, 0x15, 0x42, 0xf5, 0x5c, 0x82,
-	0x98, 0xc1, 0x69, 0x40, 0xc0, 0x34, 0x0c, 0x1d, 0x52, 0x16, 0xa4, 0xea, 0x80, 0x3b, 0xa0, 0x9b,
-	0x91, 0x4b, 0x14, 0x7b, 0xf0, 0x9a, 0x10, 0x30, 0x13, 0xab, 0x2e, 0x29, 0x1b, 0x72, 0x74, 0xc1,
-	0x5c, 0xe3, 0xe4, 0x7e, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31,
-	0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51, 0xba, 0x48,
-	0x09, 0x1a, 0x66, 0x30, 0x82, 0x51, 0xa1, 0x8f, 0xc8, 0x85, 0xa0, 0xb4, 0x9d, 0xc4, 0x06, 0xce,
-	0x57, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x24, 0xfd, 0x44, 0xac, 0x9e, 0x03, 0x00, 0x00,
+	// 464 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x4f, 0x6b, 0xd4, 0x40,
+	0x14, 0xdf, 0xb8, 0x50, 0xed, 0x13, 0xc1, 0xc6, 0x16, 0x42, 0xac, 0x69, 0xc9, 0xc1, 0x7a, 0x69,
+	0x46, 0xb4, 0xa0, 0x07, 0x2f, 0x5d, 0x0f, 0xa5, 0x87, 0x80, 0xa4, 0x8b, 0x05, 0x6f, 0xd3, 0x64,
+	0x3a, 0x3b, 0x34, 0x3b, 0xb3, 0xe4, 0xbd, 0xda, 0x0a, 0x82, 0x27, 0x4f, 0x82, 0xf8, 0xb1, 0x7a,
+	0xec, 0x51, 0x3c, 0x14, 0xd9, 0xfd, 0x12, 0x1e, 0x65, 0xb7, 0x99, 0xec, 0xca, 0x66, 0xbb, 0x5d,
+	0x4f, 0x79, 0x99, 0x79, 0xbf, 0x3f, 0xf3, 0xe6, 0xc7, 0xc0, 0x4a, 0x81, 0xc4, 0x4f, 0x94, 0x96,
+	0x8c, 0xce, 0xa3, 0x5e, 0x61, 0xc8, 0xb8, 0x3e, 0x12, 0x3f, 0x56, 0x9d, 0xd3, 0xa3, 0xa8, 0x2a,
+	0x6c, 0x93, 0xbf, 0x2a, 0x8d, 0x34, 0xa3, 0x36, 0x36, 0xac, 0xae, 0x11, 0xe1, 0x57, 0x07, 0x1e,
+	0xc5, 0x28, 0x0f, 0x04, 0xed, 0xeb, 0xe3, 0x9c, 0x93, 0x32, 0xba, 0xc5, 0x51, 0xb8, 0x1e, 0xdc,
+	0x4d, 0x0b, 0xc1, 0xc9, 0x14, 0x9e, 0xb3, 0xe9, 0x3c, 0x5b, 0x4e, 0xec, 0xaf, 0xdb, 0x86, 0x07,
+	0x6a, 0xb2, 0xd5, 0xbb, 0x33, 0xdc, 0x6f, 0x45, 0x17, 0x57, 0x1b, 0x8d, 0x5f, 0x57, 0x1b, 0x4f,
+	0xa5, 0xa2, 0xa1, 0x6e, 0x6a, 0xba, 0x2c, 0x35, 0xd8, 0x35, 0x58, 0x7e, 0xb6, 0x31, 0x3b, 0x61,
+	0xf4, 0xa9, 0x27, 0x30, 0xda, 0xd7, 0x94, 0xfc, 0x4b, 0x12, 0x3e, 0x81, 0xc7, 0x35, 0x36, 0x12,
+	0x81, 0x3d, 0xa3, 0x51, 0x84, 0xef, 0x60, 0x35, 0x46, 0xb9, 0x9b, 0x65, 0xef, 0x79, 0xde, 0x36,
+	0x87, 0x1d, 0x45, 0x22, 0x57, 0x48, 0x37, 0xd8, 0x0c, 0x00, 0x3e, 0xf2, 0x7c, 0x37, 0xcb, 0x0a,
+	0x81, 0x78, 0xed, 0x31, 0x99, 0x58, 0x09, 0x03, 0x58, 0xaf, 0x63, 0xac, 0x14, 0x77, 0xc0, 0x8b,
+	0x51, 0xb6, 0x8d, 0x94, 0xb9, 0xa8, 0x76, 0x0f, 0xce, 0x14, 0xa5, 0x9d, 0xd9, 0xaa, 0x61, 0x08,
+	0x9b, 0xb3, 0x50, 0x15, 0xf3, 0x77, 0x07, 0xee, 0xc7, 0x28, 0x0f, 0x15, 0x75, 0xb2, 0x82, 0x9f,
+	0xdd, 0x70, 0x86, 0x3d, 0x58, 0xe2, 0x5d, 0x73, 0xaa, 0xa9, 0x9c, 0x31, 0x2b, 0x67, 0xbc, 0x75,
+	0x8b, 0x19, 0xbf, 0x35, 0x4a, 0x27, 0x25, 0xdc, 0x5d, 0x87, 0xe5, 0x42, 0xa4, 0xaa, 0xa7, 0x84,
+	0x26, 0xaf, 0x39, 0x12, 0x19, 0x2f, 0x84, 0x6b, 0xa3, 0x08, 0x58, 0x3f, 0xd6, 0xe7, 0x8b, 0x3f,
+	0x4d, 0x68, 0xc6, 0x28, 0xdd, 0xcf, 0xf0, 0x70, 0x2a, 0x1e, 0x2c, 0x9a, 0x9d, 0xb4, 0xa8, 0xe6,
+	0x22, 0xfd, 0x57, 0x0b, 0x02, 0xac, 0x0b, 0xf7, 0x0b, 0xac, 0x4c, 0x5f, 0xfb, 0xf3, 0x39, 0x6c,
+	0x53, 0x08, 0xff, 0xf5, 0xa2, 0x88, 0xca, 0xc0, 0x37, 0x07, 0xd6, 0xea, 0x63, 0xb0, 0x33, 0x87,
+	0xb3, 0x16, 0xe5, 0xbf, 0xf9, 0x1f, 0x54, 0xe5, 0x26, 0x83, 0x7b, 0x55, 0x70, 0xb6, 0xe6, 0x30,
+	0xd9, 0x46, 0x9f, 0xdd, 0xb2, 0xd1, 0xaa, 0xb4, 0xf6, 0x2e, 0xfa, 0x81, 0x73, 0xd9, 0x0f, 0x9c,
+	0xdf, 0xfd, 0xc0, 0xf9, 0x31, 0x08, 0x1a, 0x97, 0x83, 0xa0, 0xf1, 0x73, 0x10, 0x34, 0x3e, 0x6c,
+	0x4f, 0x44, 0xcf, 0x72, 0x8d, 0x8b, 0x73, 0x36, 0x7e, 0x93, 0x86, 0x29, 0x3c, 0x5a, 0x1a, 0xbd,
+	0x32, 0x2f, 0xff, 0x06, 0x00, 0x00, 0xff, 0xff, 0xc9, 0x8a, 0xe5, 0x24, 0xac, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -332,6 +428,7 @@ type MsgClient interface {
 	SetInflationBase(ctx context.Context, in *MsgSetInflationBase, opts ...grpc.CallOption) (*MsgSetInflationBaseResponse, error)
 	AddValToWhitelist(ctx context.Context, in *MsgAddValToWhitelist, opts ...grpc.CallOption) (*MsgAddValToWhitelistResponse, error)
 	ToggleWhitelistSwitch(ctx context.Context, in *MsgToggleWhitelistSwitch, opts ...grpc.CallOption) (*MsgToggleWhitelistSwitchResponse, error)
+	Withdraw(ctx context.Context, in *MsgWithdraw, opts ...grpc.CallOption) (*MsgWithdrawResponse, error)
 }
 
 type msgClient struct {
@@ -369,11 +466,21 @@ func (c *msgClient) ToggleWhitelistSwitch(ctx context.Context, in *MsgToggleWhit
 	return out, nil
 }
 
+func (c *msgClient) Withdraw(ctx context.Context, in *MsgWithdraw, opts ...grpc.CallOption) (*MsgWithdrawResponse, error) {
+	out := new(MsgWithdrawResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Msg/Withdraw", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	SetInflationBase(context.Context, *MsgSetInflationBase) (*MsgSetInflationBaseResponse, error)
 	AddValToWhitelist(context.Context, *MsgAddValToWhitelist) (*MsgAddValToWhitelistResponse, error)
 	ToggleWhitelistSwitch(context.Context, *MsgToggleWhitelistSwitch) (*MsgToggleWhitelistSwitchResponse, error)
+	Withdraw(context.Context, *MsgWithdraw) (*MsgWithdrawResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -388,6 +495,9 @@ func (*UnimplementedMsgServer) AddValToWhitelist(ctx context.Context, req *MsgAd
 }
 func (*UnimplementedMsgServer) ToggleWhitelistSwitch(ctx context.Context, req *MsgToggleWhitelistSwitch) (*MsgToggleWhitelistSwitchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToggleWhitelistSwitch not implemented")
+}
+func (*UnimplementedMsgServer) Withdraw(ctx context.Context, req *MsgWithdraw) (*MsgWithdrawResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Withdraw not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -448,6 +558,24 @@ func _Msg_ToggleWhitelistSwitch_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_Withdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgWithdraw)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).Withdraw(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.rstaking.Msg/Withdraw",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).Withdraw(ctx, req.(*MsgWithdraw))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "stafihub.stafihub.rstaking.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -463,6 +591,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ToggleWhitelistSwitch",
 			Handler:    _Msg_ToggleWhitelistSwitch_Handler,
+		},
+		{
+			MethodName: "Withdraw",
+			Handler:    _Msg_Withdraw_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -645,6 +777,76 @@ func (m *MsgToggleWhitelistSwitchResponse) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgWithdraw) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgWithdraw) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgWithdraw) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Recipient) > 0 {
+		i -= len(m.Recipient)
+		copy(dAtA[i:], m.Recipient)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Recipient)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	{
+		size := m.Amount.Size()
+		i -= size
+		if _, err := m.Amount.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgWithdrawResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgWithdrawResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgWithdrawResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -720,6 +922,34 @@ func (m *MsgToggleWhitelistSwitch) Size() (n int) {
 }
 
 func (m *MsgToggleWhitelistSwitchResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgWithdraw) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = m.Amount.Size()
+	n += 1 + l + sovTx(uint64(l))
+	l = len(m.Recipient)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgWithdrawResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1173,6 +1403,204 @@ func (m *MsgToggleWhitelistSwitchResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgToggleWhitelistSwitchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgWithdraw) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgWithdraw: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgWithdraw: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Amount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Recipient", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Recipient = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgWithdrawResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgWithdrawResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgWithdrawResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

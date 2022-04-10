@@ -29,6 +29,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 		if err != nil {
 			panic(fmt.Sprintf("valAddress format err, %s", err))
 		}
+		if k.HasValAddressInWhitelist(ctx, valAddr) {
+			continue
+		}
 		k.AddValAddressToWhitelist(ctx, valAddr)
 	}
 

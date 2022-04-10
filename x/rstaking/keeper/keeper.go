@@ -113,9 +113,9 @@ func (k Keeper) AddValAddressToWhitelist(ctx sdk.Context, valAddress sdk.ValAddr
 	store.Set(types.ValAddressStoreKey(valAddress), []byte{})
 }
 
-func (k Keeper) HasValAddressInWhitelist(ctx sdk.Context, valAddess sdk.ValAddress) bool {
+func (k Keeper) HasValAddressInWhitelist(ctx sdk.Context, valAddress sdk.ValAddress) bool {
 	store := ctx.KVStore(k.storeKey)
-	return store.Has(types.ValAddressStoreKey(valAddess))
+	return store.Has(types.ValAddressStoreKey(valAddress))
 }
 
 func (k Keeper) GetValAddressWhitelist(ctx sdk.Context) []string {

@@ -53,10 +53,6 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	if prop.Status == types.StatusApproved {
 		return nil, types.ErrProposalAlreadyApproved
 	}
-	if prop.Status == types.StatusExpired {
-		return nil, types.ErrProposalAlreadyExpired
-	}
-
 	if prop.IsExpired(ctx.BlockHeight()) {
 		return nil, types.ErrProposalAlreadyExpired
 	}
