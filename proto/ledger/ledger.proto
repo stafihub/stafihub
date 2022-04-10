@@ -62,7 +62,6 @@ message BondSnapshot {
     string pool = 2;
     uint32 era = 3;
     LinkChunk chunk = 4 [(gogoproto.nullable) = false];
-    string last_voter = 5;
     PoolBondState bond_state = 6;
 }
 

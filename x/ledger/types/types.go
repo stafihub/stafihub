@@ -57,13 +57,12 @@ func NewBondPipeline(denom, pool string) BondPipeline {
 	}
 }
 
-func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk, voter string) BondSnapshot {
+func NewBondSnapshot(denom, pool string, era uint32, chunk LinkChunk) BondSnapshot {
 	return BondSnapshot{
 		Denom:     denom,
 		Pool:      pool,
 		Era:       era,
 		Chunk:     chunk,
-		LastVoter: voter,
 		BondState: EraUpdated,
 	}
 }

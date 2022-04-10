@@ -3,7 +3,6 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	relayertypes "github.com/stafihub/stafihub/x/relayers/types"
 )
 
 type SudoKeeper interface {
@@ -33,7 +32,6 @@ type BankKeeper interface {
 
 type RelayerKeeper interface {
 	HasRelayer(ctx sdk.Context, arena, denom, address string) bool
-	LastVoter(ctx sdk.Context, arena, denom string) (val relayertypes.LastVoter, found bool)
 }
 
 type MintRewardKeeper interface {

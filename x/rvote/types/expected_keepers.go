@@ -12,5 +12,4 @@ type SudoKeeper interface {
 type RelayerKeeper interface {
 	HasRelayer(ctx sdk.Context, arena, denom, address string) bool
 	GetThreshold(ctx sdk.Context, arena, denom string) (relayertypes.Threshold, bool)
-	SetLastVoter(ctx sdk.Context, arena, denom, voter string)
 }

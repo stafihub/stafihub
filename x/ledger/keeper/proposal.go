@@ -14,12 +14,6 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 	if len(eraShot.ShotIds) != 0 {
 		return types.ErrEraNotContinuable
 	}
-
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
-	if !ok {
-		return types.ErrLastVoterNobody
-	}
-
 	ce, ok := k.GetChainEra(ctx, p.Denom)
 	if !ok {
 		ce = types.NewChainEra(p.Denom)
@@ -34,7 +28,7 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 	}
 	for _, addr := range bpool.Addrs {
 		pipe, _ := k.GetBondPipeline(ctx, p.Denom, addr)
-		bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk, p.Proposer)
+		bondShot := types.NewBondSnapshot(p.Denom, addr, p.Era, pipe.Chunk)
 		bshot, err := bondShot.Marshal()
 		if err != nil {
 			return err
@@ -50,7 +44,6 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 				sdk.NewAttribute(types.AttributeKeyLastEra, strconv.FormatUint(uint64(ce.Era), 10)),
 				sdk.NewAttribute(types.AttributeKeyCurrentEra, strconv.FormatUint(uint64(p.Era), 10)),
 				sdk.NewAttribute(types.AttributeKeyShotId, shotId),
-				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 			),
 		)
 	}
@@ -70,11 +63,6 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 
 	if shot.BondState != types.EraUpdated {
 		return types.ErrStateNotEraUpdated
-	}
-
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
-	if !ok {
-		return types.ErrLastVoterNobody
 	}
 
 	pipe, found := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
@@ -108,7 +96,6 @@ func (k Keeper) ProcessBondReportProposal(ctx sdk.Context, p *types.BondReportPr
 			types.EventTypeBondReported,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
 			sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
-			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 		),
 	)
 
@@ -123,11 +110,6 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 
 	if shot.BondState != types.BondReported {
 		return types.ErrStateNotBondReported
-	}
-
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
-	if !ok {
-		return types.ErrLastVoterNobody
 	}
 
 	protocolFeeReceiver, foundReceiver := k.GetProtocolFeeReceiver(ctx)
@@ -213,7 +195,6 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 				types.EventTypeActiveReported,
 				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
 				sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
-				sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 			),
 		)
 	} else {
@@ -233,11 +214,6 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 
 	if shot.BondState != types.ActiveReported && shot.BondState != types.WithdrawReported {
 		return types.ErrStateNotTransferable
-	}
-
-	lv, ok := k.relayerKeeper.LastVoter(ctx, p.ProposalRoute(), p.Denom)
-	if !ok {
-		return types.ErrLastVoterNobody
 	}
 
 	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
@@ -263,7 +239,6 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 			types.EventTypeTransferReported,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
 			sdk.NewAttribute(types.AttributeKeyShotId, p.ShotId),
-			sdk.NewAttribute(types.AttributeKeyLastVoter, lv.Voter),
 		),
 	)
 

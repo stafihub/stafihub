@@ -20232,8 +20232,6 @@ paths:
                         type: string
                       active:
                         type: string
-                  last_voter:
-                    type: string
                   bond_state:
                     type: string
                     enum:
@@ -36813,8 +36811,6 @@ definitions:
             type: string
           active:
             type: string
-      last_voter:
-        type: string
       bond_state:
         type: string
         enum:
@@ -37222,8 +37218,6 @@ definitions:
                 type: string
               active:
                 type: string
-          last_voter:
-            type: string
           bond_state:
             type: string
             enum:

@@ -20,7 +20,6 @@ const (
 	AttributeKeyLastEra      = "last_era"
 	AttributeKeyCurrentEra   = "current_era"
 	AttributeKeyShotId       = "shot_id"
-	AttributeKeyLastVoter    = "last_voter"
 	AttributeKeyBonder       = "bonder"
 	AttributeKeyUnbonder     = "unbonder"
 	AttributeKeyBlockhash    = "blockhash"

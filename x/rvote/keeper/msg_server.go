@@ -71,11 +71,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		k.SetProposal(ctx, prop)
 		return res, nil
 	}
-	// should not set admin to last voter
-	if !adminFlag {
-		k.relayerKeeper.SetLastVoter(ctx, arena, content.GetDenom(), msg.Proposer)
-	}
-
+	
 	rtr := k.Keeper.Router()
 	handler := rtr.GetRoute(prop.ProposalRoute())
 	cacheCtx, writeCache := ctx.CacheContext()

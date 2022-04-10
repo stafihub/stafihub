@@ -15,7 +15,6 @@ var (
 	ErrActiveAlreadySet             = sdkerrors.Register(ModuleName, 5, "active already set error")
 	ErrBondPipelineNotFound         = sdkerrors.Register(ModuleName, 6, "bond pipeline not found error")
 	ErrEraNotContinuable            = sdkerrors.Register(ModuleName, 7, "era not continuable error")
-	ErrLastVoterNobody              = sdkerrors.Register(ModuleName, 8, "last era nobody error")
 	ErrEraSkipped                   = sdkerrors.Register(ModuleName, 9, "era skipped error")
 	ErrNoProtocolFeeReceiver        = sdkerrors.Register(ModuleName, 10, "no protocol receiver error")
 	ErrSnapshotNotFound             = sdkerrors.Register(ModuleName, 11, "snapshot not found error")
