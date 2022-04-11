@@ -44,4 +44,5 @@ var (
 	ErrUnbondingDenomNotMatch       = sdkerrors.Register(ModuleName, 36, "unbondings denom not match error")
 	ErrAccountUnbondReachLimit      = sdkerrors.Register(ModuleName, 37, "account unbond reach limit error")
 	ErrLiquidityBondAlreadyExecuted = sdkerrors.Register(ModuleName, 38, "liquidity bond already executed")
+	ErrLiquidityUnbondSwitchOff     = sdkerrors.Register(ModuleName, 39, "liquidity unbond switch off error")
 )

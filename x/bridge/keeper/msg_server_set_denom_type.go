@@ -2,25 +2,23 @@ package keeper
 
 import (
 	"context"
-	"encoding/hex"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/bridge/types"
 	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-func (k msgServer) SetResourceidType(goCtx context.Context, msg *types.MsgSetResourceidType) (*types.MsgSetResourceidTypeResponse, error) {
+func (k msgServer) SetDenomType(goCtx context.Context, msg *types.MsgSetDenomType) (*types.MsgSetDenomTypeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	isAdmin := k.sudoKeeper.IsAdmin(ctx, msg.Creator)
 	if !isAdmin {
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
-	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
-	if err != nil {
-		return nil, types.ErrResourceIdFormatNotRight
+
+	resourceId, found := k.Keeper.GetResourceIdByDenom(ctx, msg.Denom)
+	if !found {
+		return nil, types.ErrResourceIdNotFound
 	}
-	var resourceId [32]byte
-	copy(resourceId[:], resourceIdSlice)
 
 	switch msg.IdType {
 	case "0":
@@ -31,5 +29,5 @@ func (k msgServer) SetResourceidType(goCtx context.Context, msg *types.MsgSetRes
 		return nil, types.ErrUnKnownResourceIdType
 	}
 
-	return &types.MsgSetResourceidTypeResponse{}, nil
+	return &types.MsgSetDenomTypeResponse{}, nil
 }

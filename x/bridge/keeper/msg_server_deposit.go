@@ -24,14 +24,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, types.ErrChainIdNotSupport
 	}
 
-	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
-	if err != nil {
-		return nil, types.ErrResourceIdFormatNotRight
-	}
-	var resourceId [32]byte
-	copy(resourceId[:], resourceIdSlice)
-
-	denom, found := k.Keeper.GetDenomByResourceId(ctx, resourceId)
+	resourceId, found := k.Keeper.GetResourceIdByDenom(ctx, msg.Denom)
 	if !found {
 		return nil, types.ErrResourceIdNotFound
 	}
@@ -54,12 +47,12 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	}
 
 	// lock or burn token
-	balance := k.bankKeeper.GetBalance(ctx, userAddress, denom)
+	balance := k.bankKeeper.GetBalance(ctx, userAddress, msg.Denom)
 	if balance.Amount.LT(msg.Amount) {
 		return nil, types.ErrBalanceNotEnough
 	}
 
-	shouldBurnedOrLockedCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))
+	shouldBurnedOrLockedCoins := sdk.NewCoins(sdk.NewCoin(msg.Denom, msg.Amount))
 	err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, shouldBurnedOrLockedCoins)
 	if err != nil {
 		return nil, err
@@ -81,7 +74,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		sdk.NewEvent(
 			types.EventTypeDeposit,
 			sdk.NewAttribute(types.AttributeKeyDestChainId, fmt.Sprintf("%d", chainId)),
-			sdk.NewAttribute(types.AttributeKeyResourceId, msg.ResourceId),
+			sdk.NewAttribute(types.AttributeKeyResourceId, hex.EncodeToString(resourceId[:])),
 			sdk.NewAttribute(types.AttributeKeyDepositNonce, fmt.Sprintf("%d", count)),
 			sdk.NewAttribute(types.AttributeKeyAmount, msg.Amount.String()),
 			sdk.NewAttribute(types.AttributeKeyReceiver, msg.Receiver),

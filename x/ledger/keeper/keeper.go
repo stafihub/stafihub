@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"encoding/binary"
 	"fmt"
 
@@ -229,4 +230,26 @@ func (k Keeper) CheckAddress(ctx sdk.Context, denom string, addresses ...string)
 		}
 	}
 	return nil
+}
+
+func (k Keeper) ToggleUnbondSwitch(ctx sdk.Context, denom string) {
+	k.SetUnbondSwitch(ctx, denom, !k.GetUnbondSwitch(ctx, denom))
+}
+
+func (k Keeper) SetUnbondSwitch(ctx sdk.Context, denom string, isOpen bool) {
+	store := ctx.KVStore(k.storeKey)
+	state := types.SwitchStateClose
+	if isOpen {
+		state = types.SwitchStateOpen
+	}
+	store.Set(types.UnbondSwitchStoreKey(denom), state)
+}
+
+func (k Keeper) GetUnbondSwitch(ctx sdk.Context, denom string) bool {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.UnbondSwitchStoreKey(denom))
+	if bts == nil {
+		return true
+	}
+	return bytes.Equal(bts, types.SwitchStateOpen)
 }

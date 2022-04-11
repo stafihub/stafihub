@@ -43,11 +43,17 @@ var (
 	RValidatorPrefix              = []byte{0x18}
 	TotalProtocolFeePrefix        = []byte{0x19}
 	RelayFeeReceiverPrefix        = []byte{0x1a}
+	UnbondSwitchPrefix            = []byte{0x1b}
 )
 
 const (
 	AccountMaxUnbondChunks = 32
 	AccountMinUnbondChunks = 16
+)
+
+var (
+	SwitchStateClose = []byte{0x00}
+	SwitchStateOpen  = []byte{0x01}
 )
 
 func KeyPrefix(p string) []byte {
@@ -64,4 +70,8 @@ func UnbondCommissionStoreKey(denom string) []byte {
 
 func RelayFeeReceiverStorekey(denom string) []byte {
 	return append(RelayFeeReceiverPrefix, []byte(denom)...)
+}
+
+func UnbondSwitchStoreKey(denom string) []byte {
+	return append(UnbondSwitchPrefix, []byte(denom)...)
 }

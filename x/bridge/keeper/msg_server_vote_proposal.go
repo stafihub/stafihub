@@ -40,6 +40,10 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 
 	chainId := uint8(msg.ChainId)
 	chainIdStr := fmt.Sprintf("%d", chainId)
+
+	if !k.Keeper.HasChainId(ctx, chainId) {
+		return nil, types.ErrChainIdNotSupport
+	}
 	hasRelayer := k.Keeper.relayersKeeper.HasRelayer(ctx, types.ModuleName, chainIdStr, msg.Creator)
 	if !hasRelayer {
 		return nil, types.ErrRelayerNotExist

@@ -131,6 +131,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/relay_fee_receiver/{denom}";
 	}
 
+// Queries a list of UnbondSwitch items.
+	rpc UnbondSwitch(QueryUnbondSwitchRequest) returns (QueryUnbondSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/unbond_switch/{denom}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -335,6 +340,14 @@ message QueryRelayFeeReceiverRequest {
 
 message QueryRelayFeeReceiverResponse {
 	string receiver = 1;
+}
+
+message QueryUnbondSwitchRequest {
+  string denom = 1;
+}
+
+message QueryUnbondSwitchResponse {
+  bool isOpen = 1;
 }
 
 // this line is used by starport scaffolding # 3

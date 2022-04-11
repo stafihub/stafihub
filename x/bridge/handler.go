@@ -26,8 +26,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgAddChainId:
 			res, err := msgServer.AddChainId(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetResourceidType:
-			res, err := msgServer.SetResourceidType(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetDenomType:
+			res, err := msgServer.SetDenomType(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgVoteProposal:
 			res, err := msgServer.VoteProposal(sdk.WrapSDKContext(ctx), msg)

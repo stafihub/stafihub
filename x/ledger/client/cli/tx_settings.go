@@ -291,8 +291,16 @@ func CmdSetRParams() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argGasPrice := args[1]
-			argEraSeconds := args[2]
-			argOffset := args[3]
+			argEraSeconds, err := strconv.ParseUint(args[2], 10, 32)
+			if err != nil {
+				return err
+			}
+
+			argOffset, err := strconv.ParseInt(args[3], 10, 32)
+			if err != nil {
+				return err
+			}
+
 			argBondingDuration, err := strconv.ParseUint(args[4], 10, 32)
 			if err != nil {
 				return err
@@ -309,8 +317,8 @@ func CmdSetRParams() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argDenom,
 				argGasPrice,
-				argEraSeconds,
-				argOffset,
+				uint32(argEraSeconds),
+				int32(argOffset),
 				uint32(argBondingDuration),
 				argLeastBond,
 				argValidators,

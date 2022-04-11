@@ -12,7 +12,7 @@ service Msg {
   rpc SetResourceidToDenom(MsgSetResourceidToDenom) returns (MsgSetResourceidToDenomResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc AddChainId(MsgAddChainId) returns (MsgAddChainIdResponse);
-  rpc SetResourceidType(MsgSetResourceidType) returns (MsgSetResourceidTypeResponse);
+  rpc SetDenomType(MsgSetDenomType) returns (MsgSetDenomTypeResponse);
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
   rpc RmChainId(MsgRmChainId) returns (MsgRmChainIdResponse);
   rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
@@ -33,7 +33,7 @@ message MsgSetResourceidToDenomResponse {
 message MsgDeposit {
   string creator = 1;
   uint32 destChainId = 2;
-  string resourceId = 3;
+  string denom = 3;
   string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string receiver = 5;
 }
@@ -49,13 +49,13 @@ message MsgAddChainId {
 message MsgAddChainIdResponse {
 }
 
-message MsgSetResourceidType {
+message MsgSetDenomType {
   string creator = 1;
-  string resourceId = 2;
+  string denom = 2;
   string idType = 3;
 }
 
-message MsgSetResourceidTypeResponse {
+message MsgSetDenomTypeResponse {
 }
 
 message MsgVoteProposal {

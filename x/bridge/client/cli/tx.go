@@ -33,7 +33,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSetResourceidToDenom())
 	cmd.AddCommand(CmdDeposit())
 	cmd.AddCommand(CmdAddChainId())
-	cmd.AddCommand(CmdSetResourceidType())
+	cmd.AddCommand(CmdSetDenomType())
 	cmd.AddCommand(CmdVoteProposal())
 	cmd.AddCommand(CmdRmChainId())
 	cmd.AddCommand(CmdSetRelayFeeReceiver())

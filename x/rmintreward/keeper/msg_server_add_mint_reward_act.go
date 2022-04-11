@@ -26,7 +26,7 @@ func (k msgServer) AddMintRewardAct(goCtx context.Context, msg *types.MsgAddMint
 	if msg.Act.Begin >= msg.Act.End {
 		return nil, types.ErrActEndBlockTooSamll
 	}
-	
+
 	willUseTokenRewardInfos := make([]*types.TokenRewardInfo, 0)
 	for _, rewardInfo := range msg.Act.TokenRewardInfos {
 		if rewardInfo.TotalRewardAmount.LTE(sdk.ZeroInt()) {

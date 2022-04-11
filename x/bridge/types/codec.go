@@ -11,7 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetResourceidToDenom{}, "bridge/SetResourceidToDenom", nil)
 	cdc.RegisterConcrete(&MsgDeposit{}, "bridge/Deposit", nil)
 	cdc.RegisterConcrete(&MsgAddChainId{}, "bridge/AddChainId", nil)
-	cdc.RegisterConcrete(&MsgSetResourceidType{}, "bridge/SetResourceidType", nil)
+	cdc.RegisterConcrete(&MsgSetDenomType{}, "bridge/SetDenomType", nil)
 	cdc.RegisterConcrete(&MsgVoteProposal{}, "bridge/VoteProposal", nil)
 	cdc.RegisterConcrete(&MsgRmChainId{}, "bridge/RmChainId", nil)
 	cdc.RegisterConcrete(&MsgSetRelayFeeReceiver{}, "bridge/SetRelayFeeReceiver", nil)
@@ -30,7 +30,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgAddChainId{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgSetResourceidType{},
+		&MsgSetDenomType{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgVoteProposal{},

@@ -114,6 +114,24 @@ func (k Keeper) GetDenomByResourceId(ctx sdk.Context, resourceId [32]byte) (stri
 	return string(bts), true
 }
 
+func (k Keeper) GetResourceIdByDenom(ctx sdk.Context, denom string) ([32]byte, bool) {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdToDenomStoreKeyPrefix)
+	defer iterator.Close()
+
+	resourceId := [32]byte{}
+	for ; iterator.Valid(); iterator.Next() {
+		if len(iterator.Key()) != 33 {
+			continue
+		}
+		if string(iterator.Value()) == denom {
+			copy(resourceId[:], iterator.Key()[1:33])
+			return resourceId, true
+		}
+	}
+	return resourceId, false
+}
+
 func (k Keeper) GetAllResourceIdToDenom(ctx sdk.Context) []string {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdToDenomStoreKeyPrefix)

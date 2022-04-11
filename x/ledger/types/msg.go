@@ -390,7 +390,7 @@ func (msg *MsgSubmitSignature) ValidateBasic() error {
 
 const TypeMsgSetRParams = "set_r_params"
 
-func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds string, offset string, bondingDuration uint32, leastBond string, validators []string) *MsgSetRParams {
+func NewMsgSetRParams(creator string, denom string, gasPrice string, eraSeconds uint32, offset int32, bondingDuration uint32, leastBond string, validators []string) *MsgSetRParams {
 	return &MsgSetRParams{
 		Creator:         creator,
 		Denom:           denom,
@@ -428,6 +428,9 @@ func (msg *MsgSetRParams) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if msg.EraSeconds == 0 {
+		return fmt.Errorf("eraSeconds cannot be zero")
 	}
 	return nil
 }

@@ -20238,8 +20238,7 @@ paths:
                       - ERA_UPDATED
                       - BOND_REPORTED
                       - ACTIVE_REPORTED
-                      - WITHDRAW_SKIPPED
-                      - WITHDRAW_REPORTED
+                      - TRANSFER_SKIPPED
                       - TRANSFER_REPORTED
                     default: ERA_UPDATED
         default:
@@ -20443,9 +20442,11 @@ paths:
                   gasPrice:
                     type: string
                   eraSeconds:
-                    type: string
+                    type: integer
+                    format: int64
                   offset:
-                    type: string
+                    type: integer
+                    format: int32
                   bondingDuration:
                     type: integer
                     format: int64
@@ -20586,6 +20587,43 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      tags:
+        - Query
+  '/stafihub/stafihub/ledger/unbond_switch/{denom}':
+    get:
+      summary: Queries a list of UnbondSwitch items.
+      operationId: StafihubStafihubLedgerUnbondSwitch
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              isOpen:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
       tags:
         - Query
   '/stafihub/stafihub/rbank/address_prefix/{denom}':
@@ -36639,13 +36677,13 @@ definitions:
     type: object
   stafihub.stafihub.bridge.MsgRmChainIdResponse:
     type: object
+  stafihub.stafihub.bridge.MsgSetDenomTypeResponse:
+    type: object
   stafihub.stafihub.bridge.MsgSetRelayFeeReceiverResponse:
     type: object
   stafihub.stafihub.bridge.MsgSetRelayFeeResponse:
     type: object
   stafihub.stafihub.bridge.MsgSetResourceidToDenomResponse:
-    type: object
-  stafihub.stafihub.bridge.MsgSetResourceidTypeResponse:
     type: object
   stafihub.stafihub.bridge.MsgVoteProposalResponse:
     type: object
@@ -36817,8 +36855,7 @@ definitions:
           - ERA_UPDATED
           - BOND_REPORTED
           - ACTIVE_REPORTED
-          - WITHDRAW_SKIPPED
-          - WITHDRAW_REPORTED
+          - TRANSFER_SKIPPED
           - TRANSFER_REPORTED
         default: ERA_UPDATED
   stafihub.stafihub.ledger.EraExchangeRate:
@@ -36891,6 +36928,8 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSubmitSignatureResponse:
     type: object
+  stafihub.stafihub.ledger.MsgToggleUnbondSwitchResponse:
+    type: object
   stafihub.stafihub.ledger.OriginalTxType:
     type: string
     enum:
@@ -36907,8 +36946,7 @@ definitions:
       - ERA_UPDATED
       - BOND_REPORTED
       - ACTIVE_REPORTED
-      - WITHDRAW_SKIPPED
-      - WITHDRAW_REPORTED
+      - TRANSFER_SKIPPED
       - TRANSFER_REPORTED
     default: ERA_UPDATED
   stafihub.stafihub.ledger.PoolDetail:
@@ -37155,9 +37193,11 @@ definitions:
           gasPrice:
             type: string
           eraSeconds:
-            type: string
+            type: integer
+            format: int64
           offset:
-            type: string
+            type: integer
+            format: int32
           bondingDuration:
             type: integer
             format: int64
@@ -37224,8 +37264,7 @@ definitions:
               - ERA_UPDATED
               - BOND_REPORTED
               - ACTIVE_REPORTED
-              - WITHDRAW_SKIPPED
-              - WITHDRAW_REPORTED
+              - TRANSFER_SKIPPED
               - TRANSFER_REPORTED
             default: ERA_UPDATED
   stafihub.stafihub.ledger.QueryGetStakingRewardCommissionResponse:
@@ -37270,6 +37309,11 @@ definitions:
               type: string
             value:
               type: string
+  stafihub.stafihub.ledger.QueryUnbondSwitchResponse:
+    type: object
+    properties:
+      isOpen:
+        type: boolean
   stafihub.stafihub.ledger.RParams:
     type: object
     properties:
@@ -37278,9 +37322,11 @@ definitions:
       gasPrice:
         type: string
       eraSeconds:
-        type: string
+        type: integer
+        format: int64
       offset:
-        type: string
+        type: integer
+        format: int32
       bondingDuration:
         type: integer
         format: int64

@@ -26,6 +26,7 @@ service Msg {
   rpc RmBondedPool(MsgRmBondedPool) returns (MsgRmBondedPoolResponse);
   rpc MigrateInit(MsgMigrateInit) returns (MsgMigrateInitResponse);
   rpc MigrateUnbondings(MsgMigrateUnbondings) returns (MsgMigrateUnbondingsResponse);
+  rpc ToggleUnbondSwitch(MsgToggleUnbondSwitch) returns (MsgToggleUnbondSwitchResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -128,8 +129,8 @@ message MsgSetRParams {
   string creator = 1;
   string denom = 2;
   string gasPrice = 3;
-  string eraSeconds = 4;
-  string offset = 5;
+  uint32 eraSeconds = 4;
+  int32 offset = 5;
   uint32 bondingDuration = 6;
   string leastBond = 7;
   repeated string validators = 8;
@@ -159,9 +160,9 @@ message MsgSetRelayGasPriceResponse {
 message MsgSetEraSeconds {
   string creator = 1;
   string denom = 2;
-  string eraSeconds = 3;
+  uint32 eraSeconds = 3;
   uint32 bondingDuration = 4;
-  string offset = 5;
+  int32 offset = 5;
 }
 
 message MsgSetEraSecondsResponse {
@@ -198,6 +199,14 @@ message MsgMigrateUnbondings {
 }
 
 message MsgMigrateUnbondingsResponse {
+}
+
+message MsgToggleUnbondSwitch {
+  string creator = 1;
+  string denom = 2;
+}
+
+message MsgToggleUnbondSwitchResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

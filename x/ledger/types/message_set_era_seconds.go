@@ -1,6 +1,8 @@
 package types
 
 import (
+	fmt "fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -9,7 +11,7 @@ const TypeMsgSetEraSeconds = "set_era_seconds"
 
 var _ sdk.Msg = &MsgSetEraSeconds{}
 
-func NewMsgSetEraSeconds(creator string, denom string, eraSeconds string, bondingDuration uint32, offset string) *MsgSetEraSeconds {
+func NewMsgSetEraSeconds(creator string, denom string, eraSeconds uint32, bondingDuration uint32, offset int32) *MsgSetEraSeconds {
 	return &MsgSetEraSeconds{
 		Creator:         creator,
 		Denom:           denom,
@@ -44,6 +46,9 @@ func (msg *MsgSetEraSeconds) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if msg.EraSeconds == 0 {
+		return fmt.Errorf("eraSeconds cannot be zero")
 	}
 	return nil
 }

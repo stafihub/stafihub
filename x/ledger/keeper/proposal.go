@@ -198,7 +198,7 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 			),
 		)
 	} else {
-		shot.UpdateState(types.WithdrawSkipped)
+		shot.UpdateState(types.TransferSkipped)
 		k.SetCurrentEraSnapshot(ctx, newCurrentEraShots)
 	}
 	k.SetSnapshot(ctx, p.ShotId, shot)
@@ -212,7 +212,7 @@ func (k Keeper) ProcessTransferReportProposal(ctx sdk.Context, p *types.Transfer
 		return types.ErrSnapshotNotFound
 	}
 
-	if shot.BondState != types.ActiveReported && shot.BondState != types.WithdrawReported {
+	if shot.BondState != types.ActiveReported {
 		return types.ErrStateNotTransferable
 	}
 

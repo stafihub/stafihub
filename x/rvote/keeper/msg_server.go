@@ -71,7 +71,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		k.SetProposal(ctx, prop)
 		return res, nil
 	}
-	
+
 	rtr := k.Keeper.Router()
 	handler := rtr.GetRoute(prop.ProposalRoute())
 	cacheCtx, writeCache := ctx.CacheContext()

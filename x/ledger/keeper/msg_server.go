@@ -29,6 +29,9 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	if err != nil {
 		return nil, err
 	}
+	if !k.GetUnbondSwitch(ctx, denom) {
+		return nil, types.ErrLiquidityUnbondSwitchOff
+	}
 
 	ce, ok := k.Keeper.GetChainEra(ctx, denom)
 	if !ok {

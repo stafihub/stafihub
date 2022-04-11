@@ -71,9 +71,8 @@ enum PoolBondState {
     ERA_UPDATED = 0 [(gogoproto.enumvalue_customname) = "EraUpdated"];
     BOND_REPORTED = 1 [(gogoproto.enumvalue_customname) = "BondReported"];
     ACTIVE_REPORTED = 2 [(gogoproto.enumvalue_customname) = "ActiveReported"];
-    WITHDRAW_SKIPPED = 3 [(gogoproto.enumvalue_customname) = "WithdrawSkipped"];
-    WITHDRAW_REPORTED = 4 [(gogoproto.enumvalue_customname) = "WithdrawReported"];
-    TRANSFER_REPORTED = 5 [(gogoproto.enumvalue_customname) = "TransferReported"];
+    TRANSFER_SKIPPED = 3 [(gogoproto.enumvalue_customname) = "TransferSkipped"];
+    TRANSFER_REPORTED = 4 [(gogoproto.enumvalue_customname) = "TransferReported"];
 }
 
 enum BondAction {
@@ -170,8 +169,8 @@ enum OriginalTxType {
 message RParams {
     string denom = 1;
     string gasPrice = 2;
-    string eraSeconds = 3;
-    string offset = 4;
+    uint32 eraSeconds = 3;
+    int32 offset = 4;
     uint32 bondingDuration = 5;
     string leastBond = 6;
     repeated string validators = 7;

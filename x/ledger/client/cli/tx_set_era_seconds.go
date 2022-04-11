@@ -19,12 +19,18 @@ func CmdSetEraSeconds() *cobra.Command {
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argEraSeconds := args[1]
+			argEraSeconds, err := strconv.ParseUint(args[1], 10, 32)
+			if err != nil {
+				return err
+			}
 			argBondingDuration, err := strconv.ParseUint(args[2], 10, 32)
 			if err != nil {
 				return err
 			}
-			argOffset := args[3]
+			argOffset, err := strconv.ParseInt(args[3], 10, 32)
+			if err != nil {
+				return err
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -34,9 +40,9 @@ func CmdSetEraSeconds() *cobra.Command {
 			msg := types.NewMsgSetEraSeconds(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
-				argEraSeconds,
+				uint32(argEraSeconds),
 				uint32(argBondingDuration),
-				argOffset,
+				int32(argOffset),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

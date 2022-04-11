@@ -102,7 +102,7 @@ func (bss *BondSnapshot) UpdateState(state PoolBondState) {
 }
 
 func (bss BondSnapshot) Continuable() bool {
-	return bss.BondState == WithdrawSkipped || bss.BondState == TransferReported
+	return bss.BondState == TransferSkipped || bss.BondState == TransferReported
 }
 
 func SdkNewInt() sdk.Int {
