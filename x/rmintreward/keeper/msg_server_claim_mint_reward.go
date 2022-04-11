@@ -24,8 +24,9 @@ func (k msgServer) ClaimMintReward(goCtx context.Context, msg *types.MsgClaimMin
 	if !found {
 		return nil, types.ErrMintRewardActNotExist
 	}
-	finalBlock := claimInfo.MintBLock + act.LockedBlocks
+	finalBlock := claimInfo.MintBlock + act.LockedBlocks
 
+	shouldClaimCoins := sdk.Coins{}
 	for _, tokenClaimInfo := range claimInfo.TokenClaimInfos {
 		leftClaimAmount := tokenClaimInfo.TotalRewardAmount.Sub(tokenClaimInfo.TotalClaimedAmount)
 		if leftClaimAmount.LTE(sdk.ZeroInt()) {
@@ -39,14 +40,18 @@ func (k msgServer) ClaimMintReward(goCtx context.Context, msg *types.MsgClaimMin
 			shouldClaimAmount = leftClaimAmount.Mul(sdk.NewInt(int64(duBlocks))).Quo(sdk.NewInt(int64(lockedDuBlocks)))
 		}
 		if shouldClaimAmount.GT(sdk.ZeroInt()) {
-			if err := k.bankKeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, user, sdk.NewCoins(sdk.NewCoin(tokenClaimInfo.Denom, shouldClaimAmount))); err != nil {
-				return nil, err
-			}
+			shouldClaimCoins = shouldClaimCoins.Add(sdk.NewCoin(tokenClaimInfo.Denom, shouldClaimAmount))
 			tokenClaimInfo.TotalClaimedAmount = tokenClaimInfo.TotalClaimedAmount.Add(shouldClaimAmount)
 		}
 	}
-	claimInfo.LatestClaimedBlock = now
+	if shouldClaimCoins.Empty() {
+		return nil, types.ErrNoRewardToClaim
+	}
 
+	claimInfo.LatestClaimedBlock = now
+	if err := k.bankKeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, user, shouldClaimCoins); err != nil {
+		return nil, err
+	}
 	k.Keeper.SetUserClaimInfo(ctx, user, msg.Denom, msg.Cycle, msg.MintIndex, claimInfo)
 
 	return &types.MsgClaimMintRewardResponse{}, nil

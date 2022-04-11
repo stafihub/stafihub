@@ -26,6 +26,8 @@ func (k msgServer) AddMintRewardAct(goCtx context.Context, msg *types.MsgAddMint
 	if msg.Act.Begin >= msg.Act.End {
 		return nil, types.ErrActEndBlockTooSamll
 	}
+	
+	willUseTokenRewardInfos := make([]*types.TokenRewardInfo, 0)
 	for _, rewardInfo := range msg.Act.TokenRewardInfos {
 		if rewardInfo.TotalRewardAmount.LTE(sdk.ZeroInt()) {
 			return nil, types.ErrActTotalRewardTooSmall
@@ -36,6 +38,15 @@ func (k msgServer) AddMintRewardAct(goCtx context.Context, msg *types.MsgAddMint
 		if rewardInfo.RewardRate.LTE(sdk.ZeroDec()) {
 			return nil, types.ErrActRewardRateTooSmall
 		}
+
+		willUseTokenRewardInfos = append(willUseTokenRewardInfos, &types.TokenRewardInfo{
+			Denom:             rewardInfo.Denom,
+			RewardRate:        rewardInfo.RewardRate,
+			TotalRewardAmount: rewardInfo.TotalRewardAmount,
+			LeftAmount:        rewardInfo.TotalRewardAmount,
+			UserLimit:         rewardInfo.UserLimit,
+		})
+
 	}
 	if msg.Act.LockedBlocks <= 0 {
 		return nil, types.ErrActLockedBlocksTooSmall
@@ -56,9 +67,17 @@ func (k msgServer) AddMintRewardAct(goCtx context.Context, msg *types.MsgAddMint
 		willUseCycle = latestCycle + 1
 	}
 
-	k.Keeper.SetMintRewardAct(ctx, msg.Denom, willUseCycle, msg.Act)
+	willUseAct := types.MintRewardAct{
+		Begin:                  msg.Act.Begin,
+		End:                    msg.Act.End,
+		LockedBlocks:           msg.Act.LockedBlocks,
+		TotalRTokenAmount:      sdk.ZeroInt(),
+		TotalNativeTokenAmount: sdk.ZeroInt(),
+		TokenRewardInfos:       willUseTokenRewardInfos,
+	}
+
+	k.Keeper.SetMintRewardAct(ctx, msg.Denom, willUseCycle, &willUseAct)
 	k.Keeper.SetActLatestCycle(ctx, msg.Denom, willUseCycle)
-	k.Keeper.AddActDenom(ctx, msg.Denom)
 
 	return &types.MsgAddMintRewardActResponse{}, nil
 }

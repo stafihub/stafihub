@@ -25,7 +25,6 @@ var (
 	UserClaimInofStoreKeyPrefix   = []byte{0x03}
 	UserActsStoreKeyPrefix        = []byte{0x04}
 	UserMintCountStoreKeyPrefix   = []byte{0x05}
-	ActDenomsStoreKeyPrefix       = []byte{0x06}
 	ActCurrentCycleStoreKeyPrefix = []byte{0x07}
 )
 
@@ -78,8 +77,4 @@ func UserMintCountStoreKey(account sdk.AccAddress, denom string, cycle uint64) [
 	copy(key[prefixLen+accountLen:], []byte(denom))
 	copy(key[prefixLen+accountLen+denomLen:], sdk.Uint64ToBigEndian(cycle))
 	return key
-}
-
-func ActDenomsStoreKey(denom string) []byte {
-	return append(ActDenomsStoreKeyPrefix, []byte(denom)...)
 }

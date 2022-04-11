@@ -16,7 +16,7 @@ func (k Keeper) ActCurrentCycle(goCtx context.Context, req *types.QueryActCurren
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	currentCycle, found := k.GetActCurrenttCycle(ctx, req.Denom)
+	currentCycle, found := k.GetActCurrentCycle(ctx, req.Denom)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}

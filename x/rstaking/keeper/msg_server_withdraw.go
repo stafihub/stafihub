@@ -6,10 +6,15 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stafihub/stafihub/x/rstaking/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*types.MsgWithdrawResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	isAdmin := k.sudoKeeper.IsAdmin(ctx, msg.Creator)
+	if !isAdmin {
+		return nil, sudotypes.ErrCreatorNotAdmin
+	}
 
 	moduleAddress := authTypes.NewModuleAddress(types.ModuleName)
 	balance := k.bankKeeper.GetBalance(ctx, moduleAddress, msg.Amount.Denom)

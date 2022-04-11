@@ -5,50 +5,42 @@ import (
 	"github.com/stafihub/stafihub/x/rmintreward/types"
 )
 
-func (k Keeper) UpdateActLatestCycle(ctx sdk.Context) {
+func (k Keeper) UpdateActLatestCycle(ctx sdk.Context, denom string) {
 	now := ctx.BlockHeight()
-	denoms := k.GetActDenoms(ctx)
-	for _, denom := range denoms {
-		latestCycle, found := k.GetActLatestCycle(ctx, denom)
+	latestCycle, found := k.GetActLatestCycle(ctx, denom)
+	if !found {
+		return
+	}
+
+	lastCurrentCycle, foundCur := k.GetActCurrentCycle(ctx, denom)
+	if foundCur && lastCurrentCycle == latestCycle {
+		return
+	}
+
+	begin := lastCurrentCycle + 1
+	if !foundCur {
+		begin = 0
+	}
+	for i := begin; i <= latestCycle; i++ {
+		act, found := k.GetMintRewardAct(ctx, denom, i)
 		if !found {
 			continue
 		}
-
-		lastCurrentCycle, foundCur := k.GetActCurrenttCycle(ctx, denom)
-		if foundCur && lastCurrentCycle == latestCycle {
-			continue
+		if now < act.Begin {
+			break
 		}
-
-		begin := lastCurrentCycle + 1
-		if !foundCur {
-			begin = 0
+		if act.Begin <= now && act.End >= now {
+			k.SetActCurrentCycle(ctx, denom, i)
+			break
 		}
-		for i := begin; i <= latestCycle; i++ {
-			act, found := k.GetMintRewardAct(ctx, denom, i)
-			if !found {
-				continue
-			}
-			if now < act.Begin {
-				break
-			}
-			if act.Begin <= now && act.End >= now {
-				if foundCur {
-					if i != lastCurrentCycle {
-						k.SetActCurrentCycle(ctx, denom, i)
-					}
-				} else {
-					k.SetActCurrentCycle(ctx, denom, i)
-				}
-
-				break
-			}
-		}
-
 	}
+
 }
 
 func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom string, mintRTokenAmount, nativeTokenAmount sdk.Int) {
-	currentCycle, found := k.GetActCurrenttCycle(ctx, denom)
+	k.UpdateActLatestCycle(ctx, denom)
+
+	currentCycle, found := k.GetActCurrentCycle(ctx, denom)
 	if !found {
 		return
 	}
@@ -65,7 +57,7 @@ func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom 
 	userClaimInfo := types.UserClaimInfo{
 		MintRTokenAmount:   mintRTokenAmount,
 		NativeTokenAmount:  nativeTokenAmount,
-		MintBLock:          now,
+		MintBlock:          now,
 		LatestClaimedBlock: now,
 		TokenClaimInfos:    []*types.TokenClaimInfo{},
 	}
@@ -74,7 +66,7 @@ func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom 
 		if rewardInfo.LeftAmount.LTE(sdk.ZeroInt()) {
 			continue
 		}
-		shouldRewardAmount := rewardInfo.RewardRate.MulInt(mintRTokenAmount).RoundInt()
+		shouldRewardAmount := rewardInfo.RewardRate.MulInt(nativeTokenAmount).RoundInt()
 
 		if shouldRewardAmount.GT(rewardInfo.LeftAmount) {
 			shouldRewardAmount = rewardInfo.LeftAmount
@@ -94,22 +86,26 @@ func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom 
 	act.TotalRTokenAmount = act.TotalRTokenAmount.Add(mintRTokenAmount)
 	act.TotalNativeTokenAmount = act.TotalNativeTokenAmount.Add(nativeTokenAmount)
 
-	count, found := k.GetUserMintCount(ctx, user, denom, currentCycle)
-	if !found {
-		count = 0
-	}
-
-	userAct, found := k.GetUserActs(ctx, user, denom)
-	if !found {
-		userAct = &types.Acts{
-			Acts: []uint64{},
+	if len(userClaimInfo.TokenClaimInfos) != 0 {
+		count, found := k.GetUserMintCount(ctx, user, denom, currentCycle)
+		if !found {
+			count = 0
 		}
-	}
-	userAct.Acts = append(userAct.Acts, currentCycle)
 
-	k.SetUserActs(ctx, user, denom, userAct)
-	k.SetUserClaimInfo(ctx, user, denom, currentCycle, count, &userClaimInfo)
-	k.SetUserMintCount(ctx, user, denom, currentCycle, count+1)
+		userAct, found := k.GetUserActs(ctx, user, denom)
+		if !found {
+			userAct = &types.Acts{
+				Acts: []uint64{},
+			}
+		}
+		userAct.Acts = append(userAct.Acts, currentCycle)
+
+		k.SetUserActs(ctx, user, denom, userAct)
+		k.SetUserClaimInfo(ctx, user, denom, currentCycle, count, &userClaimInfo)
+		k.SetUserMintCount(ctx, user, denom, currentCycle, count+1)
+	}
+
+	// update act
 	k.SetMintRewardAct(ctx, denom, currentCycle, act)
 
 }

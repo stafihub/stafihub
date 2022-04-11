@@ -19,7 +19,7 @@ service Msg {
 message MsgAddMintRewardAct {
   string creator = 1;
   string denom = 2;
-  MintRewardAct act = 3;
+  MintRewardActPost act = 3;
 }
 
 message MsgAddMintRewardActResponse {
@@ -29,7 +29,7 @@ message MsgUpdateMintRewardAct {
   string creator = 1;
   string denom = 2;
   uint64 cycle = 3;
-  MintRewardAct act = 4;
+  MintRewardActPost act = 4;
 }
 
 message MsgUpdateMintRewardActResponse {

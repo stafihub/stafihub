@@ -9,7 +9,7 @@ const TypeMsgUpdateMintRewardAct = "update_mint_reward_act"
 
 var _ sdk.Msg = &MsgUpdateMintRewardAct{}
 
-func NewMsgUpdateMintRewardAct(creator string, denom string, cycle uint64, act *MintRewardAct) *MsgUpdateMintRewardAct {
+func NewMsgUpdateMintRewardAct(creator string, denom string, cycle uint64, act *MintRewardActPost) *MsgUpdateMintRewardAct {
 	return &MsgUpdateMintRewardAct{
 		Creator: creator,
 		Denom:   denom,

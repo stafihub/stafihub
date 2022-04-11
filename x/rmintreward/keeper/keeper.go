@@ -70,7 +70,7 @@ func (k Keeper) SetActCurrentCycle(ctx sdk.Context, denom string, cycle uint64) 
 	store.Set(types.ActCurrentCycleStoreKey(denom), sdk.Uint64ToBigEndian(cycle))
 }
 
-func (k Keeper) GetActCurrenttCycle(ctx sdk.Context, denom string) (uint64, bool) {
+func (k Keeper) GetActCurrentCycle(ctx sdk.Context, denom string) (uint64, bool) {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.ActCurrentCycleStoreKey(denom))
 	if bts == nil {
@@ -139,22 +139,4 @@ func (k Keeper) GetUserMintCount(ctx sdk.Context, account sdk.AccAddress, denom 
 		return 0, false
 	}
 	return sdk.BigEndianToUint64(bts), true
-}
-
-func (k Keeper) AddActDenom(ctx sdk.Context, denom string) {
-	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ActDenomsStoreKey(denom), []byte{})
-}
-
-func (k Keeper) GetActDenoms(ctx sdk.Context) []string {
-	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, types.ActDenomsStoreKeyPrefix)
-	defer iterator.Close()
-
-	denoms := []string{}
-	for ; iterator.Valid(); iterator.Next() {
-		key := iterator.Key()
-		denoms = append(denoms, string(key[len(types.ActDenomsStoreKeyPrefix):]))
-	}
-	return denoms
 }

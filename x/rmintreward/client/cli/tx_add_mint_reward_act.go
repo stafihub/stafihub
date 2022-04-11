@@ -10,7 +10,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rmintreward/types"
@@ -58,10 +57,6 @@ Where act.json could be like this:
 				return err
 			}
 
-			if !act.TotalRTokenAmount.Equal(sdk.ZeroInt()) || !act.TotalNativeTokenAmount.Equal(sdk.ZeroInt()) {
-				return fmt.Errorf("totalRTokenAmount and totalNativeTokenAmount must be zero")
-			}
-
 			msg := types.NewMsgAddMintRewardAct(
 				clientCtx.GetFromAddress().String(),
 				denom,
@@ -79,8 +74,8 @@ Where act.json could be like this:
 	return cmd
 }
 
-func parseAct(path string) (*types.MintRewardAct, error) {
-	act := types.MintRewardAct{}
+func parseAct(path string) (*types.MintRewardActPost, error) {
+	act := types.MintRewardActPost{}
 	if path == "" {
 		return nil, fmt.Errorf("act json file path not give")
 	}

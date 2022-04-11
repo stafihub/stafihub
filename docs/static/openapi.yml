@@ -20910,7 +20910,7 @@ paths:
                     type: string
                   nativeTokenAmount:
                     type: string
-                  mintBLock:
+                  mintBlock:
                     type: string
                     format: int64
                   latestClaimedBlock:
@@ -37520,6 +37520,31 @@ definitions:
               type: string
             userLimit:
               type: string
+  stafihub.stafihub.rmintreward.MintRewardActPost:
+    type: object
+    properties:
+      begin:
+        type: string
+        format: int64
+      end:
+        type: string
+        format: int64
+      lockedBlocks:
+        type: string
+        format: int64
+      tokenRewardInfos:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            rewardRate:
+              type: string
+            totalRewardAmount:
+              type: string
+            userLimit:
+              type: string
   stafihub.stafihub.rmintreward.MsgAddMintRewardActResponse:
     type: object
   stafihub.stafihub.rmintreward.MsgClaimMintRewardResponse:
@@ -37587,7 +37612,7 @@ definitions:
             type: string
           nativeTokenAmount:
             type: string
-          mintBLock:
+          mintBlock:
             type: string
             format: int64
           latestClaimedBlock:
@@ -37650,6 +37675,17 @@ definitions:
         type: string
       userLimit:
         type: string
+  stafihub.stafihub.rmintreward.TokenRewardInfoPost:
+    type: object
+    properties:
+      denom:
+        type: string
+      rewardRate:
+        type: string
+      totalRewardAmount:
+        type: string
+      userLimit:
+        type: string
   stafihub.stafihub.rmintreward.UserClaimInfo:
     type: object
     properties:
@@ -37657,7 +37693,7 @@ definitions:
         type: string
       nativeTokenAmount:
         type: string
-      mintBLock:
+      mintBlock:
         type: string
         format: int64
       latestClaimedBlock:

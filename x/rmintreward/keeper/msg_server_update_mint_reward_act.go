@@ -34,6 +34,7 @@ func (k msgServer) UpdateMintRewardAct(goCtx context.Context, msg *types.MsgUpda
 	if msg.Act.LockedBlocks <= 0 {
 		return nil, types.ErrActLockedBlocksTooSmall
 	}
+	willUseTokenRewardInfos := make([]*types.TokenRewardInfo, 0)
 	for _, rewardInfo := range msg.Act.TokenRewardInfos {
 		if rewardInfo.TotalRewardAmount.LTE(sdk.ZeroInt()) {
 			return nil, types.ErrActTotalRewardTooSmall
@@ -45,22 +46,40 @@ func (k msgServer) UpdateMintRewardAct(goCtx context.Context, msg *types.MsgUpda
 			return nil, types.ErrActRewardRateTooSmall
 		}
 
+		willUseLeftAmount := sdk.ZeroInt()
 		for _, onchainRewardInfo := range actOnchain.TokenRewardInfos {
 			if onchainRewardInfo.Denom == rewardInfo.Denom {
+				willUseLeftAmount = onchainRewardInfo.LeftAmount
+
 				if rewardInfo.TotalRewardAmount.GT(onchainRewardInfo.TotalRewardAmount) {
-					rewardInfo.LeftAmount = onchainRewardInfo.LeftAmount.Add(rewardInfo.TotalRewardAmount).Sub(onchainRewardInfo.TotalRewardAmount)
+					willUseLeftAmount = onchainRewardInfo.LeftAmount.Add(rewardInfo.TotalRewardAmount).Sub(onchainRewardInfo.TotalRewardAmount)
 				} else {
-					rewardInfo.LeftAmount = onchainRewardInfo.LeftAmount.Sub(onchainRewardInfo.TotalRewardAmount.Sub(rewardInfo.TotalRewardAmount))
-					if rewardInfo.LeftAmount.LT(sdk.ZeroInt()) {
-						rewardInfo.LeftAmount = sdk.ZeroInt()
+					willUseLeftAmount = onchainRewardInfo.LeftAmount.Sub(onchainRewardInfo.TotalRewardAmount.Sub(rewardInfo.TotalRewardAmount))
+					if willUseLeftAmount.LT(sdk.ZeroInt()) {
+						willUseLeftAmount = sdk.ZeroInt()
 					}
 				}
 			}
 		}
-	}
-	msg.Act.TotalRTokenAmount = actOnchain.TotalRTokenAmount
-	msg.Act.TotalNativeTokenAmount = actOnchain.TotalNativeTokenAmount
 
-	k.Keeper.SetMintRewardAct(ctx, msg.Denom, msg.Cycle, msg.Act)
+		willUseTokenRewardInfos = append(willUseTokenRewardInfos, &types.TokenRewardInfo{
+			Denom:             rewardInfo.Denom,
+			RewardRate:        rewardInfo.RewardRate,
+			TotalRewardAmount: rewardInfo.TotalRewardAmount,
+			LeftAmount:        willUseLeftAmount,
+			UserLimit:         rewardInfo.UserLimit,
+		})
+	}
+
+	willUseAct := types.MintRewardAct{
+		Begin:                  msg.Act.Begin,
+		End:                    msg.Act.End,
+		LockedBlocks:           msg.Act.LockedBlocks,
+		TotalRTokenAmount:      actOnchain.TotalRTokenAmount,
+		TotalNativeTokenAmount: actOnchain.TotalNativeTokenAmount,
+		TokenRewardInfos:       willUseTokenRewardInfos,
+	}
+
+	k.Keeper.SetMintRewardAct(ctx, msg.Denom, msg.Cycle, &willUseAct)
 	return &types.MsgUpdateMintRewardActResponse{}, nil
 }

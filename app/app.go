@@ -368,7 +368,6 @@ func New(
 		appCodec,
 		keys[sudotypes.StoreKey],
 		keys[sudotypes.MemStoreKey],
-		app.BankKeeper,
 	)
 
 	rstakingKeeper := rstakingmodulekeeper.NewKeeper(

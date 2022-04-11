@@ -14,6 +14,13 @@ message MintRewardAct {
     repeated TokenRewardInfo tokenRewardInfos = 7;
 }
 
+message MintRewardActPost {
+    int64 begin = 1;
+    int64 end = 2;
+    int64 lockedBlocks = 3;
+    repeated TokenRewardInfoPost tokenRewardInfos = 7;
+}
+
 message TokenRewardInfo {
     string denom = 1;
     string rewardRate = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
@@ -22,11 +29,18 @@ message TokenRewardInfo {
     string userLimit = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
+message TokenRewardInfoPost {
+    string denom = 1;
+    string rewardRate = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec", (gogoproto.nullable) = false];
+    string totalRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string userLimit = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
 
 message UserClaimInfo {
     string mintRTokenAmount = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
     string nativeTokenAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
-    int64 mintBLock = 3;
+    int64 mintBlock = 3;
     int64 latestClaimedBlock = 4;
     repeated TokenClaimInfo TokenClaimInfos = 5;
 }
