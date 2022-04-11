@@ -46,10 +46,9 @@ func (k msgServer) UpdateMintRewardAct(goCtx context.Context, msg *types.MsgUpda
 			return nil, types.ErrActRewardRateTooSmall
 		}
 
-		willUseLeftAmount := sdk.ZeroInt()
+		willUseLeftAmount := rewardInfo.TotalRewardAmount
 		for _, onchainRewardInfo := range actOnchain.TokenRewardInfos {
 			if onchainRewardInfo.Denom == rewardInfo.Denom {
-				willUseLeftAmount = onchainRewardInfo.LeftAmount
 
 				if rewardInfo.TotalRewardAmount.GT(onchainRewardInfo.TotalRewardAmount) {
 					willUseLeftAmount = onchainRewardInfo.LeftAmount.Add(rewardInfo.TotalRewardAmount).Sub(onchainRewardInfo.TotalRewardAmount)

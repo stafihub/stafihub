@@ -87,15 +87,13 @@ func (msg *MsgSetPoolDetail) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
-
-	if len(msg.SubAccounts) != 0 {
-		accLen := len(msg.SubAccounts[0])
-		for _, acc := range msg.SubAccounts {
-			if len(acc) != accLen {
-				return fmt.Errorf("subAccounts not same size")
-			}
-		}
+	if msg.Threshold <= 0 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid threshold")
 	}
+	if int(msg.Threshold) > len(msg.SubAccounts) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "threshold should be less than or equal to sub accounts length")
+	}
+
 	return nil
 }
 

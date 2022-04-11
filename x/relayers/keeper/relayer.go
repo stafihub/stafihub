@@ -1,77 +1,86 @@
 package keeper
 
 import (
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/relayers/types"
 )
 
 func (k Keeper) AddRelayer(ctx sdk.Context, arena, denom, addr string) {
-	rel, _ := k.GetRelayer(ctx, arena, denom)
-	rel.Addrs = append(rel.Addrs, addr)
-	k.setRelayer(ctx, rel)
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.RelayerStoreKey(arena, denom, addr), []byte{})
 }
 
 func (k Keeper) HasRelayer(ctx sdk.Context, arena, denom, addr string) bool {
-	rel, ok := k.GetRelayer(ctx, arena, denom)
-	if !ok {
-		return false
-	}
-
-	for _, adr := range rel.Addrs {
-		if adr == addr {
-			return true
-		}
-	}
-
-	return false
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.RelayerStoreKey(arena, denom, addr))
 }
 
 func (k Keeper) RemoveRelayer(ctx sdk.Context, arena, denom, addr string) {
-	rel, ok := k.GetRelayer(ctx, arena, denom)
-	if !ok {
-		return
-	}
-
-	addrs := make([]string, 0)
-	for _, adr := range rel.Addrs {
-		if adr != addr {
-			addrs = append(addrs, adr)
-		}
-	}
-	rel.Addrs = addrs
-	k.setRelayer(ctx, rel)
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.RelayerStoreKey(arena, denom, addr))
 }
 
-func (k Keeper) setRelayer(ctx sdk.Context, rel types.Relayer) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
-	b := k.cdc.MustMarshal(&rel)
-	store.Set([]byte(rel.Arena+rel.Denom), b)
-}
+func (k Keeper) GetRelayer(ctx sdk.Context, arena, denom string) []string {
+	keyPrefix := make([]byte, 1+2+len(arena)+len(denom))
+	keyPrefix[0] = types.RelayerPrefix[0]
+	keyPrefix[1] = byte(len(arena))
+	copy(keyPrefix[2:], arena)
+	keyPrefix[2+len(arena)] = byte(len(denom))
+	copy(keyPrefix[3+len(arena):], denom)
 
-func (k Keeper) GetRelayer(ctx sdk.Context, arena, denom string) (types.Relayer, bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
-	val := types.Relayer{Arena: arena, Denom: denom, Addrs: []string{}}
-	b := store.Get([]byte(arena + denom))
-
-	if b == nil {
-		return val, false
-	}
-	k.cdc.MustUnmarshal(b, &val)
-	return val, true
-}
-
-func (k Keeper) GetAllRelayer(ctx sdk.Context) (list []types.Relayer) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RelayerPrefix)
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
-
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, keyPrefix)
 	defer iterator.Close()
 
+	relayers := make([]string, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.Relayer
-		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
+		key := iterator.Key()
+		if len(key) <= len(keyPrefix)+1 {
+			continue
+		}
+		relayers = append(relayers, string(key[len(keyPrefix)+1:]))
 	}
+	return relayers
+}
 
-	return
+// used for export genesis
+func (k Keeper) GetAllRelayer(ctx sdk.Context) []types.Relayer {
+	keyPrefix := make([]byte, 1)
+	keyPrefix[0] = types.RelayerPrefix[0]
+
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, keyPrefix)
+	defer iterator.Close()
+
+	relayers := make([]types.Relayer, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		if len(key) <= len(keyPrefix) {
+			continue
+		}
+		arenaLen := int(key[1])
+		if len(key) <= len(keyPrefix)+1+arenaLen {
+			continue
+		}
+		arena := key[2 : 2+arenaLen]
+
+		denomLen := int(key[2+arenaLen])
+		if len(key) <= len(keyPrefix)+1+arenaLen+1+denomLen {
+			continue
+		}
+		denom := key[3+arenaLen : 3+arenaLen+denomLen]
+
+		addrLen := int(key[3+arenaLen+denomLen])
+		if len(key) < len(keyPrefix)+1+arenaLen+1+denomLen+1+addrLen {
+			continue
+		}
+		addr := key[4+arenaLen+denomLen : 4+arenaLen+denomLen+addrLen]
+
+		relayers = append(relayers, types.Relayer{
+			Arena: string(arena),
+			Denom: string(denom),
+			Addrs: []string{string(addr)},
+		})
+	}
+	return relayers
 }

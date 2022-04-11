@@ -30,7 +30,10 @@ func (msg *MsgAddRelayer) Type() string {
 }
 
 func (msg *MsgAddRelayer) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic("invalid creator address")
+	}
 	return []sdk.AccAddress{creator}
 }
 
@@ -46,6 +49,9 @@ func (msg *MsgAddRelayer) ValidateBasic() error {
 
 	if len(msg.Addresses) == 0 {
 		return fmt.Errorf("Addresses should not be empty")
+	}
+	if len(msg.Arena) == 0 {
+		return fmt.Errorf("Arena should not be empty")
 	}
 
 	for _, addr := range msg.Addresses {
@@ -73,7 +79,10 @@ func (msg *MsgDeleteRelayer) Type() string {
 }
 
 func (msg *MsgDeleteRelayer) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic("invalid creator address")
+	}
 	return []sdk.AccAddress{creator}
 }
 
@@ -83,6 +92,9 @@ func (msg *MsgDeleteRelayer) GetSignBytes() []byte {
 }
 
 func (msg *MsgDeleteRelayer) ValidateBasic() error {
+	if len(msg.Arena) == 0 {
+		return fmt.Errorf("Arena should not be empty")
+	}
 	if msg.Creator == "" || msg.Address == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
 	}
@@ -107,7 +119,10 @@ func (msg *MsgSetThreshold) Type() string {
 }
 
 func (msg *MsgSetThreshold) GetSigners() []sdk.AccAddress {
-	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic("invalid creator address")
+	}
 	return []sdk.AccAddress{creator}
 }
 
@@ -119,6 +134,12 @@ func (msg *MsgSetThreshold) GetSignBytes() []byte {
 func (msg *MsgSetThreshold) ValidateBasic() error {
 	if msg.Creator == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+	if len(msg.Arena) == 0 {
+		return fmt.Errorf("Arena should not be empty")
+	}
+	if msg.Value <= 0 {
+		return fmt.Errorf("threshold should be greater than 0")
 	}
 
 	return nil

@@ -5,7 +5,7 @@ import (
 	"github.com/stafihub/stafihub/x/rmintreward/types"
 )
 
-func (k Keeper) UpdateActLatestCycle(ctx sdk.Context, denom string) {
+func (k Keeper) UpdateActCurrentCycle(ctx sdk.Context, denom string) {
 	now := ctx.BlockHeight()
 	latestCycle, found := k.GetActLatestCycle(ctx, denom)
 	if !found {
@@ -38,7 +38,7 @@ func (k Keeper) UpdateActLatestCycle(ctx sdk.Context, denom string) {
 }
 
 func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom string, mintRTokenAmount, nativeTokenAmount sdk.Int) {
-	k.UpdateActLatestCycle(ctx, denom)
+	k.UpdateActCurrentCycle(ctx, denom)
 
 	currentCycle, found := k.GetActCurrentCycle(ctx, denom)
 	if !found {
@@ -95,10 +95,20 @@ func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom 
 		userAct, found := k.GetUserActs(ctx, user, denom)
 		if !found {
 			userAct = &types.Acts{
-				Acts: []uint64{},
+				Acts: []uint64{currentCycle},
+			}
+		} else {
+			exist := false
+			for _, act := range userAct.Acts {
+				if act == currentCycle {
+					exist = true
+					break
+				}
+			}
+			if !exist {
+				userAct.Acts = append(userAct.Acts, currentCycle)
 			}
 		}
-		userAct.Acts = append(userAct.Acts, currentCycle)
 
 		k.SetUserActs(ctx, user, denom, userAct)
 		k.SetUserClaimInfo(ctx, user, denom, currentCycle, count, &userClaimInfo)

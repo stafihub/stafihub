@@ -13,4 +13,5 @@ var (
 	ErrThresholdNotFound  = sdkerrors.Register(ModuleName, 3, "threshold not found error")
 	ErrProposerNotRelayer = sdkerrors.Register(ModuleName, 4, "proposer is not a relayer error")
 	ErrAlreadyVoted       = sdkerrors.Register(ModuleName, 5, "already voted error")
+	ErrThresholdTooHigh   = sdkerrors.Register(ModuleName, 6, "threshold too high error")
 )

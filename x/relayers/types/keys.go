@@ -26,3 +26,16 @@ var (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+// [prefix]+[len(arena)]+[arena]+[len(denom)]+[denom]+[len(addr)]+[addr]
+func RelayerStoreKey(arena, denom, addr string) []byte {
+	key := make([]byte, 1+3+len(arena)+len(denom)+len(addr))
+	key[0] = RelayerPrefix[0]
+	key[1] = byte(len(arena))
+	copy(key[2:], arena)
+	key[2+len(arena)] = byte(len(denom))
+	copy(key[3+len(arena):], denom)
+	key[3+len(arena)+len(denom)] = byte(len(addr))
+	copy(key[4+len(arena)+len(denom):], addr)
+	return key
+}

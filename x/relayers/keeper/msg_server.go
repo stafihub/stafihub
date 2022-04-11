@@ -99,6 +99,11 @@ func (k msgServer) SetThreshold(goCtx context.Context, msg *types.MsgSetThreshol
 		}
 	}
 
+	relayers := k.GetRelayer(ctx, msg.Arena, msg.Denom)
+	if int(msg.Value) > len(relayers) {
+		return nil, types.ErrThresholdTooHigh
+	}
+
 	lastTh := uint32(0)
 	if last, ok := k.GetThreshold(ctx, msg.Arena, msg.Denom); ok {
 		lastTh = last.Value

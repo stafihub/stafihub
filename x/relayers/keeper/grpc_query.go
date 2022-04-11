@@ -17,12 +17,9 @@ func (k Keeper) Relayers(c context.Context, req *types.QueryRelayersRequest) (*t
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
-	rel, found := k.GetRelayer(ctx, req.Arena, req.Denom)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
+	rel := k.GetRelayer(ctx, req.Arena, req.Denom)
 
-	return &types.QueryRelayersResponse{Relayers: rel.Addrs}, nil
+	return &types.QueryRelayersResponse{Relayers: rel}, nil
 }
 
 func (k Keeper) Threshold(c context.Context, req *types.QueryThresholdRequest) (*types.QueryThresholdResponse, error) {
