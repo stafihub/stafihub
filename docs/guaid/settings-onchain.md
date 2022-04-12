@@ -14,14 +14,14 @@ add new rtoken:
 
 ```
 # set rtoken metadata
-stafihubd tx sudo add-denom --metadata ./metadata_example.json --address_prefix cosmos  --chain-id local-stafihub --from admin --keyring-backend file
+stafihubd tx rbank add-denom cosmos ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
 stafihubd query bank denom-metadata
 
-stafihubd query sudo address-prefix uratom
+stafihubd query rbank address-prefix uratom
 
 
-
+# set relay fee receiver
 stafihubd tx ledger set-relay-fee-receiver uratom stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd query ledger relay-fee-receiver uratom

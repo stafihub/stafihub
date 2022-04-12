@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	defaultStakingRewardCommission = sdk.MustNewDecFromStr("0.1")
-	defaultUnbondCommission        = sdk.MustNewDecFromStr("0.002")
+	defaultStakingRewardCommission = utils.MustNewDecFromStr("0.1")
+	defaultUnbondCommission        = utils.MustNewDecFromStr("0.002")
 	defaultUnbondFee               = sdk.NewCoin("ufis", sdk.NewInt(1000000))
 	defaultEraUnbondLimit          = uint32(200)
 )
@@ -231,14 +231,14 @@ func (k Keeper) SetStakingRewardCommission(ctx sdk.Context, denom string, commis
 	store.Set(types.StakingRewardCommissionStoreKey(denom), b)
 }
 
-func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) sdk.Dec {
+func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) utils.Dec {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.StakingRewardCommissionStoreKey(denom))
 	if b == nil {
 		return defaultStakingRewardCommission
 	}
 
-	var val sdk.Dec
+	var val utils.Dec
 	if err := val.Unmarshal(b); err != nil {
 		panic(err)
 	}
@@ -361,13 +361,13 @@ func (k Keeper) SetUnbondCommission(ctx sdk.Context, denom string, value utils.D
 	store.Set(types.UnbondCommissionStoreKey(denom), b)
 }
 
-func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) sdk.Dec {
+func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) utils.Dec {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.UnbondCommissionStoreKey(denom))
 	if b == nil {
 		return defaultUnbondCommission
 	}
-	var val sdk.Dec
+	var val utils.Dec
 	if err := val.Unmarshal(b); err != nil {
 		panic(err)
 	}

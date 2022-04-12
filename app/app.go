@@ -492,6 +492,7 @@ func New(
 		keys[rbankmoduletypes.MemStoreKey],
 		app.GetSubspace(rbankmoduletypes.ModuleName),
 		app.SudoKeeper,
+		app.BankKeeper,
 	)
 	rbankModule := rbankmodule.NewAppModule(appCodec, app.RbankKeeper)
 
