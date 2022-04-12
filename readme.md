@@ -9,10 +9,10 @@
 
 ## Run node 
 
-- [`install`](./doc/install.md)
-- [`join mainnet`](./doc/join-mainnet.md)
-- [`join testnet`](./doc/join-testnet.md)
-- [`your own testnet`](./doc/your-own-testnet.md)
+- [`install`](./docs/guaid/install.md)
+- [`join mainnet`](./docs/guaid/join-mainnet.md)
+- [`join testnet`](./docs/guaid/join-testnet.md)
+- [`your own testnet`](./docs/guaid/your-own-testnet.md)
 
 
 ##  Genesis
