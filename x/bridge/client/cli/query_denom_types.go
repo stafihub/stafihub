@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdResourceIdTypes() *cobra.Command {
+func CmdDenomTypes() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "resource-id-types",
-		Short: "Query all resourceid types",
+		Use:   "denom-types",
+		Short: "Query all denom types",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,9 +25,9 @@ func CmdResourceIdTypes() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryResourceIdTypesRequest{}
+			params := &types.QueryDenomTypesRequest{}
 
-			res, err := queryClient.ResourceIdTypes(cmd.Context(), params)
+			res, err := queryClient.DenomTypes(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

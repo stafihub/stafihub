@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/bridge/types"
 )
 
@@ -210,7 +211,7 @@ func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.Re
 	return idType
 }
 
-func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
+func (k Keeper) GetAllResourceIdDenomTypes(ctx sdk.Context) []string {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdTypeStoreKeyPrefix)
 	defer iterator.Close()
@@ -225,7 +226,14 @@ func (k Keeper) GetAllResourceTypes(ctx sdk.Context) []string {
 			value = types.ResourceIdTypeForeign[:]
 		}
 
-		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key()[1:])+":"+fmt.Sprintf("%d", value[0]))
+		resourceId := [32]byte{}
+		copy(resourceId[:], iterator.Key()[1:])
+		denom, found := k.GetDenomByResourceId(ctx, resourceId)
+		if !found {
+			continue
+		}
+
+		chainIdList = append(chainIdList, denom+":"+fmt.Sprintf("%d", value[0]))
 	}
 	return chainIdList
 }
@@ -240,7 +248,7 @@ func (k Keeper) GetRelayFee(ctx sdk.Context, chainId uint8) (value sdk.Coin) {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.RelayFeeStoreKey(chainId))
 	if b == nil {
-		return sdk.NewCoin("ufis", sdk.ZeroInt())
+		return sdk.NewCoin(utils.FisDenom, sdk.ZeroInt())
 	}
 	k.cdc.MustUnmarshal(b, &value)
 	return value

@@ -16,7 +16,7 @@ var _ = strconv.Itoa(0)
 
 func CmdDeposit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deposit [dest-chain-id] [resource-id] [amount] [receiver]",
+		Use:   "deposit [dest-chain-id] [denom] [amount] [receiver]",
 		Short: "Broadcast message initiates a transfer to other chain",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -24,7 +24,7 @@ func CmdDeposit() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argResourceId := args[1]
+			argDenom := args[1]
 			argAmount, ok := sdk.NewIntFromString(args[2])
 			if !ok {
 				return fmt.Errorf("amount format err")
@@ -39,7 +39,7 @@ func CmdDeposit() *cobra.Command {
 			msg := types.NewMsgDeposit(
 				clientCtx.GetFromAddress().String(),
 				uint32(argDestChainId),
-				argResourceId,
+				argDenom,
 				argAmount,
 				argReceiver,
 			)

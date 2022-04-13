@@ -9,14 +9,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) ResourceIdTypes(goCtx context.Context, req *types.QueryResourceIdTypesRequest) (*types.QueryResourceIdTypesResponse, error) {
+func (k Keeper) DenomTypes(goCtx context.Context, req *types.QueryDenomTypesRequest) (*types.QueryDenomTypesResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	return &types.QueryResourceIdTypesResponse{
-		IdTypes: k.GetAllResourceTypes(ctx),
+	return &types.QueryDenomTypesResponse{
+		DenomTypes: k.GetAllResourceIdDenomTypes(ctx),
 	}, nil
 }

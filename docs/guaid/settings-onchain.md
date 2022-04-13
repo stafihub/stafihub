@@ -130,9 +130,9 @@ stafihubd query ledger pool-unbond uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm2
 
 
 
-stafihubd tx bridge  set-resourceid-type 000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901  1 --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx bridge set-denom-type uratom  1 --from admin --keyring-backend file --chain-id local-stafihub
 
-stafihubd query bridge resource-id-types
+stafihubd query bridge denom-types
 ```
 
 
@@ -158,5 +158,5 @@ stafihubd tx ledger liquidity-unbond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y
 
 deposit (transfer token to external chain):
 ```
-stafihubd tx bridge deposit 1 000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 8000000 dccf954570063847d73746afa0b0878f2c779d42089c5d9a107f2aca176e985f --from my-account --chain-id local-stafihub --keyring-backend file
+stafihubd tx bridge deposit 1 uratom 800 dccf954570063847d73746afa0b0878f2c779d42089c5d9a107f2aca176e985f --from my-account --chain-id local-stafihub --keyring-backend file
 ```

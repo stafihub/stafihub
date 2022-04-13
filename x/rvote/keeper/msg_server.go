@@ -39,10 +39,9 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 	content := msg.GetContent()
 	arena := content.ProposalRoute()
 
-	adminFlag := k.sudoKeeper.IsAdmin(ctx, msg.Proposer)
 	relayerFlag := k.relayerKeeper.HasRelayer(ctx, arena, content.GetDenom(), msg.Proposer)
 
-	if !adminFlag && !relayerFlag {
+	if !relayerFlag {
 		return nil, types.ErrInvalidProposer
 	}
 
@@ -62,7 +61,7 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		return nil, relayerstypes.ErrThresholdNotFound
 	}
 
-	if adminFlag || uint32(len(prop.Voted)) >= threshold.Value {
+	if uint32(len(prop.Voted)) >= threshold.Value {
 		prop.Status = types.StatusApproved
 	}
 

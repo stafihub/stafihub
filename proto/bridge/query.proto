@@ -22,9 +22,9 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/chaind_ids";
 	}
 
-// Queries a list of ResourceIdTypes items.
-	rpc ResourceIdTypes(QueryResourceIdTypesRequest) returns (QueryResourceIdTypesResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/bridge/resource_id_types";
+// Queries a list of DenomTypes items.
+	rpc DenomTypes(QueryDenomTypesRequest) returns (QueryDenomTypesResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/denom_types";
 	}
 
 // Queries a list of ProposalDetail items.
@@ -67,11 +67,11 @@ message QueryChaindIdsResponse {
   repeated string chainId = 1;
 }
 
-message QueryResourceIdTypesRequest {
+message QueryDenomTypesRequest {
 }
 
-message QueryResourceIdTypesResponse {
-  repeated string idTypes = 1;
+message QueryDenomTypesResponse {
+  repeated string denomTypes = 1;
 }
 
 message QueryProposalDetailRequest {
