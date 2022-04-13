@@ -20,8 +20,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 	if params.MintDenom != genState.CoinToBeBurned.Denom {
 		panic("mint denom not equal coinToBeBurned denom")
 	}
-	if len(genState.GetValidatorWhitelist()) == 0 {
-		panic("val_address_white_list empty")
+
+	if genState.WhitelistSwitch {
+		if len(genState.GetValidatorWhitelist()) == 0 {
+			panic("val_address_white_list empty")
+		}
 	}
 
 	for _, addr := range genState.GetValidatorWhitelist() {
