@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -78,12 +79,19 @@ func (k msgServer) SetLeastBond(goCtx context.Context, msg *types.MsgSetLeastBon
 	rparams.LeastBond = msg.LeastBond
 
 	k.Keeper.SetRParams(ctx, rparams)
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeRParamsChanged,
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyGasPrice, rparams.GasPrice),
+			sdk.NewAttribute(types.AttributeKeyEraSeconds, fmt.Sprintf("%d", rparams.EraSeconds)),
+			sdk.NewAttribute(types.AttributeKeyOffset, fmt.Sprintf("%d", rparams.Offset)),
+			sdk.NewAttribute(types.AttributeKeyBondingDuration, fmt.Sprintf("%d", rparams.BondingDuration)),
+			sdk.NewAttribute(types.AttributeKeyLeastBond, rparams.LeastBond),
 		),
 	)
+
 	return &types.MsgSetLeastBondResponse{}, nil
 }
 
@@ -181,5 +189,16 @@ func (k msgServer) SetRParams(goCtx context.Context, msg *types.MsgSetRParams) (
 
 	k.Keeper.SetRParams(ctx, rParams)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRParamsChanged,
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyGasPrice, rParams.GasPrice),
+			sdk.NewAttribute(types.AttributeKeyEraSeconds, fmt.Sprintf("%d", rParams.EraSeconds)),
+			sdk.NewAttribute(types.AttributeKeyOffset, fmt.Sprintf("%d", rParams.Offset)),
+			sdk.NewAttribute(types.AttributeKeyBondingDuration, fmt.Sprintf("%d", rParams.BondingDuration)),
+			sdk.NewAttribute(types.AttributeKeyLeastBond, rParams.LeastBond),
+		),
+	)
 	return &types.MsgSetRParamsResponse{}, nil
 }

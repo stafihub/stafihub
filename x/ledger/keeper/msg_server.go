@@ -153,8 +153,9 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 			sdk.NewAttribute(types.AttributeKeyDenom, denom),
 			sdk.NewAttribute(types.AttributeKeyUnbonder, msg.Creator),
 			sdk.NewAttribute(types.AttributeKeyPool, msg.Pool),
-			sdk.NewAttribute(types.AttributeKeyUnBondAmount, leftValue.String()),
-			sdk.NewAttribute(types.AttributeKeyReceiver, balance.String()),
+			sdk.NewAttribute(types.AttributeKeyUnBondAmount, msg.Value.String()),
+			sdk.NewAttribute(types.AttributeKeyExchangeAmount, leftValue.String()),
+			sdk.NewAttribute(types.AttributeKeyReceiveAmount, balance.String()),
 			sdk.NewAttribute(types.AttributeKeyReceiver, msg.Recipient),
 		),
 	)

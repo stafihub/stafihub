@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
@@ -24,10 +25,16 @@ func (k msgServer) SetEraSeconds(goCtx context.Context, msg *types.MsgSetEraSeco
 	rparams.Offset = msg.Offset
 
 	k.Keeper.SetRParams(ctx, rparams)
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeRParamsChanged,
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyGasPrice, rparams.GasPrice),
+			sdk.NewAttribute(types.AttributeKeyEraSeconds, fmt.Sprintf("%d", rparams.EraSeconds)),
+			sdk.NewAttribute(types.AttributeKeyOffset, fmt.Sprintf("%d", rparams.Offset)),
+			sdk.NewAttribute(types.AttributeKeyBondingDuration, fmt.Sprintf("%d", rparams.BondingDuration)),
+			sdk.NewAttribute(types.AttributeKeyLeastBond, rparams.LeastBond),
 		),
 	)
 	return &types.MsgSetEraSecondsResponse{}, nil
