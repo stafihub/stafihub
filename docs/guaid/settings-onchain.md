@@ -14,7 +14,7 @@ add new rtoken:
 
 ```
 # set rtoken metadata
-stafihubd tx rbank add-denom cosmos ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
+stafihubd tx rbank add-denom cosmos cosmosvaloper ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
 
 stafihubd query bank denom-metadata
 

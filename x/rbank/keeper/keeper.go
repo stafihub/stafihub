@@ -51,13 +51,13 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) SetAddressPrefix(ctx sdk.Context, denom, addrPrefix string) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AddressPrefix)
+func (k Keeper) SetAccAddressPrefix(ctx sdk.Context, denom, addrPrefix string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AccAddressPrefix)
 	store.Set([]byte(denom), []byte(addrPrefix))
 }
 
-func (k Keeper) GetAddressPrefix(ctx sdk.Context, denom string) (val string, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AddressPrefix)
+func (k Keeper) GetAccAddressPrefix(ctx sdk.Context, denom string) (val string, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AccAddressPrefix)
 	b := store.Get([]byte(denom))
 	if b == nil {
 		return val, false
@@ -65,10 +65,36 @@ func (k Keeper) GetAddressPrefix(ctx sdk.Context, denom string) (val string, fou
 	return string(b), true
 }
 
-func (k Keeper) CheckAddress(ctx sdk.Context, denom, address string) error {
-	prefix, found := k.GetAddressPrefix(ctx, denom)
+func (k Keeper) CheckAccAddress(ctx sdk.Context, denom, address string) error {
+	prefix, found := k.GetAccAddressPrefix(ctx, denom)
 	if !found {
-		return types.ErrAddrPrefixNotExist
+		return types.ErrAccAddrPrefixNotExist
+	}
+	_, err := sdk.GetFromBech32(address, prefix)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k Keeper) SetValAddressPrefix(ctx sdk.Context, denom, addrPrefix string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ValAddressPrefix)
+	store.Set([]byte(denom), []byte(addrPrefix))
+}
+
+func (k Keeper) GetValAddressPrefix(ctx sdk.Context, denom string) (val string, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.ValAddressPrefix)
+	b := store.Get([]byte(denom))
+	if b == nil {
+		return val, false
+	}
+	return string(b), true
+}
+
+func (k Keeper) CheckValAddress(ctx sdk.Context, denom, address string) error {
+	prefix, found := k.GetValAddressPrefix(ctx, denom)
+	if !found {
+		return types.ErrValAddrPrefixNotExist
 	}
 	_, err := sdk.GetFromBech32(address, prefix)
 	if err != nil {

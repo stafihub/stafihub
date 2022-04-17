@@ -16,12 +16,17 @@ func (k Keeper) AddressPrefix(goCtx context.Context, req *types.QueryAddressPref
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	prefix, found := k.GetAddressPrefix(ctx, req.Denom)
+	accPrefix, found := k.GetAccAddressPrefix(ctx, req.Denom)
+	if !found {
+		return nil, status.Error(codes.NotFound, codes.NotFound.String())
+	}
+	valPrefix, found := k.GetValAddressPrefix(ctx, req.Denom)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
 
 	return &types.QueryAddressPrefixResponse{
-		AddressPrefix: prefix,
+		AccAddressPrefix: accPrefix,
+		ValAddressPrefix: valPrefix,
 	}, nil
 }

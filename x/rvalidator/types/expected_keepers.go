@@ -10,7 +10,7 @@ type SudoKeeper interface {
 }
 
 type RBankKeeper interface {
-	GetAddressPrefix(ctx sdk.Context, denom string) (val string, found bool)
+	CheckValAddress(ctx sdk.Context, denom, address string) error
 }
 
 type RelayersKeeper interface {

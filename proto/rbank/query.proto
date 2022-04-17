@@ -37,7 +37,8 @@ message QueryAddressPrefixRequest {
 }
 
 message QueryAddressPrefixResponse {
-  string addressPrefix = 1;
+  string accAddressPrefix = 1;
+  string valAddressPrefix = 2;
 }
 
 // this line is used by starport scaffolding # 3

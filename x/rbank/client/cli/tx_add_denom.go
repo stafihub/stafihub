@@ -20,12 +20,12 @@ var _ = strconv.Itoa(0)
 
 func CmdAddDenom() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-denom [address-prefix] [metadata-path]",
+		Use:   "add-denom [acc-address-prefix] [val-address-prefix] [metadata-path]",
 		Short: "Add metadata and addressPrefix",
 		Long: strings.TrimSpace(
 			fmt.Sprintf(`Broadcast message add_denom with an denom_metadata which can be given through a metadata JSON file.
 Example:
-$ %s tx rbank add-denom cosmos path/to/metadata.json  --from mykey
+$ %s tx rbank add-denom cosmos cosmosvaloper path/to/metadata.json  --from mykey
 
 Where metadata.json could be like this:
 
@@ -58,16 +58,12 @@ Where metadata.json could be like this:
       "symbol": ""
 }
 `, version.AppName)),
-		Args: cobra.ExactArgs(2),
+		Args: cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argAddressPrefix := args[0]
-			argMetadataPath := args[1]
-			if len(argAddressPrefix) == 0 {
-				return fmt.Errorf("prefix not give")
-			}
-			if len(argMetadataPath) == 0 {
-				return fmt.Errorf("metadataFile not give")
-			}
+			argAccAddressPrefix := args[0]
+			argValAddressPrefix := args[1]
+			argMetadataPath := args[2]
+
 			contents, err := os.ReadFile(argMetadataPath)
 			if err != nil {
 				return err
@@ -85,7 +81,8 @@ Where metadata.json could be like this:
 
 			msg := types.NewMsgAddDenom(
 				clientCtx.GetFromAddress().String(),
-				argAddressPrefix,
+				argAccAddressPrefix,
+				argValAddressPrefix,
 				md,
 			)
 			if err := msg.ValidateBasic(); err != nil {

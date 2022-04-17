@@ -17,7 +17,8 @@ const (
 	MemStoreKey = "mem_rbank"
 )
 
-var AddressPrefix = []byte{0x01}
+var AccAddressPrefix = []byte{0x01}
+var ValAddressPrefix = []byte{0x02}
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)

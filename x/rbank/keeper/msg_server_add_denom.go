@@ -16,7 +16,8 @@ func (k msgServer) AddDenom(goCtx context.Context, msg *types.MsgAddDenom) (*typ
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	k.SetAddressPrefix(ctx, msg.Metadata.Base, msg.AddressPrefix)
+	k.SetAccAddressPrefix(ctx, msg.Metadata.Base, msg.AccAddressPrefix)
+	k.SetValAddressPrefix(ctx, msg.Metadata.Base, msg.ValAddressPrefix)
 	k.bankKeeper.SetDenomMetaData(ctx, msg.Metadata)
 
 	return &types.MsgAddDenomResponse{}, nil

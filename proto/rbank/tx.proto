@@ -15,8 +15,9 @@ service Msg {
 
 message MsgAddDenom {
   string creator = 1;
-  string addressPrefix = 2;
-  cosmos.bank.v1beta1.Metadata Metadata = 3 [(gogoproto.nullable) = false];
+  string accAddressPrefix = 2;
+  string valAddressPrefix = 3;
+  cosmos.bank.v1beta1.Metadata Metadata = 4 [(gogoproto.nullable) = false];
 }
 
 message MsgAddDenomResponse {

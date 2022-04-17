@@ -20636,7 +20636,9 @@ paths:
           schema:
             type: object
             properties:
-              addressPrefix:
+              accAddressPrefix:
+                type: string
+              valAddressPrefix:
                 type: string
         default:
           description: An unexpected error response.
@@ -37499,7 +37501,9 @@ definitions:
   stafihub.stafihub.rbank.QueryAddressPrefixResponse:
     type: object
     properties:
-      addressPrefix:
+      accAddressPrefix:
+        type: string
+      valAddressPrefix:
         type: string
   stafihub.stafihub.rbank.QueryParamsResponse:
     type: object

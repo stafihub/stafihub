@@ -10,11 +10,12 @@ const TypeMsgAddDenom = "add_denom"
 
 var _ sdk.Msg = &MsgAddDenom{}
 
-func NewMsgAddDenom(creator string, addressPrefix string, metadata xBankTypes.Metadata) *MsgAddDenom {
+func NewMsgAddDenom(creator string, accAddressPrefix, valAddressPrefix string, metadata xBankTypes.Metadata) *MsgAddDenom {
 	return &MsgAddDenom{
-		Creator:       creator,
-		AddressPrefix: addressPrefix,
-		Metadata:      metadata,
+		Creator:          creator,
+		AccAddressPrefix: accAddressPrefix,
+		ValAddressPrefix: valAddressPrefix,
+		Metadata:         metadata,
 	}
 }
 

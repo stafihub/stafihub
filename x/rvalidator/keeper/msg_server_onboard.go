@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -19,13 +18,8 @@ func (k msgServer) Onboard(goCtx context.Context, msg *types.MsgOnboard) (*types
 		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
-	addrPfx, found := k.rbankKeeper.GetAddressPrefix(ctx, msg.Denom)
-	if !found {
-		return nil, rBankTypes.ErrAddrPrefixNotExist
-	}
-
-	if !strings.HasPrefix(msg.Address, addrPfx) {
-		return nil, rBankTypes.ErrAddrPrefixNotMatched
+	if err := k.rbankKeeper.CheckValAddress(ctx, msg.Denom, msg.Address); err != nil {
+		return nil, err
 	}
 
 	rv, found := k.Keeper.GetRValidator(ctx, msg.Denom, msg.Address)
