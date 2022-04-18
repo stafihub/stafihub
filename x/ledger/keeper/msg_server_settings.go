@@ -177,6 +177,13 @@ func (k msgServer) SetRParams(goCtx context.Context, msg *types.MsgSetRParams) (
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
+	for _, validator := range msg.GetValidators() {
+		err := k.rbankKeeper.CheckValAddress(ctx, msg.GetDenom(), validator)
+		if err != nil {
+			return nil, err
+		}
+
+	}
 	rParams := types.RParams{
 		Denom:           msg.GetDenom(),
 		GasPrice:        msg.GetGasPrice(),

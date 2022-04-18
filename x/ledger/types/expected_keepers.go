@@ -12,6 +12,7 @@ type SudoKeeper interface {
 
 type RBankKeeper interface {
 	CheckAccAddress(ctx sdk.Context, denom, address string) error
+	CheckValAddress(ctx sdk.Context, denom, address string) error
 }
 
 // BankKeeper defines the contract needed to be fulfilled for banking and supply
