@@ -9,6 +9,8 @@ option go_package = "github.com/stafihub/stafihub/x/rdex/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
+  rpc AddLiquidity(MsgAddLiquidity) returns (MsgAddLiquidityResponse);
+  rpc Swap(MsgSwap) returns (MsgSwapResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,6 +22,27 @@ message MsgCreatePool {
 }
 
 message MsgCreatePoolResponse {
+}
+
+message MsgAddLiquidity {
+  string creator = 1;
+  string denom = 2;
+  string rTokenAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string fisAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgAddLiquidityResponse {
+}
+
+message MsgSwap {
+  string creator = 1;
+  string denom = 2;
+  string inputAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string minOutAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  bool inputIsFis = 5;
+}
+
+message MsgSwapResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

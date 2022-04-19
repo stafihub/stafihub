@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "rdex"
@@ -27,4 +29,8 @@ var (
 
 func SwapPoolStoreKey(denom string) []byte {
 	return append(SwapPoolStoreKeyPrefix, []byte(denom)...)
+}
+
+func LpTokenDenom(denom string) string {
+	return fmt.Sprintf("ufis-%s", denom)
 }

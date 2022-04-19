@@ -37548,7 +37548,11 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.rdex.MsgAddLiquidityResponse:
+    type: object
   stafihub.stafihub.rdex.MsgCreatePoolResponse:
+    type: object
+  stafihub.stafihub.rdex.MsgSwapResponse:
     type: object
   stafihub.stafihub.rdex.Params:
     type: object

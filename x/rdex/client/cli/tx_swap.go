@@ -14,21 +14,25 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdCreatePool() *cobra.Command {
+func CmdSwap() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pool [denom] [r-token-amount] [fis-amount]",
-		Short: "Create swap pool",
-		Args:  cobra.ExactArgs(3),
+		Use:   "swap [denom] [input-amount] [min-out-amount] [input-is-fis(true/false)]",
+		Short: "Swap ",
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-
-			argRTokenAmount, ok := sdk.NewIntFromString(args[1])
+			argInputAmount, ok := sdk.NewIntFromString(args[1])
 			if !ok {
-				return fmt.Errorf("argRTokenAmount format err")
+				return fmt.Errorf("argInputAmount format err")
 			}
-			argFisAmount, ok := sdk.NewIntFromString(args[2])
+			argMinOutAmount, ok := sdk.NewIntFromString(args[2])
 			if !ok {
-				return fmt.Errorf("argFisAmount format err")
+				return fmt.Errorf("argMinOutAmount format err")
+			}
+
+			argInputIsFis := false
+			if args[3] == "true" {
+				argInputIsFis = true
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -36,11 +40,12 @@ func CmdCreatePool() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreatePool(
+			msg := types.NewMsgSwap(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
-				argRTokenAmount,
-				argFisAmount,
+				argInputAmount,
+				argMinOutAmount,
+				argInputIsFis,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

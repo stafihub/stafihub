@@ -204,6 +204,7 @@ var (
 		rstakingmoduletypes.ModuleName:    {authtypes.Burner, authtypes.Minter},
 		bridgemoduletypes.ModuleName:      {authtypes.Burner, authtypes.Minter},
 		rmintrewardmoduletypes.ModuleName: nil,
+		rdexmoduletypes.ModuleName:        {authtypes.Burner, authtypes.Minter},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -574,6 +575,7 @@ func New(
 		keys[rdexmoduletypes.StoreKey],
 		keys[rdexmoduletypes.MemStoreKey],
 		app.GetSubspace(rdexmoduletypes.ModuleName),
+		app.BankKeeper,
 	)
 	rdexModule := rdexmodule.NewAppModule(appCodec, app.RdexKeeper, app.AccountKeeper, app.BankKeeper)
 

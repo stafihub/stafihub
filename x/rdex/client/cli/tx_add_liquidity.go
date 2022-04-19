@@ -14,21 +14,20 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdCreatePool() *cobra.Command {
+func CmdAddLiquidity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pool [denom] [r-token-amount] [fis-amount]",
-		Short: "Create swap pool",
+		Use:   "add-liquidity [denom] [r-token-amount] [fis-amount]",
+		Short: "Add liquidity",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-
 			argRTokenAmount, ok := sdk.NewIntFromString(args[1])
 			if !ok {
-				return fmt.Errorf("argRTokenAmount format err")
+				return fmt.Errorf("argRTokenAmount invalid")
 			}
 			argFisAmount, ok := sdk.NewIntFromString(args[2])
 			if !ok {
-				return fmt.Errorf("argFisAmount format err")
+				return fmt.Errorf("argFisAmount invalid")
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -36,7 +35,7 @@ func CmdCreatePool() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreatePool(
+			msg := types.NewMsgAddLiquidity(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
 				argRTokenAmount,
