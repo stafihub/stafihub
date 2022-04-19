@@ -100,6 +100,9 @@ import (
 	rbankmodule "github.com/stafihub/stafihub/x/rbank"
 	rbankmodulekeeper "github.com/stafihub/stafihub/x/rbank/keeper"
 	rbankmoduletypes "github.com/stafihub/stafihub/x/rbank/types"
+	rdexmodule "github.com/stafihub/stafihub/x/rdex"
+	rdexmodulekeeper "github.com/stafihub/stafihub/x/rdex/keeper"
+	rdexmoduletypes "github.com/stafihub/stafihub/x/rdex/types"
 	"github.com/stafihub/stafihub/x/relayers"
 	relayerskeeper "github.com/stafihub/stafihub/x/relayers/keeper"
 	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
@@ -184,6 +187,7 @@ var (
 		rvalidatormodule.AppModuleBasic{},
 		rmintrewardmodule.AppModuleBasic{},
 		rbankmodule.AppModuleBasic{},
+		rdexmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -273,6 +277,8 @@ type App struct {
 	RmintrewardKeeper rmintrewardmodulekeeper.Keeper
 
 	RbankKeeper rbankmodulekeeper.Keeper
+
+	RdexKeeper rdexmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -313,6 +319,7 @@ func New(
 		rvalidatormoduletypes.StoreKey,
 		rmintrewardmoduletypes.StoreKey,
 		rbankmoduletypes.StoreKey,
+		rdexmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -562,6 +569,14 @@ func New(
 
 	rmintrewardModule := rmintrewardmodule.NewAppModule(appCodec, app.RmintrewardKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.RdexKeeper = *rdexmodulekeeper.NewKeeper(
+		appCodec,
+		keys[rdexmoduletypes.StoreKey],
+		keys[rdexmoduletypes.MemStoreKey],
+		app.GetSubspace(rdexmoduletypes.ModuleName),
+	)
+	rdexModule := rdexmodule.NewAppModule(appCodec, app.RdexKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -610,6 +625,7 @@ func New(
 		rvalidatorModule,
 		rmintrewardModule,
 		rbankModule,
+		rdexModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -710,6 +726,7 @@ func New(
 		rvalidatormoduletypes.ModuleName,
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
+		rdexmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -907,6 +924,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(rvalidatormoduletypes.ModuleName)
 	paramsKeeper.Subspace(rmintrewardmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rbankmoduletypes.ModuleName)
+	paramsKeeper.Subspace(rdexmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

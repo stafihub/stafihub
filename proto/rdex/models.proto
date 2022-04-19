@@ -1,0 +1,14 @@
+syntax = "proto3";
+package stafihub.stafihub.rdex;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafihub/stafihub/x/rdex/types";
+
+// Params defines the parameters for the module.
+message SwapPool {
+  string denom = 1;
+  string rTokenBalance = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+  string fisBalance = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+  string totalUnit = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false]; 
+}

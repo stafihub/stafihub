@@ -1,0 +1,25 @@
+syntax = "proto3";
+package stafihub.stafihub.rdex;
+
+// this line is used by starport scaffolding # proto/tx/import
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafihub/stafihub/x/rdex/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreatePool {
+  string creator = 1;
+  string denom = 2;
+  string rTokenAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string fisAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgCreatePoolResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
