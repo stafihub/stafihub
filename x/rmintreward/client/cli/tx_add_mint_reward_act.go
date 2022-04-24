@@ -25,9 +25,9 @@ func CmdAddMintRewardAct() *cobra.Command {
 			fmt.Sprintf(`Broadcast message add mint reward act which can be given through a JSON file.
 
 Example:
-$ %s tx rmintreward add-mint-reward-act uratom path/to/unbondings.json --from admin
+$ %s tx rmintreward add-mint-reward-act uratom path/to/mint_reward_act.json --from admin
 
-Where act.json could be like this:
+Where mint_reward_act.json could be like this:
 {
     "begin": 1000,
     "end": 2000,
@@ -37,7 +37,6 @@ Where act.json could be like this:
             "denom": "ufis",
             "rewardRate": "0.000001",
             "totalRewardAmount": "10000000",
-            "leftAmount": "10000000",
             "userLimit": "100"
         }
     ]
