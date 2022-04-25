@@ -172,20 +172,6 @@ func (q Querier) GetTotalExpectedActive(goCtx context.Context, req *types.QueryG
 	return &types.QueryGetTotalExpectedActiveResponse{Active: active}, nil
 }
 
-func (q Querier) GetPoolUnbond(goCtx context.Context, req *types.QueryGetPoolUnbondRequest) (*types.QueryGetPoolUnbondResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	unbond, found := q.Keeper.GetPoolUnbond(ctx, req.Denom, req.Pool, req.Era)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
-
-	return &types.QueryGetPoolUnbondResponse{Unbond: unbond}, nil
-}
-
 func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRecordRequest) (*types.QueryGetBondRecordResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())

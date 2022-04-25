@@ -55,8 +55,8 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 		return nil, sdkerrors.ErrInsufficientFunds
 	}
 
-	pipe, ok := k.Keeper.GetBondPipeline(ctx, denom, msg.Pool)
-	if !ok {
+	pipe, found := k.Keeper.GetBondPipeline(ctx, denom, msg.Pool)
+	if !found {
 		pipe = types.NewBondPipeline(denom, msg.Pool)
 	}
 
@@ -72,15 +72,11 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 
 	unlockEra := ce.Era + rParams.GetBondingDuration()
 	unbonding := types.NewUnbonding(msg.Creator, msg.Recipient, balance)
-	poolUnbonds, ok := k.Keeper.GetPoolUnbond(ctx, denom, msg.Pool, unlockEra)
-	if !ok {
-		poolUnbonds = types.NewPoolUnbond(denom, msg.Pool, unlockEra, []types.Unbonding{unbonding})
-	} else {
-		eul := k.Keeper.GetEraUnbondLimit(ctx, denom)
-		if uint32(len(poolUnbonds.Unbondings)) > eul.Limit {
-			return nil, types.ErrPoolLimitReached
-		}
-		poolUnbonds.Unbondings = append(poolUnbonds.Unbondings, unbonding)
+
+	nextSequence := k.Keeper.GetPoolUnbondNextSequence(ctx, denom, msg.Pool, unlockEra)
+	eraUnbondLimit := k.Keeper.GetEraUnbondLimit(ctx, denom)
+	if nextSequence >= eraUnbondLimit.Limit {
+		return nil, types.ErrPoolLimitReached
 	}
 
 	unbondFee := k.Keeper.GetUnbondRelayFee(ctx, denom)
@@ -117,7 +113,8 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	}
 
 	k.Keeper.SetBondPipeline(ctx, pipe)
-	k.Keeper.SetPoolUnbond(ctx, poolUnbonds)
+	k.Keeper.SetPoolUnbonding(ctx, denom, msg.Pool, unlockEra, nextSequence, &unbonding)
+	k.Keeper.SetPoolUnbondSequence(ctx, denom, msg.Pool, unlockEra, nextSequence)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

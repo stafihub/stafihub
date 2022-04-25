@@ -20,15 +20,6 @@ func NewChainEra(denom string) ChainEra {
 	}
 }
 
-func NewPoolUnbond(denom, pool string, era uint32, unbondings []Unbonding) PoolUnbond {
-	return PoolUnbond{
-		Denom:      denom,
-		Pool:       pool,
-		Era:        era,
-		Unbondings: unbondings,
-	}
-}
-
 func NewUnbonding(unbonder, recipient string, amount sdk.Int) Unbonding {
 	return Unbonding{
 		Unbonder:  unbonder,

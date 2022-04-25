@@ -19993,71 +19993,6 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}':
-    get:
-      summary: Queries a list of getPoolUnbond items.
-      operationId: StafihubStafihubLedgerGetPoolUnbond
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              unbond:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  pool:
-                    type: string
-                  era:
-                    type: integer
-                    format: int64
-                  unbondings:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        unbonder:
-                          type: string
-                        amount:
-                          type: string
-                        recipient:
-                          type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-        - name: pool
-          in: path
-          required: true
-          type: string
-        - name: era
-          in: path
-          required: true
-          type: integer
-          format: int64
-      tags:
-        - Query
   /stafihub/stafihub/ledger/getSignature:
     get:
       summary: Queries a list of getSignature items.
@@ -20419,6 +20354,108 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  '/stafihub/stafihub/ledger/pool_unbond_next_sequence/{denom}/{pool}/{unlockEra}':
+    get:
+      summary: Queries a list of PoolUnbondNextSequence items.
+      operationId: StafihubStafihubLedgerPoolUnbondNextSequence
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              nextSequence:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: pool
+          in: path
+          required: true
+          type: string
+        - name: unlockEra
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Query
+  '/stafihub/stafihub/ledger/pool_unbondings/{denom}/{pool}/{unlockEra}':
+    get:
+      summary: Queries a list of PoolUnbondings items.
+      operationId: StafihubStafihubLedgerPoolUnbondings
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              unbondings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    unbonder:
+                      type: string
+                    amount:
+                      type: string
+                    recipient:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+        - name: pool
+          in: path
+          required: true
+          type: string
+        - name: unlockEra
+          in: path
+          required: true
+          type: integer
+          format: int64
       tags:
         - Query
   /stafihub/stafihub/ledger/protocol_fee_receiver:
@@ -36884,27 +36921,6 @@ definitions:
       threshold:
         type: integer
         format: int64
-  stafihub.stafihub.ledger.PoolUnbond:
-    type: object
-    properties:
-      denom:
-        type: string
-      pool:
-        type: string
-      era:
-        type: integer
-        format: int64
-      unbondings:
-        type: array
-        items:
-          type: object
-          properties:
-            unbonder:
-              type: string
-            amount:
-              type: string
-            recipient:
-              type: string
   stafihub.stafihub.ledger.QueryBondedPoolsByDenomResponse:
     type: object
     properties:
@@ -37050,30 +37066,6 @@ definitions:
           threshold:
             type: integer
             format: int64
-  stafihub.stafihub.ledger.QueryGetPoolUnbondResponse:
-    type: object
-    properties:
-      unbond:
-        type: object
-        properties:
-          denom:
-            type: string
-          pool:
-            type: string
-          era:
-            type: integer
-            format: int64
-          unbondings:
-            type: array
-            items:
-              type: object
-              properties:
-                unbonder:
-                  type: string
-                amount:
-                  type: string
-                recipient:
-                  type: string
   stafihub.stafihub.ledger.QueryGetProtocolFeeReceiverResponse:
     type: object
     properties:
@@ -37189,6 +37181,26 @@ definitions:
             type: string
           value:
             type: string
+  stafihub.stafihub.ledger.QueryPoolUnbondNextSequenceResponse:
+    type: object
+    properties:
+      nextSequence:
+        type: integer
+        format: int64
+  stafihub.stafihub.ledger.QueryPoolUnbondingsResponse:
+    type: object
+    properties:
+      unbondings:
+        type: array
+        items:
+          type: object
+          properties:
+            unbonder:
+              type: string
+            amount:
+              type: string
+            recipient:
+              type: string
   stafihub.stafihub.ledger.QueryRelayFeeReceiverResponse:
     type: object
     properties:

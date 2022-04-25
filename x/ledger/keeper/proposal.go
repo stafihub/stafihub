@@ -187,8 +187,8 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
-	_, ok = k.GetPoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
-	if ok {
+	nextSeq := k.GetPoolUnbondNextSequence(ctx, shot.Denom, shot.Pool, shot.Era)
+	if nextSeq > 0 {
 		shot.UpdateState(types.ActiveReported)
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(

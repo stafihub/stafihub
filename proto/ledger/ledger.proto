@@ -32,13 +32,6 @@ message EraSnapshot {
     repeated string shotIds = 3;
 }
 
-message PoolUnbond {
-    string denom = 1;
-    string pool = 2;
-    uint32 era = 3;
-    repeated Unbonding unbondings = 4 [(gogoproto.nullable) = false];
-}
-
 message EraUnbondLimit {
     string denom = 1;
     uint32 limit = 2;

@@ -93,8 +93,8 @@ Where unbondings.json could be like this:
 	return cmd
 }
 
-func parseUnbondingsFlags(fs *pflag.FlagSet) ([]*types.PoolUnbond, error) {
-	ud := make([]*types.PoolUnbond, 0)
+func parseUnbondingsFlags(fs *pflag.FlagSet) ([]*types.Unbonding, error) {
+	ud := make([]*types.Unbonding, 0)
 	udFile, err := fs.GetString(FlagUnbondings)
 	if err != nil {
 		return nil, err

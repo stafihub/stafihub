@@ -43,6 +43,7 @@ var (
 	TotalProtocolFeePrefix        = []byte{0x19}
 	RelayFeeReceiverPrefix        = []byte{0x1a}
 	UnbondSwitchPrefix            = []byte{0x1b}
+	PoolUnbondNextSequencePrefix  = []byte{0x1c}
 )
 
 var (

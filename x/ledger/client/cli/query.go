@@ -41,7 +41,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetEraSnapshot())
 	cmd.AddCommand(CmdGetSnapshot())
 	cmd.AddCommand(CmdGetTotalExpectedActive())
-	cmd.AddCommand(CmdGetPoolUnbond())
 	cmd.AddCommand(CmdGetBondRecord())
 	cmd.AddCommand(CmdGetSignature())
 	cmd.AddCommand(CmdGetRParams())
@@ -51,6 +50,10 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdRelayFeeReceiver())
 
 	cmd.AddCommand(CmdUnbondSwitch())
+
+	cmd.AddCommand(CmdPoolUnbondNextSequence())
+
+	cmd.AddCommand(CmdPoolUnbondings())
 
 	// this line is used by starport scaffolding # 1
 
@@ -480,45 +483,6 @@ func CmdGetTotalExpectedActive() *cobra.Command {
 			}
 
 			res, err := queryClient.GetTotalExpectedActive(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdGetPoolUnbond() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "pool-unbond [denom] [pool] [era]",
-		Short: "Query GetPoolUnbond",
-		Args:  cobra.ExactArgs(3),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
-			reqPool := args[1]
-			reqEra, err := strconv.ParseUint(args[2], 10, 64)
-			if err != nil {
-				return err
-			}
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryGetPoolUnbondRequest{
-				Denom: reqDenom,
-				Pool:  reqPool,
-				Era:   uint32(reqEra),
-			}
-
-			res, err := queryClient.GetPoolUnbond(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

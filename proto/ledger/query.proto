@@ -96,11 +96,6 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getTotalExpectedActive/{denom}/{era}";
 	}
 
-// Queries a list of getPoolUnbond items.
-	rpc GetPoolUnbond(QueryGetPoolUnbondRequest) returns (QueryGetPoolUnbondResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}";
-	}
-
 // Queries a list of getBondRecord items.
 	rpc GetBondRecord(QueryGetBondRecordRequest) returns (QueryGetBondRecordResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondRecord/{denom}/{txhash}";
@@ -129,6 +124,16 @@ service Query {
 // Queries a list of UnbondSwitch items.
 	rpc UnbondSwitch(QueryUnbondSwitchRequest) returns (QueryUnbondSwitchResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/unbond_switch/{denom}";
+	}
+
+// Queries a list of PoolUnbondNextSequence items.
+	rpc PoolUnbondNextSequence(QueryPoolUnbondNextSequenceRequest) returns (QueryPoolUnbondNextSequenceResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbond_next_sequence/{denom}/{pool}/{unlockEra}";
+	}
+
+// Queries a list of PoolUnbondings items.
+	rpc PoolUnbondings(QueryPoolUnbondingsRequest) returns (QueryPoolUnbondingsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbondings/{denom}/{pool}/{unlockEra}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -274,16 +279,6 @@ message QueryGetTotalExpectedActiveResponse {
   string active = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
-message QueryGetPoolUnbondRequest {
-  string denom = 1;
-  string pool = 2;
-  uint32 era = 3;
-}
-
-message QueryGetPoolUnbondResponse {
-  PoolUnbond unbond = 1 [(gogoproto.nullable) = false];
-}
-
 message QueryGetBondRecordRequest {
   string denom = 1;
   string txhash = 2;
@@ -334,6 +329,26 @@ message QueryUnbondSwitchRequest {
 
 message QueryUnbondSwitchResponse {
   bool isOpen = 1;
+}
+
+message QueryPoolUnbondNextSequenceRequest {
+  string denom = 1;
+  string pool = 2;
+  uint32 unlockEra = 3;
+}
+
+message QueryPoolUnbondNextSequenceResponse {
+  uint32 nextSequence = 1;
+}
+
+message QueryPoolUnbondingsRequest {
+  string denom = 1;
+  string pool = 2;
+  uint32 unlockEra = 3;
+}
+
+message QueryPoolUnbondingsResponse {
+  repeated Unbonding unbondings = 1;
 }
 
 // this line is used by starport scaffolding # 3
