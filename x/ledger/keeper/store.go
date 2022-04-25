@@ -374,27 +374,6 @@ func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) utils.Dec {
 	return val
 }
 
-func (k Keeper) SetAccountUnbond(ctx sdk.Context, unbond types.AccountUnbond) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AccountUnbondPrefix)
-
-	b := k.cdc.MustMarshal(&unbond)
-	store.Set([]byte(unbond.Denom+unbond.Unbonder), b)
-}
-
-func (k Keeper) GetAccountUnbond(ctx sdk.Context, denom, unbonder string) (val types.AccountUnbond, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AccountUnbondPrefix)
-	b := store.Get([]byte(denom + unbonder))
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	if val.Chunks == nil {
-		val.Chunks = []types.UserUnlockChunk{}
-	}
-	return val, true
-}
-
 func (k Keeper) SetBondRecord(ctx sdk.Context, br types.BondRecord) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
 	b := k.cdc.MustMarshal(&br)

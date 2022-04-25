@@ -13,7 +13,6 @@ const (
 	BondReportProposalType          = "BondReportProposal"
 	BondAndReportActiveProposalType = "BondAndReportActiveProposal"
 	ActiveReportProposalType        = "ActiveReportProposal"
-	WithdrawReportProposalType      = "WithdrawReportProposal"
 	TransferReportProposalType      = "TransferReportProposal"
 	ExecuteBondProposalType         = "ExecuteBondProposal"
 )
@@ -26,7 +25,6 @@ func init() {
 	rvotetypes.RegisterProposalType(BondAndReportActiveProposalType)
 	rvotetypes.RegisterProposalType(ActiveReportProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&ActiveReportProposal{}, "ledger/ActiveReportProposal")
-	rvotetypes.RegisterProposalType(WithdrawReportProposalType)
 	rvotetypes.RegisterProposalType(TransferReportProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&TransferReportProposal{}, "ledger/TransferReportProposal")
 	rvotetypes.RegisterProposalType(ExecuteBondProposalType)

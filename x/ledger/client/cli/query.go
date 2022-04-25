@@ -42,7 +42,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdGetSnapshot())
 	cmd.AddCommand(CmdGetTotalExpectedActive())
 	cmd.AddCommand(CmdGetPoolUnbond())
-	cmd.AddCommand(CmdGetAccountUnbond())
 	cmd.AddCommand(CmdGetBondRecord())
 	cmd.AddCommand(CmdGetSignature())
 	cmd.AddCommand(CmdGetRParams())
@@ -520,40 +519,6 @@ func CmdGetPoolUnbond() *cobra.Command {
 			}
 
 			res, err := queryClient.GetPoolUnbond(cmd.Context(), params)
-			if err != nil {
-				return err
-			}
-
-			return clientCtx.PrintProto(res)
-		},
-	}
-
-	flags.AddQueryFlagsToCmd(cmd)
-
-	return cmd
-}
-
-func CmdGetAccountUnbond() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "account-unbond [denom] [unbonder]",
-		Short: "Query GetAccountUnbond",
-		Args:  cobra.ExactArgs(2),
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
-			reqUnbonder := args[1]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
-			if err != nil {
-				return err
-			}
-
-			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryGetAccountUnbondRequest{
-				Denom:    reqDenom,
-				Unbonder: reqUnbonder,
-			}
-
-			res, err := queryClient.GetAccountUnbond(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

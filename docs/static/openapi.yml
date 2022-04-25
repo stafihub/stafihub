@@ -19664,66 +19664,6 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}':
-    get:
-      summary: Queries a list of getAccountUnbond items.
-      operationId: StafihubStafihubLedgerGetAccountUnbond
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              unbond:
-                type: object
-                properties:
-                  unbonder:
-                    type: string
-                  denom:
-                    type: string
-                  chunks:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        pool:
-                          type: string
-                        unlockEra:
-                          type: integer
-                          format: int64
-                        value:
-                          type: string
-                        recipient:
-                          type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-        - name: unbonder
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
   '/stafihub/stafihub/ledger/getBondPipeline/{denom}/{pool}':
     get:
       summary: Queries a list of getBondPipeline items.
@@ -36772,27 +36712,6 @@ definitions:
         type: array
         items:
           type: string
-  stafihub.stafihub.ledger.AccountUnbond:
-    type: object
-    properties:
-      unbonder:
-        type: string
-      denom:
-        type: string
-      chunks:
-        type: array
-        items:
-          type: object
-          properties:
-            pool:
-              type: string
-            unlockEra:
-              type: integer
-              format: int64
-            value:
-              type: string
-            recipient:
-              type: string
   stafihub.stafihub.ledger.BondPipeline:
     type: object
     properties:
@@ -37020,30 +36939,6 @@ definitions:
               type: string
             value:
               type: string
-  stafihub.stafihub.ledger.QueryGetAccountUnbondResponse:
-    type: object
-    properties:
-      unbond:
-        type: object
-        properties:
-          unbonder:
-            type: string
-          denom:
-            type: string
-          chunks:
-            type: array
-            items:
-              type: object
-              properties:
-                pool:
-                  type: string
-                unlockEra:
-                  type: integer
-                  format: int64
-                value:
-                  type: string
-                recipient:
-                  type: string
   stafihub.stafihub.ledger.QueryGetBondPipelineResponse:
     type: object
     properties:
@@ -37384,18 +37279,6 @@ definitions:
       unbonder:
         type: string
       amount:
-        type: string
-      recipient:
-        type: string
-  stafihub.stafihub.ledger.UserUnlockChunk:
-    type: object
-    properties:
-      pool:
-        type: string
-      unlockEra:
-        type: integer
-        format: int64
-      value:
         type: string
       recipient:
         type: string

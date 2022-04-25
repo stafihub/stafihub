@@ -113,19 +113,6 @@ message Unbonding {
     string recipient = 3;
 }
 
-message UserUnlockChunk {
-    string pool = 1;
-    uint32 unlockEra = 2;
-    string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-    string recipient = 4;
-}
-
-message AccountUnbond {
-    string unbonder = 1;
-    string denom = 2;
-    repeated UserUnlockChunk chunks = 3 [(gogoproto.nullable) = false];
-}
-
 message BondRecord {
     string denom = 1;
     string bonder = 2;

@@ -101,11 +101,6 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}";
 	}
 
-// Queries a list of getAccountUnbond items.
-	rpc GetAccountUnbond(QueryGetAccountUnbondRequest) returns (QueryGetAccountUnbondResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}";
-	}
-
 // Queries a list of getBondRecord items.
 	rpc GetBondRecord(QueryGetBondRecordRequest) returns (QueryGetBondRecordResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondRecord/{denom}/{txhash}";
@@ -287,15 +282,6 @@ message QueryGetPoolUnbondRequest {
 
 message QueryGetPoolUnbondResponse {
   PoolUnbond unbond = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryGetAccountUnbondRequest {
-  string denom = 1;
-  string unbonder = 2;
-}
-
-message QueryGetAccountUnbondResponse {
-  AccountUnbond unbond = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetBondRecordRequest {

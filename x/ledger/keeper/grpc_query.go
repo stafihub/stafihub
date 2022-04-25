@@ -186,20 +186,6 @@ func (q Querier) GetPoolUnbond(goCtx context.Context, req *types.QueryGetPoolUnb
 	return &types.QueryGetPoolUnbondResponse{Unbond: unbond}, nil
 }
 
-func (q Querier) GetAccountUnbond(goCtx context.Context, req *types.QueryGetAccountUnbondRequest) (*types.QueryGetAccountUnbondResponse, error) {
-	if req == nil {
-		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
-	}
-
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	unbond, found := q.Keeper.GetAccountUnbond(ctx, req.Denom, req.Unbonder)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
-
-	return &types.QueryGetAccountUnbondResponse{Unbond: unbond}, nil
-}
-
 func (q Querier) GetBondRecord(goCtx context.Context, req *types.QueryGetBondRecordRequest) (*types.QueryGetBondRecordResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())

@@ -35,7 +35,6 @@ var (
 	EraExchangeRateKeyPrefix      = []byte{0x10}
 	UnbondFeePrefix               = []byte{0x11}
 	UnbondCommissionPrefix        = []byte{0x12}
-	AccountUnbondPrefix           = []byte{0x13}
 	BondRecordPrefix              = []byte{0x14}
 	SignaturePrefix               = []byte{0x15}
 	RParamsPrefix                 = []byte{0x16}
@@ -44,11 +43,6 @@ var (
 	TotalProtocolFeePrefix        = []byte{0x19}
 	RelayFeeReceiverPrefix        = []byte{0x1a}
 	UnbondSwitchPrefix            = []byte{0x1b}
-)
-
-const (
-	AccountMaxUnbondChunks = 32
-	AccountMinUnbondChunks = 16
 )
 
 var (

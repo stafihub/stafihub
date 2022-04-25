@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -70,35 +71,6 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 	pipe.Chunk.Unbond = pipe.Chunk.Unbond.Add(balance)
 
 	unlockEra := ce.Era + rParams.GetBondingDuration()
-	chunk := types.UserUnlockChunk{Pool: msg.Pool, UnlockEra: unlockEra, Value: balance, Recipient: msg.Recipient}
-	unbonds, found := k.Keeper.GetAccountUnbond(ctx, denom, msg.Creator)
-	if !found {
-		unbonds = types.NewAccountUnbond(denom, msg.Creator, []types.UserUnlockChunk{chunk})
-	} else {
-		unbonds.Chunks = append(unbonds.Chunks, chunk)
-	}
-	// check limit
-	unbondChunksLen := len(unbonds.Chunks)
-	if unbondChunksLen > types.AccountMaxUnbondChunks {
-		index := 0
-		for i := 0; i < unbondChunksLen; i++ {
-			if index+types.AccountMinUnbondChunks >= unbondChunksLen {
-				break
-			}
-			if unbonds.Chunks[i].UnlockEra <= ce.Era {
-				index = i + 1
-			} else {
-				break
-			}
-		}
-		if index == 0 {
-			return nil, types.ErrAccountUnbondReachLimit
-		}
-		unbonds.Chunks = unbonds.Chunks[index:]
-	}
-
-	k.Keeper.SetAccountUnbond(ctx, unbonds)
-
 	unbonding := types.NewUnbonding(msg.Creator, msg.Recipient, balance)
 	poolUnbonds, ok := k.Keeper.GetPoolUnbond(ctx, denom, msg.Pool, unlockEra)
 	if !ok {
@@ -157,6 +129,7 @@ func (k msgServer) LiquidityUnbond(goCtx context.Context, msg *types.MsgLiquidit
 			sdk.NewAttribute(types.AttributeKeyExchangeAmount, leftValue.String()),
 			sdk.NewAttribute(types.AttributeKeyReceiveAmount, balance.String()),
 			sdk.NewAttribute(types.AttributeKeyReceiver, msg.Recipient),
+			sdk.NewAttribute(types.AttributeKeyUnlockEra, fmt.Sprintf("%d", unlockEra)),
 		),
 	)
 
