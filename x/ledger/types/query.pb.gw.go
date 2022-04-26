@@ -2567,43 +2567,43 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_GetExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "exchangerate", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "exchange_rate", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ExchangeRateAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "exchangeRateAll"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ExchangeRateAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "exchange_rate_all"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetEraExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "EraExchangeRate", "denom", "era"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetEraExchangeRate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "era_exchange_rate", "denom", "era"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_EraExchangeRatesByDenom_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "eraExchangeRatesByDenom", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_EraExchangeRatesByDenom_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "era_exchange_rates_by_denom", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_BondedPoolsByDenom_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "bondedPoolsByDenom", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_BondedPoolsByDenom_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "bonded_pools_by_denom", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetPoolDetail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getPoolDetail", "denom", "pool"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetPoolDetail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "get_pool_detail", "denom", "pool"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetChainEra_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "getChainEra", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetChainEra_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "get_chain_era", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetCurrentEraSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "getCurrentEraSnapshot", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetCurrentEraSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "get_current_era_snapshot", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_GetProtocolFeeReceiver_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "protocol_fee_receiver"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetStakingRewardCommission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "getStakingRewardCommission"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetStakingRewardCommission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "get_staking_reward_commission"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetUnbondRelayFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "getUnbondRelayFee", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetUnbondRelayFee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "get_unbond_relay_fee", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetUnbondCommission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "getUnbondCommission"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetUnbondCommission_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "get_unbond_commission"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetEraUnbondLimit_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "getEraUnbondLimit", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetEraUnbondLimit_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "get_era_unbond_limit", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetBondPipeline_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getBondPipeline", "denom", "pool"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetBondPipeline_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "get_bond_pipeline", "denom", "pool"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetEraSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getEraSnapshot", "denom", "era"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetEraSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "get_era_snapshot", "denom", "era"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "getSnapshot", "shotId"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetSnapshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "get_snapshot", "shotId"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetTotalExpectedActive_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getTotalExpectedActive", "denom", "era"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetTotalExpectedActive_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "get_total_expected_active", "denom", "era"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetBondRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "getBondRecord", "denom", "txhash"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetBondRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "ledger", "get_bond_record", "denom", "txhash"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_GetSignature_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "getSignature"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_GetSignature_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "ledger", "get_signature"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_GetRParams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "ledger", "get_r_params", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 

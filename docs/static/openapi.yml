@@ -19447,7 +19447,46 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafihub/stafihub/ledger/EraExchangeRate/{denom}/{era}':
+  '/stafihub/stafihub/ledger/bonded_pools_by_denom/{denom}':
+    get:
+      summary: Queries a list of bondedPoolsByDenom items.
+      operationId: StafihubStafihubLedgerBondedPoolsByDenom
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              addrs:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafihub/stafihub/ledger/era_exchange_rate/{denom}/{era}':
     get:
       summary: Queries a list of getEraExchangeRate items.
       operationId: StafihubStafihubLedgerGetEraExchangeRate
@@ -19497,46 +19536,7 @@ paths:
           format: int64
       tags:
         - Query
-  '/stafihub/stafihub/ledger/bondedPoolsByDenom/{denom}':
-    get:
-      summary: Queries a list of bondedPoolsByDenom items.
-      operationId: StafihubStafihubLedgerBondedPoolsByDenom
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              addrs:
-                type: array
-                items:
-                  type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/stafihub/stafihub/ledger/eraExchangeRatesByDenom/{denom}':
+  '/stafihub/stafihub/ledger/era_exchange_rates_by_denom/{denom}':
     get:
       summary: Queries a list of eraExchangeRatesByDenom items.
       operationId: StafihubStafihubLedgerEraExchangeRatesByDenom
@@ -19583,46 +19583,7 @@ paths:
           type: string
       tags:
         - Query
-  /stafihub/stafihub/ledger/exchangeRateAll:
-    get:
-      summary: Queries a list of exchangeRateAll items.
-      operationId: StafihubStafihubLedgerExchangeRateAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              exchangeRates:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    denom:
-                      type: string
-                    value:
-                      type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  '/stafihub/stafihub/ledger/exchangerate/{denom}':
+  '/stafihub/stafihub/ledger/exchange_rate/{denom}':
     get:
       summary: Queries a list of getExchangeRate items.
       operationId: StafihubStafihubLedgerGetExchangeRate
@@ -19664,7 +19625,46 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getBondPipeline/{denom}/{pool}':
+  /stafihub/stafihub/ledger/exchange_rate_all:
+    get:
+      summary: Queries a list of exchangeRateAll items.
+      operationId: StafihubStafihubLedgerExchangeRateAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              exchangeRates:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    denom:
+                      type: string
+                    value:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/stafihub/stafihub/ledger/get_bond_pipeline/{denom}/{pool}':
     get:
       summary: Queries a list of getBondPipeline items.
       operationId: StafihubStafihubLedgerGetBondPipeline
@@ -19719,7 +19719,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getBondRecord/{denom}/{txhash}':
+  '/stafihub/stafihub/ledger/get_bond_record/{denom}/{txhash}':
     get:
       summary: Queries a list of getBondRecord items.
       operationId: StafihubStafihubLedgerGetBondRecord
@@ -19781,7 +19781,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getChainEra/{denom}':
+  '/stafihub/stafihub/ledger/get_chain_era/{denom}':
     get:
       summary: Queries a list of getChainEra items.
       operationId: StafihubStafihubLedgerGetChainEra
@@ -19819,7 +19819,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getCurrentEraSnapshot/{denom}':
+  '/stafihub/stafihub/ledger/get_current_era_snapshot/{denom}':
     get:
       summary: Queries a list of getCurrentEraSnapshot items.
       operationId: StafihubStafihubLedgerGetCurrentEraSnapshot
@@ -19858,7 +19858,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getEraSnapshot/{denom}/{era}':
+  '/stafihub/stafihub/ledger/get_era_snapshot/{denom}/{era}':
     get:
       summary: Queries a list of getEraSnapshot items.
       operationId: StafihubStafihubLedgerGetEraSnapshot
@@ -19902,7 +19902,7 @@ paths:
           format: int64
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getEraUnbondLimit/{denom}':
+  '/stafihub/stafihub/ledger/get_era_unbond_limit/{denom}':
     get:
       summary: Queries a list of getEraUnbondLimit items.
       operationId: StafihubStafihubLedgerGetEraUnbondLimit
@@ -19940,7 +19940,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getPoolDetail/{denom}/{pool}':
+  '/stafihub/stafihub/ledger/get_pool_detail/{denom}/{pool}':
     get:
       summary: Queries a list of getPoolDetail items.
       operationId: StafihubStafihubLedgerGetPoolDetail
@@ -19993,7 +19993,64 @@ paths:
           type: string
       tags:
         - Query
-  /stafihub/stafihub/ledger/getSignature:
+  '/stafihub/stafihub/ledger/get_r_params/{denom}':
+    get:
+      summary: Queries a list of GetRParams items.
+      operationId: StafihubStafihubLedgerGetRParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              rParams:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  gasPrice:
+                    type: string
+                  eraSeconds:
+                    type: integer
+                    format: int64
+                  offset:
+                    type: integer
+                    format: int32
+                  bondingDuration:
+                    type: integer
+                    format: int64
+                  leastBond:
+                    type: string
+                  validators:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /stafihub/stafihub/ledger/get_signature:
     get:
       summary: Queries a list of getSignature items.
       operationId: StafihubStafihubLedgerGetSignature
@@ -20078,7 +20135,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getSnapshot/{shotId}':
+  '/stafihub/stafihub/ledger/get_snapshot/{shotId}':
     get:
       summary: Queries a list of getSnapshot items.
       operationId: StafihubStafihubLedgerGetSnapshot
@@ -20141,7 +20198,7 @@ paths:
           type: string
       tags:
         - Query
-  /stafihub/stafihub/ledger/getStakingRewardCommission:
+  /stafihub/stafihub/ledger/get_staking_reward_commission:
     get:
       summary: Queries a list of getCommission items.
       operationId: StafihubStafihubLedgerGetStakingRewardCommission
@@ -20178,7 +20235,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getTotalExpectedActive/{denom}/{era}':
+  '/stafihub/stafihub/ledger/get_total_expected_active/{denom}/{era}':
     get:
       summary: Queries a list of getTotalExpectedActive items.
       operationId: StafihubStafihubLedgerGetTotalExpectedActive
@@ -20220,7 +20277,7 @@ paths:
           format: int64
       tags:
         - Query
-  /stafihub/stafihub/ledger/getUnbondCommission:
+  /stafihub/stafihub/ledger/get_unbond_commission:
     get:
       summary: Queries a list of getUnbondCommission items.
       operationId: StafihubStafihubLedgerGetUnbondCommission
@@ -20257,7 +20314,7 @@ paths:
           type: string
       tags:
         - Query
-  '/stafihub/stafihub/ledger/getUnbondRelayFee/{denom}':
+  '/stafihub/stafihub/ledger/get_unbond_relay_fee/{denom}':
     get:
       summary: Queries a list of getUnbondFee items.
       operationId: StafihubStafihubLedgerGetUnbondRelayFee
@@ -20274,63 +20331,6 @@ paths:
                     type: string
                   value:
                     type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: denom
-          in: path
-          required: true
-          type: string
-      tags:
-        - Query
-  '/stafihub/stafihub/ledger/get_r_params/{denom}':
-    get:
-      summary: Queries a list of GetRParams items.
-      operationId: StafihubStafihubLedgerGetRParams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              rParams:
-                type: object
-                properties:
-                  denom:
-                    type: string
-                  gasPrice:
-                    type: string
-                  eraSeconds:
-                    type: integer
-                    format: int64
-                  offset:
-                    type: integer
-                    format: int32
-                  bondingDuration:
-                    type: integer
-                    format: int64
-                  leastBond:
-                    type: string
-                  validators:
-                    type: array
-                    items:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -21279,7 +21279,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafihub/stafihub/rvote/getProposal/{propId}':
+  '/stafihub/stafihub/rvote/get_proposal/{propId}':
     get:
       summary: Queries a list of getProposal items.
       operationId: StafihubStafihubRvoteGetProposal
@@ -21483,7 +21483,7 @@ paths:
           type: string
       tags:
         - Query
-  /stafihub/stafihub/rvote/getProposalLife:
+  /stafihub/stafihub/rvote/get_proposal_life:
     get:
       summary: Queries a list of getProposalLife items.
       operationId: StafihubStafihubRvoteGetProposalLife

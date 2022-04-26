@@ -11,12 +11,12 @@ option go_package = "github.com/stafihub/stafihub/x/rvote/types";
 service Query {
     // Queries a list of getProposal items.
 	rpc GetProposal(QueryGetProposalRequest) returns (QueryGetProposalResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/rvote/getProposal/{propId}";
+		option (google.api.http).get = "/stafihub/stafihub/rvote/get_proposal/{propId}";
 	}
 
 // Queries a list of getProposalLife items.
 	rpc GetProposalLife(QueryGetProposalLifeRequest) returns (QueryGetProposalLifeResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/rvote/getProposalLife";
+		option (google.api.http).get = "/stafihub/stafihub/rvote/get_proposal_life";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -36,5 +36,5 @@ message QueryGetProposalLifeRequest {
 message QueryGetProposalLifeResponse {
   int64 proposalLife = 1;
 }
-
+ 
 // this line is used by starport scaffolding # 3
