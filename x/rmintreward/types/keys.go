@@ -22,7 +22,7 @@ const (
 var (
 	MintRewardActStoreKeyPrefix   = []byte{0x01}
 	ActLatestCycleStoreKeyPrefix  = []byte{0x02}
-	UserClaimInofStoreKeyPrefix   = []byte{0x03}
+	UserClaimInfoStoreKeyPrefix   = []byte{0x03}
 	UserActsStoreKeyPrefix        = []byte{0x04}
 	UserMintCountStoreKeyPrefix   = []byte{0x05}
 	ActCurrentCycleStoreKeyPrefix = []byte{0x07}
@@ -50,12 +50,12 @@ func ActCurrentCycleStoreKey(denom string) []byte {
 	return append(ActCurrentCycleStoreKeyPrefix, []byte(denom)...)
 }
 
-func UserClaimInforStoreKey(account sdk.AccAddress, denom string, cycle uint64, mintIndex uint64) []byte {
-	prefixLen := len(UserClaimInofStoreKeyPrefix)
+func UserClaimInfoStoreKey(account sdk.AccAddress, denom string, cycle uint64, mintIndex uint64) []byte {
+	prefixLen := len(UserClaimInfoStoreKeyPrefix)
 	accountLen := len(account)
 	denomLen := len([]byte(denom))
 	key := make([]byte, prefixLen+accountLen+denomLen+8+8)
-	copy(key, UserClaimInofStoreKeyPrefix)
+	copy(key, UserClaimInfoStoreKeyPrefix)
 	copy(key[prefixLen:], account)
 	copy(key[prefixLen+accountLen:], []byte(denom))
 	copy(key[prefixLen+accountLen+denomLen:], sdk.Uint64ToBigEndian(cycle))
