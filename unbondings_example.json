@@ -1,32 +1,15 @@
-[
-    {
-        "denom": "uratom",
-        "pool": "cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75",
-        "era": 2,
-        "unbondings": [
-            {
-                "amount": "1000000",
-                "recipient": "cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl"
-            },
-            {
-                "amount": "2000000",
-                "recipient": "cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x"
-            }
-        ]
-    },
-    {
-        "denom": "uratom",
-        "pool": "cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75",
-        "era": 3,
-        "unbondings": [
-            {
-                "amount": "1000000",
-                "recipient": "cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl"
-            },
-            {
-                "amount": "2000000",
-                "recipient": "cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x"
-            }
-        ]
-    }
-]
+{
+    "denom": "uratom",
+    "pool": "cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75",
+    "era": 2,
+    "unbondings": [
+        {
+            "amount": "1000000",
+            "recipient": "cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl"
+        },
+        {
+            "amount": "2000000",
+            "recipient": "cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x"
+        }
+    ]
+}
