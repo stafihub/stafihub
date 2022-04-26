@@ -195,7 +195,9 @@ message MsgMigrateInitResponse {
 message MsgMigrateUnbondings {
   string creator = 1;
   string denom = 2;
-  repeated PoolUnbond poolUnbonds = 3;
+  string pool = 3;
+  uint32 era = 4;
+  repeated Unbonding unbondings = 5;
 }
 
 message MsgMigrateUnbondingsResponse {

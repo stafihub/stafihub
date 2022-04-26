@@ -31,6 +31,7 @@ const (
 	AttributeKeyReceiveAmount  = "receive_amount"
 	AttributeKeyReceiver       = "receiver"
 	AttributeKeyEra            = "era"
+	AttributeKeyUnlockEra      = "unlock_era"
 	AttributeKeyTxType         = "tx_type"
 	AttributeKeyPropId         = "prop_id"
 	AttributeKeySigner         = "signer"

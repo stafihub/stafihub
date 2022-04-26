@@ -9,11 +9,13 @@ const TypeMsgMigrateUnbondings = "migrate_unbondings"
 
 var _ sdk.Msg = &MsgMigrateUnbondings{}
 
-func NewMsgMigrateUnbondings(creator, denom string, unbondings []*PoolUnbond) *MsgMigrateUnbondings {
+func NewMsgMigrateUnbondings(creator, denom, pool string, era uint32, unbondings []*Unbonding) *MsgMigrateUnbondings {
 	return &MsgMigrateUnbondings{
-		Creator:     creator,
-		Denom:       denom,
-		PoolUnbonds: unbondings,
+		Creator:    creator,
+		Denom:      denom,
+		Pool:       pool,
+		Era:        era,
+		Unbondings: unbondings,
 	}
 }
 

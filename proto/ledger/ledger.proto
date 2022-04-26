@@ -32,13 +32,6 @@ message EraSnapshot {
     repeated string shotIds = 3;
 }
 
-message PoolUnbond {
-    string denom = 1;
-    string pool = 2;
-    uint32 era = 3;
-    repeated Unbonding unbondings = 4 [(gogoproto.nullable) = false];
-}
-
 message EraUnbondLimit {
     string denom = 1;
     uint32 limit = 2;
@@ -111,19 +104,6 @@ message Unbonding {
     string unbonder = 1;
     string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
     string recipient = 3;
-}
-
-message UserUnlockChunk {
-    string pool = 1;
-    uint32 unlockEra = 2;
-    string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-    string recipient = 4;
-}
-
-message AccountUnbond {
-    string unbonder = 1;
-    string denom = 2;
-    repeated UserUnlockChunk chunks = 3 [(gogoproto.nullable) = false];
 }
 
 message BondRecord {

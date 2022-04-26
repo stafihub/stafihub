@@ -13,42 +13,42 @@ option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 service Query {
 // Queries a list of getExchangeRate items.
 	rpc GetExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/exchangerate/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/exchange_rate/{denom}";
 	}
 
 // Queries a list of exchangeRateAll items.
 	rpc ExchangeRateAll(QueryExchangeRateAllRequest) returns (QueryExchangeRateAllResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/exchangeRateAll";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/exchange_rate_all";
 	}
 
 // Queries a list of getEraExchangeRate items.
 	rpc GetEraExchangeRate(QueryGetEraExchangeRateRequest) returns (QueryGetEraExchangeRateResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/EraExchangeRate/{denom}/{era}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/era_exchange_rate/{denom}/{era}";
 	}
 
 // Queries a list of eraExchangeRatesByDenom items.
 	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/eraExchangeRatesByDenom/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/era_exchange_rates_by_denom/{denom}";
 	}
 
 // Queries a list of bondedPoolsByDenom items.
 	rpc BondedPoolsByDenom(QueryBondedPoolsByDenomRequest) returns (QueryBondedPoolsByDenomResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/bondedPoolsByDenom/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/bonded_pools_by_denom/{denom}";
 	}
 
 // Queries a list of getPoolDetail items.
 	rpc GetPoolDetail(QueryGetPoolDetailRequest) returns (QueryGetPoolDetailResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getPoolDetail/{denom}/{pool}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_pool_detail/{denom}/{pool}";
 	}
 
 // Queries a list of getChainEra items.
 	rpc GetChainEra(QueryGetChainEraRequest) returns (QueryGetChainEraResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getChainEra/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_chain_era/{denom}";
 	}
 
 // Queries a list of getCurrentEraSnapshot items.
 	rpc GetCurrentEraSnapshot(QueryGetCurrentEraSnapshotRequest) returns (QueryGetCurrentEraSnapshotResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getCurrentEraSnapshot/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_current_era_snapshot/{denom}";
 	}
 
 // Queries a list of getReceiver items.
@@ -58,62 +58,52 @@ service Query {
 
 // Queries a list of getCommission items.
 	rpc GetStakingRewardCommission(QueryGetStakingRewardCommissionRequest) returns (QueryGetStakingRewardCommissionResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getStakingRewardCommission";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_staking_reward_commission";
 	}
 
 // Queries a list of getUnbondFee items.
 	rpc GetUnbondRelayFee(QueryGetUnbondRelayFeeRequest) returns (QueryGetUnbondRelayFeeResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondRelayFee/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_unbond_relay_fee/{denom}";
 	}
 
 // Queries a list of getUnbondCommission items.
 	rpc GetUnbondCommission(QueryGetUnbondCommissionRequest) returns (QueryGetUnbondCommissionResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getUnbondCommission";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_unbond_commission";
 	}
 
 // Queries a list of getEraUnbondLimit items.
 	rpc GetEraUnbondLimit(QueryGetEraUnbondLimitRequest) returns (QueryGetEraUnbondLimitResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getEraUnbondLimit/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_era_unbond_limit/{denom}";
 	}
 
 // Queries a list of getBondPipeline items.
 	rpc GetBondPipeline(QueryGetBondPipelineRequest) returns (QueryGetBondPipelineResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondPipeline/{denom}/{pool}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_bond_pipeline/{denom}/{pool}";
 	}
 
 // Queries a list of getEraSnapshot items.
 	rpc GetEraSnapshot(QueryGetEraSnapshotRequest) returns (QueryGetEraSnapshotResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getEraSnapshot/{denom}/{era}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_era_snapshot/{denom}/{era}";
 	}
 
 // Queries a list of getSnapshot items.
 	rpc GetSnapshot(QueryGetSnapshotRequest) returns (QueryGetSnapshotResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getSnapshot/{shotId}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_snapshot/{shotId}";
 	}
 
 // Queries a list of getTotalExpectedActive items.
 	rpc GetTotalExpectedActive(QueryGetTotalExpectedActiveRequest) returns (QueryGetTotalExpectedActiveResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getTotalExpectedActive/{denom}/{era}";
-	}
-
-// Queries a list of getPoolUnbond items.
-	rpc GetPoolUnbond(QueryGetPoolUnbondRequest) returns (QueryGetPoolUnbondResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getPoolUnbond/{denom}/{pool}/{era}";
-	}
-
-// Queries a list of getAccountUnbond items.
-	rpc GetAccountUnbond(QueryGetAccountUnbondRequest) returns (QueryGetAccountUnbondResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getAccountUnbond/{denom}/{unbonder}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_total_expected_active/{denom}/{era}";
 	}
 
 // Queries a list of getBondRecord items.
 	rpc GetBondRecord(QueryGetBondRecordRequest) returns (QueryGetBondRecordResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getBondRecord/{denom}/{txhash}";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_bond_record/{denom}/{txhash}";
 	}
 
 // Queries a list of getSignature items.
 	rpc GetSignature(QueryGetSignatureRequest) returns (QueryGetSignatureResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/getSignature";
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_signature";
 	}
 
 // Queries a list of GetRParams items.
@@ -134,6 +124,16 @@ service Query {
 // Queries a list of UnbondSwitch items.
 	rpc UnbondSwitch(QueryUnbondSwitchRequest) returns (QueryUnbondSwitchResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/unbond_switch/{denom}";
+	}
+
+// Queries a list of PoolUnbondNextSequence items.
+	rpc PoolUnbondNextSequence(QueryPoolUnbondNextSequenceRequest) returns (QueryPoolUnbondNextSequenceResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbond_next_sequence/{denom}/{pool}/{unlockEra}";
+	}
+
+// Queries a list of PoolUnbondings items.
+	rpc PoolUnbondings(QueryPoolUnbondingsRequest) returns (QueryPoolUnbondingsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbondings/{denom}/{pool}/{unlockEra}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -279,25 +279,6 @@ message QueryGetTotalExpectedActiveResponse {
   string active = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
-message QueryGetPoolUnbondRequest {
-  string denom = 1;
-  string pool = 2;
-  uint32 era = 3;
-}
-
-message QueryGetPoolUnbondResponse {
-  PoolUnbond unbond = 1 [(gogoproto.nullable) = false];
-}
-
-message QueryGetAccountUnbondRequest {
-  string denom = 1;
-  string unbonder = 2;
-}
-
-message QueryGetAccountUnbondResponse {
-  AccountUnbond unbond = 1 [(gogoproto.nullable) = false];
-}
-
 message QueryGetBondRecordRequest {
   string denom = 1;
   string txhash = 2;
@@ -348,6 +329,26 @@ message QueryUnbondSwitchRequest {
 
 message QueryUnbondSwitchResponse {
   bool isOpen = 1;
+}
+
+message QueryPoolUnbondNextSequenceRequest {
+  string denom = 1;
+  string pool = 2;
+  uint32 unlockEra = 3;
+}
+
+message QueryPoolUnbondNextSequenceResponse {
+  uint32 nextSequence = 1;
+}
+
+message QueryPoolUnbondingsRequest {
+  string denom = 1;
+  string pool = 2;
+  uint32 unlockEra = 3;
+}
+
+message QueryPoolUnbondingsResponse {
+  repeated Unbonding unbondings = 1;
 }
 
 // this line is used by starport scaffolding # 3

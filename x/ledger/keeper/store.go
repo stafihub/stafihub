@@ -302,30 +302,67 @@ func (k Keeper) TotalExpectedActive(ctx sdk.Context, denom string, era uint32) (
 	return val
 }
 
-func (k Keeper) SetPoolUnbond(ctx sdk.Context, pu types.PoolUnbond) {
+func (k Keeper) SetPoolUnbonding(ctx sdk.Context, denom string, pool string, era, seq uint32, pu *types.Unbonding) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolUnbondPrefix)
-	b := k.cdc.MustMarshal(&pu)
-	bera := make([]byte, 4)
-	binary.LittleEndian.PutUint32(bera, pu.Era)
-	key := append([]byte(pu.Denom+pu.Pool), bera...)
-	store.Set(key, b)
+
+	eraBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(eraBts, era)
+	seqbts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqbts, seq)
+
+	key := append([]byte(denom+pool), eraBts...)
+	key = append(key, seqbts...)
+
+	store.Set(key, k.cdc.MustMarshal(pu))
 }
 
-func (k Keeper) GetPoolUnbond(ctx sdk.Context, denom string, pool string, era uint32) (val types.PoolUnbond, found bool) {
+func (k Keeper) GetPoolUnbonding(ctx sdk.Context, denom string, pool string, era, seq uint32) (*types.Unbonding, bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolUnbondPrefix)
+
+	eraBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(eraBts, era)
+	seqbts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqbts, seq)
+
+	key := append([]byte(denom+pool), eraBts...)
+	key = append(key, seqbts...)
+
+	b := store.Get(key)
+	if b == nil {
+		return nil, false
+	}
+
+	poolUnbond := types.Unbonding{}
+	k.cdc.MustUnmarshal(b, &poolUnbond)
+	return &poolUnbond, true
+}
+
+func (k Keeper) GetPoolUnbondNextSequence(ctx sdk.Context, denom string, pool string, era uint32) uint32 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolUnbondPrefix)
+
 	bera := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bera, era)
 	key := append([]byte(denom+pool), bera...)
-	b := store.Get(key)
-	if b == nil {
-		return val, false
+
+	seqBts := store.Get(key)
+	if seqBts == nil {
+		return 0
 	}
 
-	k.cdc.MustUnmarshal(b, &val)
-	if val.Unbondings == nil {
-		val.Unbondings = []types.Unbonding{}
-	}
-	return val, true
+	seq := binary.LittleEndian.Uint32(seqBts)
+	return seq + 1
+}
+
+func (k Keeper) SetPoolUnbondSequence(ctx sdk.Context, denom string, pool string, era, seq uint32) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolUnbondPrefix)
+
+	bera := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, era)
+	key := append([]byte(denom+pool), bera...)
+
+	seqBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqBts, seq)
+	store.Set(key, seqBts)
 }
 
 func (k Keeper) SetUnbondRelayFee(ctx sdk.Context, denom string, value sdk.Coin) {
@@ -372,27 +409,6 @@ func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) utils.Dec {
 		panic(err)
 	}
 	return val
-}
-
-func (k Keeper) SetAccountUnbond(ctx sdk.Context, unbond types.AccountUnbond) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AccountUnbondPrefix)
-
-	b := k.cdc.MustMarshal(&unbond)
-	store.Set([]byte(unbond.Denom+unbond.Unbonder), b)
-}
-
-func (k Keeper) GetAccountUnbond(ctx sdk.Context, denom, unbonder string) (val types.AccountUnbond, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.AccountUnbondPrefix)
-	b := store.Get([]byte(denom + unbonder))
-	if b == nil {
-		return val, false
-	}
-
-	k.cdc.MustUnmarshal(b, &val)
-	if val.Chunks == nil {
-		val.Chunks = []types.UserUnlockChunk{}
-	}
-	return val, true
 }
 
 func (k Keeper) SetBondRecord(ctx sdk.Context, br types.BondRecord) {

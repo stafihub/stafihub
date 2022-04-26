@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"encoding/hex"
-	"strconv"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
@@ -41,8 +41,8 @@ func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEra
 			sdk.NewEvent(
 				types.EventTypeEraPoolUpdated,
 				sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
-				sdk.NewAttribute(types.AttributeKeyLastEra, strconv.FormatUint(uint64(ce.Era), 10)),
-				sdk.NewAttribute(types.AttributeKeyCurrentEra, strconv.FormatUint(uint64(p.Era), 10)),
+				sdk.NewAttribute(types.AttributeKeyLastEra, fmt.Sprintf("%d", ce.Era)),
+				sdk.NewAttribute(types.AttributeKeyCurrentEra, fmt.Sprintf("%d", p.Era)),
 				sdk.NewAttribute(types.AttributeKeyShotId, shotId),
 			),
 		)
@@ -187,8 +187,8 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
 
-	_, ok = k.GetPoolUnbond(ctx, shot.Denom, shot.Pool, shot.Era)
-	if ok {
+	nextSeq := k.GetPoolUnbondNextSequence(ctx, shot.Denom, shot.Pool, shot.Era)
+	if nextSeq > 0 {
 		shot.UpdateState(types.ActiveReported)
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(

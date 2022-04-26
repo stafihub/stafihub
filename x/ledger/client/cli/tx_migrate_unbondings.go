@@ -12,7 +12,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
@@ -21,47 +20,30 @@ var FlagUnbondings = "unbondings"
 
 func CmdMigrateUnbondings() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "migrate-unbondings [denom]",
+		Use:   "migrate-unbondings [path_to_unbondings]",
 		Short: "Migrate unbondings",
 		Long: strings.TrimSpace(
-			fmt.Sprintf(`Broadcast message migrate init with an unbonding list which can be given through a JSON file.
+			fmt.Sprintf(`Broadcast message migrate init with an unbonding list of an era which can be given through a JSON file.
 
 Example:
-$ %s tx ledger migrate-unbondings uratom  --unbondings="path/to/unbondings.json" --from admin
+$ %s tx ledger migrate-unbondings path/to/unbondings.json --from admin
 
 Where unbondings.json could be like this:
-[
-    {
-        "denom": "uratom",
-        "pool": "cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75",
-        "era": 2,
-        "unbondings": [
-            {
-                "amount": "1000000",
-                "recipient": "cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl"
-            },
-            {
-                "amount": "2000000",
-                "recipient": "cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x"
-            }
-        ]
-    },
-    {
-        "denom": "uratom",
-        "pool": "cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75",
-        "era": 3,
-        "unbondings": [
-            {
-                "amount": "1000000",
-                "recipient": "cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl"
-            },
-            {
-                "amount": "2000000",
-                "recipient": "cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x"
-            }
-        ]
-    }
-]
+{
+    "denom": "uratom",
+    "pool": "cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75",
+    "era": 2,
+    "unbondings": [
+        {
+            "amount": "1000000",
+            "recipient": "cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl"
+        },
+        {
+            "amount": "2000000",
+            "recipient": "cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x"
+        }
+    ]
+}
 `, version.AppName)),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -70,15 +52,17 @@ Where unbondings.json could be like this:
 			if err != nil {
 				return err
 			}
-			unbondings, err := parseUnbondingsFlags(cmd.Flags())
+			unbondings, err := parseUnbondings(args[0])
 			if err != nil {
 				return err
 			}
 
 			msg := types.NewMsgMigrateUnbondings(
 				clientCtx.GetFromAddress().String(),
-				args[0],
-				unbondings,
+				unbondings.Denom,
+				unbondings.Pool,
+				unbondings.Era,
+				unbondings.Unbondings,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -93,17 +77,16 @@ Where unbondings.json could be like this:
 	return cmd
 }
 
-func parseUnbondingsFlags(fs *pflag.FlagSet) ([]*types.PoolUnbond, error) {
-	ud := make([]*types.PoolUnbond, 0)
-	udFile, err := fs.GetString(FlagUnbondings)
-	if err != nil {
-		return nil, err
-	}
-	if len(udFile) == 0 {
-		return nil, fmt.Errorf("unbondings json file not give")
-	}
+type Unbondings struct {
+	Denom      string
+	Pool       string
+	Era        uint32
+	Unbondings []*types.Unbonding
+}
 
-	contents, err := os.ReadFile(udFile)
+func parseUnbondings(fp string) (*Unbondings, error) {
+	ud := Unbondings{}
+	contents, err := os.ReadFile(fp)
 	if err != nil {
 		return nil, err
 	}
@@ -113,5 +96,5 @@ func parseUnbondingsFlags(fs *pflag.FlagSet) ([]*types.PoolUnbond, error) {
 		return nil, err
 	}
 
-	return ud, nil
+	return &ud, nil
 }

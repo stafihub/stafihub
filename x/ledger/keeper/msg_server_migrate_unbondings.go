@@ -16,28 +16,27 @@ func (k msgServer) MigrateUnbondings(goCtx context.Context, msg *types.MsgMigrat
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
+	err := k.Keeper.CheckAddress(ctx, msg.Denom, msg.Pool)
+	if err != nil {
+		return nil, err
+	}
+	if !k.Keeper.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
+		return nil, types.ErrPoolNotBonded
+	}
 
-	for _, poolUnbonds := range msg.PoolUnbonds {
-		if msg.Denom != poolUnbonds.Denom {
-			return nil, types.ErrUnbondingDenomNotMatch
-		}
-		err := k.Keeper.CheckAddress(ctx, msg.Denom, poolUnbonds.Pool)
+	for seq, unbonding := range msg.Unbondings {
+		err := k.Keeper.CheckAddress(ctx, msg.Denom, unbonding.Recipient)
 		if err != nil {
 			return nil, err
 		}
-		for index, unbonding := range poolUnbonds.Unbondings {
-			err := k.Keeper.CheckAddress(ctx, msg.Denom, unbonding.Recipient)
-			if err != nil {
-				return nil, err
-			}
-			poolUnbonds.Unbondings[index].Unbonder = sdk.AccAddress(zeroAddress[:]).String()
-		}
-		if !k.Keeper.IsBondedPoolExist(ctx, msg.Denom, poolUnbonds.Pool) {
-			return nil, types.ErrPoolNotBonded
-		}
+		unbonding.Unbonder = sdk.AccAddress(zeroAddress[:]).String()
 
 		// coverable here
-		k.SetPoolUnbond(ctx, *poolUnbonds)
+		k.SetPoolUnbonding(ctx, msg.Denom, msg.Pool, msg.Era, uint32(seq), unbonding)
+	}
+
+	if len(msg.Unbondings) > 0 {
+		k.SetPoolUnbondSequence(ctx, msg.Denom, msg.Pool, msg.Era, uint32(len(msg.Unbondings)-1))
 	}
 
 	return &types.MsgMigrateUnbondingsResponse{}, nil
