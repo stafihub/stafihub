@@ -50,31 +50,55 @@ func ActCurrentCycleStoreKey(denom string) []byte {
 	return append(ActCurrentCycleStoreKeyPrefix, []byte(denom)...)
 }
 
+// prefix + accountLen + account + denomLen + denom + cycle + mintIndex
 func UserClaimInfoStoreKey(account sdk.AccAddress, denom string, cycle uint64, mintIndex uint64) []byte {
 	prefixLen := len(UserClaimInfoStoreKeyPrefix)
 	accountLen := len(account)
 	denomLen := len([]byte(denom))
-	key := make([]byte, prefixLen+accountLen+denomLen+8+8)
+
+	key := make([]byte, prefixLen+1+accountLen+1+denomLen+8+8)
+
 	copy(key, UserClaimInfoStoreKeyPrefix)
-	copy(key[prefixLen:], account)
-	copy(key[prefixLen+accountLen:], []byte(denom))
-	copy(key[prefixLen+accountLen+denomLen:], sdk.Uint64ToBigEndian(cycle))
-	copy(key[prefixLen+accountLen+denomLen+8:], sdk.Uint64ToBigEndian(mintIndex))
+	key[prefixLen] = byte(accountLen)
+	copy(key[prefixLen+1:], account)
+	key[prefixLen+1+accountLen] = byte(denomLen)
+	copy(key[prefixLen+1+accountLen+1:], []byte(denom))
+	copy(key[prefixLen+1+accountLen+1+denomLen:], sdk.Uint64ToBigEndian(cycle))
+	copy(key[prefixLen+1+accountLen+1+denomLen+8:], sdk.Uint64ToBigEndian(mintIndex))
+
 	return key
 }
 
+// prefix + accountLen + account + denom
 func UserActsStoreKey(account sdk.AccAddress, denom string) []byte {
-	return append(UserActsStoreKeyPrefix, append(account, []byte(denom)...)...)
+	prefixLen := len(UserActsStoreKeyPrefix)
+	accountLen := len(account)
+	denomLen := len([]byte(denom))
+
+	key := make([]byte, prefixLen+1+accountLen+denomLen)
+
+	copy(key, UserActsStoreKeyPrefix)
+	key[prefixLen] = byte(accountLen)
+	copy(key[prefixLen+1:], account)
+	copy(key[prefixLen+1+accountLen:], denom)
+
+	return key
 }
 
+// prefix + accountLen + account + denomLen + denom + cycle
 func UserMintCountStoreKey(account sdk.AccAddress, denom string, cycle uint64) []byte {
 	prefixLen := len(UserMintCountStoreKeyPrefix)
 	accountLen := len(account)
 	denomLen := len([]byte(denom))
-	key := make([]byte, prefixLen+accountLen+denomLen+8)
+
+	key := make([]byte, prefixLen+1+accountLen+1+denomLen+8)
+
 	copy(key, UserMintCountStoreKeyPrefix)
-	copy(key[prefixLen:], account)
-	copy(key[prefixLen+accountLen:], []byte(denom))
-	copy(key[prefixLen+accountLen+denomLen:], sdk.Uint64ToBigEndian(cycle))
+	key[prefixLen] = byte(accountLen)
+	copy(key[prefixLen+1:], account)
+	key[prefixLen+1+accountLen] = byte(accountLen)
+	copy(key[prefixLen+1+accountLen+1:], []byte(denom))
+	copy(key[prefixLen+1+accountLen+1+denomLen:], sdk.Uint64ToBigEndian(cycle))
+
 	return key
 }
