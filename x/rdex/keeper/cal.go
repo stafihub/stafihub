@@ -61,3 +61,21 @@ func calSwapResult(fisBalance, rTokenBalance, inputAmount sdk.Int, inputIsFis bo
 
 	return
 }
+
+func calRemoveAmount(poolUnit, rmUnit, swapUnit, fisBalance, rtokenBalance sdk.Int, inputIsFis bool) (fisAmount, rtokenAmount, swapAmount sdk.Int) {
+	if poolUnit.IsZero() || rmUnit.IsZero() {
+		return sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt()
+	}
+	if rmUnit.GT(poolUnit) {
+		rmUnit = poolUnit
+	}
+	fisAmount = fisBalance.Mul(rmUnit).Quo(poolUnit)
+	rtokenAmount = rtokenBalance.Mul(rmUnit).Quo(poolUnit)
+
+	if inputIsFis {
+		swapAmount = fisBalance.Mul(swapUnit).Quo(poolUnit)
+	} else {
+		swapAmount = rtokenBalance.Mul(swapUnit).Quo(poolUnit)
+	}
+	return
+}

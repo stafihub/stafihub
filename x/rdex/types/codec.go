@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreatePool{}, "rdex/CreatePool", nil)
 	cdc.RegisterConcrete(&MsgAddLiquidity{}, "rdex/AddLiquidity", nil)
 	cdc.RegisterConcrete(&MsgSwap{}, "rdex/Swap", nil)
+	cdc.RegisterConcrete(&MsgRemoveLiquidity{}, "rdex/RemoveLiquidity", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +24,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSwap{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRemoveLiquidity{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -37447,6 +37447,8 @@ definitions:
     type: object
   stafihub.stafihub.rdex.MsgCreatePoolResponse:
     type: object
+  stafihub.stafihub.rdex.MsgRemoveLiquidityResponse:
+    type: object
   stafihub.stafihub.rdex.MsgSwapResponse:
     type: object
   stafihub.stafihub.rdex.Params:

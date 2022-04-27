@@ -11,6 +11,7 @@ service Msg {
       rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
   rpc AddLiquidity(MsgAddLiquidity) returns (MsgAddLiquidityResponse);
   rpc Swap(MsgSwap) returns (MsgSwapResponse);
+  rpc RemoveLiquidity(MsgRemoveLiquidity) returns (MsgRemoveLiquidityResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -43,6 +44,19 @@ message MsgSwap {
 }
 
 message MsgSwapResponse {
+}
+
+message MsgRemoveLiquidity {
+  string creator = 1;
+  string denom = 2;
+  string rmUnit = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string swapUnit = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string minFisOutAmount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string minRtokenOutAmount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  bool inputIsFis = 7;
+}
+
+message MsgRemoveLiquidityResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
