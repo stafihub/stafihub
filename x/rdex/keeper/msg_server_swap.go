@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/utils"
@@ -20,7 +21,7 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		return nil, types.ErrSwapPoolAlreadyExist
 	}
 
-	outAmount, _ := calSwapResult(swapPool.FisBalance, swapPool.RTokenBalance, msg.InputAmount, msg.InputIsFis)
+	outAmount, feeAmount := calSwapResult(swapPool.FisBalance, swapPool.RTokenBalance, msg.InputAmount, msg.InputIsFis)
 	if outAmount.LTE(sdk.ZeroInt()) {
 		return nil, types.ErrSwapAmountTooFew
 	}
@@ -68,6 +69,21 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 	}
 
 	k.Keeper.SetSwapPool(ctx, msg.Denom, swapPool)
+
+	// Swap: (account, symbol, input amount, output amount, fee amount, input is fis, fis balance, rtoken balance)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeSwap,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyInputAmount, msg.InputAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyOutputAmount, outAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyFeeAmount, feeAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyInputIsFis, fmt.Sprintf("%t", msg.InputIsFis)),
+			sdk.NewAttribute(types.AttributeKeyFisBalance, swapPool.FisBalance.String()),
+			sdk.NewAttribute(types.AttributeKeyRTokenBalance, swapPool.RTokenBalance.String()),
+		),
+	)
 
 	return &types.MsgSwapResponse{}, nil
 }

@@ -52,5 +52,19 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	}
 
 	k.Keeper.SetSwapPool(ctx, msg.Denom, &swapPool)
+
+	// CreatePool: (account, symbol, fis amount, rToken amount, new total unit, add lp unit)
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeCreatePool,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyFisAmount, msg.FisAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyRTokenAmount, msg.RTokenAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, poolTotalUnit.String()),
+			sdk.NewAttribute(types.AttributeKeyAddLpUnit, lpUnit.String()),
+		),
+	)
+
 	return &types.MsgCreatePoolResponse{}, nil
 }
