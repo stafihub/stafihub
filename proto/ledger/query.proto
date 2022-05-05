@@ -312,7 +312,7 @@ message QueryTotalProtocolFeeRequest {
 }
 
 message QueryTotalProtocolFeeResponse {
-	repeated TotalProtocolFee totalProtocolFeeList = 1 [(gogoproto.nullable) = false];
+	repeated TotalProtocolFee totalProtocolFeeList = 1;
 }
 
 message QueryRelayFeeReceiverRequest {

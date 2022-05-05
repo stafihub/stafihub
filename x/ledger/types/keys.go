@@ -1,5 +1,7 @@
 package types
 
+import "encoding/binary"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "ledger"
@@ -69,4 +71,59 @@ func RelayFeeReceiverStorekey(denom string) []byte {
 
 func UnbondSwitchStoreKey(denom string) []byte {
 	return append(UnbondSwitchPrefix, []byte(denom)...)
+}
+
+// prefix + denomLen + denom + pool
+func BondPipelineStoreKey(denom, pool string) []byte {
+	denomLen := len([]byte(denom))
+	poolLen := len([]byte(pool))
+
+	key := make([]byte, 1+1+denomLen+poolLen)
+	copy(key[0:], BondPipelinePrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	copy(key[2+denomLen:], []byte(pool))
+	return key
+}
+
+// prefix + denomLen + denom + pool
+func PoolDetailStoreKey(denom, pool string) []byte {
+	denomLen := len([]byte(denom))
+	poolLen := len([]byte(pool))
+
+	key := make([]byte, 1+1+denomLen+poolLen)
+	copy(key[0:], PoolDetailPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	copy(key[2+denomLen:], []byte(pool))
+	return key
+}
+
+// prefix + denomLen + denom + poolLen + pool + era + seq
+func PoolUnbondStoreKey(denom string, pool string, era, seq uint32) []byte {
+	denomLen := len([]byte(denom))
+	poolLen := len([]byte(pool))
+
+	key := make([]byte, 1+1+denomLen+1+poolLen+4+4)
+	copy(key[0:], PoolUnbondPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	key[1+1+denomLen] = byte(poolLen)
+	copy(key[1+1+denomLen+1:], []byte(pool))
+
+	binary.LittleEndian.PutUint32(key[1+1+denomLen+1+poolLen:], era)
+	binary.LittleEndian.PutUint32(key[1+1+denomLen+1+poolLen+4:], seq)
+	return key
+}
+
+func BondRecordStoreKey(denom, txHash string) []byte {
+	denomLen := len([]byte(denom))
+	txHashLen := len([]byte(txHash))
+
+	key := make([]byte, 1+1+denomLen+txHashLen)
+	copy(key[0:], BondRecordPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	copy(key[2+denomLen:], []byte(txHash))
+	return key
 }
