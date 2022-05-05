@@ -23,7 +23,7 @@ const (
 
 var (
 	ResourceIdToDenomStoreKeyPrefix = []byte{0x01}
-	DepositCountsStoreKeyPrefix     = []byte{0x02}
+	DepositCountStoreKeyPrefix      = []byte{0x02}
 	ProposalStoreKeyPrefix          = []byte{0x03}
 	ChainIdStoreKeyPrefix           = []byte{0x04}
 	ResourceIdTypeStoreKeyPrefix    = []byte{0x05}
@@ -50,19 +50,20 @@ func ResourceIdToDenomStoreKey(resourceId [32]byte) []byte {
 	return append(ResourceIdToDenomStoreKeyPrefix, resourceId[:]...)
 }
 
-func DepositCountsStoreKey(chainId uint8) []byte {
-	return append(DepositCountsStoreKeyPrefix, chainId)
+func DepositCountStoreKey(chainId uint8) []byte {
+	return append(DepositCountStoreKeyPrefix, chainId)
 }
 
 func ResourceIdTypeStoreKey(resourceId [32]byte) []byte {
 	return append(ResourceIdTypeStoreKeyPrefix, resourceId[:]...)
 }
 
-func ProposalStoreKey(chainId uint8, depositNonce uint64, hash [32]byte) []byte {
-	key := make([]byte, 41)
+func ProposalStoreKey(chainId uint8, depositNonce uint64, resourceId, hash [32]byte) []byte {
+	key := make([]byte, 1+8+32+32)
 	key[0] = chainId
 	copy(key[1:], sdk.Uint64ToBigEndian(depositNonce))
-	copy(key[9:], hash[:])
+	copy(key[9:9+32], resourceId[:])
+	copy(key[9+32:], hash[:])
 
 	return append(ProposalStoreKeyPrefix, key...)
 }
