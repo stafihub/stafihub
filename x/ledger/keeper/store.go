@@ -684,7 +684,7 @@ func (k Keeper) SetBondRecord(ctx sdk.Context, br types.BondRecord) {
 }
 
 func (k Keeper) GetBondRecord(ctx sdk.Context, denom, txHash string) (val types.BondRecord, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.BondRecordPrefix)
+	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.BondRecordStoreKey(denom, txHash))
 	if b == nil {
 		return val, false
