@@ -25,7 +25,13 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the rmintreward module's genesis state.
 type GenesisState struct {
-	Params Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	Params              Params                  `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	ActLatestCycleList  []*ActLatestCycle       `protobuf:"bytes,2,rep,name=actLatestCycleList,proto3" json:"actLatestCycleList,omitempty"`
+	ActCurrentCycleList []*ActCurrentCycle      `protobuf:"bytes,3,rep,name=actCurrentCycleList,proto3" json:"actCurrentCycleList,omitempty"`
+	MintrewardActList   []*GenesisMintRewardAct `protobuf:"bytes,4,rep,name=mintrewardActList,proto3" json:"mintrewardActList,omitempty"`
+	UserClaimInfoList   []*GenesisUserClaimInfo `protobuf:"bytes,5,rep,name=userClaimInfoList,proto3" json:"userClaimInfoList,omitempty"`
+	UserActList         []*GenesisUserAct       `protobuf:"bytes,6,rep,name=userActList,proto3" json:"userActList,omitempty"`
+	UserMintCountList   []*UserMintCount        `protobuf:"bytes,7,rep,name=userMintCountList,proto3" json:"userMintCountList,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -68,26 +74,463 @@ func (m *GenesisState) GetParams() Params {
 	return Params{}
 }
 
+func (m *GenesisState) GetActLatestCycleList() []*ActLatestCycle {
+	if m != nil {
+		return m.ActLatestCycleList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetActCurrentCycleList() []*ActCurrentCycle {
+	if m != nil {
+		return m.ActCurrentCycleList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetMintrewardActList() []*GenesisMintRewardAct {
+	if m != nil {
+		return m.MintrewardActList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetUserClaimInfoList() []*GenesisUserClaimInfo {
+	if m != nil {
+		return m.UserClaimInfoList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetUserActList() []*GenesisUserAct {
+	if m != nil {
+		return m.UserActList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetUserMintCountList() []*UserMintCount {
+	if m != nil {
+		return m.UserMintCountList
+	}
+	return nil
+}
+
+type ActLatestCycle struct {
+	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Cycle uint64 `protobuf:"varint,2,opt,name=cycle,proto3" json:"cycle,omitempty"`
+}
+
+func (m *ActLatestCycle) Reset()         { *m = ActLatestCycle{} }
+func (m *ActLatestCycle) String() string { return proto.CompactTextString(m) }
+func (*ActLatestCycle) ProtoMessage()    {}
+func (*ActLatestCycle) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3353bf5dc303df57, []int{1}
+}
+func (m *ActLatestCycle) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ActLatestCycle) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ActLatestCycle.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ActLatestCycle) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ActLatestCycle.Merge(m, src)
+}
+func (m *ActLatestCycle) XXX_Size() int {
+	return m.Size()
+}
+func (m *ActLatestCycle) XXX_DiscardUnknown() {
+	xxx_messageInfo_ActLatestCycle.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ActLatestCycle proto.InternalMessageInfo
+
+func (m *ActLatestCycle) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *ActLatestCycle) GetCycle() uint64 {
+	if m != nil {
+		return m.Cycle
+	}
+	return 0
+}
+
+type ActCurrentCycle struct {
+	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Cycle uint64 `protobuf:"varint,2,opt,name=cycle,proto3" json:"cycle,omitempty"`
+}
+
+func (m *ActCurrentCycle) Reset()         { *m = ActCurrentCycle{} }
+func (m *ActCurrentCycle) String() string { return proto.CompactTextString(m) }
+func (*ActCurrentCycle) ProtoMessage()    {}
+func (*ActCurrentCycle) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3353bf5dc303df57, []int{2}
+}
+func (m *ActCurrentCycle) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ActCurrentCycle) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ActCurrentCycle.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ActCurrentCycle) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ActCurrentCycle.Merge(m, src)
+}
+func (m *ActCurrentCycle) XXX_Size() int {
+	return m.Size()
+}
+func (m *ActCurrentCycle) XXX_DiscardUnknown() {
+	xxx_messageInfo_ActCurrentCycle.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ActCurrentCycle proto.InternalMessageInfo
+
+func (m *ActCurrentCycle) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *ActCurrentCycle) GetCycle() uint64 {
+	if m != nil {
+		return m.Cycle
+	}
+	return 0
+}
+
+type GenesisMintRewardAct struct {
+	Denom         string         `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	Cycle         uint64         `protobuf:"varint,2,opt,name=cycle,proto3" json:"cycle,omitempty"`
+	MintRewardAct *MintRewardAct `protobuf:"bytes,3,opt,name=mintRewardAct,proto3" json:"mintRewardAct,omitempty"`
+}
+
+func (m *GenesisMintRewardAct) Reset()         { *m = GenesisMintRewardAct{} }
+func (m *GenesisMintRewardAct) String() string { return proto.CompactTextString(m) }
+func (*GenesisMintRewardAct) ProtoMessage()    {}
+func (*GenesisMintRewardAct) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3353bf5dc303df57, []int{3}
+}
+func (m *GenesisMintRewardAct) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GenesisMintRewardAct) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GenesisMintRewardAct.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GenesisMintRewardAct) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GenesisMintRewardAct.Merge(m, src)
+}
+func (m *GenesisMintRewardAct) XXX_Size() int {
+	return m.Size()
+}
+func (m *GenesisMintRewardAct) XXX_DiscardUnknown() {
+	xxx_messageInfo_GenesisMintRewardAct.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GenesisMintRewardAct proto.InternalMessageInfo
+
+func (m *GenesisMintRewardAct) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *GenesisMintRewardAct) GetCycle() uint64 {
+	if m != nil {
+		return m.Cycle
+	}
+	return 0
+}
+
+func (m *GenesisMintRewardAct) GetMintRewardAct() *MintRewardAct {
+	if m != nil {
+		return m.MintRewardAct
+	}
+	return nil
+}
+
+type GenesisUserClaimInfo struct {
+	Account       string         `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Denom         string         `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
+	Cycle         uint64         `protobuf:"varint,3,opt,name=cycle,proto3" json:"cycle,omitempty"`
+	MintIndex     uint64         `protobuf:"varint,4,opt,name=mintIndex,proto3" json:"mintIndex,omitempty"`
+	UserClaimInfo *UserClaimInfo `protobuf:"bytes,5,opt,name=userClaimInfo,proto3" json:"userClaimInfo,omitempty"`
+}
+
+func (m *GenesisUserClaimInfo) Reset()         { *m = GenesisUserClaimInfo{} }
+func (m *GenesisUserClaimInfo) String() string { return proto.CompactTextString(m) }
+func (*GenesisUserClaimInfo) ProtoMessage()    {}
+func (*GenesisUserClaimInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3353bf5dc303df57, []int{4}
+}
+func (m *GenesisUserClaimInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GenesisUserClaimInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GenesisUserClaimInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GenesisUserClaimInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GenesisUserClaimInfo.Merge(m, src)
+}
+func (m *GenesisUserClaimInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *GenesisUserClaimInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_GenesisUserClaimInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GenesisUserClaimInfo proto.InternalMessageInfo
+
+func (m *GenesisUserClaimInfo) GetAccount() string {
+	if m != nil {
+		return m.Account
+	}
+	return ""
+}
+
+func (m *GenesisUserClaimInfo) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *GenesisUserClaimInfo) GetCycle() uint64 {
+	if m != nil {
+		return m.Cycle
+	}
+	return 0
+}
+
+func (m *GenesisUserClaimInfo) GetMintIndex() uint64 {
+	if m != nil {
+		return m.MintIndex
+	}
+	return 0
+}
+
+func (m *GenesisUserClaimInfo) GetUserClaimInfo() *UserClaimInfo {
+	if m != nil {
+		return m.UserClaimInfo
+	}
+	return nil
+}
+
+type GenesisUserAct struct {
+	Account string `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
+	Acts    *Acts  `protobuf:"bytes,3,opt,name=acts,proto3" json:"acts,omitempty"`
+}
+
+func (m *GenesisUserAct) Reset()         { *m = GenesisUserAct{} }
+func (m *GenesisUserAct) String() string { return proto.CompactTextString(m) }
+func (*GenesisUserAct) ProtoMessage()    {}
+func (*GenesisUserAct) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3353bf5dc303df57, []int{5}
+}
+func (m *GenesisUserAct) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GenesisUserAct) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GenesisUserAct.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GenesisUserAct) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GenesisUserAct.Merge(m, src)
+}
+func (m *GenesisUserAct) XXX_Size() int {
+	return m.Size()
+}
+func (m *GenesisUserAct) XXX_DiscardUnknown() {
+	xxx_messageInfo_GenesisUserAct.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GenesisUserAct proto.InternalMessageInfo
+
+func (m *GenesisUserAct) GetAccount() string {
+	if m != nil {
+		return m.Account
+	}
+	return ""
+}
+
+func (m *GenesisUserAct) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *GenesisUserAct) GetActs() *Acts {
+	if m != nil {
+		return m.Acts
+	}
+	return nil
+}
+
+type UserMintCount struct {
+	Account string `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Denom   string `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
+	Cycle   uint64 `protobuf:"varint,3,opt,name=cycle,proto3" json:"cycle,omitempty"`
+	Count   uint64 `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (m *UserMintCount) Reset()         { *m = UserMintCount{} }
+func (m *UserMintCount) String() string { return proto.CompactTextString(m) }
+func (*UserMintCount) ProtoMessage()    {}
+func (*UserMintCount) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3353bf5dc303df57, []int{6}
+}
+func (m *UserMintCount) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UserMintCount) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UserMintCount.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UserMintCount) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserMintCount.Merge(m, src)
+}
+func (m *UserMintCount) XXX_Size() int {
+	return m.Size()
+}
+func (m *UserMintCount) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserMintCount.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserMintCount proto.InternalMessageInfo
+
+func (m *UserMintCount) GetAccount() string {
+	if m != nil {
+		return m.Account
+	}
+	return ""
+}
+
+func (m *UserMintCount) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *UserMintCount) GetCycle() uint64 {
+	if m != nil {
+		return m.Cycle
+	}
+	return 0
+}
+
+func (m *UserMintCount) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "stafihub.stafihub.rmintreward.GenesisState")
+	proto.RegisterType((*ActLatestCycle)(nil), "stafihub.stafihub.rmintreward.ActLatestCycle")
+	proto.RegisterType((*ActCurrentCycle)(nil), "stafihub.stafihub.rmintreward.ActCurrentCycle")
+	proto.RegisterType((*GenesisMintRewardAct)(nil), "stafihub.stafihub.rmintreward.GenesisMintRewardAct")
+	proto.RegisterType((*GenesisUserClaimInfo)(nil), "stafihub.stafihub.rmintreward.GenesisUserClaimInfo")
+	proto.RegisterType((*GenesisUserAct)(nil), "stafihub.stafihub.rmintreward.GenesisUserAct")
+	proto.RegisterType((*UserMintCount)(nil), "stafihub.stafihub.rmintreward.UserMintCount")
 }
 
 func init() { proto.RegisterFile("rmintreward/genesis.proto", fileDescriptor_3353bf5dc303df57) }
 
 var fileDescriptor_3353bf5dc303df57 = []byte{
-	// 190 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x2c, 0xca, 0xcd, 0xcc,
-	0x2b, 0x29, 0x4a, 0x2d, 0x4f, 0x2c, 0x4a, 0xd1, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6,
-	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x2d, 0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2,
-	0x83, 0x33, 0x90, 0x14, 0x4b, 0x89, 0xa4, 0xe7, 0xa7, 0xe7, 0x83, 0x55, 0xea, 0x83, 0x58, 0x10,
-	0x4d, 0x52, 0x12, 0xc8, 0xe6, 0x15, 0x24, 0x16, 0x25, 0xe6, 0x42, 0x8d, 0x53, 0x0a, 0xe6, 0xe2,
-	0x71, 0x87, 0x98, 0x1f, 0x5c, 0x92, 0x58, 0x92, 0x2a, 0xe4, 0xcc, 0xc5, 0x06, 0x91, 0x97, 0x60,
-	0x54, 0x60, 0xd4, 0xe0, 0x36, 0x52, 0xd5, 0xc3, 0x6b, 0x9f, 0x5e, 0x00, 0x58, 0xb1, 0x13, 0xcb,
-	0x89, 0x7b, 0xf2, 0x0c, 0x41, 0x50, 0xad, 0x4e, 0x5e, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24,
-	0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78,
-	0x2c, 0xc7, 0x10, 0x65, 0x90, 0x9e, 0x59, 0x02, 0x32, 0x22, 0x39, 0x3f, 0x57, 0x1f, 0x66, 0x1e,
-	0x82, 0x51, 0xa1, 0x8f, 0xec, 0xce, 0x92, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0xb0, 0x3b, 0x8d,
-	0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x4d, 0xed, 0x0f, 0xa4, 0x13, 0x01, 0x00, 0x00,
+	// 526 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x94, 0x41, 0x6f, 0xd3, 0x30,
+	0x14, 0xc7, 0x9b, 0x36, 0xed, 0xb4, 0x57, 0x36, 0x84, 0xe9, 0x21, 0x4c, 0x10, 0xaa, 0x20, 0xa4,
+	0x1e, 0x20, 0x45, 0xdb, 0x81, 0x0b, 0x1c, 0x58, 0x0e, 0x68, 0x68, 0x08, 0x64, 0xb4, 0xcb, 0x24,
+	0x24, 0xbc, 0xd4, 0x2b, 0x11, 0x4d, 0x5c, 0xd9, 0xae, 0x58, 0x3f, 0x01, 0x57, 0x4e, 0x7c, 0xa6,
+	0x9d, 0xd0, 0x8e, 0x9c, 0x10, 0x6a, 0xbf, 0x08, 0xb2, 0x93, 0x12, 0x9b, 0x46, 0x64, 0x95, 0xb8,
+	0xd9, 0xcf, 0xfe, 0xff, 0xde, 0xdf, 0xef, 0xbd, 0x04, 0xee, 0xf0, 0x34, 0xc9, 0x24, 0xa7, 0x9f,
+	0x09, 0x1f, 0x0d, 0xc7, 0x34, 0xa3, 0x22, 0x11, 0xe1, 0x94, 0x33, 0xc9, 0xd0, 0x3d, 0x21, 0xc9,
+	0x79, 0xf2, 0x71, 0x76, 0x16, 0xfe, 0x59, 0x18, 0x97, 0xf7, 0x7a, 0x63, 0x36, 0x66, 0xfa, 0xe6,
+	0x50, 0xad, 0x72, 0xd1, 0x9e, 0x67, 0xf2, 0xa6, 0x84, 0x93, 0x54, 0x54, 0x9d, 0xa4, 0x6c, 0x44,
+	0x27, 0xc5, 0x49, 0xf0, 0xa5, 0x0d, 0x37, 0x5e, 0xe6, 0xa9, 0xdf, 0x49, 0x22, 0x29, 0x8a, 0xa0,
+	0x93, 0x4b, 0x3d, 0xa7, 0xef, 0x0c, 0xba, 0xfb, 0x0f, 0xc3, 0x7f, 0x5a, 0x09, 0xdf, 0xea, 0xcb,
+	0x87, 0xee, 0xe5, 0xcf, 0xfb, 0x0d, 0x5c, 0x48, 0xd1, 0x7b, 0x40, 0x24, 0x96, 0xc7, 0x44, 0x52,
+	0x21, 0xa3, 0x79, 0x3c, 0xa1, 0xc7, 0x89, 0x90, 0x5e, 0xb3, 0xdf, 0x1a, 0x74, 0xf7, 0x1f, 0xd7,
+	0x00, 0x5f, 0x58, 0x42, 0x5c, 0x01, 0x42, 0x1f, 0xe0, 0x36, 0x89, 0x65, 0x34, 0xe3, 0x9c, 0x66,
+	0x06, 0xbf, 0xa5, 0xf9, 0x61, 0x3d, 0xdf, 0x54, 0xe2, 0x2a, 0x14, 0x22, 0x70, 0xab, 0x94, 0x28,
+	0x47, 0x8a, 0xef, 0x6a, 0xfe, 0x41, 0x0d, 0xbf, 0xa8, 0xe6, 0xeb, 0x24, 0x93, 0x78, 0x25, 0xc7,
+	0xeb, 0x34, 0x95, 0x62, 0x26, 0x28, 0x8f, 0x26, 0x24, 0x49, 0x8f, 0xb2, 0x73, 0xa6, 0x53, 0xb4,
+	0x37, 0x49, 0x71, 0x62, 0xca, 0xf1, 0x3a, 0x0d, 0xbd, 0x81, 0xae, 0x0a, 0xae, 0xfc, 0x77, 0xae,
+	0x55, 0x7f, 0x03, 0xae, 0x9c, 0x9b, 0x04, 0x74, 0x9a, 0x7b, 0x56, 0x6f, 0x8b, 0xd8, 0x2c, 0xcb,
+	0xb1, 0x5b, 0x1a, 0xfb, 0xa8, 0x06, 0x7b, 0x62, 0xea, 0xf0, 0x3a, 0x26, 0x78, 0x06, 0xbb, 0x76,
+	0xeb, 0x51, 0x0f, 0xda, 0x23, 0x9a, 0xb1, 0x54, 0x4f, 0xe2, 0x36, 0xce, 0x37, 0x2a, 0x1a, 0xab,
+	0x63, 0xaf, 0xd9, 0x77, 0x06, 0x2e, 0xce, 0x37, 0xc1, 0x73, 0xb8, 0xf9, 0x57, 0x63, 0x37, 0x92,
+	0x7f, 0x73, 0xa0, 0x57, 0xd5, 0xb8, 0x4d, 0x20, 0x08, 0xc3, 0x4e, 0x6a, 0x8a, 0xbd, 0x96, 0xfe,
+	0x82, 0xea, 0x2a, 0x63, 0x4f, 0x8a, 0x8d, 0x08, 0xbe, 0x97, 0xc6, 0xac, 0x76, 0x23, 0x0f, 0xb6,
+	0x48, 0x1c, 0xab, 0xea, 0x15, 0xd6, 0x56, 0xdb, 0xd2, 0x72, 0xb3, 0xd2, 0x72, 0xcb, 0xb4, 0x7c,
+	0x17, 0xb6, 0x55, 0xbe, 0xa3, 0x6c, 0x44, 0x2f, 0x3c, 0x57, 0x9f, 0x94, 0x01, 0xf5, 0x20, 0x6b,
+	0xa8, 0xbc, 0xf6, 0xb5, 0x1e, 0x64, 0xcf, 0xa5, 0x8d, 0x08, 0xe6, 0xb0, 0x6b, 0x4f, 0xd8, 0xc6,
+	0x2f, 0x79, 0x0a, 0x2e, 0x89, 0xa5, 0x28, 0xaa, 0xfb, 0xa0, 0xfe, 0x73, 0x17, 0x58, 0x0b, 0x82,
+	0x4f, 0xb0, 0x63, 0x4d, 0xe1, 0x7f, 0xaa, 0xa1, 0x8a, 0x6a, 0x86, 0x5b, 0x44, 0xd5, 0xe6, 0xf0,
+	0xd5, 0xe5, 0xc2, 0x77, 0xae, 0x16, 0xbe, 0xf3, 0x6b, 0xe1, 0x3b, 0x5f, 0x97, 0x7e, 0xe3, 0x6a,
+	0xe9, 0x37, 0x7e, 0x2c, 0xfd, 0xc6, 0xe9, 0x93, 0x71, 0x22, 0x95, 0xcb, 0x98, 0xa5, 0xc3, 0x95,
+	0xe5, 0x72, 0x71, 0x31, 0x34, 0xff, 0xd5, 0x72, 0x3e, 0xa5, 0xe2, 0xac, 0xa3, 0xff, 0xd5, 0x07,
+	0xbf, 0x03, 0x00, 0x00, 0xff, 0xff, 0xb4, 0x52, 0x0f, 0x01, 0x31, 0x06, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -110,6 +553,90 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.UserMintCountList) > 0 {
+		for iNdEx := len(m.UserMintCountList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.UserMintCountList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x3a
+		}
+	}
+	if len(m.UserActList) > 0 {
+		for iNdEx := len(m.UserActList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.UserActList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x32
+		}
+	}
+	if len(m.UserClaimInfoList) > 0 {
+		for iNdEx := len(m.UserClaimInfoList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.UserClaimInfoList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.MintrewardActList) > 0 {
+		for iNdEx := len(m.MintrewardActList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MintrewardActList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.ActCurrentCycleList) > 0 {
+		for iNdEx := len(m.ActCurrentCycleList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ActCurrentCycleList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.ActLatestCycleList) > 0 {
+		for iNdEx := len(m.ActLatestCycleList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ActLatestCycleList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	{
 		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -120,6 +647,278 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *ActLatestCycle) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ActLatestCycle) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ActLatestCycle) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Cycle != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Cycle))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ActCurrentCycle) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ActCurrentCycle) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ActCurrentCycle) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Cycle != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Cycle))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GenesisMintRewardAct) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GenesisMintRewardAct) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GenesisMintRewardAct) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.MintRewardAct != nil {
+		{
+			size, err := m.MintRewardAct.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintGenesis(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.Cycle != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Cycle))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GenesisUserClaimInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GenesisUserClaimInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GenesisUserClaimInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.UserClaimInfo != nil {
+		{
+			size, err := m.UserClaimInfo.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintGenesis(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.MintIndex != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.MintIndex))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.Cycle != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Cycle))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Account) > 0 {
+		i -= len(m.Account)
+		copy(dAtA[i:], m.Account)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Account)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GenesisUserAct) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GenesisUserAct) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GenesisUserAct) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Acts != nil {
+		{
+			size, err := m.Acts.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintGenesis(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Account) > 0 {
+		i -= len(m.Account)
+		copy(dAtA[i:], m.Account)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Account)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UserMintCount) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserMintCount) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserMintCount) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Count != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Count))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.Cycle != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Cycle))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Account) > 0 {
+		i -= len(m.Account)
+		copy(dAtA[i:], m.Account)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Account)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -142,6 +941,165 @@ func (m *GenesisState) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovGenesis(uint64(l))
+	if len(m.ActLatestCycleList) > 0 {
+		for _, e := range m.ActLatestCycleList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.ActCurrentCycleList) > 0 {
+		for _, e := range m.ActCurrentCycleList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.MintrewardActList) > 0 {
+		for _, e := range m.MintrewardActList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.UserClaimInfoList) > 0 {
+		for _, e := range m.UserClaimInfoList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.UserActList) > 0 {
+		for _, e := range m.UserActList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.UserMintCountList) > 0 {
+		for _, e := range m.UserMintCountList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *ActLatestCycle) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Cycle != 0 {
+		n += 1 + sovGenesis(uint64(m.Cycle))
+	}
+	return n
+}
+
+func (m *ActCurrentCycle) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Cycle != 0 {
+		n += 1 + sovGenesis(uint64(m.Cycle))
+	}
+	return n
+}
+
+func (m *GenesisMintRewardAct) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Cycle != 0 {
+		n += 1 + sovGenesis(uint64(m.Cycle))
+	}
+	if m.MintRewardAct != nil {
+		l = m.MintRewardAct.Size()
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	return n
+}
+
+func (m *GenesisUserClaimInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Account)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Cycle != 0 {
+		n += 1 + sovGenesis(uint64(m.Cycle))
+	}
+	if m.MintIndex != 0 {
+		n += 1 + sovGenesis(uint64(m.MintIndex))
+	}
+	if m.UserClaimInfo != nil {
+		l = m.UserClaimInfo.Size()
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	return n
+}
+
+func (m *GenesisUserAct) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Account)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Acts != nil {
+		l = m.Acts.Size()
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	return n
+}
+
+func (m *UserMintCount) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Account)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Cycle != 0 {
+		n += 1 + sovGenesis(uint64(m.Cycle))
+	}
+	if m.Count != 0 {
+		n += 1 + sovGenesis(uint64(m.Count))
+	}
 	return n
 }
 
@@ -213,6 +1171,1039 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ActLatestCycleList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ActLatestCycleList = append(m.ActLatestCycleList, &ActLatestCycle{})
+			if err := m.ActLatestCycleList[len(m.ActLatestCycleList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ActCurrentCycleList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ActCurrentCycleList = append(m.ActCurrentCycleList, &ActCurrentCycle{})
+			if err := m.ActCurrentCycleList[len(m.ActCurrentCycleList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MintrewardActList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MintrewardActList = append(m.MintrewardActList, &GenesisMintRewardAct{})
+			if err := m.MintrewardActList[len(m.MintrewardActList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserClaimInfoList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserClaimInfoList = append(m.UserClaimInfoList, &GenesisUserClaimInfo{})
+			if err := m.UserClaimInfoList[len(m.UserClaimInfoList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserActList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserActList = append(m.UserActList, &GenesisUserAct{})
+			if err := m.UserActList[len(m.UserActList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserMintCountList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.UserMintCountList = append(m.UserMintCountList, &UserMintCount{})
+			if err := m.UserMintCountList[len(m.UserMintCountList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ActLatestCycle) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ActLatestCycle: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ActLatestCycle: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cycle", wireType)
+			}
+			m.Cycle = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Cycle |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ActCurrentCycle) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ActCurrentCycle: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ActCurrentCycle: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cycle", wireType)
+			}
+			m.Cycle = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Cycle |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GenesisMintRewardAct) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GenesisMintRewardAct: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GenesisMintRewardAct: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cycle", wireType)
+			}
+			m.Cycle = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Cycle |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MintRewardAct", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MintRewardAct == nil {
+				m.MintRewardAct = &MintRewardAct{}
+			}
+			if err := m.MintRewardAct.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GenesisUserClaimInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GenesisUserClaimInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GenesisUserClaimInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Account", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Account = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cycle", wireType)
+			}
+			m.Cycle = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Cycle |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MintIndex", wireType)
+			}
+			m.MintIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.MintIndex |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserClaimInfo", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.UserClaimInfo == nil {
+				m.UserClaimInfo = &UserClaimInfo{}
+			}
+			if err := m.UserClaimInfo.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GenesisUserAct) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GenesisUserAct: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GenesisUserAct: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Account", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Account = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Acts", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Acts == nil {
+				m.Acts = &Acts{}
+			}
+			if err := m.Acts.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UserMintCount) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UserMintCount: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UserMintCount: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Account", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Account = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Cycle", wireType)
+			}
+			m.Cycle = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Cycle |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Count", wireType)
+			}
+			m.Count = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Count |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGenesis(dAtA[iNdEx:])

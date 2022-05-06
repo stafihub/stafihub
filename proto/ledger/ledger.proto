@@ -15,11 +15,11 @@ message Pool {
   repeated string addrs = 2;
 }
 
-message TotalExpectedActive {
-  string denom = 1;
-  string era = 2;
-  string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-}
+// message TotalExpectedActive {
+//   string denom = 1;
+//   string era = 2;
+//   string amount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+// }
 
 message BondPipeline {
     string denom = 1;
