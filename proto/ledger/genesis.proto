@@ -20,7 +20,7 @@ message GenesisState {
     repeated EraUnbondLimit eraUnbondLimitList = 7;
     repeated PoolDetail poolDetailList = 8;
     repeated EraSnapshot currentEraSnapshotList = 9;
-    repeated BondSnapshot snapshotList = 10;
+    repeated GenesisSnapshot snapshotList = 10;
     repeated GenesisEraSnapshot eraSnapshotList = 11;
     repeated ChainEra chainEraList = 12;
     repeated StakingRewardCommission stakingRewardCommissionList = 13;
@@ -77,4 +77,9 @@ message GenesisPoolUnbonding {
     string pool = 3;
     uint32 sequence = 4;
     Unbonding unbonding = 5;
+}
+
+message GenesisSnapshot {
+    string shotId = 1;
+    BondSnapshot snapshot = 2;
 }
