@@ -32,6 +32,7 @@ message GenesisState {
     repeated UnbondCommission unbondCommissionList = 19;
     repeated BondRecord bondRecordList = 20;
     repeated RParams rparamsList = 21;
+    repeated Signature signatureList = 22;
     // this line is used by starport scaffolding # genesis/proto/state
 }
 

@@ -105,6 +105,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, rparams := range genState.RparamsList {
 		k.SetRParams(ctx, *rparams)
 	}
+
+	for _, signature := range genState.SignatureList {
+		k.SetSignature(ctx, *signature)
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -135,6 +139,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.UnbondCommissionList = k.GetUnbondCommissionList(ctx)
 	genesis.BondRecordList = k.GetBondRecordList(ctx)
 	genesis.RparamsList = k.GetRParamsList(ctx)
+	genesis.SignatureList = k.GetSignatureList(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
