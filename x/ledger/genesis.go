@@ -47,7 +47,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 
 	for _, snapshot := range genState.SnapshotList {
-		k.SetSnapshot(ctx, snapshot.Denom, *snapshot)
+		k.SetSnapshot(ctx, snapshot.ShotId, *snapshot.Snapshot)
 	}
 
 	for _, eraSnapshot := range genState.EraSnapshotList {

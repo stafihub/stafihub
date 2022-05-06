@@ -265,12 +265,12 @@ func (k Keeper) Snapshot(ctx sdk.Context, shotId string) (val types.BondSnapshot
 	return val, true
 }
 
-func (k Keeper) SnapshotList(ctx sdk.Context) []*types.BondSnapshot {
+func (k Keeper) SnapshotList(ctx sdk.Context) []*types.GenesisSnapshot {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.SnapshotPrefix)
 	defer iterator.Close()
 
-	list := make([]*types.BondSnapshot, 0)
+	list := make([]*types.GenesisSnapshot, 0)
 	for ; iterator.Valid(); iterator.Next() {
 		key := iterator.Key()
 		shotId := string(key[1:])
@@ -278,7 +278,10 @@ func (k Keeper) SnapshotList(ctx sdk.Context) []*types.BondSnapshot {
 		if !found {
 			continue
 		}
-		list = append(list, &snapShot)
+		list = append(list, &types.GenesisSnapshot{
+			ShotId:   shotId,
+			Snapshot: &snapShot,
+		})
 	}
 	return list
 }
