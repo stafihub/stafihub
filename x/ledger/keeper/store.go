@@ -555,21 +555,21 @@ func (k Keeper) GetPoolUnbondingList(ctx sdk.Context) []*types.GenesisPoolUnbond
 		key := iterator.Key()
 
 		denom := string(key[1 : len(key)-45-4])
-		pool := string(key[len(key)-45-4 : len(key)-45])
-		era := binary.LittleEndian.Uint32(key[len(key)-45:])
+		pool := string(key[len(key)-45-4 : len(key)-4])
+		era := binary.LittleEndian.Uint32(key[len(key)-4:])
 
 		poolUnbonds, found := k.GetPoolUnbond(ctx, denom, pool, era)
 		if !found {
 			continue
 		}
 
-		for i, poolUnbond := range poolUnbonds.Unbondings {
+		for i := range poolUnbonds.Unbondings {
 			list = append(list, &types.GenesisPoolUnbonding{
 				Denom:     denom,
 				Era:       era,
 				Pool:      pool,
 				Sequence:  uint32(i),
-				Unbonding: &poolUnbond,
+				Unbonding: &poolUnbonds.Unbondings[i],
 			})
 		}
 
