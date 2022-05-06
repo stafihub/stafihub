@@ -87,6 +87,18 @@ func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
 	return chainIdList
 }
 
+func (k Keeper) GetChainIdList(ctx sdk.Context) []uint32 {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ChainIdStoreKeyPrefix)
+	defer iterator.Close()
+
+	chainIdList := make([]uint32, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		chainIdList = append(chainIdList, uint32(iterator.Key()[1]))
+	}
+	return chainIdList
+}
+
 func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.RelayFeeReceiverStoreKey, address)
@@ -162,6 +174,24 @@ func (k Keeper) GetDepositCounts(ctx sdk.Context, chainId uint8) uint64 {
 		return 0
 	}
 	return sdk.BigEndianToUint64(bts)
+}
+
+func (k Keeper) GetDepositCountList(ctx sdk.Context) []*types.DepositCount {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.DepositCountsStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.DepositCount, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		chainId := uint32(key[1])
+		count := sdk.BigEndianToUint64(iterator.Value())
+		list = append(list, &types.DepositCount{
+			ChainId: chainId,
+			Count:   count,
+		})
+	}
+	return list
 }
 
 func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, prop *types.Proposal) {
@@ -252,4 +282,26 @@ func (k Keeper) GetRelayFee(ctx sdk.Context, chainId uint8) (value sdk.Coin) {
 	}
 	k.cdc.MustUnmarshal(b, &value)
 	return value
+}
+
+func (k Keeper) GetRelayFeeList(ctx sdk.Context) []*types.RelayFee {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.RelayFeeStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.RelayFee, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+
+		chainId := uint32(key[1])
+
+		value := sdk.Coin{}
+		k.cdc.MustUnmarshal(iterator.Value(), &value)
+
+		list = append(list, &types.RelayFee{
+			ChainId: chainId,
+			Value:   value,
+		})
+	}
+	return list
 }
