@@ -156,6 +156,21 @@ func (k Keeper) GetEraExchangeRateByDenom(ctx sdk.Context, denom string) (list [
 	return
 }
 
+func (k Keeper) GetEraExchangeRateList(ctx sdk.Context) []*types.EraExchangeRate {
+	iterator := sdk.KVStorePrefixIterator(ctx.KVStore(k.storeKey), types.EraExchangeRateKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.EraExchangeRate, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		var val types.EraExchangeRate
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, &val)
+	}
+
+	return list
+}
+
+
 // token to rtoken
 func (k Keeper) TokenToRtoken(ctx sdk.Context, denom string, balance sdk.Int) sdk.Int {
 	er, ok := k.GetExchangeRate(ctx, denom)
@@ -209,7 +224,7 @@ func (k Keeper) GetTotalProtocolFee(ctx sdk.Context, denom string) (val types.To
 	return val, true
 }
 
-func (k Keeper) GetAllTotalProtocolFee(ctx sdk.Context) (list []types.TotalProtocolFee) {
+func (k Keeper) GetAllTotalProtocolFee(ctx sdk.Context) (list []*types.TotalProtocolFee) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalProtocolFeePrefix)
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 	defer iterator.Close()
@@ -217,7 +232,7 @@ func (k Keeper) GetAllTotalProtocolFee(ctx sdk.Context) (list []types.TotalProto
 	for ; iterator.Valid(); iterator.Next() {
 		var val types.TotalProtocolFee
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
-		list = append(list, val)
+		list = append(list, &val)
 	}
 	return
 }
@@ -252,4 +267,26 @@ func (k Keeper) GetUnbondSwitch(ctx sdk.Context, denom string) bool {
 		return true
 	}
 	return bytes.Equal(bts, types.SwitchStateOpen)
+}
+
+func (k Keeper) GetUnbondSwitchList(ctx sdk.Context) []*types.UnbondSwitch {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.UnbondSwitchPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.UnbondSwitch, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+
+		denom := string(key[1:])
+		switchState := false
+		if bytes.Equal(types.SwitchStateOpen, iterator.Value()) {
+			switchState = true
+		}
+		list = append(list, &types.UnbondSwitch{
+			Denom:  denom,
+			Switch: switchState,
+		})
+	}
+	return list
 }
