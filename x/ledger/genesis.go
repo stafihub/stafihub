@@ -39,6 +39,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.UnbondCommissionList = k.GetUnbondCommissionList(ctx)
 	genesis.BondRecordList = k.GetBondRecordList(ctx)
 	genesis.RparamsList = k.GetRParamsList(ctx)
+	genesis.SignatureList = k.GetSignatureList(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

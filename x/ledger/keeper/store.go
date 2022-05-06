@@ -735,7 +735,7 @@ func (k Keeper) GetSignature(ctx sdk.Context, denom string, era uint32, pool str
 	key := append([]byte(denom+pool+txType.String()), bera...)
 	key = append(key, propId...)
 
-	val := types.NewSignature(denom, era, pool, txType, propId)
+	val := types.Signature{}
 	b := store.Get(key)
 	if b == nil {
 		return val, false
@@ -743,6 +743,20 @@ func (k Keeper) GetSignature(ctx sdk.Context, denom string, era uint32, pool str
 
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
+}
+
+func (k Keeper) GetSignatureList(ctx sdk.Context) []*types.Signature {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.SignaturePrefix)
+	defer iterator.Close()
+
+	list := make([]*types.Signature, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		val := types.Signature{}
+		k.cdc.MustUnmarshal(iterator.Value(), &val)
+		list = append(list, &val)
+	}
+	return list
 }
 
 func (k Keeper) SetRParams(ctx sdk.Context, rParams types.RParams) {

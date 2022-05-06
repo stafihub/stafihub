@@ -170,7 +170,6 @@ func (k Keeper) GetEraExchangeRateList(ctx sdk.Context) []*types.EraExchangeRate
 	return list
 }
 
-
 // token to rtoken
 func (k Keeper) TokenToRtoken(ctx sdk.Context, denom string, balance sdk.Int) sdk.Int {
 	er, ok := k.GetExchangeRate(ctx, denom)

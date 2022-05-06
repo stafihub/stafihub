@@ -23,7 +23,7 @@ func (k msgServer) SetRelayGasPrice(goCtx context.Context, msg *types.MsgSetRela
 	rparams.GasPrice = msg.GasPrice
 
 	k.Keeper.SetRParams(ctx, rparams)
-	
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeRParamsChanged,
