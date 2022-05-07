@@ -87,6 +87,18 @@ func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
 	return chainIdList
 }
 
+func (k Keeper) GetChainIdList(ctx sdk.Context) []uint32 {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ChainIdStoreKeyPrefix)
+	defer iterator.Close()
+
+	chainIdList := make([]uint32, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		chainIdList = append(chainIdList, uint32(iterator.Key()[1]))
+	}
+	return chainIdList
+}
+
 func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.RelayFeeReceiverStoreKey, address)
@@ -149,19 +161,37 @@ func (k Keeper) GetAllResourceIdToDenom(ctx sdk.Context) []string {
 	return chainIdList
 }
 
-func (k Keeper) SetDepositCounts(ctx sdk.Context, chainId uint8, count uint64) {
+func (k Keeper) SetDepositCount(ctx sdk.Context, chainId uint8, count uint64) {
 	store := ctx.KVStore(k.storeKey)
 	bts := sdk.Uint64ToBigEndian(count)
-	store.Set(types.DepositCountsStoreKey(chainId), bts)
+	store.Set(types.DepositCountStoreKey(chainId), bts)
 }
 
-func (k Keeper) GetDepositCounts(ctx sdk.Context, chainId uint8) uint64 {
+func (k Keeper) GetDepositCount(ctx sdk.Context, chainId uint8) uint64 {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.DepositCountsStoreKey(chainId))
+	bts := store.Get(types.DepositCountStoreKey(chainId))
 	if bts == nil {
 		return 0
 	}
 	return sdk.BigEndianToUint64(bts)
+}
+
+func (k Keeper) GetDepositCountList(ctx sdk.Context) []*types.DepositCount {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.DepositCountStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.DepositCount, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		chainId := uint32(key[1])
+		count := sdk.BigEndianToUint64(iterator.Value())
+		list = append(list, &types.DepositCount{
+			ChainId: chainId,
+			Count:   count,
+		})
+	}
+	return list
 }
 
 func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, prop *types.Proposal) {
@@ -174,7 +204,7 @@ func (k Keeper) SetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 	hash := sha256.Sum256(hashBts)
 
 	propBts := k.cdc.MustMarshal(prop)
-	store.Set(types.ProposalStoreKey(chainId, depositNonce, hash), propBts)
+	store.Set(types.ProposalStoreKey(chainId, depositNonce, resourceId, hash), propBts)
 }
 
 func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64, resourceId [32]byte, content types.ProposalContent) (*types.Proposal, bool) {
@@ -185,7 +215,7 @@ func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 	hashBts = append(hashBts, resourceId[:]...)
 	hashBts = append(hashBts, contentBts...)
 	hash := sha256.Sum256(hashBts)
-	bts := store.Get(types.ProposalStoreKey(chainId, depositNonce, hash))
+	bts := store.Get(types.ProposalStoreKey(chainId, depositNonce, resourceId, hash))
 	if bts == nil {
 		return nil, false
 	}
@@ -193,6 +223,33 @@ func (k Keeper) GetProposal(ctx sdk.Context, chainId uint8, depositNonce uint64,
 	proposal := new(types.Proposal)
 	k.cdc.MustUnmarshal(bts, proposal)
 	return proposal, true
+}
+
+func (k Keeper) GetProposalList(ctx sdk.Context) []*types.GenesisProposal {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ProposalStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.GenesisProposal, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+
+		chainId := uint32(key[1])
+		depositNonce := sdk.BigEndianToUint64(key[2:10])
+		resourceId := hex.EncodeToString(key[10 : 10+32])
+
+		proposal := new(types.Proposal)
+		k.cdc.MustUnmarshal(iterator.Value(), proposal)
+
+		list = append(list, &types.GenesisProposal{
+			ChainId:      chainId,
+			DepositNonce: depositNonce,
+			ResourceId:   resourceId,
+			Proposal:     proposal,
+		})
+
+	}
+	return list
 }
 
 func (k Keeper) SetResourceIdType(ctx sdk.Context, resourceId [32]byte, idType types.ResourceIdType) {
@@ -252,4 +309,26 @@ func (k Keeper) GetRelayFee(ctx sdk.Context, chainId uint8) (value sdk.Coin) {
 	}
 	k.cdc.MustUnmarshal(b, &value)
 	return value
+}
+
+func (k Keeper) GetRelayFeeList(ctx sdk.Context) []*types.RelayFee {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.RelayFeeStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.RelayFee, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+
+		chainId := uint32(key[1])
+
+		value := sdk.Coin{}
+		k.cdc.MustUnmarshal(iterator.Value(), &value)
+
+		list = append(list, &types.RelayFee{
+			ChainId: chainId,
+			Value:   value,
+		})
+	}
+	return list
 }

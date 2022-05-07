@@ -25,7 +25,8 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the rbank module's genesis state.
 type GenesisState struct {
-	Params Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	Params        Params           `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	AddressPrefix []*AddressPrefix `protobuf:"bytes,2,rep,name=addressPrefix,proto3" json:"addressPrefix,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -68,26 +69,99 @@ func (m *GenesisState) GetParams() Params {
 	return Params{}
 }
 
+func (m *GenesisState) GetAddressPrefix() []*AddressPrefix {
+	if m != nil {
+		return m.AddressPrefix
+	}
+	return nil
+}
+
+type AddressPrefix struct {
+	Denom            string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom,omitempty"`
+	AccAddressPrefix string `protobuf:"bytes,2,opt,name=accAddressPrefix,proto3" json:"accAddressPrefix,omitempty"`
+	ValAddressPrefix string `protobuf:"bytes,3,opt,name=valAddressPrefix,proto3" json:"valAddressPrefix,omitempty"`
+}
+
+func (m *AddressPrefix) Reset()         { *m = AddressPrefix{} }
+func (m *AddressPrefix) String() string { return proto.CompactTextString(m) }
+func (*AddressPrefix) ProtoMessage()    {}
+func (*AddressPrefix) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fd1f8a6f057161fb, []int{1}
+}
+func (m *AddressPrefix) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *AddressPrefix) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_AddressPrefix.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *AddressPrefix) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AddressPrefix.Merge(m, src)
+}
+func (m *AddressPrefix) XXX_Size() int {
+	return m.Size()
+}
+func (m *AddressPrefix) XXX_DiscardUnknown() {
+	xxx_messageInfo_AddressPrefix.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AddressPrefix proto.InternalMessageInfo
+
+func (m *AddressPrefix) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+func (m *AddressPrefix) GetAccAddressPrefix() string {
+	if m != nil {
+		return m.AccAddressPrefix
+	}
+	return ""
+}
+
+func (m *AddressPrefix) GetValAddressPrefix() string {
+	if m != nil {
+		return m.ValAddressPrefix
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "stafihub.stafihub.rbank.GenesisState")
+	proto.RegisterType((*AddressPrefix)(nil), "stafihub.stafihub.rbank.AddressPrefix")
 }
 
 func init() { proto.RegisterFile("rbank/genesis.proto", fileDescriptor_fd1f8a6f057161fb) }
 
 var fileDescriptor_fd1f8a6f057161fb = []byte{
-	// 183 bytes of a gzipped FileDescriptorProto
+	// 266 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2e, 0x4a, 0x4a, 0xcc,
 	0xcb, 0xd6, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
 	0x12, 0x2f, 0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2, 0x83, 0x33, 0xc0, 0xca, 0xa4, 0x44,
 	0xd2, 0xf3, 0xd3, 0xf3, 0xc1, 0x6a, 0xf4, 0x41, 0x2c, 0x88, 0x72, 0x29, 0x21, 0x88, 0x19, 0x05,
-	0x89, 0x45, 0x89, 0xb9, 0x50, 0x23, 0x94, 0x7c, 0xb9, 0x78, 0xdc, 0x21, 0x66, 0x06, 0x97, 0x24,
-	0x96, 0xa4, 0x0a, 0xd9, 0x72, 0xb1, 0x41, 0xe4, 0x25, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0xe4,
-	0xf5, 0x70, 0xd8, 0xa1, 0x17, 0x00, 0x56, 0xe6, 0xc4, 0x72, 0xe2, 0x9e, 0x3c, 0x43, 0x10, 0x54,
-	0x93, 0x93, 0xcb, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38,
-	0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x69, 0xa5, 0x67,
-	0x96, 0x80, 0x34, 0x27, 0xe7, 0xe7, 0xea, 0xc3, 0x4c, 0x42, 0x30, 0x2a, 0xf4, 0x21, 0x6e, 0x2b,
-	0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0xbb, 0xcd, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x7f,
-	0x19, 0xcf, 0x75, 0xf5, 0x00, 0x00, 0x00,
+	0x89, 0x45, 0x89, 0xb9, 0x50, 0x23, 0x94, 0x66, 0x33, 0x72, 0xf1, 0xb8, 0x43, 0x0c, 0x0d, 0x2e,
+	0x49, 0x2c, 0x49, 0x15, 0xb2, 0xe5, 0x62, 0x83, 0x28, 0x90, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x36,
+	0x92, 0xd7, 0xc3, 0x61, 0x89, 0x5e, 0x00, 0x58, 0x99, 0x13, 0xcb, 0x89, 0x7b, 0xf2, 0x0c, 0x41,
+	0x50, 0x4d, 0x42, 0x3e, 0x5c, 0xbc, 0x89, 0x29, 0x29, 0x45, 0xa9, 0xc5, 0xc5, 0x01, 0x45, 0xa9,
+	0x69, 0x99, 0x15, 0x12, 0x4c, 0x0a, 0xcc, 0x1a, 0xdc, 0x46, 0x6a, 0x38, 0x4d, 0x71, 0x44, 0x56,
+	0x1d, 0x84, 0xaa, 0x59, 0xa9, 0x96, 0x8b, 0x17, 0x45, 0x5e, 0x48, 0x84, 0x8b, 0x35, 0x25, 0x35,
+	0x2f, 0x3f, 0x17, 0xec, 0x38, 0xce, 0x20, 0x08, 0x47, 0x48, 0x8b, 0x4b, 0x20, 0x31, 0x39, 0xd9,
+	0x11, 0xcd, 0x5e, 0x90, 0x02, 0x0c, 0x71, 0x90, 0xda, 0xb2, 0xc4, 0x1c, 0x54, 0xb5, 0xcc, 0x10,
+	0xb5, 0xe8, 0xe2, 0x4e, 0x2e, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91,
+	0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0xa5,
+	0x95, 0x9e, 0x59, 0x02, 0xf2, 0x43, 0x72, 0x7e, 0xae, 0x3e, 0xcc, 0x43, 0x08, 0x46, 0x85, 0x3e,
+	0x24, 0xa4, 0x4b, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x21, 0x6d, 0x0c, 0x08, 0x00, 0x00,
+	0xff, 0xff, 0xa5, 0x4b, 0xe0, 0xdf, 0xc3, 0x01, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -110,6 +184,20 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.AddressPrefix) > 0 {
+		for iNdEx := len(m.AddressPrefix) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AddressPrefix[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	{
 		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -120,6 +208,50 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *AddressPrefix) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AddressPrefix) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AddressPrefix) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ValAddressPrefix) > 0 {
+		i -= len(m.ValAddressPrefix)
+		copy(dAtA[i:], m.ValAddressPrefix)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.ValAddressPrefix)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.AccAddressPrefix) > 0 {
+		i -= len(m.AccAddressPrefix)
+		copy(dAtA[i:], m.AccAddressPrefix)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.AccAddressPrefix)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -142,6 +274,33 @@ func (m *GenesisState) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovGenesis(uint64(l))
+	if len(m.AddressPrefix) > 0 {
+		for _, e := range m.AddressPrefix {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *AddressPrefix) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.AccAddressPrefix)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	l = len(m.ValAddressPrefix)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
 	return n
 }
 
@@ -212,6 +371,186 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AddressPrefix", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AddressPrefix = append(m.AddressPrefix, &AddressPrefix{})
+			if err := m.AddressPrefix[len(m.AddressPrefix)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AddressPrefix) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AddressPrefix: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AddressPrefix: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AccAddressPrefix", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AccAddressPrefix = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ValAddressPrefix", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ValAddressPrefix = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

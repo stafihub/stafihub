@@ -5,6 +5,7 @@ package types
 
 import (
 	fmt "fmt"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
@@ -25,7 +26,14 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the bridge module's genesis state.
 type GenesisState struct {
-	Params Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	Params                Params             `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	DepositCountList      []*DepositCount    `protobuf:"bytes,2,rep,name=depositCountList,proto3" json:"depositCountList,omitempty"`
+	ProposalList          []*GenesisProposal `protobuf:"bytes,3,rep,name=proposalList,proto3" json:"proposalList,omitempty"`
+	RelayFeeList          []*RelayFee        `protobuf:"bytes,4,rep,name=relayFeeList,proto3" json:"relayFeeList,omitempty"`
+	ChainIdList           []uint32           `protobuf:"varint,5,rep,packed,name=chainIdList,proto3" json:"chainIdList,omitempty"`
+	RelayFeeReceiver      string             `protobuf:"bytes,6,opt,name=relayFeeReceiver,proto3" json:"relayFeeReceiver,omitempty"`
+	ResourceIdToDenom     []string           `protobuf:"bytes,7,rep,name=resourceIdToDenom,proto3" json:"resourceIdToDenom,omitempty"`
+	ResourceIdToDenomType []string           `protobuf:"bytes,8,rep,name=resourceIdToDenomType,proto3" json:"resourceIdToDenomType,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -68,26 +76,262 @@ func (m *GenesisState) GetParams() Params {
 	return Params{}
 }
 
+func (m *GenesisState) GetDepositCountList() []*DepositCount {
+	if m != nil {
+		return m.DepositCountList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetProposalList() []*GenesisProposal {
+	if m != nil {
+		return m.ProposalList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetRelayFeeList() []*RelayFee {
+	if m != nil {
+		return m.RelayFeeList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetChainIdList() []uint32 {
+	if m != nil {
+		return m.ChainIdList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetRelayFeeReceiver() string {
+	if m != nil {
+		return m.RelayFeeReceiver
+	}
+	return ""
+}
+
+func (m *GenesisState) GetResourceIdToDenom() []string {
+	if m != nil {
+		return m.ResourceIdToDenom
+	}
+	return nil
+}
+
+func (m *GenesisState) GetResourceIdToDenomType() []string {
+	if m != nil {
+		return m.ResourceIdToDenomType
+	}
+	return nil
+}
+
+type DepositCount struct {
+	ChainId uint32 `protobuf:"varint,1,opt,name=chainId,proto3" json:"chainId,omitempty"`
+	Count   uint64 `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (m *DepositCount) Reset()         { *m = DepositCount{} }
+func (m *DepositCount) String() string { return proto.CompactTextString(m) }
+func (*DepositCount) ProtoMessage()    {}
+func (*DepositCount) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9fdd574b337deec5, []int{1}
+}
+func (m *DepositCount) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DepositCount) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DepositCount.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DepositCount) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DepositCount.Merge(m, src)
+}
+func (m *DepositCount) XXX_Size() int {
+	return m.Size()
+}
+func (m *DepositCount) XXX_DiscardUnknown() {
+	xxx_messageInfo_DepositCount.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DepositCount proto.InternalMessageInfo
+
+func (m *DepositCount) GetChainId() uint32 {
+	if m != nil {
+		return m.ChainId
+	}
+	return 0
+}
+
+func (m *DepositCount) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type GenesisProposal struct {
+	ChainId      uint32    `protobuf:"varint,1,opt,name=chainId,proto3" json:"chainId,omitempty"`
+	DepositNonce uint64    `protobuf:"varint,2,opt,name=depositNonce,proto3" json:"depositNonce,omitempty"`
+	ResourceId   string    `protobuf:"bytes,3,opt,name=resourceId,proto3" json:"resourceId,omitempty"`
+	Proposal     *Proposal `protobuf:"bytes,4,opt,name=proposal,proto3" json:"proposal,omitempty"`
+}
+
+func (m *GenesisProposal) Reset()         { *m = GenesisProposal{} }
+func (m *GenesisProposal) String() string { return proto.CompactTextString(m) }
+func (*GenesisProposal) ProtoMessage()    {}
+func (*GenesisProposal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9fdd574b337deec5, []int{2}
+}
+func (m *GenesisProposal) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GenesisProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GenesisProposal.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GenesisProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GenesisProposal.Merge(m, src)
+}
+func (m *GenesisProposal) XXX_Size() int {
+	return m.Size()
+}
+func (m *GenesisProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_GenesisProposal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GenesisProposal proto.InternalMessageInfo
+
+func (m *GenesisProposal) GetChainId() uint32 {
+	if m != nil {
+		return m.ChainId
+	}
+	return 0
+}
+
+func (m *GenesisProposal) GetDepositNonce() uint64 {
+	if m != nil {
+		return m.DepositNonce
+	}
+	return 0
+}
+
+func (m *GenesisProposal) GetResourceId() string {
+	if m != nil {
+		return m.ResourceId
+	}
+	return ""
+}
+
+func (m *GenesisProposal) GetProposal() *Proposal {
+	if m != nil {
+		return m.Proposal
+	}
+	return nil
+}
+
+type RelayFee struct {
+	ChainId uint32                                  `protobuf:"varint,1,opt,name=chainId,proto3" json:"chainId,omitempty"`
+	Value   github_com_cosmos_cosmos_sdk_types.Coin `protobuf:"bytes,2,opt,name=value,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Coin" json:"value"`
+}
+
+func (m *RelayFee) Reset()         { *m = RelayFee{} }
+func (m *RelayFee) String() string { return proto.CompactTextString(m) }
+func (*RelayFee) ProtoMessage()    {}
+func (*RelayFee) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9fdd574b337deec5, []int{3}
+}
+func (m *RelayFee) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RelayFee) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RelayFee.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RelayFee) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RelayFee.Merge(m, src)
+}
+func (m *RelayFee) XXX_Size() int {
+	return m.Size()
+}
+func (m *RelayFee) XXX_DiscardUnknown() {
+	xxx_messageInfo_RelayFee.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RelayFee proto.InternalMessageInfo
+
+func (m *RelayFee) GetChainId() uint32 {
+	if m != nil {
+		return m.ChainId
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "stafihub.stafihub.bridge.GenesisState")
+	proto.RegisterType((*DepositCount)(nil), "stafihub.stafihub.bridge.DepositCount")
+	proto.RegisterType((*GenesisProposal)(nil), "stafihub.stafihub.bridge.GenesisProposal")
+	proto.RegisterType((*RelayFee)(nil), "stafihub.stafihub.bridge.RelayFee")
 }
 
 func init() { proto.RegisterFile("bridge/genesis.proto", fileDescriptor_9fdd574b337deec5) }
 
 var fileDescriptor_9fdd574b337deec5 = []byte{
-	// 184 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x49, 0x2a, 0xca, 0x4c,
-	0x49, 0x4f, 0xd5, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
-	0x17, 0x92, 0x28, 0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2, 0x83, 0x33, 0x20, 0xea, 0xa4,
-	0x44, 0xd2, 0xf3, 0xd3, 0xf3, 0xc1, 0x8a, 0xf4, 0x41, 0x2c, 0x88, 0x7a, 0x29, 0x61, 0xa8, 0x29,
-	0x05, 0x89, 0x45, 0x89, 0xb9, 0x50, 0x43, 0x94, 0xfc, 0xb8, 0x78, 0xdc, 0x21, 0xa6, 0x06, 0x97,
-	0x24, 0x96, 0xa4, 0x0a, 0xd9, 0x71, 0xb1, 0x41, 0xe4, 0x25, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d,
-	0x14, 0xf4, 0x70, 0xd9, 0xa2, 0x17, 0x00, 0x56, 0xe7, 0xc4, 0x72, 0xe2, 0x9e, 0x3c, 0x43, 0x10,
-	0x54, 0x97, 0x93, 0xeb, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7,
-	0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x69, 0xa7,
-	0x67, 0x96, 0x80, 0x74, 0x27, 0xe7, 0xe7, 0xea, 0xc3, 0x8c, 0x42, 0x30, 0x2a, 0xf4, 0xa1, 0xae,
-	0x2b, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0xbb, 0xce, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff,
-	0x25, 0x07, 0x0e, 0xcc, 0xfa, 0x00, 0x00, 0x00,
+	// 494 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x93, 0x4f, 0x6f, 0xd3, 0x30,
+	0x18, 0xc6, 0x9b, 0xa5, 0xed, 0xda, 0xb7, 0x99, 0x18, 0xa6, 0x93, 0xac, 0x1e, 0xb2, 0x28, 0x07,
+	0x08, 0xff, 0x12, 0x69, 0x70, 0xee, 0xa1, 0xfb, 0x83, 0x26, 0x01, 0x9a, 0xcc, 0x4e, 0xdc, 0xd2,
+	0xc4, 0x64, 0xd6, 0xda, 0x38, 0x8a, 0xdd, 0x89, 0x7e, 0x0b, 0xbe, 0x09, 0x5f, 0x63, 0xc7, 0x1d,
+	0x11, 0x87, 0x09, 0xb5, 0x47, 0xbe, 0x04, 0xaa, 0xe3, 0x74, 0x29, 0x5d, 0x7b, 0x8a, 0xfd, 0xf8,
+	0x7d, 0x7e, 0x7e, 0xe3, 0xc7, 0x86, 0xee, 0x30, 0x67, 0x71, 0x42, 0x83, 0x84, 0xa6, 0x54, 0x30,
+	0xe1, 0x67, 0x39, 0x97, 0x1c, 0x61, 0x21, 0xc3, 0x6f, 0xec, 0x6a, 0x32, 0xf4, 0x97, 0x83, 0xa2,
+	0xae, 0xd7, 0x4d, 0x78, 0xc2, 0x55, 0x51, 0xb0, 0x18, 0x15, 0xf5, 0xbd, 0x67, 0x9a, 0x92, 0x85,
+	0x79, 0x38, 0xd6, 0x90, 0xde, 0x41, 0x29, 0xe6, 0x3c, 0xe3, 0x22, 0x1c, 0x15, 0xb2, 0xfb, 0xd7,
+	0x04, 0xeb, 0x43, 0xb1, 0xdb, 0x17, 0x19, 0x4a, 0x8a, 0xfa, 0xd0, 0x2c, 0x7c, 0xd8, 0x70, 0x0c,
+	0xaf, 0x73, 0xe4, 0xf8, 0x9b, 0x76, 0xf7, 0x2f, 0x54, 0xdd, 0xa0, 0x7e, 0x7b, 0x7f, 0x58, 0x23,
+	0xda, 0x85, 0x08, 0xec, 0xc7, 0x34, 0xe3, 0x82, 0xc9, 0x63, 0x3e, 0x49, 0xe5, 0x47, 0x26, 0x24,
+	0xde, 0x71, 0x4c, 0xaf, 0x73, 0xf4, 0x7c, 0x33, 0xe9, 0xa4, 0xe2, 0x20, 0x6b, 0x7e, 0xf4, 0x09,
+	0xac, 0xb2, 0x6d, 0xc5, 0x33, 0x15, 0xef, 0xe5, 0x66, 0x9e, 0xfe, 0xa3, 0x0b, 0x6d, 0x22, 0x2b,
+	0x76, 0x74, 0x06, 0x56, 0x4e, 0x47, 0xe1, 0xf4, 0x8c, 0x52, 0x85, 0xab, 0x2b, 0x9c, 0xbb, 0x19,
+	0x47, 0x74, 0x35, 0x59, 0xf1, 0x21, 0x07, 0x3a, 0xd1, 0x55, 0xc8, 0xd2, 0xf3, 0x58, 0x61, 0x1a,
+	0x8e, 0xe9, 0xed, 0x91, 0xaa, 0x84, 0x5e, 0xc1, 0x7e, 0xe9, 0x20, 0x34, 0xa2, 0xec, 0x86, 0xe6,
+	0xb8, 0xe9, 0x18, 0x5e, 0x9b, 0xac, 0xe9, 0xe8, 0x0d, 0x3c, 0xcd, 0xa9, 0xe0, 0x93, 0x3c, 0xa2,
+	0xe7, 0xf1, 0x25, 0x3f, 0xa1, 0x29, 0x1f, 0xe3, 0x5d, 0xc7, 0xf4, 0xda, 0x64, 0x7d, 0x01, 0xbd,
+	0x87, 0x83, 0x35, 0xf1, 0x72, 0x9a, 0x51, 0xdc, 0x52, 0x8e, 0xc7, 0x17, 0xdd, 0x3e, 0x58, 0xd5,
+	0xa3, 0x46, 0x18, 0x76, 0x75, 0xbb, 0x2a, 0xed, 0x3d, 0x52, 0x4e, 0x51, 0x17, 0x1a, 0xd1, 0xa2,
+	0x04, 0xef, 0x38, 0x86, 0x57, 0x27, 0xc5, 0xc4, 0xfd, 0x69, 0xc0, 0x93, 0xff, 0xce, 0x76, 0x0b,
+	0xc3, 0x05, 0x4b, 0x47, 0xf9, 0x99, 0xa7, 0x11, 0xd5, 0xa8, 0x15, 0x0d, 0xd9, 0x00, 0x0f, 0xad,
+	0x62, 0x53, 0x9d, 0x4d, 0x45, 0x41, 0x7d, 0x68, 0x95, 0xd9, 0xe1, 0xba, 0xba, 0x90, 0x5b, 0x72,
+	0x5a, 0xe6, 0xbd, 0xf4, 0xb8, 0xd7, 0xd0, 0x2a, 0xd3, 0xdb, 0xd2, 0xe9, 0x29, 0x34, 0x6e, 0xc2,
+	0xd1, 0xa4, 0x68, 0xb1, 0x3d, 0x08, 0x16, 0x37, 0xfa, 0xf7, 0xfd, 0xe1, 0x8b, 0x84, 0xc9, 0x05,
+	0x3e, 0xe2, 0xe3, 0x20, 0xe2, 0x62, 0xcc, 0x85, 0xfe, 0xbc, 0x15, 0xf1, 0x75, 0x20, 0xa7, 0x19,
+	0x15, 0xfe, 0x31, 0x67, 0x29, 0x29, 0xdc, 0x83, 0xd3, 0xdb, 0x99, 0x6d, 0xdc, 0xcd, 0x6c, 0xe3,
+	0xcf, 0xcc, 0x36, 0x7e, 0xcc, 0xed, 0xda, 0xdd, 0xdc, 0xae, 0xfd, 0x9a, 0xdb, 0xb5, 0xaf, 0xaf,
+	0x2b, 0xa4, 0xb2, 0xeb, 0x87, 0xc1, 0xf7, 0x40, 0x3f, 0x4e, 0x85, 0x1c, 0x36, 0xd5, 0xd3, 0x7c,
+	0xf7, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x42, 0x55, 0x4a, 0x66, 0x0e, 0x04, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -110,6 +354,91 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.ResourceIdToDenomType) > 0 {
+		for iNdEx := len(m.ResourceIdToDenomType) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.ResourceIdToDenomType[iNdEx])
+			copy(dAtA[i:], m.ResourceIdToDenomType[iNdEx])
+			i = encodeVarintGenesis(dAtA, i, uint64(len(m.ResourceIdToDenomType[iNdEx])))
+			i--
+			dAtA[i] = 0x42
+		}
+	}
+	if len(m.ResourceIdToDenom) > 0 {
+		for iNdEx := len(m.ResourceIdToDenom) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.ResourceIdToDenom[iNdEx])
+			copy(dAtA[i:], m.ResourceIdToDenom[iNdEx])
+			i = encodeVarintGenesis(dAtA, i, uint64(len(m.ResourceIdToDenom[iNdEx])))
+			i--
+			dAtA[i] = 0x3a
+		}
+	}
+	if len(m.RelayFeeReceiver) > 0 {
+		i -= len(m.RelayFeeReceiver)
+		copy(dAtA[i:], m.RelayFeeReceiver)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.RelayFeeReceiver)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.ChainIdList) > 0 {
+		dAtA2 := make([]byte, len(m.ChainIdList)*10)
+		var j1 int
+		for _, num := range m.ChainIdList {
+			for num >= 1<<7 {
+				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA2[j1] = uint8(num)
+			j1++
+		}
+		i -= j1
+		copy(dAtA[i:], dAtA2[:j1])
+		i = encodeVarintGenesis(dAtA, i, uint64(j1))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.RelayFeeList) > 0 {
+		for iNdEx := len(m.RelayFeeList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.RelayFeeList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.ProposalList) > 0 {
+		for iNdEx := len(m.ProposalList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ProposalList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.DepositCountList) > 0 {
+		for iNdEx := len(m.DepositCountList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.DepositCountList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	{
 		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -120,6 +449,129 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *DepositCount) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DepositCount) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DepositCount) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Count != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Count))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.ChainId != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.ChainId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GenesisProposal) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GenesisProposal) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GenesisProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Proposal != nil {
+		{
+			size, err := m.Proposal.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintGenesis(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.ResourceId) > 0 {
+		i -= len(m.ResourceId)
+		copy(dAtA[i:], m.ResourceId)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.ResourceId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.DepositNonce != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.DepositNonce))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.ChainId != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.ChainId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RelayFee) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RelayFee) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RelayFee) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size := m.Value.Size()
+		i -= size
+		if _, err := m.Value.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintGenesis(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	if m.ChainId != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.ChainId))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -141,6 +593,99 @@ func (m *GenesisState) Size() (n int) {
 	var l int
 	_ = l
 	l = m.Params.Size()
+	n += 1 + l + sovGenesis(uint64(l))
+	if len(m.DepositCountList) > 0 {
+		for _, e := range m.DepositCountList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.ProposalList) > 0 {
+		for _, e := range m.ProposalList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.RelayFeeList) > 0 {
+		for _, e := range m.RelayFeeList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.ChainIdList) > 0 {
+		l = 0
+		for _, e := range m.ChainIdList {
+			l += sovGenesis(uint64(e))
+		}
+		n += 1 + sovGenesis(uint64(l)) + l
+	}
+	l = len(m.RelayFeeReceiver)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if len(m.ResourceIdToDenom) > 0 {
+		for _, s := range m.ResourceIdToDenom {
+			l = len(s)
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.ResourceIdToDenomType) > 0 {
+		for _, s := range m.ResourceIdToDenomType {
+			l = len(s)
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *DepositCount) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ChainId != 0 {
+		n += 1 + sovGenesis(uint64(m.ChainId))
+	}
+	if m.Count != 0 {
+		n += 1 + sovGenesis(uint64(m.Count))
+	}
+	return n
+}
+
+func (m *GenesisProposal) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ChainId != 0 {
+		n += 1 + sovGenesis(uint64(m.ChainId))
+	}
+	if m.DepositNonce != 0 {
+		n += 1 + sovGenesis(uint64(m.DepositNonce))
+	}
+	l = len(m.ResourceId)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	if m.Proposal != nil {
+		l = m.Proposal.Size()
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	return n
+}
+
+func (m *RelayFee) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ChainId != 0 {
+		n += 1 + sovGenesis(uint64(m.ChainId))
+	}
+	l = m.Value.Size()
 	n += 1 + l + sovGenesis(uint64(l))
 	return n
 }
@@ -210,6 +755,627 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DepositCountList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DepositCountList = append(m.DepositCountList, &DepositCount{})
+			if err := m.DepositCountList[len(m.DepositCountList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProposalList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ProposalList = append(m.ProposalList, &GenesisProposal{})
+			if err := m.ProposalList[len(m.ProposalList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RelayFeeList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RelayFeeList = append(m.RelayFeeList, &RelayFee{})
+			if err := m.RelayFeeList[len(m.RelayFeeList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType == 0 {
+				var v uint32
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowGenesis
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= uint32(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.ChainIdList = append(m.ChainIdList, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowGenesis
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthGenesis
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthGenesis
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.ChainIdList) == 0 {
+					m.ChainIdList = make([]uint32, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint32
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowGenesis
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= uint32(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.ChainIdList = append(m.ChainIdList, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainIdList", wireType)
+			}
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RelayFeeReceiver", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RelayFeeReceiver = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResourceIdToDenom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ResourceIdToDenom = append(m.ResourceIdToDenom, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResourceIdToDenomType", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ResourceIdToDenomType = append(m.ResourceIdToDenomType, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DepositCount) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DepositCount: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DepositCount: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			m.ChainId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainId |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Count", wireType)
+			}
+			m.Count = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Count |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GenesisProposal) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GenesisProposal: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GenesisProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			m.ChainId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainId |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DepositNonce", wireType)
+			}
+			m.DepositNonce = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.DepositNonce |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResourceId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ResourceId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Proposal", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Proposal == nil {
+				m.Proposal = &Proposal{}
+			}
+			if err := m.Proposal.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RelayFee) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RelayFee: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RelayFee: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			m.ChainId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainId |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Value.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

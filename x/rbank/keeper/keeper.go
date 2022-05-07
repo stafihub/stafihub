@@ -65,6 +65,32 @@ func (k Keeper) GetAccAddressPrefix(ctx sdk.Context, denom string) (val string, 
 	return string(b), true
 }
 
+func (k Keeper) GetAddressPrefixList(ctx sdk.Context) []*types.AddressPrefix {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.AccAddressPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.AddressPrefix, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+
+		denom := string(key[1:])
+		accPrefix := string(iterator.Value())
+		valPrefix, found := k.GetValAddressPrefix(ctx, denom)
+		if !found {
+			continue
+		}
+
+		list = append(list, &types.AddressPrefix{
+			Denom:            denom,
+			AccAddressPrefix: accPrefix,
+			ValAddressPrefix: valPrefix,
+		})
+	}
+
+	return list
+}
+
 func (k Keeper) CheckAccAddress(ctx sdk.Context, denom, address string) error {
 	prefix, found := k.GetAccAddressPrefix(ctx, denom)
 	if !found {
