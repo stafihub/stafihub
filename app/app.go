@@ -97,6 +97,9 @@ import (
 	"github.com/stafihub/stafihub/x/ledger"
 	ledgerkeeper "github.com/stafihub/stafihub/x/ledger/keeper"
 	ledgertypes "github.com/stafihub/stafihub/x/ledger/types"
+	miningmodule "github.com/stafihub/stafihub/x/mining"
+	miningmodulekeeper "github.com/stafihub/stafihub/x/mining/keeper"
+	miningmoduletypes "github.com/stafihub/stafihub/x/mining/types"
 	rbankmodule "github.com/stafihub/stafihub/x/rbank"
 	rbankmodulekeeper "github.com/stafihub/stafihub/x/rbank/keeper"
 	rbankmoduletypes "github.com/stafihub/stafihub/x/rbank/types"
@@ -188,6 +191,7 @@ var (
 		rmintrewardmodule.AppModuleBasic{},
 		rbankmodule.AppModuleBasic{},
 		rdexmodule.AppModuleBasic{},
+		miningmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -280,6 +284,8 @@ type App struct {
 	RbankKeeper rbankmodulekeeper.Keeper
 
 	RdexKeeper rdexmodulekeeper.Keeper
+
+	MiningKeeper miningmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -321,6 +327,7 @@ func New(
 		rmintrewardmoduletypes.StoreKey,
 		rbankmoduletypes.StoreKey,
 		rdexmoduletypes.StoreKey,
+		miningmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -580,6 +587,14 @@ func New(
 	)
 	rdexModule := rdexmodule.NewAppModule(appCodec, app.RdexKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.MiningKeeper = *miningmodulekeeper.NewKeeper(
+		appCodec,
+		keys[miningmoduletypes.StoreKey],
+		keys[miningmoduletypes.MemStoreKey],
+		app.GetSubspace(miningmoduletypes.ModuleName),
+	)
+	miningModule := miningmodule.NewAppModule(appCodec, app.MiningKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -629,6 +644,7 @@ func New(
 		rmintrewardModule,
 		rbankModule,
 		rdexModule,
+		miningModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -732,6 +748,7 @@ func New(
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
+		miningmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -930,6 +947,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(rmintrewardmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rbankmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rdexmoduletypes.ModuleName)
+	paramsKeeper.Subspace(miningmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
