@@ -3,6 +3,7 @@ package stafihub.stafihub.rmintreward;
 
 import "gogoproto/gogo.proto";
 import "rmintreward/models.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafihub/stafihub/x/rmintreward/types";
@@ -47,7 +48,7 @@ message MsgClaimMintRewardResponse {
 
 message MsgProvideRewardToken {
   string creator = 1;
-  string amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin amount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message MsgProvideRewardTokenResponse {

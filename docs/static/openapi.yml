@@ -19354,7 +19354,20 @@ paths:
             type: object
             properties:
               value:
-                type: string
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -20330,7 +20343,20 @@ paths:
                   denom:
                     type: string
                   value:
-                    type: string
+                    type: object
+                    properties:
+                      denom:
+                        type: string
+                      amount:
+                        type: string
+                    description: >-
+                      Coin defines a token with a denomination and an amount.
+
+
+                      NOTE: The amount field is an Int which implements the
+                      custom method
+
+                      signatures required by gogoproto.
         default:
           description: An unexpected error response.
           schema:
@@ -36915,7 +36941,17 @@ definitions:
     type: object
     properties:
       value:
-        type: string
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
   stafihub.stafihub.bridge.QueryResourceidToDenomsResponse:
     type: object
     properties:
@@ -37354,7 +37390,20 @@ definitions:
           denom:
             type: string
           value:
-            type: string
+            type: object
+            properties:
+              denom:
+                type: string
+              amount:
+                type: string
+            description: >-
+              Coin defines a token with a denomination and an amount.
+
+
+              NOTE: The amount field is an Int which implements the custom
+              method
+
+              signatures required by gogoproto.
   stafihub.stafihub.ledger.QueryPoolUnbondNextSequenceResponse:
     type: object
     properties:
@@ -37458,7 +37507,17 @@ definitions:
       denom:
         type: string
       value:
-        type: string
+        type: object
+        properties:
+          denom:
+            type: string
+          amount:
+            type: string
+        description: |-
+          Coin defines a token with a denomination and an amount.
+
+          NOTE: The amount field is an Int which implements the custom method
+          signatures required by gogoproto.
   stafihub.stafihub.ledger.Unbonding:
     type: object
     properties:

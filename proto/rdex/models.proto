@@ -3,6 +3,7 @@ package stafihub.stafihub.rdex;
 
 import "gogoproto/gogo.proto";
 import "cosmos/base/v1beta1/coin.proto";
+
 option go_package = "github.com/stafihub/stafihub/x/rdex/types";
 
 message SwapPool {

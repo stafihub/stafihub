@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "bridge/params.proto";
 import "bridge/proposal.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafihub/stafihub/x/bridge/types";
@@ -105,7 +106,7 @@ message QueryRelayFeeRequest {
 }
 
 message QueryRelayFeeResponse {
-	string value = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+	cosmos.base.v1beta1.Coin value = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # 3

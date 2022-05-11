@@ -3,6 +3,7 @@ package stafihub.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
 import "ledger/ledger.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafihub/stafihub/x/ledger/types";
@@ -87,7 +88,7 @@ message MsgSetProtocolFeeReceiverResponse {
 message MsgSetUnbondRelayFee {
   string creator = 1;
   string denom = 2;
-  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message MsgSetUnbondRelayFeeResponse {
@@ -96,7 +97,7 @@ message MsgSetUnbondRelayFeeResponse {
 message MsgLiquidityUnbond {
   string creator = 1;
   string pool = 2;
-  string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
   string recipient = 4;
 }
 

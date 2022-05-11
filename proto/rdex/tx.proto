@@ -34,8 +34,8 @@ message MsgAddLiquidityResponse {
 
 message MsgSwap {
   string creator = 1;
-  string inputToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-  string minOutToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin inputToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin minOutToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message MsgSwapResponse {

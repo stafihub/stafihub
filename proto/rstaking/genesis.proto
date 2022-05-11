@@ -3,6 +3,7 @@ package stafihub.stafihub.rstaking;
 
 import "gogoproto/gogo.proto";
 import "rstaking/params.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/stafihub/stafihub/x/rstaking/types";
@@ -11,7 +12,7 @@ option go_package = "github.com/stafihub/stafihub/x/rstaking/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   string inflation_base = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string coin_to_be_burned = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin coin_to_be_burned = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
   repeated string validator_whitelist = 4;
   bool whitelist_switch = 5;
   // this line is used by starport scaffolding # genesis/proto/state
