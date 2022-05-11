@@ -21,12 +21,15 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 	if !found {
 		return nil, types.ErrSwapPoolNotExit
 	}
+	poolBaseToken := swapPool.Tokens[0]
+	poolToken := swapPool.Tokens[1]
+
 	inputIsBase := false
-	if swapPool.Tokens[0].Denom == msg.InputToken.Denom {
+	if poolBaseToken.Denom == msg.InputToken.Denom {
 		inputIsBase = true
 	}
 
-	outAmount, feeAmount := calSwapResult(swapPool.Tokens[0].Amount, swapPool.Tokens[1].Amount, msg.InputToken.Amount, inputIsBase)
+	outAmount, feeAmount := calSwapResult(poolBaseToken.Amount, poolToken.Amount, msg.InputToken.Amount, inputIsBase)
 	if outAmount.LTE(sdk.ZeroInt()) {
 		return nil, types.ErrSwapAmountTooFew
 	}
@@ -37,11 +40,11 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 
 	realOutCoin := sdk.NewCoin(msg.MinOutToken.Denom, outAmount)
 	if inputIsBase {
-		fisBalance := k.bankKeeper.GetBalance(ctx, userAddress, swapPool.Tokens[0].Denom)
+		fisBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolBaseToken.Denom)
 		if fisBalance.Amount.LT(msg.InputToken.Amount) {
 			return nil, types.ErrInsufficientFisBalance
 		}
-		if swapPool.Tokens[1].Amount.LTE(outAmount) {
+		if poolToken.Amount.LTE(outAmount) {
 			return nil, types.ErrInsufficientTokenBalance
 		}
 
@@ -52,14 +55,14 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 			return nil, err
 		}
 
-		swapPool.Tokens[0].Amount = swapPool.Tokens[0].Amount.Add(msg.InputToken.Amount)
-		swapPool.Tokens[1].Amount = swapPool.Tokens[1].Amount.Sub(outAmount)
+		poolBaseToken.Amount = poolBaseToken.Amount.Add(msg.InputToken.Amount)
+		poolToken.Amount = poolToken.Amount.Sub(outAmount)
 	} else {
-		rTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, swapPool.Tokens[1].Denom)
+		rTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolToken.Denom)
 		if rTokenBalance.Amount.LT(msg.InputToken.Amount) {
 			return nil, types.ErrInsufficientTokenBalance
 		}
-		if swapPool.Tokens[0].Amount.LTE(outAmount) {
+		if poolBaseToken.Amount.LTE(outAmount) {
 			return nil, types.ErrInsufficientTokenBalance
 		}
 
@@ -70,9 +73,12 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 			return nil, err
 		}
 
-		swapPool.Tokens[0].Amount = swapPool.Tokens[0].Amount.Sub(outAmount)
-		swapPool.Tokens[1].Amount = swapPool.Tokens[1].Amount.Add(msg.InputToken.Amount)
+		poolBaseToken.Amount = poolBaseToken.Amount.Sub(outAmount)
+		poolToken.Amount = poolToken.Amount.Add(msg.InputToken.Amount)
 	}
+
+	swapPool.Tokens[0] = poolBaseToken
+	swapPool.Tokens[1] = poolToken
 
 	k.Keeper.SetSwapPool(ctx, lpDenom, swapPool)
 

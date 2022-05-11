@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -46,7 +48,15 @@ func (msg *MsgRemoveLiquidity) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	if len(msg.MinOutTokens) != 2 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", len(msg.MinOutTokens))
 	}
+
+	if msg.RmUnit.LTE(sdk.ZeroInt()) {
+		return fmt.Errorf("invalid rm unit amount")
+	}
+	if msg.RmUnit.LT(msg.SwapUnit) {
+		return fmt.Errorf("rm unit must bigger or equal to swap unit")
+	}
+
 	return nil
 }

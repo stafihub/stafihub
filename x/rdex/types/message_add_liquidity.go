@@ -43,7 +43,13 @@ func (msg *MsgAddLiquidity) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	if len(msg.Tokens) != 2 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", err)
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length (%s)", len(msg.Tokens))
+	}
+
+	for _, token := range msg.Tokens {
+		if token.Amount.LTE(sdk.ZeroInt()) {
+			sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token amount (%s)", token.Amount)
+		}
 	}
 	return nil
 }
