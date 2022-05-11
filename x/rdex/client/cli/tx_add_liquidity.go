@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -16,18 +15,13 @@ var _ = strconv.Itoa(0)
 
 func CmdAddLiquidity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-liquidity [denom] [r-token-amount] [fis-amount]",
+		Use:   "add-liquidity [tokens]",
 		Short: "Add liquidity",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argRTokenAmount, ok := sdk.NewIntFromString(args[1])
-			if !ok {
-				return fmt.Errorf("argRTokenAmount invalid")
-			}
-			argFisAmount, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("argFisAmount invalid")
+			coins, err := sdk.ParseCoinsNormalized(args[0])
+			if err != nil {
+				return err
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -37,9 +31,7 @@ func CmdAddLiquidity() *cobra.Command {
 
 			msg := types.NewMsgAddLiquidity(
 				clientCtx.GetFromAddress().String(),
-				argDenom,
-				argRTokenAmount,
-				argFisAmount,
+				coins,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

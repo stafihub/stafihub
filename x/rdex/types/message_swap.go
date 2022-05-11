@@ -1,8 +1,6 @@
 package types
 
 import (
-	fmt "fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -11,13 +9,11 @@ const TypeMsgSwap = "swap"
 
 var _ sdk.Msg = &MsgSwap{}
 
-func NewMsgSwap(creator string, denom string, inputAmount, minOutAmount sdk.Int, inputIsFis bool) *MsgSwap {
+func NewMsgSwap(creator string, inputToken, minOutToken sdk.Coin) *MsgSwap {
 	return &MsgSwap{
-		Creator:      creator,
-		Denom:        denom,
-		InputAmount:  inputAmount,
-		MinOutAmount: minOutAmount,
-		InputIsFis:   inputIsFis,
+		Creator:     creator,
+		InputToken:  inputToken,
+		MinOutToken: minOutToken,
 	}
 }
 
@@ -46,12 +42,6 @@ func (msg *MsgSwap) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-	if msg.InputAmount.LTE(sdk.ZeroInt()) || msg.MinOutAmount.LTE(sdk.ZeroInt()) {
-		return fmt.Errorf("invalid amount")
-	}
-	if len(msg.Denom) == 0 {
-		return fmt.Errorf("invalid denom")
 	}
 	return nil
 }

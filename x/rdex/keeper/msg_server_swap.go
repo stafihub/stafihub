@@ -2,10 +2,8 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/rdex/types"
 )
 
@@ -16,72 +14,77 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		return nil, types.ErrInvalidAddress
 	}
 
-	swapPool, found := k.Keeper.GetSwapPool(ctx, msg.Denom)
-	if found {
-		return nil, types.ErrSwapPoolAlreadyExist
+	tokens := sdk.NewCoins(msg.InputToken, msg.MinOutToken).Sort()
+	lpDenom := types.GetLpTokenDenom(tokens)
+
+	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
+	if !found {
+		return nil, types.ErrSwapPoolNotExit
+	}
+	inputIsBase := false
+	if swapPool.Tokens[0].Denom == msg.InputToken.Denom {
+		inputIsBase = true
 	}
 
-	outAmount, feeAmount := calSwapResult(swapPool.FisBalance, swapPool.RTokenBalance, msg.InputAmount, msg.InputIsFis)
+	outAmount, feeAmount := calSwapResult(swapPool.Tokens[0].Amount, swapPool.Tokens[1].Amount, msg.InputToken.Amount, inputIsBase)
 	if outAmount.LTE(sdk.ZeroInt()) {
 		return nil, types.ErrSwapAmountTooFew
 	}
 
-	if outAmount.LT(msg.MinOutAmount) {
+	if outAmount.LT(msg.MinOutToken.Amount) {
 		return nil, types.ErrLessThanMinOutAmount
 	}
 
-	if msg.InputIsFis {
-		fisBalance := k.bankKeeper.GetBalance(ctx, userAddress, utils.FisDenom)
-		if fisBalance.Amount.LT(msg.InputAmount) {
+	realOutCoin := sdk.NewCoin(msg.MinOutToken.Denom, outAmount)
+	if inputIsBase {
+		fisBalance := k.bankKeeper.GetBalance(ctx, userAddress, swapPool.Tokens[0].Denom)
+		if fisBalance.Amount.LT(msg.InputToken.Amount) {
 			return nil, types.ErrInsufficientFisBalance
 		}
-		if swapPool.RTokenBalance.LTE(outAmount) {
-			return nil, types.ErrInsufficientRTokenBalance
+		if swapPool.Tokens[1].Amount.LTE(outAmount) {
+			return nil, types.ErrInsufficientTokenBalance
 		}
 
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(sdk.NewCoin(utils.FisDenom, msg.InputAmount))); err != nil {
+		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {
 			return nil, err
 		}
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(sdk.NewCoin(msg.Denom, outAmount))); err != nil {
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(realOutCoin)); err != nil {
 			return nil, err
 		}
 
-		swapPool.FisBalance = swapPool.FisBalance.Add(msg.InputAmount)
-		swapPool.RTokenBalance = swapPool.RTokenBalance.Sub(outAmount)
+		swapPool.Tokens[0].Amount = swapPool.Tokens[0].Amount.Add(msg.InputToken.Amount)
+		swapPool.Tokens[1].Amount = swapPool.Tokens[1].Amount.Sub(outAmount)
 	} else {
-		rTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, msg.Denom)
-		if rTokenBalance.Amount.LT(msg.InputAmount) {
-			return nil, types.ErrInsufficientRTokenBalance
+		rTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, swapPool.Tokens[1].Denom)
+		if rTokenBalance.Amount.LT(msg.InputToken.Amount) {
+			return nil, types.ErrInsufficientTokenBalance
 		}
-		if swapPool.FisBalance.LTE(outAmount) {
-			return nil, types.ErrInsufficientFisBalance
-		}
-
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(sdk.NewCoin(msg.Denom, msg.InputAmount))); err != nil {
-			return nil, err
-		}
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(sdk.NewCoin(utils.FisDenom, outAmount))); err != nil {
-			return nil, err
+		if swapPool.Tokens[0].Amount.LTE(outAmount) {
+			return nil, types.ErrInsufficientTokenBalance
 		}
 
-		swapPool.FisBalance = swapPool.FisBalance.Sub(outAmount)
-		swapPool.RTokenBalance = swapPool.RTokenBalance.Add(msg.InputAmount)
+		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {
+			return nil, err
+		}
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(realOutCoin)); err != nil {
+			return nil, err
+		}
+
+		swapPool.Tokens[0].Amount = swapPool.Tokens[0].Amount.Sub(outAmount)
+		swapPool.Tokens[1].Amount = swapPool.Tokens[1].Amount.Add(msg.InputToken.Amount)
 	}
 
-	k.Keeper.SetSwapPool(ctx, msg.Denom, swapPool)
+	k.Keeper.SetSwapPool(ctx, lpDenom, swapPool)
 
-	// Swap: (account, symbol, input amount, output amount, fee amount, input is fis, fis balance, rtoken balance)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeSwap,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
-			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
-			sdk.NewAttribute(types.AttributeKeyInputAmount, msg.InputAmount.String()),
-			sdk.NewAttribute(types.AttributeKeyOutputAmount, outAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyLpDenom, lpDenom),
+			sdk.NewAttribute(types.AttributeKeyInputToken, msg.InputToken.String()),
+			sdk.NewAttribute(types.AttributeKeyOutputToken, realOutCoin.String()),
 			sdk.NewAttribute(types.AttributeKeyFeeAmount, feeAmount.String()),
-			sdk.NewAttribute(types.AttributeKeyInputIsFis, fmt.Sprintf("%t", msg.InputIsFis)),
-			sdk.NewAttribute(types.AttributeKeyFisBalance, swapPool.FisBalance.String()),
-			sdk.NewAttribute(types.AttributeKeyRTokenBalance, swapPool.RTokenBalance.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
 		),
 	)
 

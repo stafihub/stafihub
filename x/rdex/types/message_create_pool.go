@@ -1,8 +1,6 @@
 package types
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -11,12 +9,10 @@ const TypeMsgCreatePool = "create_pool"
 
 var _ sdk.Msg = &MsgCreatePool{}
 
-func NewMsgCreatePool(creator string, denom string, rTokenAmount sdk.Int, fisAmount sdk.Int) *MsgCreatePool {
+func NewMsgCreatePool(creator string, tokens sdk.Coins) *MsgCreatePool {
 	return &MsgCreatePool{
-		Creator:      creator,
-		Denom:        denom,
-		RTokenAmount: rTokenAmount,
-		FisAmount:    fisAmount,
+		Creator: creator,
+		Tokens:  tokens,
 	}
 }
 
@@ -46,11 +42,8 @@ func (msg *MsgCreatePool) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if msg.RTokenAmount.LTE(sdk.ZeroInt()) || msg.FisAmount.LTE(sdk.ZeroInt()) {
-		return fmt.Errorf("invalid token amount")
-	}
-	if len(msg.Denom) == 0 {
-		return fmt.Errorf("invalid denom")
+	if len(msg.Tokens) != 2 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", err)
 	}
 	return nil
 }

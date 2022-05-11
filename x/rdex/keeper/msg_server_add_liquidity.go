@@ -4,7 +4,6 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/rdex/types"
 )
 
@@ -15,36 +14,31 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 	if err != nil {
 		return nil, types.ErrInvalidAddress
 	}
-	swapPool, found := k.Keeper.GetSwapPool(ctx, msg.Denom)
+	tokens := msg.Tokens.Sort()
+	lpDenom := types.GetLpTokenDenom(tokens)
+
+	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
 	if !found {
 		return nil, types.ErrSwapPoolNotExit
 	}
 
-	rTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, msg.Denom)
-	if rTokenBalance.Amount.LT(msg.RTokenAmount) {
-		return nil, types.ErrInsufficientRTokenBalance
+	// check balance
+	for _, token := range tokens {
+		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
+		if balance.Amount.LT(token.Amount) {
+			return nil, types.ErrInsufficientTokenBalance
+		}
 	}
-	fisBalance := k.bankKeeper.GetBalance(ctx, userAddress, utils.FisDenom)
-	if fisBalance.Amount.LT(msg.FisAmount) {
-		return nil, types.ErrInsufficientFisBalance
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, tokens); err != nil {
+		return nil, types.ErrInsufficientTokenBalance
 	}
 
-	newTotalPoolUnit, addLpUnit := calPoolUnit(swapPool.TotalUnit, swapPool.FisBalance, swapPool.RTokenBalance, msg.FisAmount, msg.RTokenAmount)
+	newTotalPoolUnit, addLpUnit := calPoolUnit(swapPool.LpToken.Amount, swapPool.Tokens[0].Amount, swapPool.Tokens[1].Amount, tokens[0].Amount, tokens[1].Amount)
 	if addLpUnit.LTE(sdk.ZeroInt()) {
 		return nil, types.ErrAddLpUnitZero
 	}
 
-	if msg.FisAmount.GT(sdk.ZeroInt()) {
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(sdk.NewCoin(utils.FisDenom, msg.FisAmount))); err != nil {
-			return nil, types.ErrInsufficientFisBalance
-		}
-	}
-	if msg.RTokenAmount.GT(sdk.ZeroInt()) {
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(sdk.NewCoin(msg.Denom, msg.RTokenAmount))); err != nil {
-			return nil, types.ErrInsufficientRTokenBalance
-		}
-	}
-	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(types.LpTokenDenom(msg.Denom), addLpUnit))
+	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(lpDenom, addLpUnit))
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, lpTokenCoins); err != nil {
 		return nil, err
 	}
@@ -52,24 +46,20 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 		return nil, err
 	}
 
-	swapPool.TotalUnit = newTotalPoolUnit
-	swapPool.FisBalance = swapPool.FisBalance.Add(msg.FisAmount)
-	swapPool.RTokenBalance = swapPool.RTokenBalance.Add(msg.RTokenAmount)
+	swapPool.LpToken.Amount = newTotalPoolUnit
+	swapPool.Tokens = swapPool.Tokens.Add(tokens...)
 
-	k.Keeper.SetSwapPool(ctx, msg.Denom, swapPool)
+	k.Keeper.SetSwapPool(ctx, lpDenom, swapPool)
 
-	// AddLiquidity: (account, symbol, fis amount, rToken amount, new total unit, add lp unit, fis balance, rtoken balance)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeAddLiquidity,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
-			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
-			sdk.NewAttribute(types.AttributeKeyFisAmount, msg.FisAmount.String()),
-			sdk.NewAttribute(types.AttributeKeyRTokenAmount, msg.RTokenAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyLpDenom, lpDenom),
+			sdk.NewAttribute(types.AttributeKeyAddTokens, tokens.String()),
 			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, newTotalPoolUnit.String()),
 			sdk.NewAttribute(types.AttributeKeyAddLpUnit, addLpUnit.String()),
-			sdk.NewAttribute(types.AttributeKeyFisBalance, swapPool.FisBalance.String()),
-			sdk.NewAttribute(types.AttributeKeyRTokenBalance, swapPool.RTokenBalance.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
 		),
 	)
 	return &types.MsgAddLiquidityResponse{}, nil

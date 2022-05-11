@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "rdex/params.proto";
+import "rdex/models.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafihub/stafihub/x/rdex/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/stafihub/stafihub/rdex/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of SwapPoolInfo items.
+	rpc SwapPoolInfo(QuerySwapPoolInfoRequest) returns (QuerySwapPoolInfoResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rdex/swap_pool_info/{lpDenom}";
+	}
+
+// Queries a list of SwapPoolList items.
+	rpc SwapPoolList(QuerySwapPoolListRequest) returns (QuerySwapPoolListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rdex/swap_pool_list";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,21 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySwapPoolInfoRequest {
+  string lpDenom = 1;
+}
+
+message QuerySwapPoolInfoResponse {
+  SwapPool swapPool = 1;
+}
+
+message QuerySwapPoolListRequest {
+}
+
+message QuerySwapPoolListResponse {
+  repeated SwapPool swapPoolList = 1;
 }
 
 // this line is used by starport scaffolding # 3

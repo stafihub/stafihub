@@ -1,8 +1,6 @@
 package types
 
 import (
-	fmt "fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -11,12 +9,10 @@ const TypeMsgAddLiquidity = "add_liquidity"
 
 var _ sdk.Msg = &MsgAddLiquidity{}
 
-func NewMsgAddLiquidity(creator string, denom string, rTokenAmount, fisAmount sdk.Int) *MsgAddLiquidity {
+func NewMsgAddLiquidity(creator string, tokens sdk.Coins) *MsgAddLiquidity {
 	return &MsgAddLiquidity{
-		Creator:      creator,
-		Denom:        denom,
-		RTokenAmount: rTokenAmount,
-		FisAmount:    fisAmount,
+		Creator: creator,
+		Tokens:  tokens,
 	}
 }
 
@@ -46,15 +42,8 @@ func (msg *MsgAddLiquidity) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if msg.RTokenAmount.LT(sdk.ZeroInt()) || msg.FisAmount.LT(sdk.ZeroInt()) {
-		return fmt.Errorf("invalid token amount")
-	}
-
-	if msg.RTokenAmount.Equal(sdk.ZeroInt()) && msg.FisAmount.Equal(sdk.ZeroInt()) {
-		return fmt.Errorf("token amount all zero error")
-	}
-	if len(msg.Denom) == 0 {
-		return fmt.Errorf("invalid denom")
+	if len(msg.Tokens) != 2 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", err)
 	}
 	return nil
 }

@@ -3,12 +3,13 @@ package stafihub.stafihub.rdex;
 
 // this line is used by starport scaffolding # proto/tx/import
 import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/stafihub/stafihub/x/rdex/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
+  rpc CreatePool(MsgCreatePool) returns (MsgCreatePoolResponse);
   rpc AddLiquidity(MsgAddLiquidity) returns (MsgAddLiquidityResponse);
   rpc Swap(MsgSwap) returns (MsgSwapResponse);
   rpc RemoveLiquidity(MsgRemoveLiquidity) returns (MsgRemoveLiquidityResponse);
@@ -17,9 +18,7 @@ service Msg {
 
 message MsgCreatePool {
   string creator = 1;
-  string denom = 2;
-  string rTokenAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string fisAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  repeated cosmos.base.v1beta1.Coin tokens = 2 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"]; 
 }
 
 message MsgCreatePoolResponse {
@@ -27,9 +26,7 @@ message MsgCreatePoolResponse {
 
 message MsgAddLiquidity {
   string creator = 1;
-  string denom = 2;
-  string rTokenAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string fisAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  repeated cosmos.base.v1beta1.Coin tokens = 2 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"]; 
 }
 
 message MsgAddLiquidityResponse {
@@ -37,10 +34,8 @@ message MsgAddLiquidityResponse {
 
 message MsgSwap {
   string creator = 1;
-  string denom = 2;
-  string inputAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string minOutAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  bool inputIsFis = 5;
+  string inputToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  string minOutToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message MsgSwapResponse {
@@ -48,12 +43,10 @@ message MsgSwapResponse {
 
 message MsgRemoveLiquidity {
   string creator = 1;
-  string denom = 2;
   string rmUnit = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string swapUnit = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string minFisOutAmount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string minRtokenOutAmount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  bool inputIsFis = 7;
+  repeated cosmos.base.v1beta1.Coin minOutTokens = 5 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"]; 
+  string inputTokenDenom = 6;
 }
 
 message MsgRemoveLiquidityResponse {

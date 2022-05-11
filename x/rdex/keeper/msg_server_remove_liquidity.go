@@ -2,10 +2,8 @@ package keeper
 
 import (
 	"context"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/rdex/types"
 )
 
@@ -15,90 +13,124 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	if err != nil {
 		return nil, types.ErrInvalidAddress
 	}
+	minOutTokens := msg.MinOutTokens.Sort()
+	lpDenom := types.GetLpTokenDenom(minOutTokens)
 
-	swapPool, found := k.Keeper.GetSwapPool(ctx, msg.Denom)
-	if found {
-		return nil, types.ErrSwapPoolAlreadyExist
+	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
+	if !found {
+		return nil, types.ErrSwapPoolNotExit
 	}
-	moduleAddress := authTypes.NewModuleAddress(types.ModuleName)
-	poolFisBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, utils.FisDenom)
-	poolRTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, msg.Denom)
+	poolBaseToken := swapPool.Tokens[0]
+	poolToken := swapPool.Tokens[1]
+	poolLpToken := swapPool.LpToken
 
-	lpTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, types.LpTokenDenom(msg.Denom))
-	if lpTokenBalance.Amount.LT(msg.RmUnit) {
+	userLpTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, lpDenom)
+	if userLpTokenBalance.Amount.LT(msg.RmUnit) {
 		return nil, types.ErrInsufficientLpTokenBalance
 	}
+	moduleAddress := authTypes.NewModuleAddress(types.ModuleName)
+	poolBaseTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, poolBaseToken.Denom)
+	poolTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, poolToken.Denom)
 
-	if msg.RmUnit.LTE(sdk.ZeroInt()) || msg.RmUnit.GT(swapPool.TotalUnit) || msg.SwapUnit.GT(msg.RmUnit) {
+	if msg.RmUnit.LTE(sdk.ZeroInt()) || msg.RmUnit.GT(poolLpToken.Amount) || msg.SwapUnit.GT(msg.RmUnit) {
 		return nil, types.ErrUnitAmount
 	}
 
-	rmFisAmount, rmRTokenAmount, swapInputAmount := calRemoveAmount(swapPool.TotalUnit, msg.RmUnit, msg.SwapUnit, swapPool.FisBalance, swapPool.RTokenBalance, msg.InputIsFis)
-	swapPool.TotalUnit = swapPool.TotalUnit.Sub(msg.RmUnit)
-	swapPool.FisBalance = swapPool.FisBalance.Sub(rmFisAmount)
-	swapPool.RTokenBalance = swapPool.RTokenBalance.Sub(rmRTokenAmount)
+	inputIsBase := false
+	if poolBaseToken.Denom == msg.InputTokenDenom {
+		inputIsBase = true
+	}
+
+	rmBaseTokenAmount, rmTokenAmount, swapInputAmount := calRemoveAmount(poolLpToken.Amount, msg.RmUnit, msg.SwapUnit, poolBaseToken.Amount, poolToken.Amount, inputIsBase)
+	poolLpToken.Amount = poolLpToken.Amount.Sub(msg.RmUnit)
+	poolBaseToken.Amount = poolBaseToken.Amount.Sub(rmBaseTokenAmount)
+	poolToken.Amount = poolToken.Amount.Sub(rmTokenAmount)
 
 	if swapInputAmount.GT(sdk.ZeroInt()) {
-		swapResult, _ := calSwapResult(swapPool.FisBalance, swapPool.RTokenBalance, swapInputAmount, msg.InputIsFis)
+		swapResult, _ := calSwapResult(poolBaseToken.Amount, poolToken.Amount, swapInputAmount, inputIsBase)
 		if swapResult.LTE(sdk.ZeroInt()) {
 			return nil, types.ErrSwapAmountTooFew
 		}
 
-		if msg.InputIsFis {
-			if swapResult.GTE(swapPool.RTokenBalance) {
+		if inputIsBase {
+			if swapResult.GTE(poolToken.Amount) {
 				return nil, types.ErrPoolRTokenBalanceInsufficient
 			}
 
-			swapPool.FisBalance = swapPool.FisBalance.Add(swapInputAmount)
-			swapPool.RTokenBalance = swapPool.RTokenBalance.Sub(swapResult)
+			poolBaseToken.Amount = poolBaseToken.Amount.Add(swapInputAmount)
+			poolToken.Amount = poolToken.Amount.Sub(swapResult)
 
-			rmFisAmount = rmFisAmount.Sub(swapInputAmount)
-			rmRTokenAmount = rmRTokenAmount.Add(swapResult)
+			rmBaseTokenAmount = rmBaseTokenAmount.Sub(swapInputAmount)
+			rmTokenAmount = rmTokenAmount.Add(swapResult)
 		} else {
-			if swapResult.GTE(swapPool.FisBalance) {
+			if swapResult.GTE(poolBaseToken.Amount) {
 				return nil, types.ErrPoolFisBalanceInsufficient
 			}
 
-			swapPool.RTokenBalance = swapPool.RTokenBalance.Add(swapInputAmount)
-			swapPool.FisBalance = swapPool.FisBalance.Sub(swapResult)
+			poolToken.Amount = poolToken.Amount.Add(swapInputAmount)
+			poolBaseToken.Amount = poolBaseToken.Amount.Sub(swapResult)
 
-			rmRTokenAmount = rmRTokenAmount.Sub(swapInputAmount)
-			rmFisAmount = rmFisAmount.Add(swapResult)
+			rmTokenAmount = rmTokenAmount.Sub(swapInputAmount)
+			rmBaseTokenAmount = rmBaseTokenAmount.Add(swapResult)
 		}
 	}
 
-	if rmFisAmount.LT(msg.MinFisOutAmount) || rmRTokenAmount.LT(msg.MinRtokenOutAmount) {
+	if rmBaseTokenAmount.LT(minOutTokens[0].Amount) || rmTokenAmount.LT(minOutTokens[1].Amount) {
 		return nil, types.ErrLessThanMinOutAmount
 	}
 
-	if rmFisAmount.GT(poolFisBalance.Amount) {
+	if rmBaseTokenAmount.GT(poolBaseTokenBalance.Amount) {
 		return nil, types.ErrPoolFisBalanceInsufficient
 	}
 
-	if rmRTokenAmount.GT(poolRTokenBalance.Amount) {
+	if rmTokenAmount.GT(poolTokenBalance.Amount) {
 		return nil, types.ErrPoolRTokenBalanceInsufficient
 	}
 
-	if (swapPool.FisBalance.IsZero() && !swapPool.RTokenBalance.IsZero()) || (swapPool.RTokenBalance.IsZero() && !swapPool.FisBalance.IsZero()) {
+	if (poolBaseToken.Amount.IsZero() && !poolToken.Amount.IsZero()) || (poolToken.Amount.IsZero() && !poolBaseToken.Amount.IsZero()) {
 		return nil, types.ErrPoolOneSideZero
 	}
 
 	willSendCoin := sdk.NewCoins()
-	if rmFisAmount.GT(sdk.ZeroInt()) {
-		willSendCoin.Add(sdk.NewCoin(utils.FisDenom, rmFisAmount))
+	if rmBaseTokenAmount.GT(sdk.ZeroInt()) {
+		willSendCoin = append(willSendCoin, sdk.NewCoin(poolBaseToken.Denom, rmBaseTokenAmount))
 	}
-	if rmRTokenAmount.GT(sdk.ZeroInt()) {
-		willSendCoin.Add(sdk.NewCoin(msg.Denom, rmRTokenAmount))
+	if rmTokenAmount.GT(sdk.ZeroInt()) {
+		willSendCoin = append(willSendCoin, sdk.NewCoin(poolToken.Denom, rmTokenAmount))
 	}
+
 	if willSendCoin.IsAllPositive() {
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, willSendCoin); err != nil {
 			return nil, err
 		}
 	}
-	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(sdk.NewCoin(types.LpTokenDenom(msg.Denom), msg.RmUnit))); err != nil {
+
+	willBurnLp := sdk.NewCoin(lpDenom, msg.RmUnit)
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(willBurnLp)); err != nil {
 		return nil, err
 	}
-	k.SetSwapPool(ctx, msg.Denom, swapPool)
+	if err := k.bankKeeper.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(willBurnLp)); err != nil {
+		return nil, err
+	}
 
+	swapPool.Tokens[0] = poolBaseToken
+	swapPool.Tokens[1] = poolToken
+	swapPool.LpToken = poolLpToken
+
+	k.SetSwapPool(ctx, lpDenom, swapPool)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRemoveLiquidity,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyLpDenom, lpDenom),
+			sdk.NewAttribute(types.AttributeKeyRemoveUnit, msg.RmUnit.String()),
+			sdk.NewAttribute(types.AttributeKeySwapUnit, msg.SwapUnit.String()),
+			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, swapPool.LpToken.Amount.String()),
+			sdk.NewAttribute(types.AttributeKeyRemoveBaseTokenAmount, rmBaseTokenAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyRemoveTokenAmount, rmTokenAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
+		),
+	)
 	return &types.MsgRemoveLiquidityResponse{}, nil
 }

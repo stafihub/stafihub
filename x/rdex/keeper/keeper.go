@@ -19,6 +19,7 @@ type (
 		paramstore paramtypes.Subspace
 
 		bankKeeper types.BankKeeper
+		sudoKeeper types.SudoKeeper
 	}
 )
 
@@ -28,6 +29,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 	bankKeeper types.BankKeeper,
+	sudoKeeper types.SudoKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -41,6 +43,7 @@ func NewKeeper(
 		memKey:     memKey,
 		paramstore: ps,
 		bankKeeper: bankKeeper,
+		sudoKeeper: sudoKeeper,
 	}
 }
 
@@ -63,4 +66,18 @@ func (k Keeper) GetSwapPool(ctx sdk.Context, denom string) (*types.SwapPool, boo
 	swapPool := types.SwapPool{}
 	k.cdc.MustUnmarshal(bts, &swapPool)
 	return &swapPool, true
+}
+
+func (k Keeper) GetSwapPoolList(ctx sdk.Context) []*types.SwapPool {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.SwapPoolStoreKeyPrefix)
+	defer iterator.Close()
+
+	swapPoolList := make([]*types.SwapPool, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		swapPool := types.SwapPool{}
+		k.cdc.MustUnmarshal(iterator.Value(), &swapPool)
+		swapPoolList = append(swapPoolList, &swapPool)
+	}
+	return swapPoolList
 }

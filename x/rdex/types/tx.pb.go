@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -30,10 +31,8 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgCreatePool struct {
-	Creator      string                                 `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom        string                                 `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	RTokenAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=rTokenAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"rTokenAmount"`
-	FisAmount    github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=fisAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"fisAmount"`
+	Creator string                                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Tokens  github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=tokens,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"tokens"`
 }
 
 func (m *MsgCreatePool) Reset()         { *m = MsgCreatePool{} }
@@ -76,11 +75,11 @@ func (m *MsgCreatePool) GetCreator() string {
 	return ""
 }
 
-func (m *MsgCreatePool) GetDenom() string {
+func (m *MsgCreatePool) GetTokens() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
-		return m.Denom
+		return m.Tokens
 	}
-	return ""
+	return nil
 }
 
 type MsgCreatePoolResponse struct {
@@ -120,10 +119,8 @@ func (m *MsgCreatePoolResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgCreatePoolResponse proto.InternalMessageInfo
 
 type MsgAddLiquidity struct {
-	Creator      string                                 `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom        string                                 `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	RTokenAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=rTokenAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"rTokenAmount"`
-	FisAmount    github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=fisAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"fisAmount"`
+	Creator string                                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Tokens  github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,2,rep,name=tokens,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"tokens"`
 }
 
 func (m *MsgAddLiquidity) Reset()         { *m = MsgAddLiquidity{} }
@@ -166,11 +163,11 @@ func (m *MsgAddLiquidity) GetCreator() string {
 	return ""
 }
 
-func (m *MsgAddLiquidity) GetDenom() string {
+func (m *MsgAddLiquidity) GetTokens() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
-		return m.Denom
+		return m.Tokens
 	}
-	return ""
+	return nil
 }
 
 type MsgAddLiquidityResponse struct {
@@ -210,11 +207,9 @@ func (m *MsgAddLiquidityResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgAddLiquidityResponse proto.InternalMessageInfo
 
 type MsgSwap struct {
-	Creator      string                                 `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom        string                                 `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	InputAmount  github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=inputAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"inputAmount"`
-	MinOutAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=minOutAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"minOutAmount"`
-	InputIsFis   bool                                   `protobuf:"varint,5,opt,name=inputIsFis,proto3" json:"inputIsFis,omitempty"`
+	Creator     string                                  `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	InputToken  github_com_cosmos_cosmos_sdk_types.Coin `protobuf:"bytes,2,opt,name=inputToken,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Coin" json:"inputToken"`
+	MinOutToken github_com_cosmos_cosmos_sdk_types.Coin `protobuf:"bytes,3,opt,name=minOutToken,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Coin" json:"minOutToken"`
 }
 
 func (m *MsgSwap) Reset()         { *m = MsgSwap{} }
@@ -257,20 +252,6 @@ func (m *MsgSwap) GetCreator() string {
 	return ""
 }
 
-func (m *MsgSwap) GetDenom() string {
-	if m != nil {
-		return m.Denom
-	}
-	return ""
-}
-
-func (m *MsgSwap) GetInputIsFis() bool {
-	if m != nil {
-		return m.InputIsFis
-	}
-	return false
-}
-
 type MsgSwapResponse struct {
 }
 
@@ -308,13 +289,11 @@ func (m *MsgSwapResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgSwapResponse proto.InternalMessageInfo
 
 type MsgRemoveLiquidity struct {
-	Creator            string                                 `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Denom              string                                 `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
-	RmUnit             github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=rmUnit,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"rmUnit"`
-	SwapUnit           github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=swapUnit,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"swapUnit"`
-	MinFisOutAmount    github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,5,opt,name=minFisOutAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"minFisOutAmount"`
-	MinRtokenOutAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,6,opt,name=minRtokenOutAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"minRtokenOutAmount"`
-	InputIsFis         bool                                   `protobuf:"varint,7,opt,name=inputIsFis,proto3" json:"inputIsFis,omitempty"`
+	Creator         string                                   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	RmUnit          github_com_cosmos_cosmos_sdk_types.Int   `protobuf:"bytes,3,opt,name=rmUnit,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"rmUnit"`
+	SwapUnit        github_com_cosmos_cosmos_sdk_types.Int   `protobuf:"bytes,4,opt,name=swapUnit,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"swapUnit"`
+	MinOutTokens    github_com_cosmos_cosmos_sdk_types.Coins `protobuf:"bytes,5,rep,name=minOutTokens,proto3,castrepeated=github.com/cosmos/cosmos-sdk/types.Coins" json:"minOutTokens"`
+	InputTokenDenom string                                   `protobuf:"bytes,6,opt,name=inputTokenDenom,proto3" json:"inputTokenDenom,omitempty"`
 }
 
 func (m *MsgRemoveLiquidity) Reset()         { *m = MsgRemoveLiquidity{} }
@@ -357,18 +336,18 @@ func (m *MsgRemoveLiquidity) GetCreator() string {
 	return ""
 }
 
-func (m *MsgRemoveLiquidity) GetDenom() string {
+func (m *MsgRemoveLiquidity) GetMinOutTokens() github_com_cosmos_cosmos_sdk_types.Coins {
 	if m != nil {
-		return m.Denom
+		return m.MinOutTokens
 	}
-	return ""
+	return nil
 }
 
-func (m *MsgRemoveLiquidity) GetInputIsFis() bool {
+func (m *MsgRemoveLiquidity) GetInputTokenDenom() string {
 	if m != nil {
-		return m.InputIsFis
+		return m.InputTokenDenom
 	}
-	return false
+	return ""
 }
 
 type MsgRemoveLiquidityResponse struct {
@@ -421,40 +400,40 @@ func init() {
 func init() { proto.RegisterFile("rdex/tx.proto", fileDescriptor_518c52ad1bbe1f44) }
 
 var fileDescriptor_518c52ad1bbe1f44 = []byte{
-	// 525 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x95, 0xdd, 0x6e, 0xd3, 0x30,
-	0x14, 0xc7, 0x6b, 0xba, 0xb6, 0xdb, 0x61, 0x53, 0x85, 0x35, 0x58, 0x89, 0x50, 0x3a, 0x55, 0x82,
-	0x0d, 0xa4, 0x25, 0xd2, 0x78, 0x82, 0x6d, 0x52, 0xa5, 0xa1, 0x45, 0x54, 0x01, 0x24, 0xc4, 0x05,
-	0x52, 0xdb, 0x78, 0x99, 0x35, 0x6c, 0x67, 0xb1, 0xcb, 0xba, 0xb7, 0xe0, 0x92, 0xe7, 0xe0, 0x29,
-	0x76, 0xb9, 0x4b, 0xc4, 0xc5, 0x04, 0xed, 0x83, 0x80, 0x9c, 0x36, 0x69, 0x92, 0x4d, 0xa5, 0x84,
-	0xbb, 0x5d, 0xc5, 0x76, 0xfe, 0xe7, 0x77, 0x72, 0x3e, 0x72, 0x0c, 0x6b, 0xa1, 0x47, 0x86, 0xb6,
-	0x1a, 0x5a, 0x41, 0x28, 0x94, 0xc0, 0x8f, 0xa4, 0xea, 0x1e, 0xd3, 0x93, 0x41, 0xcf, 0x4a, 0x16,
-	0x5a, 0x60, 0xac, 0xfb, 0xc2, 0x17, 0x91, 0xc4, 0xd6, 0xab, 0x89, 0xba, 0xf5, 0x0b, 0xc1, 0x9a,
-	0x23, 0xfd, 0x83, 0x90, 0x74, 0x15, 0xe9, 0x08, 0xf1, 0x09, 0x37, 0xa0, 0xd6, 0xd7, 0x3b, 0x11,
-	0x36, 0xd0, 0x26, 0xda, 0x5e, 0x71, 0xe3, 0x2d, 0x5e, 0x87, 0x8a, 0x47, 0xb8, 0x60, 0x8d, 0x7b,
-	0xd1, 0xf9, 0x64, 0x83, 0x5d, 0x58, 0x0d, 0xdf, 0x8a, 0x53, 0xc2, 0xf7, 0x98, 0x18, 0x70, 0xd5,
-	0x28, 0xeb, 0x97, 0xfb, 0xd6, 0xe5, 0x75, 0xb3, 0xf4, 0xe3, 0xba, 0xf9, 0xcc, 0xa7, 0x4a, 0x7f,
-	0x42, 0x5f, 0x30, 0xbb, 0x2f, 0x24, 0x13, 0x72, 0xfa, 0xd8, 0x91, 0xde, 0xa9, 0xad, 0x2e, 0x02,
-	0x22, 0xad, 0x43, 0xae, 0xdc, 0x0c, 0x03, 0x1f, 0xc1, 0xca, 0x31, 0x95, 0x53, 0xe0, 0x52, 0x21,
-	0xe0, 0x0c, 0xd0, 0xda, 0x80, 0x87, 0x99, 0x10, 0x5d, 0x22, 0x03, 0xc1, 0x25, 0x69, 0x8d, 0x11,
-	0xd4, 0x1d, 0xe9, 0xef, 0x79, 0xde, 0x11, 0x3d, 0x1b, 0x50, 0x8f, 0xaa, 0x8b, 0x3b, 0x18, 0xfe,
-	0x63, 0xd8, 0xc8, 0x05, 0x99, 0x24, 0xe0, 0x37, 0x82, 0x9a, 0x23, 0xfd, 0x37, 0xe7, 0xdd, 0xe0,
-	0x9f, 0x03, 0xef, 0xc0, 0x7d, 0xca, 0x83, 0x81, 0xfa, 0xaf, 0xb8, 0xd3, 0x08, 0x9d, 0x4a, 0x46,
-	0xf9, 0xeb, 0x04, 0x59, 0x2c, 0xf2, 0x0c, 0x03, 0x9b, 0x00, 0x91, 0x8b, 0x43, 0xd9, 0xa6, 0xb2,
-	0x51, 0xd9, 0x44, 0xdb, 0xcb, 0x6e, 0xea, 0xa4, 0xf5, 0x20, 0xea, 0x00, 0x9d, 0x80, 0x24, 0x29,
-	0xdf, 0xca, 0x80, 0x1d, 0xe9, 0xbb, 0x84, 0x89, 0xcf, 0xa4, 0x78, 0x63, 0xb4, 0xa1, 0x1a, 0xb2,
-	0x77, 0x9c, 0x16, 0x4d, 0xcd, 0xd4, 0x1a, 0xbf, 0x82, 0x65, 0x79, 0xde, 0x0d, 0x22, 0x52, 0xb1,
-	0x8c, 0x24, 0xf6, 0xf8, 0x3d, 0xd4, 0x19, 0xe5, 0x6d, 0x2a, 0x67, 0x49, 0xae, 0x14, 0x42, 0xe6,
-	0x31, 0xf8, 0x23, 0x60, 0x46, 0xb9, 0xab, 0x74, 0x17, 0xcf, 0xe0, 0xd5, 0x42, 0xf0, 0x5b, 0x48,
-	0xb9, 0x3a, 0xd6, 0x6e, 0xd4, 0xf1, 0x09, 0x18, 0x37, 0x6b, 0x16, 0x97, 0x74, 0xf7, 0x6b, 0x19,
-	0xca, 0x8e, 0xf4, 0x71, 0x0f, 0x20, 0x35, 0xe9, 0x9e, 0x5a, 0xb7, 0x8f, 0x4a, 0x2b, 0x33, 0x2d,
-	0x8c, 0x9d, 0x85, 0x64, 0xb1, 0x2f, 0x7c, 0x02, 0xab, 0x99, 0x81, 0xb2, 0x35, 0xc7, 0x3c, 0x2d,
-	0x34, 0xec, 0x05, 0x85, 0x89, 0xa7, 0x0e, 0x2c, 0x45, 0x7f, 0x6e, 0x73, 0x8e, 0xa1, 0x16, 0x18,
-	0x5b, 0x7f, 0x11, 0x24, 0xc4, 0x33, 0xa8, 0xe7, 0xdb, 0xfe, 0xc5, 0x1c, 0xdb, 0x9c, 0xd6, 0xd8,
-	0x5d, 0x5c, 0x1b, 0xbb, 0xdc, 0x3f, 0xb8, 0x1c, 0x99, 0xe8, 0x6a, 0x64, 0xa2, 0x9f, 0x23, 0x13,
-	0x7d, 0x19, 0x9b, 0xa5, 0xab, 0xb1, 0x59, 0xfa, 0x3e, 0x36, 0x4b, 0x1f, 0x9e, 0xa7, 0xda, 0x25,
-	0xc6, 0xcd, 0x16, 0x43, 0x7b, 0x72, 0xed, 0xe9, 0xae, 0xe9, 0x55, 0xa3, 0xcb, 0xec, 0xe5, 0x9f,
-	0x00, 0x00, 0x00, 0xff, 0xff, 0x37, 0x78, 0x05, 0x1d, 0x0b, 0x07, 0x00, 0x00,
+	// 528 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x94, 0xdd, 0x6e, 0xd3, 0x30,
+	0x14, 0xc7, 0x9b, 0x75, 0x74, 0x70, 0xb6, 0xa9, 0xc2, 0x02, 0x96, 0x45, 0x28, 0x9d, 0x22, 0x41,
+	0x0b, 0xd2, 0x62, 0x56, 0x9e, 0x80, 0x16, 0x21, 0x81, 0x88, 0x36, 0x02, 0xdc, 0x70, 0x97, 0x0f,
+	0x93, 0x59, 0x23, 0x71, 0x16, 0xbb, 0x5b, 0xf7, 0x12, 0x68, 0x97, 0x3c, 0x03, 0x2f, 0xc2, 0x2e,
+	0x77, 0x89, 0x90, 0x18, 0xa8, 0x7d, 0x11, 0xe4, 0x7c, 0x2d, 0x2d, 0xa8, 0x44, 0x13, 0x12, 0x57,
+	0x75, 0xea, 0xff, 0xf9, 0x9d, 0xbf, 0x8f, 0xcf, 0x31, 0xac, 0x27, 0x3e, 0x19, 0x63, 0x31, 0x36,
+	0xe3, 0x84, 0x09, 0x86, 0xee, 0x70, 0xe1, 0xbc, 0xa7, 0xfb, 0x23, 0xd7, 0x2c, 0x17, 0x52, 0xa0,
+	0xdd, 0x0a, 0x58, 0xc0, 0x52, 0x09, 0x96, 0xab, 0x4c, 0xad, 0xe9, 0x1e, 0xe3, 0x21, 0xe3, 0xd8,
+	0x75, 0x38, 0xc1, 0x47, 0x3b, 0x2e, 0x11, 0xce, 0x0e, 0xf6, 0x18, 0x8d, 0xb2, 0x7d, 0xe3, 0xa3,
+	0x02, 0xeb, 0x16, 0x0f, 0x86, 0x09, 0x71, 0x04, 0xd9, 0x63, 0xec, 0x03, 0x52, 0x61, 0xc5, 0x93,
+	0x5f, 0x2c, 0x51, 0x95, 0x2d, 0xa5, 0x77, 0xc3, 0x2e, 0x3e, 0x91, 0x07, 0x2d, 0xc1, 0x0e, 0x48,
+	0xc4, 0xd5, 0xa5, 0xad, 0x66, 0x6f, 0xb5, 0xbf, 0x69, 0x66, 0x70, 0x53, 0xc2, 0xcd, 0x1c, 0x6e,
+	0x0e, 0x19, 0x8d, 0x06, 0x8f, 0xce, 0x2e, 0x3a, 0x8d, 0xcf, 0x3f, 0x3a, 0xbd, 0x80, 0x0a, 0xe9,
+	0xd0, 0x63, 0x21, 0xce, 0x9d, 0x64, 0x3f, 0xdb, 0xdc, 0x3f, 0xc0, 0xe2, 0x24, 0x26, 0x3c, 0x0d,
+	0xe0, 0x76, 0x8e, 0x36, 0x36, 0xe0, 0xf6, 0x8c, 0x1f, 0x9b, 0xf0, 0x98, 0x45, 0x9c, 0x18, 0xa7,
+	0x0a, 0xb4, 0x2d, 0x1e, 0x3c, 0xf1, 0xfd, 0x97, 0xf4, 0x70, 0x44, 0x7d, 0x2a, 0x4e, 0xfe, 0xb7,
+	0xd7, 0x4d, 0xd8, 0x98, 0x73, 0x54, 0xba, 0xfd, 0xa2, 0xc0, 0x8a, 0xc5, 0x83, 0xd7, 0xc7, 0x4e,
+	0xbc, 0xc0, 0xe5, 0x2e, 0x00, 0x8d, 0xe2, 0x91, 0x78, 0x23, 0x79, 0xea, 0x92, 0xdc, 0x1c, 0x60,
+	0x69, 0xe7, 0xdb, 0x45, 0xa7, 0x5b, 0xd3, 0x8e, 0x5d, 0x41, 0xa0, 0x57, 0xb0, 0x1a, 0xd2, 0x68,
+	0xb7, 0x20, 0x36, 0xaf, 0x46, 0xac, 0x32, 0x8c, 0x9b, 0x69, 0xd9, 0xe5, 0x41, 0xca, 0xc3, 0x7d,
+	0x5f, 0x02, 0x64, 0xf1, 0xc0, 0x26, 0x21, 0x3b, 0x22, 0x75, 0x6e, 0xe3, 0x19, 0xb4, 0x92, 0xf0,
+	0x6d, 0x44, 0x45, 0xee, 0xc8, 0xcc, 0x1d, 0xdd, 0xaf, 0xe1, 0xe8, 0x79, 0x24, 0xec, 0x3c, 0x1a,
+	0xbd, 0x80, 0xeb, 0xfc, 0xd8, 0x89, 0x53, 0xd2, 0xf2, 0x95, 0x48, 0x65, 0x3c, 0x62, 0xb0, 0x56,
+	0x39, 0x26, 0x57, 0xaf, 0xfd, 0xfb, 0x3e, 0x99, 0x49, 0x80, 0x7a, 0xd0, 0xbe, 0xbc, 0xa9, 0xa7,
+	0x24, 0x62, 0xa1, 0xda, 0x4a, 0xcb, 0x34, 0xff, 0xb7, 0x71, 0x17, 0xb4, 0xdf, 0xcb, 0x5b, 0x54,
+	0xbf, 0xff, 0xa9, 0x09, 0x4d, 0x8b, 0x07, 0xc8, 0x05, 0xa8, 0x8c, 0xed, 0x3d, 0xf3, 0xcf, 0xef,
+	0x82, 0x39, 0x33, 0x4d, 0xda, 0x76, 0x2d, 0x59, 0x91, 0x0b, 0xed, 0xc3, 0xda, 0xcc, 0xc0, 0x75,
+	0x17, 0x84, 0x57, 0x85, 0x1a, 0xae, 0x29, 0x2c, 0x33, 0xed, 0xc1, 0x72, 0x3a, 0x2c, 0x9d, 0x05,
+	0x81, 0x52, 0xa0, 0x75, 0xff, 0x22, 0x28, 0x89, 0x87, 0xd0, 0x9e, 0xef, 0xd0, 0x87, 0x0b, 0x62,
+	0xe7, 0xb4, 0x5a, 0xbf, 0xbe, 0xb6, 0x48, 0x39, 0x18, 0x9e, 0x4d, 0x74, 0xe5, 0x7c, 0xa2, 0x2b,
+	0x3f, 0x27, 0xba, 0x72, 0x3a, 0xd5, 0x1b, 0xe7, 0x53, 0xbd, 0xf1, 0x75, 0xaa, 0x37, 0xde, 0x3d,
+	0xa8, 0x34, 0x4d, 0x81, 0xbb, 0x5c, 0x8c, 0x71, 0xf6, 0xc6, 0xcb, 0xde, 0x71, 0x5b, 0xe9, 0xcb,
+	0xfc, 0xf8, 0x57, 0x00, 0x00, 0x00, 0xff, 0xff, 0x3d, 0xc1, 0x09, 0xa2, 0xf8, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -665,32 +644,19 @@ func (m *MsgCreatePool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	{
-		size := m.FisAmount.Size()
-		i -= size
-		if _, err := m.FisAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
+	if len(m.Tokens) > 0 {
+		for iNdEx := len(m.Tokens) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Tokens[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
 		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x22
-	{
-		size := m.RTokenAmount.Size()
-		i -= size
-		if _, err := m.RTokenAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x1a
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
@@ -745,32 +711,19 @@ func (m *MsgAddLiquidity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	{
-		size := m.FisAmount.Size()
-		i -= size
-		if _, err := m.FisAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
+	if len(m.Tokens) > 0 {
+		for iNdEx := len(m.Tokens) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Tokens[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
 		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x22
-	{
-		size := m.RTokenAmount.Size()
-		i -= size
-		if _, err := m.RTokenAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x1a
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
@@ -825,43 +778,26 @@ func (m *MsgSwap) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.InputIsFis {
-		i--
-		if m.InputIsFis {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x28
-	}
 	{
-		size := m.MinOutAmount.Size()
+		size := m.MinOutToken.Size()
 		i -= size
-		if _, err := m.MinOutAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x22
-	{
-		size := m.InputAmount.Size()
-		i -= size
-		if _, err := m.InputAmount.MarshalTo(dAtA[i:]); err != nil {
+		if _, err := m.MinOutToken.MarshalTo(dAtA[i:]); err != nil {
 			return 0, err
 		}
 		i = encodeVarintTx(dAtA, i, uint64(size))
 	}
 	i--
 	dAtA[i] = 0x1a
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
+	{
+		size := m.InputToken.Size()
+		i -= size
+		if _, err := m.InputToken.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintTx(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x12
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
@@ -915,36 +851,27 @@ func (m *MsgRemoveLiquidity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.InputIsFis {
+	if len(m.InputTokenDenom) > 0 {
+		i -= len(m.InputTokenDenom)
+		copy(dAtA[i:], m.InputTokenDenom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.InputTokenDenom)))
 		i--
-		if m.InputIsFis {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x38
+		dAtA[i] = 0x32
 	}
-	{
-		size := m.MinRtokenOutAmount.Size()
-		i -= size
-		if _, err := m.MinRtokenOutAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
+	if len(m.MinOutTokens) > 0 {
+		for iNdEx := len(m.MinOutTokens) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MinOutTokens[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
 		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
 	}
-	i--
-	dAtA[i] = 0x32
-	{
-		size := m.MinFisOutAmount.Size()
-		i -= size
-		if _, err := m.MinFisOutAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintTx(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x2a
 	{
 		size := m.SwapUnit.Size()
 		i -= size
@@ -965,13 +892,6 @@ func (m *MsgRemoveLiquidity) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0x1a
-	if len(m.Denom) > 0 {
-		i -= len(m.Denom)
-		copy(dAtA[i:], m.Denom)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
@@ -1026,14 +946,12 @@ func (m *MsgCreatePool) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if len(m.Tokens) > 0 {
+		for _, e := range m.Tokens {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
 	}
-	l = m.RTokenAmount.Size()
-	n += 1 + l + sovTx(uint64(l))
-	l = m.FisAmount.Size()
-	n += 1 + l + sovTx(uint64(l))
 	return n
 }
 
@@ -1056,14 +974,12 @@ func (m *MsgAddLiquidity) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if len(m.Tokens) > 0 {
+		for _, e := range m.Tokens {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
 	}
-	l = m.RTokenAmount.Size()
-	n += 1 + l + sovTx(uint64(l))
-	l = m.FisAmount.Size()
-	n += 1 + l + sovTx(uint64(l))
 	return n
 }
 
@@ -1086,17 +1002,10 @@ func (m *MsgSwap) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = m.InputAmount.Size()
+	l = m.InputToken.Size()
 	n += 1 + l + sovTx(uint64(l))
-	l = m.MinOutAmount.Size()
+	l = m.MinOutToken.Size()
 	n += 1 + l + sovTx(uint64(l))
-	if m.InputIsFis {
-		n += 2
-	}
 	return n
 }
 
@@ -1119,20 +1028,19 @@ func (m *MsgRemoveLiquidity) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Denom)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
 	l = m.RmUnit.Size()
 	n += 1 + l + sovTx(uint64(l))
 	l = m.SwapUnit.Size()
 	n += 1 + l + sovTx(uint64(l))
-	l = m.MinFisOutAmount.Size()
-	n += 1 + l + sovTx(uint64(l))
-	l = m.MinRtokenOutAmount.Size()
-	n += 1 + l + sovTx(uint64(l))
-	if m.InputIsFis {
-		n += 2
+	if len(m.MinOutTokens) > 0 {
+		for _, e := range m.MinOutTokens {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	l = len(m.InputTokenDenom)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
@@ -1215,9 +1123,9 @@ func (m *MsgCreatePool) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Tokens", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1227,89 +1135,23 @@ func (m *MsgCreatePool) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RTokenAmount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.RTokenAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FisAmount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.FisAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Tokens = append(m.Tokens, types.Coin{})
+			if err := m.Tokens[len(m.Tokens)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1447,9 +1289,9 @@ func (m *MsgAddLiquidity) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Tokens", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1459,89 +1301,23 @@ func (m *MsgAddLiquidity) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RTokenAmount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.RTokenAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FisAmount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.FisAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Tokens = append(m.Tokens, types.Coin{})
+			if err := m.Tokens[len(m.Tokens)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1679,7 +1455,7 @@ func (m *MsgSwap) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field InputToken", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1707,11 +1483,13 @@ func (m *MsgSwap) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
+			if err := m.InputToken.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InputAmount", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MinOutToken", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1739,64 +1517,10 @@ func (m *MsgSwap) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.InputAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.MinOutToken.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MinOutAmount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.MinOutAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InputIsFis", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.InputIsFis = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -1929,38 +1653,6 @@ func (m *MsgRemoveLiquidity) Unmarshal(dAtA []byte) error {
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Denom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RmUnit", wireType)
@@ -2031,9 +1723,9 @@ func (m *MsgRemoveLiquidity) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MinFisOutAmount", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MinOutTokens", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2043,29 +1735,29 @@ func (m *MsgRemoveLiquidity) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.MinFisOutAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.MinOutTokens = append(m.MinOutTokens, types.Coin{})
+			if err := m.MinOutTokens[len(m.MinOutTokens)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MinRtokenOutAmount", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field InputTokenDenom", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2093,30 +1785,8 @@ func (m *MsgRemoveLiquidity) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.MinRtokenOutAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
+			m.InputTokenDenom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InputIsFis", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.InputIsFis = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

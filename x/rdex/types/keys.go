@@ -1,6 +1,12 @@
 package types
 
-import "fmt"
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 const (
 	// ModuleName defines the module name
@@ -31,6 +37,14 @@ func SwapPoolStoreKey(denom string) []byte {
 	return append(SwapPoolStoreKeyPrefix, []byte(denom)...)
 }
 
-func LpTokenDenom(denom string) string {
-	return fmt.Sprintf("ufis-%s", denom)
+func GetLpTokenDenom(coins sdk.Coins) string {
+	if len(coins) != 2 {
+		panic("coins length err")
+	}
+	coins = coins.Sort()
+
+	hash := sha256.Sum256([]byte(coins[0].Denom + coins[1].Denom))
+	denom := fmt.Sprintf("rdexlp/%s", hex.EncodeToString(hash[:]))
+
+	return denom
 }

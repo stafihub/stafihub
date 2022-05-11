@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -16,23 +15,17 @@ var _ = strconv.Itoa(0)
 
 func CmdSwap() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "swap [denom] [input-amount] [min-out-amount] [input-is-fis(true/false)]",
+		Use:   "swap [input-token] [min-out-token]",
 		Short: "Swap ",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-			argInputAmount, ok := sdk.NewIntFromString(args[1])
-			if !ok {
-				return fmt.Errorf("argInputAmount format err")
+			inputToken, err := sdk.ParseCoinNormalized(args[0])
+			if err != nil {
+				return err
 			}
-			argMinOutAmount, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("argMinOutAmount format err")
-			}
-
-			argInputIsFis := false
-			if args[3] == "true" {
-				argInputIsFis = true
+			minOutToken, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -42,10 +35,8 @@ func CmdSwap() *cobra.Command {
 
 			msg := types.NewMsgSwap(
 				clientCtx.GetFromAddress().String(),
-				argDenom,
-				argInputAmount,
-				argMinOutAmount,
-				argInputIsFis,
+				inputToken,
+				minOutToken,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

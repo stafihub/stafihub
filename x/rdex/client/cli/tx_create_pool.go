@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -16,19 +15,13 @@ var _ = strconv.Itoa(0)
 
 func CmdCreatePool() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pool [denom] [r-token-amount] [fis-amount]",
+		Use:   "create-pool [tokens]",
 		Short: "Create swap pool",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argDenom := args[0]
-
-			argRTokenAmount, ok := sdk.NewIntFromString(args[1])
-			if !ok {
-				return fmt.Errorf("argRTokenAmount format err")
-			}
-			argFisAmount, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("argFisAmount format err")
+			coins, err := sdk.ParseCoinsNormalized(args[0])
+			if err != nil {
+				return err
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -38,9 +31,7 @@ func CmdCreatePool() *cobra.Command {
 
 			msg := types.NewMsgCreatePool(
 				clientCtx.GetFromAddress().String(),
-				argDenom,
-				argRTokenAmount,
-				argFisAmount,
+				coins,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

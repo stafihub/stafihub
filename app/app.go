@@ -576,6 +576,7 @@ func New(
 		keys[rdexmoduletypes.MemStoreKey],
 		app.GetSubspace(rdexmoduletypes.ModuleName),
 		app.BankKeeper,
+		app.SudoKeeper,
 	)
 	rdexModule := rdexmodule.NewAppModule(appCodec, app.RdexKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -663,6 +664,7 @@ func New(
 		rvalidatormoduletypes.ModuleName,
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
+		rdexmoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -692,6 +694,7 @@ func New(
 		rvalidatormoduletypes.ModuleName,
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
+		rdexmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are

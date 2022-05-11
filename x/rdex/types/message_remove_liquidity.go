@@ -9,15 +9,13 @@ const TypeMsgRemoveLiquidity = "remove_liquidity"
 
 var _ sdk.Msg = &MsgRemoveLiquidity{}
 
-func NewMsgRemoveLiquidity(creator string, denom string, rmUnit, swapUnit, minFisOutAmount, minRtokenOutAmount sdk.Int, inputIsFis bool) *MsgRemoveLiquidity {
+func NewMsgRemoveLiquidity(creator string, rmUnit, swapUnit sdk.Int, minOutTokens sdk.Coins, inputTokenDenom string) *MsgRemoveLiquidity {
 	return &MsgRemoveLiquidity{
-		Creator:            creator,
-		Denom:              denom,
-		RmUnit:             rmUnit,
-		SwapUnit:           swapUnit,
-		MinFisOutAmount:    minFisOutAmount,
-		MinRtokenOutAmount: minRtokenOutAmount,
-		InputIsFis:         inputIsFis,
+		Creator:         creator,
+		RmUnit:          rmUnit,
+		SwapUnit:        swapUnit,
+		MinOutTokens:    minOutTokens,
+		InputTokenDenom: inputTokenDenom,
 	}
 }
 
@@ -46,6 +44,9 @@ func (msg *MsgRemoveLiquidity) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if len(msg.MinOutTokens) != 2 {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", err)
 	}
 	return nil
 }
