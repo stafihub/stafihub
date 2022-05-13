@@ -8,5 +8,6 @@ import (
 
 // x/mining module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrStakePoolAlreadyExist = sdkerrors.Register(ModuleName, 1101, "stake pool already exist")
+	ErrStakePoolNotExist     = sdkerrors.Register(ModuleName, 1102, "stake pool not exist")
 )

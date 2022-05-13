@@ -1,0 +1,49 @@
+syntax = "proto3";
+package stafihub.stafihub.mining;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/stafihub/stafihub/x/mining/types";
+
+message StakePool {
+  // staked token denom
+  string stakeTokenDenom = 1;
+  // subpool number limit
+  uint32 maxRewardPools = 2;
+  repeated RewardPool rewardPools = 3;
+  // total (staked) balance of staked token
+  string totalStakedAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string totalStakedPower = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message RewardPool {
+  string rewardTokenDenom = 1;
+  string totalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string leftRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string rewardPerSecond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  uint64 startTimestamp = 5;
+  string rewardPerPower = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message UserStakeRecord {
+  string stakeTokenDenom = 1;
+  string stakedAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string stakedPower = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  // the begin timestamp
+  uint64 startTimestamp = 4;
+  // promise not unstake before this timestamp
+  uint64 endTimestamp = 5;
+  repeated RewardInfo rewardInfos = 6; 
+}
+
+message RewardInfo {
+  string rewardTokenDenom = 1;
+  string rewardDebt = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message StakeItem {
+  uint32 index = 1;
+  uint64 lockSecond = 2;
+  // user stakedPower = powerRewardRate * stakedAmount
+  string powerRewardRate = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+}

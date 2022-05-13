@@ -20665,6 +20665,118 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/mining/stake_item_list:
+    get:
+      summary: Queries a list of StakeItemList items.
+      operationId: StafihubStafihubMiningStakeItemList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              stakeItemList:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: integer
+                      format: int64
+                    lockSecond:
+                      type: string
+                      format: uint64
+                    powerRewardRate:
+                      type: string
+                      title: user stakedPower = powerRewardRate * stakedAmount
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/stafihub/stafihub/mining/stake_pool_info/{stakeTokenDenom}':
+    get:
+      summary: Queries a list of StakePoolInfo items.
+      operationId: StafihubStafihubMiningStakePoolInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              stakePool:
+                type: object
+                properties:
+                  stakeTokenDenom:
+                    type: string
+                    title: staked token denom
+                  maxRewardPools:
+                    type: integer
+                    format: int64
+                    title: subpool number limit
+                  rewardPools:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rewardTokenDenom:
+                          type: string
+                        totalRewardAmount:
+                          type: string
+                        leftRewardAmount:
+                          type: string
+                        rewardPerSecond:
+                          type: string
+                        startTimestamp:
+                          type: string
+                          format: uint64
+                        rewardPerPower:
+                          type: string
+                  totalStakedAmount:
+                    type: string
+                    title: total (staked) balance of staked token
+                  totalStakedPower:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: stakeTokenDenom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/stafihub/stafihub/rbank/address_prefix/{denom}':
     get:
       summary: Queries a list of AddressPrefix items.
@@ -37563,6 +37675,12 @@ definitions:
         type: string
       recipient:
         type: string
+  stafihub.stafihub.mining.MsgAddRewardPoolResponse:
+    type: object
+  stafihub.stafihub.mining.MsgAddStakeItemResponse:
+    type: object
+  stafihub.stafihub.mining.MsgAddStakePoolResponse:
+    type: object
   stafihub.stafihub.mining.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -37573,6 +37691,120 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.mining.QueryStakeItemListResponse:
+    type: object
+    properties:
+      stakeItemList:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: integer
+              format: int64
+            lockSecond:
+              type: string
+              format: uint64
+            powerRewardRate:
+              type: string
+              title: user stakedPower = powerRewardRate * stakedAmount
+  stafihub.stafihub.mining.QueryStakePoolInfoResponse:
+    type: object
+    properties:
+      stakePool:
+        type: object
+        properties:
+          stakeTokenDenom:
+            type: string
+            title: staked token denom
+          maxRewardPools:
+            type: integer
+            format: int64
+            title: subpool number limit
+          rewardPools:
+            type: array
+            items:
+              type: object
+              properties:
+                rewardTokenDenom:
+                  type: string
+                totalRewardAmount:
+                  type: string
+                leftRewardAmount:
+                  type: string
+                rewardPerSecond:
+                  type: string
+                startTimestamp:
+                  type: string
+                  format: uint64
+                rewardPerPower:
+                  type: string
+          totalStakedAmount:
+            type: string
+            title: total (staked) balance of staked token
+          totalStakedPower:
+            type: string
+  stafihub.stafihub.mining.RewardPool:
+    type: object
+    properties:
+      rewardTokenDenom:
+        type: string
+      totalRewardAmount:
+        type: string
+      leftRewardAmount:
+        type: string
+      rewardPerSecond:
+        type: string
+      startTimestamp:
+        type: string
+        format: uint64
+      rewardPerPower:
+        type: string
+  stafihub.stafihub.mining.StakeItem:
+    type: object
+    properties:
+      index:
+        type: integer
+        format: int64
+      lockSecond:
+        type: string
+        format: uint64
+      powerRewardRate:
+        type: string
+        title: user stakedPower = powerRewardRate * stakedAmount
+  stafihub.stafihub.mining.StakePool:
+    type: object
+    properties:
+      stakeTokenDenom:
+        type: string
+        title: staked token denom
+      maxRewardPools:
+        type: integer
+        format: int64
+        title: subpool number limit
+      rewardPools:
+        type: array
+        items:
+          type: object
+          properties:
+            rewardTokenDenom:
+              type: string
+            totalRewardAmount:
+              type: string
+            leftRewardAmount:
+              type: string
+            rewardPerSecond:
+              type: string
+            startTimestamp:
+              type: string
+              format: uint64
+            rewardPerPower:
+              type: string
+      totalStakedAmount:
+        type: string
+        title: total (staked) balance of staked token
+      totalStakedPower:
+        type: string
   cosmos.bank.v1beta1.DenomUnit:
     type: object
     properties:

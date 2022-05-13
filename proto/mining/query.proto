@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "mining/params.proto";
+import "mining/models.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafihub/stafihub/x/mining/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/stafihub/stafihub/mining/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of StakePoolInfo items.
+	rpc StakePoolInfo(QueryStakePoolInfoRequest) returns (QueryStakePoolInfoResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_info/{stakeTokenDenom}";
+	}
+
+// Queries a list of StakeItemList items.
+	rpc StakeItemList(QueryStakeItemListRequest) returns (QueryStakeItemListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_item_list";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,21 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryStakePoolInfoRequest {
+  string stakeTokenDenom = 1;
+}
+
+message QueryStakePoolInfoResponse {
+  StakePool stakePool = 1;
+}
+
+message QueryStakeItemListRequest {
+}
+
+message QueryStakeItemListResponse {
+  repeated StakeItem stakeItemList = 1;
 }
 
 // this line is used by starport scaffolding # 3
