@@ -20689,6 +20689,8 @@ paths:
                     powerRewardRate:
                       type: string
                       title: user stakedPower = powerRewardRate * stakedAmount
+                    enable:
+                      type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -20734,6 +20736,9 @@ paths:
                     items:
                       type: object
                       properties:
+                        index:
+                          type: integer
+                          format: int64
                         rewardTokenDenom:
                           type: string
                         totalRewardAmount:
@@ -20747,6 +20752,9 @@ paths:
                           format: uint64
                         rewardPerPower:
                           type: string
+                        lastRewardTimestamp:
+                          type: string
+                          format: uint64
                   totalStakedAmount:
                     type: string
                     title: total (staked) balance of staked token
@@ -37681,6 +37689,10 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgAddStakePoolResponse:
     type: object
+  stafihub.stafihub.mining.MsgClaimRewardResponse:
+    type: object
+  stafihub.stafihub.mining.MsgStakeResponse:
+    type: object
   stafihub.stafihub.mining.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -37708,6 +37720,8 @@ definitions:
             powerRewardRate:
               type: string
               title: user stakedPower = powerRewardRate * stakedAmount
+            enable:
+              type: boolean
   stafihub.stafihub.mining.QueryStakePoolInfoResponse:
     type: object
     properties:
@@ -37726,6 +37740,9 @@ definitions:
             items:
               type: object
               properties:
+                index:
+                  type: integer
+                  format: int64
                 rewardTokenDenom:
                   type: string
                 totalRewardAmount:
@@ -37739,6 +37756,9 @@ definitions:
                   format: uint64
                 rewardPerPower:
                   type: string
+                lastRewardTimestamp:
+                  type: string
+                  format: uint64
           totalStakedAmount:
             type: string
             title: total (staked) balance of staked token
@@ -37747,6 +37767,9 @@ definitions:
   stafihub.stafihub.mining.RewardPool:
     type: object
     properties:
+      index:
+        type: integer
+        format: int64
       rewardTokenDenom:
         type: string
       totalRewardAmount:
@@ -37760,6 +37783,9 @@ definitions:
         format: uint64
       rewardPerPower:
         type: string
+      lastRewardTimestamp:
+        type: string
+        format: uint64
   stafihub.stafihub.mining.StakeItem:
     type: object
     properties:
@@ -37772,6 +37798,8 @@ definitions:
       powerRewardRate:
         type: string
         title: user stakedPower = powerRewardRate * stakedAmount
+      enable:
+        type: boolean
   stafihub.stafihub.mining.StakePool:
     type: object
     properties:
@@ -37787,6 +37815,9 @@ definitions:
         items:
           type: object
           properties:
+            index:
+              type: integer
+              format: int64
             rewardTokenDenom:
               type: string
             totalRewardAmount:
@@ -37800,6 +37831,9 @@ definitions:
               format: uint64
             rewardPerPower:
               type: string
+            lastRewardTimestamp:
+              type: string
+              format: uint64
       totalStakedAmount:
         type: string
         title: total (staked) balance of staked token

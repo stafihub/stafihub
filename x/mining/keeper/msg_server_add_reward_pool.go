@@ -15,7 +15,14 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		return nil, types.ErrStakePoolAlreadyExist
 	}
 
+	if len(stakePool.RewardPools) >= int(stakePool.MaxRewardPools) {
+		return nil, types.ErrRewardPoolNumberReachLimit
+	}
+
+	willUseIndex := k.Keeper.GetRewardPoolNextIndex(ctx, msg.StakeTokenDenom)
+
 	stakePool.RewardPools = append(stakePool.RewardPools, &types.RewardPool{
+		Index:             willUseIndex,
 		RewardTokenDenom:  msg.RewardTokenDenom,
 		TotalRewardAmount: msg.TotalRewardAmount,
 		LeftRewardAmount:  msg.TotalRewardAmount,
@@ -24,7 +31,7 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		RewardPerPower:    sdk.ZeroInt(),
 	})
 
-	k.Keeper.SetStakePool(ctx, msg.StakeTokenDenom, stakePool)
+	k.Keeper.SetStakePool(ctx, stakePool)
 
 	return &types.MsgAddRewardPoolResponse{}, nil
 }

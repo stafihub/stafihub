@@ -1,11 +1,13 @@
 package keeper
 
 import (
+	"encoding/binary"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -17,6 +19,9 @@ type (
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
+
+		bankKeeper types.BankKeeper
+		sudoKeeper types.SudoKeeper
 	}
 )
 
@@ -25,7 +30,8 @@ func NewKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
-
+	bankKeeper types.BankKeeper,
+	sudoKeeper types.SudoKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -33,11 +39,12 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-
 		cdc:        cdc,
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramstore: ps,
+		bankKeeper: bankKeeper,
+		sudoKeeper: sudoKeeper,
 	}
 }
 
@@ -45,9 +52,9 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) SetStakePool(ctx sdk.Context, denom string, swapPool *types.StakePool) {
+func (k Keeper) SetStakePool(ctx sdk.Context, stakePool *types.StakePool) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.StakePoolStoreKey(denom), k.cdc.MustMarshal(swapPool))
+	store.Set(types.StakePoolStoreKey(stakePool.StakeTokenDenom), k.cdc.MustMarshal(stakePool))
 }
 
 func (k Keeper) GetStakePool(ctx sdk.Context, denom string) (*types.StakePool, bool) {
@@ -105,4 +112,95 @@ func (k Keeper) GetStakeItemList(ctx sdk.Context) []*types.StakeItem {
 		stakeItemList = append(stakeItemList, &stakeItem)
 	}
 	return stakeItemList
+}
+
+func (k Keeper) GetUserStakeRecordNextIndex(ctx sdk.Context, userAddress, stakeTokenDenom string) uint32 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UserStakeRecordIndexStoreKeyPrefix)
+
+	key := []byte(userAddress + stakeTokenDenom)
+
+	seqBts := store.Get(key)
+	if seqBts == nil {
+		return 0
+	}
+
+	seq := binary.LittleEndian.Uint32(seqBts)
+	return seq + 1
+}
+
+func (k Keeper) SetUserStakeRecordIndex(ctx sdk.Context, userAddress, stakeTokenDenom string, index uint32) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UserStakeRecordIndexStoreKeyPrefix)
+
+	key := []byte(userAddress + stakeTokenDenom)
+
+	seqBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqBts, index)
+	store.Set(key, seqBts)
+}
+
+func (k Keeper) GetRewardPoolNextIndex(ctx sdk.Context, stakeTokenDenom string) uint32 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RewardPoolIndexStoreKeyPrefix)
+
+	key := []byte(stakeTokenDenom)
+
+	seqBts := store.Get(key)
+	if seqBts == nil {
+		return 0
+	}
+
+	seq := binary.LittleEndian.Uint32(seqBts)
+	return seq + 1
+}
+
+func (k Keeper) SetRewardPoolIndex(ctx sdk.Context, stakeTokenDenom string, index uint32) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.RewardPoolIndexStoreKeyPrefix)
+
+	key := []byte(stakeTokenDenom)
+
+	seqBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqBts, index)
+	store.Set(key, seqBts)
+}
+
+func (k Keeper) SetUserStakeRecord(ctx sdk.Context, userStakeRecord *types.UserStakeRecord) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(
+		types.UserStakeRecordStoreKey(userStakeRecord.UserAddress, userStakeRecord.StakeTokenDenom, userStakeRecord.Index),
+		k.cdc.MustMarshal(userStakeRecord))
+}
+
+func (k Keeper) GetUserStakeRecord(ctx sdk.Context, userAddress, stakeTokenDenom string, index uint32) (*types.UserStakeRecord, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.UserStakeRecordStoreKey(userAddress, stakeTokenDenom, index))
+	if bts == nil {
+		return nil, false
+	}
+
+	userStakeRecord := types.UserStakeRecord{}
+	k.cdc.MustUnmarshal(bts, &userStakeRecord)
+	return &userStakeRecord, true
+}
+
+func (k Keeper) GetUserStakeRecordList(ctx sdk.Context, userAddress, stakeTokenDenom string) []*types.UserStakeRecord {
+	userAddressLen := len(userAddress)
+	stakeTokenDenomLen := len(stakeTokenDenom)
+
+	key := make([]byte, 1+1+userAddressLen+1+stakeTokenDenomLen)
+	key[0] = types.UserStakeRecordStoreKeyPrefix[0]
+	key[1] = byte(len(userAddress))
+	copy(key[2:2+userAddressLen], userAddress)
+	key[2+userAddressLen] = byte(stakeTokenDenomLen)
+	copy(key[2+userAddressLen+1:2+userAddressLen+1+stakeTokenDenomLen], stakeTokenDenom)
+
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, key)
+	defer iterator.Close()
+
+	userStakeRecordList := make([]*types.UserStakeRecord, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		userStakeRecordPool := types.UserStakeRecord{}
+		k.cdc.MustUnmarshal(iterator.Value(), &userStakeRecordPool)
+		userStakeRecordList = append(userStakeRecordList, &userStakeRecordPool)
+	}
+	return userStakeRecordList
 }

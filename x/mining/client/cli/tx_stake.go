@@ -8,34 +8,25 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
-	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/mining/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdAddStakeItem() *cobra.Command {
+func CmdStake() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-stake-item [index] [lock-second] [power-reward-rate] [enable(true/false)]",
-		Short: "Add stake item",
-		Args:  cobra.ExactArgs(4),
+		Use:   "stake [stake-token] [stake-item-index]",
+		Short: "Stake token ",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argIndex, err := sdk.ParseUint(args[0])
-			if err != nil {
-				return err
-			}
-			argLockSecond, err := sdk.ParseUint(args[1])
-			if err != nil {
-				return err
-			}
-			argPowerRewardRate, err := utils.NewDecFromStr(args[2])
+			argStakeToken, err := sdk.ParseCoinNormalized(args[0])
 			if err != nil {
 				return err
 			}
 
-			enable := true
-			if args[3] == "false" {
-				enable = false
+			argStakeItemIndex, err := sdk.ParseUint(args[1])
+			if err != nil {
+				return err
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -43,12 +34,10 @@ func CmdAddStakeItem() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgAddStakeItem(
+			msg := types.NewMsgStake(
 				clientCtx.GetFromAddress().String(),
-				uint32(argIndex.Uint64()),
-				argLockSecond.Uint64(),
-				argPowerRewardRate,
-				enable,
+				argStakeToken,
+				uint32(argStakeItemIndex.Uint64()),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

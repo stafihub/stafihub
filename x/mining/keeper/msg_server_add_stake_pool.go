@@ -23,7 +23,7 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		TotalStakedPower:  sdk.ZeroInt(),
 	}
 
-	k.SetStakePool(ctx, msg.StakeTokenDenom, &stakePool)
+	k.SetStakePool(ctx, &stakePool)
 
 	return &types.MsgAddStakePoolResponse{}, nil
 }

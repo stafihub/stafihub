@@ -10,12 +10,13 @@ const TypeMsgAddStakeItem = "add_stake_item"
 
 var _ sdk.Msg = &MsgAddStakeItem{}
 
-func NewMsgAddStakeItem(creator string, index uint32, lockSecond uint64, powerRewardRate utils.Dec) *MsgAddStakeItem {
+func NewMsgAddStakeItem(creator string, index uint32, lockSecond uint64, powerRewardRate utils.Dec, enable bool) *MsgAddStakeItem {
 	return &MsgAddStakeItem{
 		Creator:         creator,
 		Index:           index,
 		LockSecond:      lockSecond,
 		PowerRewardRate: powerRewardRate,
+		Enable:          enable,
 	}
 }
 
