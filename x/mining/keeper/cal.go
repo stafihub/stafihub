@@ -18,6 +18,9 @@ func updateStakePool(stakePool *types.StakePool, curBlockTime uint64) {
 		reward := getPoolReward(rewardPool.LastRewardTimestamp, curBlockTime, rewardPool.RewardPerSecond, rewardPool.LeftRewardAmount)
 		if reward.IsPositive() {
 			rewardPool.LeftRewardAmount = rewardPool.LeftRewardAmount.Sub(reward)
+			if rewardPool.LeftRewardAmount.IsNegative() {
+				rewardPool.LeftRewardAmount = sdk.ZeroInt()
+			}
 			willAddRewardPerPower := reward.Mul(types.RewardFactor).Quo(stakePool.TotalStakedPower)
 			rewardPool.RewardPerPower = rewardPool.RewardPerPower.Add(willAddRewardPerPower)
 		}

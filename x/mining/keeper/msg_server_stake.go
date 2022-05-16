@@ -58,9 +58,10 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	if err := k.Keeper.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddr, types.ModuleName, sdk.NewCoins(msg.StakeToken)); err != nil {
 		return nil, err
 	}
+
+	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakeToken.Denom, willUseIndex)
 	k.Keeper.SetUserStakeRecord(ctx, &userStakeRecord)
 	k.Keeper.SetStakePool(ctx, stakePool)
-	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakeToken.Denom, willUseIndex)
 
 	return &types.MsgStakeResponse{}, nil
 }

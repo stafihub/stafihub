@@ -28,7 +28,7 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 
 	willClaimCoins := calRewardTokens(stakePool, userStakeRecord)
 
-	if willClaimCoins.Len() > 0 {
+	if willClaimCoins.IsAllPositive() {
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipientAddr, willClaimCoins); err != nil {
 			return nil, err
 		}

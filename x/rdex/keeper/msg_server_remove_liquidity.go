@@ -93,10 +93,10 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 
 	willSendCoin := sdk.NewCoins()
 	if rmBaseTokenAmount.GT(sdk.ZeroInt()) {
-		willSendCoin = append(willSendCoin, sdk.NewCoin(poolBaseToken.Denom, rmBaseTokenAmount))
+		willSendCoin = willSendCoin.Add(sdk.NewCoin(poolBaseToken.Denom, rmBaseTokenAmount))
 	}
 	if rmTokenAmount.GT(sdk.ZeroInt()) {
-		willSendCoin = append(willSendCoin, sdk.NewCoin(poolToken.Denom, rmTokenAmount))
+		willSendCoin = willSendCoin.Add(sdk.NewCoin(poolToken.Denom, rmTokenAmount))
 	}
 
 	if willSendCoin.IsAllPositive() {

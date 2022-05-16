@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -28,10 +27,9 @@ func (k Keeper) StakeReward(goCtx context.Context, req *types.QueryStakeRewardRe
 	}
 
 	updateStakePool(stakePool, curBlockTime)
-	fmt.Println("stakepool", stakePool)
-	fmt.Println("user record", userStakeRecord)
+	rewardTokens := calRewardTokens(stakePool, userStakeRecord)
 
 	return &types.QueryStakeRewardResponse{
-		RewardTokens: calRewardTokens(stakePool, userStakeRecord),
+		RewardTokens: rewardTokens,
 	}, nil
 }

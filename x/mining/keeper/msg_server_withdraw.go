@@ -31,11 +31,23 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	willClaimCoins := calRewardTokens(stakePool, userStakeRecord)
 
 	willRmPower := msg.StakeToken.Amount.Mul(userStakeRecord.StakedPower).Quo(userStakeRecord.StakedAmount)
-	stakePool.TotalStakedAmount = stakePool.TotalStakedAmount.Sub(msg.StakeToken.Amount)
-	stakePool.TotalStakedPower = stakePool.TotalStakedPower.Sub(willRmPower)
 
+	stakePool.TotalStakedAmount = stakePool.TotalStakedAmount.Sub(msg.StakeToken.Amount)
+	if stakePool.TotalStakedAmount.IsNegative() {
+		stakePool.TotalStakedAmount = sdk.ZeroInt()
+	}
+	stakePool.TotalStakedPower = stakePool.TotalStakedPower.Sub(willRmPower)
+	if stakePool.TotalStakedPower.IsNegative() {
+		stakePool.TotalStakedPower = sdk.ZeroInt()
+	}
 	userStakeRecord.StakedAmount = userStakeRecord.StakedAmount.Sub(msg.StakeToken.Amount)
+	if userStakeRecord.StakedAmount.IsNegative() {
+		userStakeRecord.StakedAmount = sdk.ZeroInt()
+	}
 	userStakeRecord.StakedPower = userStakeRecord.StakedPower.Sub(willRmPower)
+	if userStakeRecord.StakedPower.IsNegative() {
+		userStakeRecord.StakedPower = sdk.ZeroInt()
+	}
 
 	willClaimCoins = willClaimCoins.Add(msg.StakeToken)
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipientAddr, willClaimCoins); err != nil {
