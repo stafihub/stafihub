@@ -13,4 +13,5 @@ var (
 	ErrRewardPoolNumberReachLimit = sdkerrors.Register(ModuleName, 1103, "reward pool number reach limit")
 	ErrStakeItemNotExist          = sdkerrors.Register(ModuleName, 1104, "stake item not exist")
 	ErrUserStakeRecordNotExist    = sdkerrors.Register(ModuleName, 1105, "user stake record not exist")
+	ErrStakeTokenStillLocked      = sdkerrors.Register(ModuleName, 1106, "stake token still locked")
 )

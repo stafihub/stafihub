@@ -209,6 +209,7 @@ var (
 		bridgemoduletypes.ModuleName:      {authtypes.Burner, authtypes.Minter},
 		rmintrewardmoduletypes.ModuleName: nil,
 		rdexmoduletypes.ModuleName:        {authtypes.Burner, authtypes.Minter},
+		miningmoduletypes.ModuleName:      nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -683,6 +684,7 @@ func New(
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
+		miningmoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -713,6 +715,7 @@ func New(
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
+		miningmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are

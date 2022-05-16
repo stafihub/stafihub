@@ -60,38 +60,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	}
 	k.Keeper.SetUserStakeRecord(ctx, &userStakeRecord)
 	k.Keeper.SetStakePool(ctx, stakePool)
+	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakeToken.Denom, willUseIndex)
 
 	return &types.MsgStakeResponse{}, nil
-}
-
-func updateStakePool(stakePool *types.StakePool, curBlockTime uint64) {
-	for _, rewardPool := range stakePool.RewardPools {
-		if rewardPool.LastRewardTimestamp >= curBlockTime {
-			continue
-		}
-		if stakePool.TotalStakedPower.IsZero() {
-			rewardPool.LastRewardTimestamp = curBlockTime
-			continue
-		}
-
-		reward := getPoolReward(rewardPool.LastRewardTimestamp, curBlockTime, rewardPool.RewardPerSecond, rewardPool.LeftRewardAmount)
-		if reward.IsPositive() {
-			rewardPool.LeftRewardAmount = rewardPool.LeftRewardAmount.Sub(reward)
-			willAddRewardPerPower := reward.Mul(types.RewardFactor).Quo(stakePool.TotalStakedPower)
-			rewardPool.RewardPerPower = rewardPool.RewardPerPower.Add(willAddRewardPerPower)
-		}
-		rewardPool.LastRewardTimestamp = curBlockTime
-	}
-}
-
-func getPoolReward(from, to uint64, rewardPerSecond, leftRewardAmount sdk.Int) sdk.Int {
-	duration := uint64(0)
-	if from > to {
-		duration = to - from
-	}
-	reward := rewardPerSecond.Mul(sdk.NewIntFromUint64(duration))
-	if reward.GT(leftRewardAmount) {
-		reward = leftRewardAmount
-	}
-	return reward
 }

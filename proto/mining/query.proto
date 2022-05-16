@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "mining/params.proto";
 import "mining/models.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafihub/stafihub/x/mining/types";
@@ -24,6 +25,31 @@ service Query {
 // Queries a list of StakeItemList items.
 	rpc StakeItemList(QueryStakeItemListRequest) returns (QueryStakeItemListResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/mining/stake_item_list";
+	}
+
+// Queries a list of StakeReward items.
+	rpc StakeReward(QueryStakeRewardRequest) returns (QueryStakeRewardResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_reward/{stakeUserAddress}/{stakeTokenDenom}/{stakeRecordIndex}";
+	}
+
+// Queries a list of StakeRecordCount items.
+	rpc StakeRecordCount(QueryStakeRecordCountRequest) returns (QueryStakeRecordCountResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_count/{userAddress}/{stakeTokenDenom}";
+	}
+
+// Queries a list of StakeRecord items.
+	rpc StakeRecord(QueryStakeRecordRequest) returns (QueryStakeRecordResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record/{userAddress}/{stakeTokenDenom}/{stakeRecordIndex}";
+	}
+
+// Queries a list of StakeRecordList items.
+	rpc StakeRecordList(QueryStakeRecordListRequest) returns (QueryStakeRecordListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_list/{userAddress}/{stakeTokenDenom}";
+	}
+
+// Queries a list of StakePoolList items.
+	rpc StakePoolList(QueryStakePoolListRequest) returns (QueryStakePoolListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_list";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -51,6 +77,51 @@ message QueryStakeItemListRequest {
 
 message QueryStakeItemListResponse {
   repeated StakeItem stakeItemList = 1;
+}
+
+message QueryStakeRewardRequest {
+  string stakeUserAddress = 1;
+  string stakeTokenDenom = 2;
+  uint32 stakeRecordIndex = 3;
+}
+
+message QueryStakeRewardResponse {
+  repeated cosmos.base.v1beta1.Coin rewardTokens = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message QueryStakeRecordCountRequest {
+  string userAddress = 1;
+  string stakeTokenDenom = 2;
+}
+
+message QueryStakeRecordCountResponse {
+  uint32 count = 1;
+}
+
+message QueryStakeRecordRequest {
+  string userAddress = 1;
+  string stakeTokenDenom = 2;
+  uint32 stakeRecordIndex = 3;
+}
+
+message QueryStakeRecordResponse {
+  UserStakeRecord stakeRecord = 1;
+}
+
+message QueryStakeRecordListRequest {
+  string userAddress = 1;
+  string stakeTokenDenom = 2;
+}
+
+message QueryStakeRecordListResponse {
+  repeated UserStakeRecord stakeRecordList = 1;
+}
+
+message QueryStakePoolListRequest {
+}
+
+message QueryStakePoolListResponse {
+  repeated StakePool stakePoolList = 1;
 }
 
 // this line is used by starport scaffolding # 3

@@ -14,7 +14,7 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 		return nil, err
 	}
 
-	userStakeRecord, found := k.Keeper.GetUserStakeRecord(ctx, msg.Creator, msg.StakeTokenDenom, msg.Index)
+	userStakeRecord, found := k.Keeper.GetUserStakeRecord(ctx, msg.Creator, msg.StakeTokenDenom, msg.StakeRecordIndex)
 	if !found {
 		return nil, types.ErrUserStakeRecordNotExist
 	}
@@ -26,31 +26,7 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 
 	updateStakePool(stakePool, curBlockTime)
 
-	willClaimCoins := sdk.NewCoins()
-	for _, rewardPool := range stakePool.RewardPools {
-		rewardDebt := sdk.ZeroInt()
-		existInRewardInfos := false
-		for _, rewardInfo := range userStakeRecord.RewardInfos {
-			if rewardPool.Index == rewardInfo.RewardPoolIndex {
-				rewardDebt = rewardInfo.RewardDebt
-				rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
-				existInRewardInfos = true
-				break
-			}
-		}
-		if !existInRewardInfos {
-			userStakeRecord.RewardInfos = append(userStakeRecord.RewardInfos, &types.RewardInfo{
-				RewardPoolIndex:  rewardPool.Index,
-				RewardTokenDenom: rewardPool.RewardTokenDenom,
-				RewardDebt:       userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
-			})
-		}
-
-		rewardAmount := userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor).Sub(rewardDebt)
-		if rewardAmount.IsPositive() {
-			willClaimCoins = append(willClaimCoins, sdk.NewCoin(rewardPool.RewardTokenDenom, rewardAmount))
-		}
-	}
+	willClaimCoins := calRewardTokens(stakePool, userStakeRecord)
 
 	if willClaimCoins.Len() > 0 {
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipientAddr, willClaimCoins); err != nil {

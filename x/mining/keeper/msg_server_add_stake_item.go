@@ -11,6 +11,7 @@ func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeIte
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	stakeItem := types.StakeItem{
+		Enable:          msg.Enable,
 		Index:           msg.Index,
 		LockSecond:      msg.LockSecond,
 		PowerRewardRate: msg.PowerRewardRate,

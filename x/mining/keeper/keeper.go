@@ -64,9 +64,9 @@ func (k Keeper) GetStakePool(ctx sdk.Context, denom string) (*types.StakePool, b
 		return nil, false
 	}
 
-	swapPool := types.StakePool{}
-	k.cdc.MustUnmarshal(bts, &swapPool)
-	return &swapPool, true
+	stakePool := types.StakePool{}
+	k.cdc.MustUnmarshal(bts, &stakePool)
+	return &stakePool, true
 }
 
 func (k Keeper) GetStakePoolList(ctx sdk.Context) []*types.StakePool {
@@ -76,9 +76,9 @@ func (k Keeper) GetStakePoolList(ctx sdk.Context) []*types.StakePool {
 
 	stakePoolList := make([]*types.StakePool, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		swapPool := types.StakePool{}
-		k.cdc.MustUnmarshal(iterator.Value(), &swapPool)
-		stakePoolList = append(stakePoolList, &swapPool)
+		stakePool := types.StakePool{}
+		k.cdc.MustUnmarshal(iterator.Value(), &stakePool)
+		stakePoolList = append(stakePoolList, &stakePool)
 	}
 	return stakePoolList
 }

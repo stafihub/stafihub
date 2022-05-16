@@ -14,6 +14,8 @@ service Msg {
   rpc AddRewardPool(MsgAddRewardPool) returns (MsgAddRewardPoolResponse);
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc ClaimReward(MsgClaimReward) returns (MsgClaimRewardResponse);
+  rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
+  rpc ProvideRewardToken(MsgProvideRewardToken) returns (MsgProvideRewardTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -61,10 +63,27 @@ message MsgStakeResponse {
 message MsgClaimReward {
   string creator = 1;
   string stakeTokenDenom = 2;
-  uint32 index = 3;
+  uint32 stakeRecordIndex = 3;
 }
 
 message MsgClaimRewardResponse {
+}
+
+message MsgWithdraw {
+  string creator = 1;
+  cosmos.base.v1beta1.Coin stakeToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  uint32 stakeRecordIndex = 3;
+}
+
+message MsgWithdrawResponse {
+}
+
+message MsgProvideRewardToken {
+  string creator = 1;
+  cosmos.base.v1beta1.Coin token = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgProvideRewardTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
