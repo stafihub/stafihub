@@ -1,6 +1,8 @@
 package types
 
 import (
+	fmt "fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -9,11 +11,12 @@ const TypeMsgUpdateStakePool = "update_stake_pool"
 
 var _ sdk.Msg = &MsgUpdateStakePool{}
 
-func NewMsgUpdateStakePool(creator string, stakeTokenDenom string, maxRewardPools uint32) *MsgUpdateStakePool {
+func NewMsgUpdateStakePool(creator string, stakeTokenDenom string, maxRewardPools uint32, mintTotalRewardAmount sdk.Int) *MsgUpdateStakePool {
 	return &MsgUpdateStakePool{
-		Creator:         creator,
-		StakeTokenDenom: stakeTokenDenom,
-		MaxRewardPools:  maxRewardPools,
+		Creator:              creator,
+		StakeTokenDenom:      stakeTokenDenom,
+		MaxRewardPools:       maxRewardPools,
+		MinTotalRewardAmount: mintTotalRewardAmount,
 	}
 }
 
@@ -46,6 +49,9 @@ func (msg *MsgUpdateStakePool) ValidateBasic() error {
 	err = sdk.ValidateDenom(msg.StakeTokenDenom)
 	if err != nil {
 		return err
+	}
+	if msg.MinTotalRewardAmount.IsNegative() {
+		return fmt.Errorf("minTotalRewardAmount is negative")
 	}
 	return nil
 }

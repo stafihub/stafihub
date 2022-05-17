@@ -52,6 +52,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_list";
 	}
 
+// Queries a list of RewarderList items.
+	rpc RewarderList(QueryRewarderListRequest) returns (QueryRewarderListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/rewarder_list";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -122,6 +127,13 @@ message QueryStakePoolListRequest {
 
 message QueryStakePoolListResponse {
   repeated StakePool stakePoolList = 1;
+}
+
+message QueryRewarderListRequest {
+}
+
+message QueryRewarderListResponse {
+  repeated string rewarderList = 1;
 }
 
 // this line is used by starport scaffolding # 3

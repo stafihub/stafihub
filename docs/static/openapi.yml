@@ -20665,6 +20665,40 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/mining/rewarder_list:
+    get:
+      summary: Queries a list of RewarderList items.
+      operationId: StafihubStafihubMiningRewarderList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              rewarderList:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/mining/stake_item_list:
     get:
       summary: Queries a list of StakeItemList items.
@@ -20731,6 +20765,9 @@ paths:
                     type: integer
                     format: int64
                     title: subpool number limit
+                  minTotalRewardAmount:
+                    type: string
+                    title: min total reward amount of every reward pool
                   rewardPools:
                     type: array
                     items:
@@ -20807,6 +20844,9 @@ paths:
                       type: integer
                       format: int64
                       title: subpool number limit
+                    minTotalRewardAmount:
+                      type: string
+                      title: min total reward amount of every reward pool
                     rewardPools:
                       type: array
                       items:
@@ -38018,6 +38058,8 @@ definitions:
         type: string
   stafihub.stafihub.mining.MsgAddRewardPoolResponse:
     type: object
+  stafihub.stafihub.mining.MsgAddRewarderResponse:
+    type: object
   stafihub.stafihub.mining.MsgAddStakeItemResponse:
     type: object
   stafihub.stafihub.mining.MsgAddStakePoolResponse:
@@ -38025,6 +38067,8 @@ definitions:
   stafihub.stafihub.mining.MsgClaimRewardResponse:
     type: object
   stafihub.stafihub.mining.MsgProvideRewardTokenResponse:
+    type: object
+  stafihub.stafihub.mining.MsgRmRewarderResponse:
     type: object
   stafihub.stafihub.mining.MsgStakeResponse:
     type: object
@@ -38044,6 +38088,13 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.mining.QueryRewarderListResponse:
+    type: object
+    properties:
+      rewarderList:
+        type: array
+        items:
+          type: string
   stafihub.stafihub.mining.QueryStakeItemListResponse:
     type: object
     properties:
@@ -38076,6 +38127,9 @@ definitions:
             type: integer
             format: int64
             title: subpool number limit
+          minTotalRewardAmount:
+            type: string
+            title: min total reward amount of every reward pool
           rewardPools:
             type: array
             items:
@@ -38120,6 +38174,9 @@ definitions:
               type: integer
               format: int64
               title: subpool number limit
+            minTotalRewardAmount:
+              type: string
+              title: min total reward amount of every reward pool
             rewardPools:
               type: array
               items:
@@ -38310,6 +38367,9 @@ definitions:
         type: integer
         format: int64
         title: subpool number limit
+      minTotalRewardAmount:
+        type: string
+        title: min total reward amount of every reward pool
       rewardPools:
         type: array
         items:

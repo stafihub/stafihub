@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -24,7 +25,10 @@ func CmdUpdateStakePool() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
+			argMinTotalRewardAmount, ok := sdk.NewIntFromString(args[2])
+			if !ok {
+				return fmt.Errorf("minTotalRewardAmount format err")
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -34,6 +38,7 @@ func CmdUpdateStakePool() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argStakeTokenDenom,
 				uint32(argMaxRewardPools.Uint64()),
+				argMinTotalRewardAmount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

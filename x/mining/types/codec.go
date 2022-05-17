@@ -17,6 +17,8 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgProvideRewardToken{}, "mining/ProvideRewardToken", nil)
 	cdc.RegisterConcrete(&MsgUpdateStakePool{}, "mining/UpdateStakePool", nil)
 	cdc.RegisterConcrete(&MsgUpdateStakeItem{}, "mining/UpdateStakeItem", nil)
+	cdc.RegisterConcrete(&MsgAddRewarder{}, "mining/AddRewarder", nil)
+	cdc.RegisterConcrete(&MsgRmRewarder{}, "mining/RmRewarder", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -47,6 +49,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateStakeItem{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddRewarder{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmRewarder{},
 	)
 	// this line is used by starport scaffolding # 3
 

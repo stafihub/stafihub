@@ -11,10 +11,12 @@ message StakePool {
 
   // subpool number limit
   uint32 maxRewardPools = 2;
-  repeated RewardPool rewardPools = 3;
+  // min total reward amount of every reward pool
+  string minTotalRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  repeated RewardPool rewardPools = 4;
   // total (staked) balance of staked token
-  string totalStakedAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string totalStakedPower = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string totalStakedAmount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string totalStakedPower = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message RewardPool {

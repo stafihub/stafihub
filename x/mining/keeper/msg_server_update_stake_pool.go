@@ -21,6 +21,7 @@ func (k msgServer) UpdateStakePool(goCtx context.Context, msg *types.MsgUpdateSt
 	}
 
 	stakePool.MaxRewardPools = msg.MaxRewardPools
+	stakePool.MinTotalRewardAmount = msg.MinTotalRewardAmount
 
 	k.Keeper.SetStakePool(ctx, stakePool)
 

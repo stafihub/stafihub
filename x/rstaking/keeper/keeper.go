@@ -125,7 +125,12 @@ func (k Keeper) GetValAddressWhitelist(ctx sdk.Context) []string {
 
 	valList := make([]string, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		valList = append(valList, sdk.ValAddress(iterator.Key()).String())
+		key := iterator.Key()
+		if len(key) <= 1 {
+			continue
+		}
+
+		valList = append(valList, sdk.ValAddress(key[1:]).String())
 	}
 	return valList
 }

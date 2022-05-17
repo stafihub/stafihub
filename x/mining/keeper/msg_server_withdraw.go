@@ -18,6 +18,11 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	if !found {
 		return nil, types.ErrUserStakeRecordNotExist
 	}
+
+	if msg.StakeToken.Amount.GT(userStakeRecord.StakedAmount) {
+		return nil, types.ErrWithdrawAmountMoreThanStakeRecord
+	}
+
 	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakeToken.Denom)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
@@ -41,6 +46,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	if stakePool.TotalStakedPower.IsNegative() {
 		stakePool.TotalStakedPower = sdk.ZeroInt()
 	}
+
 	userStakeRecord.StakedAmount = userStakeRecord.StakedAmount.Sub(msg.StakeToken.Amount)
 	if userStakeRecord.StakedAmount.IsNegative() {
 		userStakeRecord.StakedAmount = sdk.ZeroInt()

@@ -21,11 +21,12 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	}
 
 	stakePool := types.StakePool{
-		StakeTokenDenom:   msg.StakeTokenDenom,
-		MaxRewardPools:    msg.MaxRewardPools,
-		RewardPools:       []*types.RewardPool{},
-		TotalStakedAmount: sdk.ZeroInt(),
-		TotalStakedPower:  sdk.ZeroInt(),
+		StakeTokenDenom:      msg.StakeTokenDenom,
+		MaxRewardPools:       msg.MaxRewardPools,
+		MinTotalRewardAmount: msg.MinTotalRewardAmount,
+		RewardPools:          []*types.RewardPool{},
+		TotalStakedAmount:    sdk.ZeroInt(),
+		TotalStakedPower:     sdk.ZeroInt(),
 	}
 
 	k.SetStakePool(ctx, &stakePool)

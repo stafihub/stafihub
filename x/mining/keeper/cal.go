@@ -5,6 +5,7 @@ import (
 	"github.com/stafihub/stafihub/x/mining/types"
 )
 
+// will update {stakePool.RewardPools}
 func updateStakePool(stakePool *types.StakePool, curBlockTime uint64) {
 	for _, rewardPool := range stakePool.RewardPools {
 		if rewardPool.LastRewardTimestamp >= curBlockTime {
@@ -28,6 +29,7 @@ func updateStakePool(stakePool *types.StakePool, curBlockTime uint64) {
 	}
 }
 
+// will update {userStakeRecord.RewardInfos}
 func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStakeRecord) sdk.Coins {
 	rewardCoins := sdk.NewCoins()
 	for _, rewardPool := range stakePool.RewardPools {
