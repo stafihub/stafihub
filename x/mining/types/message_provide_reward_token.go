@@ -42,5 +42,10 @@ func (msg *MsgProvideRewardToken) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	err = msg.Token.Validate()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -38028,6 +38028,10 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgStakeResponse:
     type: object
+  stafihub.stafihub.mining.MsgUpdateStakeItemResponse:
+    type: object
+  stafihub.stafihub.mining.MsgUpdateStakePoolResponse:
+    type: object
   stafihub.stafihub.mining.MsgWithdrawResponse:
     type: object
   stafihub.stafihub.mining.Params:

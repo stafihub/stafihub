@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -36,6 +37,16 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 
 	k.SetStakePool(ctx, stakePool)
 	k.SetUserStakeRecord(ctx, userStakeRecord)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeClaimReward,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyClaimedTokens, willClaimCoins.String()),
+			sdk.NewAttribute(types.AttributeKeyStakeTokenDenom, msg.StakeTokenDenom),
+			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),
+		),
+	)
 
 	return &types.MsgClaimRewardResponse{}, nil
 }

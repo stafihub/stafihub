@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -62,6 +63,20 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakeToken.Denom, willUseIndex)
 	k.Keeper.SetUserStakeRecord(ctx, &userStakeRecord)
 	k.Keeper.SetStakePool(ctx, stakePool)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeStake,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakeTokenDenom, msg.StakeToken.Denom),
+			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", willUseIndex)),
+			sdk.NewAttribute(types.AttributeKeyStakeTokenAmount, msg.StakeToken.Amount.String()),
+			sdk.NewAttribute(types.AttributeKeyStakePower, userStakePower.String()),
+			sdk.NewAttribute(types.AttributeKeyStartTimestamp, fmt.Sprintf("%d", userStakeRecord.StartTimestamp)),
+			sdk.NewAttribute(types.AttributeKeyEndTimestamp, fmt.Sprintf("%d", userStakeRecord.EndTimestamp)),
+			sdk.NewAttribute(types.AttributeKeyStakeItemIndex, fmt.Sprintf("%d", msg.StakeItemIndex)),
+		),
+	)
 
 	return &types.MsgStakeResponse{}, nil
 }

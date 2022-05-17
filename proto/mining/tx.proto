@@ -16,6 +16,8 @@ service Msg {
   rpc ClaimReward(MsgClaimReward) returns (MsgClaimRewardResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc ProvideRewardToken(MsgProvideRewardToken) returns (MsgProvideRewardTokenResponse);
+  rpc UpdateStakePool(MsgUpdateStakePool) returns (MsgUpdateStakePoolResponse);
+  rpc UpdateStakeItem(MsgUpdateStakeItem) returns (MsgUpdateStakeItemResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -30,10 +32,9 @@ message MsgAddStakePoolResponse {
 
 message MsgAddStakeItem {
   string creator = 1;
-  uint32 index = 2;
-  uint64 lockSecond = 3;
-  string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
-  bool enable = 5;
+  uint64 lockSecond = 2;
+  string powerRewardRate = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+  bool enable = 4;
 }
 
 message MsgAddStakeItemResponse {
@@ -84,6 +85,26 @@ message MsgProvideRewardToken {
 }
 
 message MsgProvideRewardTokenResponse {
+}
+
+message MsgUpdateStakePool {
+  string creator = 1;
+  string stakeTokenDenom = 2;
+  uint32 maxRewardPools = 3;
+}
+
+message MsgUpdateStakePoolResponse {
+}
+
+message MsgUpdateStakeItem {
+  string creator = 1;
+  uint32 index = 2;
+  uint64 lockSecond = 3;
+  string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+  bool enable = 5;
+}
+
+message MsgUpdateStakeItemResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

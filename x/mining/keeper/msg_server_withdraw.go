@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -56,6 +57,16 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 
 	k.SetStakePool(ctx, stakePool)
 	k.SetUserStakeRecord(ctx, userStakeRecord)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeWithdraw,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyClaimedTokens, willClaimCoins.String()),
+			sdk.NewAttribute(types.AttributeKeyWithdrawToken, msg.StakeToken.String()),
+			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),
+		),
+	)
 
 	return &types.MsgWithdrawResponse{}, nil
 }

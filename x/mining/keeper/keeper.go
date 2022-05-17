@@ -162,6 +162,25 @@ func (k Keeper) SetRewardPoolIndex(ctx sdk.Context, stakeTokenDenom string, inde
 	store.Set(key, seqBts)
 }
 
+func (k Keeper) GetStakeItemNextIndex(ctx sdk.Context) uint32 {
+	store := ctx.KVStore(k.storeKey)
+	seqBts := store.Get(types.StakeItemIndexStoreKey)
+	if seqBts == nil {
+		return 0
+	}
+
+	seq := binary.LittleEndian.Uint32(seqBts)
+	return seq + 1
+}
+
+func (k Keeper) SetStakeItemIndex(ctx sdk.Context, index uint32) {
+	store := ctx.KVStore(k.storeKey)
+
+	seqBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqBts, index)
+	store.Set(types.StakeItemIndexStoreKey, seqBts)
+}
+
 func (k Keeper) SetUserStakeRecord(ctx sdk.Context, userStakeRecord *types.UserStakeRecord) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(

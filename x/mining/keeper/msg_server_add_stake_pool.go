@@ -2,13 +2,18 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePool) (*types.MsgAddStakePoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudotypes.ErrCreatorNotAdmin
+	}
 
 	_, found := k.GetStakePool(ctx, msg.StakeTokenDenom)
 	if found {
@@ -24,6 +29,15 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	}
 
 	k.SetStakePool(ctx, &stakePool)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeAddStakePool,
+			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakeTokenDenom, msg.StakeTokenDenom),
+			sdk.NewAttribute(types.AttributeKeyMaxRewardPools, fmt.Sprintf("%d", msg.MaxRewardPools)),
+		),
+	)
 
 	return &types.MsgAddStakePoolResponse{}, nil
 }

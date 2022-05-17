@@ -43,5 +43,10 @@ func (msg *MsgStake) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	err = msg.StakeToken.Validate()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

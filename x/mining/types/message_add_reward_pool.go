@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -46,5 +48,21 @@ func (msg *MsgAddRewardPool) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	err = sdk.ValidateDenom(msg.StakeTokenDenom)
+	if err != nil {
+		return err
+	}
+	err = sdk.ValidateDenom(msg.RewardTokenDenom)
+	if err != nil {
+		return err
+	}
+	if !msg.TotalRewardAmount.IsPositive() {
+		return fmt.Errorf("totalRewardAmount is not positive")
+	}
+
+	if !msg.RewardPerSecond.IsPositive() {
+		return fmt.Errorf("rewardPerSecond is not positive")
+	}
+
 	return nil
 }

@@ -43,5 +43,9 @@ func (msg *MsgClaimReward) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	err = sdk.ValidateDenom(msg.StakeTokenDenom)
+	if err != nil {
+		return err
+	}
 	return nil
 }

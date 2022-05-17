@@ -34,6 +34,7 @@ var (
 	UserStakeRecordStoreKeyPrefix      = []byte{0x03}
 	UserStakeRecordIndexStoreKeyPrefix = []byte{0x04}
 	RewardPoolIndexStoreKeyPrefix      = []byte{0x05}
+	StakeItemIndexStoreKey             = []byte{0x06}
 )
 
 func StakePoolStoreKey(denom string) []byte {
