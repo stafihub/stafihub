@@ -13,6 +13,9 @@ service Msg {
   rpc AddLiquidity(MsgAddLiquidity) returns (MsgAddLiquidityResponse);
   rpc Swap(MsgSwap) returns (MsgSwapResponse);
   rpc RemoveLiquidity(MsgRemoveLiquidity) returns (MsgRemoveLiquidityResponse);
+  rpc ToggleProviderSwitch(MsgToggleProviderSwitch) returns (MsgToggleProviderSwitchResponse);
+  rpc AddProvider(MsgAddProvider) returns (MsgAddProviderResponse);
+  rpc RmProvider(MsgRmProvider) returns (MsgRmProviderResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -50,6 +53,29 @@ message MsgRemoveLiquidity {
 }
 
 message MsgRemoveLiquidityResponse {
+}
+
+message MsgToggleProviderSwitch {
+  string creator = 1;
+}
+
+message MsgToggleProviderSwitchResponse {
+}
+
+message MsgAddProvider {
+  string creator = 1;
+  string userAddress = 2;
+}
+
+message MsgAddProviderResponse {
+}
+
+message MsgRmProvider {
+  string creator = 1;
+  string userAddress = 2;
+}
+
+message MsgRmProviderResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -30,7 +30,14 @@ func KeyPrefix(p string) []byte {
 }
 
 var (
+	SwitchStateClose = []byte{0x00}
+	SwitchStateOpen  = []byte{0x01}
+)
+
+var (
 	SwapPoolStoreKeyPrefix = []byte{0x01}
+	ProviderStoreKeyPrefix = []byte{0x02}
+	ProviderSwitchStoreKey = []byte{0x03}
 )
 
 func SwapPoolStoreKey(denom string) []byte {
@@ -47,4 +54,8 @@ func GetLpTokenDenom(coins sdk.Coins) string {
 	denom := fmt.Sprintf("rdexlp/%s", hex.EncodeToString(hash[:]))
 
 	return denom
+}
+
+func ProviderStoreKey(addr sdk.AccAddress) []byte {
+	return append(ProviderStoreKeyPrefix, addr.Bytes()...)
 }

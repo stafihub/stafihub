@@ -14,6 +14,11 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 	if err != nil {
 		return nil, types.ErrInvalidAddress
 	}
+	// check provider exist
+	if k.Keeper.GetProviderSwitch(ctx) && !k.Keeper.HasProvider(ctx, userAddress) {
+		return nil, types.ErrProviderNotExist
+	}
+
 	tokens := msg.Tokens.Sort()
 	lpDenom := types.GetLpTokenDenom(tokens)
 

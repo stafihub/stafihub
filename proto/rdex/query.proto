@@ -26,6 +26,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rdex/swap_pool_list";
 	}
 
+// Queries a list of ProviderList items.
+	rpc ProviderList(QueryProviderListRequest) returns (QueryProviderListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rdex/provider_list";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -51,6 +56,13 @@ message QuerySwapPoolListRequest {
 
 message QuerySwapPoolListResponse {
   repeated SwapPool swapPoolList = 1;
+}
+
+message QueryProviderListRequest {
+}
+
+message QueryProviderListResponse {
+  repeated string providerList = 1;
 }
 
 // this line is used by starport scaffolding # 3

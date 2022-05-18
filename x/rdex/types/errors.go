@@ -22,4 +22,5 @@ var (
 	ErrPoolRTokenBalanceInsufficient = sdkerrors.Register(ModuleName, 1111, "pool rtoken balance insufficient")
 	ErrPoolFisBalanceInsufficient    = sdkerrors.Register(ModuleName, 1112, "pool fis balance insufficient")
 	ErrPoolOneSideZero               = sdkerrors.Register(ModuleName, 1113, "pool one side zero")
+	ErrProviderNotExist              = sdkerrors.Register(ModuleName, 1114, "provider not exist")
 )

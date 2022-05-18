@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -80,4 +81,58 @@ func (k Keeper) GetSwapPoolList(ctx sdk.Context) []*types.SwapPool {
 		swapPoolList = append(swapPoolList, &swapPool)
 	}
 	return swapPoolList
+}
+
+func (k Keeper) AddProvider(ctx sdk.Context, addr sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.ProviderStoreKey(addr), []byte{})
+}
+
+func (k Keeper) RemoveProvider(ctx sdk.Context, addr sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.ProviderStoreKey(addr))
+}
+
+func (k Keeper) HasProvider(ctx sdk.Context, addr sdk.AccAddress) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.ProviderStoreKey(addr))
+}
+
+func (k Keeper) GetProviderList(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ProviderStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]string, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		if len(key) <= 1 {
+			continue
+		}
+
+		list = append(list, sdk.AccAddress(key[1:]).String())
+	}
+	return list
+}
+
+func (k Keeper) ToggleProviderSwitch(ctx sdk.Context) {
+	k.SetProviderSwitch(ctx, !k.GetProviderSwitch(ctx))
+}
+
+func (k Keeper) SetProviderSwitch(ctx sdk.Context, isOpen bool) {
+	store := ctx.KVStore(k.storeKey)
+	state := types.SwitchStateClose
+	if isOpen {
+		state = types.SwitchStateOpen
+	}
+	store.Set(types.ProviderSwitchStoreKey, state)
+}
+
+func (k Keeper) GetProviderSwitch(ctx sdk.Context) bool {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.ProviderSwitchStoreKey)
+	if bts == nil {
+		return true
+	}
+	return bytes.Equal(bts, types.SwitchStateOpen)
 }
