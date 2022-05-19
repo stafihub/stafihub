@@ -14,11 +14,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/tendermint/spm/cosmoscmd"
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 	tmdb "github.com/tendermint/tm-db"
 
 	"github.com/stafihub/stafihub/app"
+	"github.com/stafihub/stafihub/cosmoscmd"
 )
 
 type (

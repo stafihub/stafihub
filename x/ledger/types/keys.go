@@ -1,6 +1,11 @@
 package types
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafihub/stafihub/utils"
+)
 
 const (
 	// ModuleName defines the module name
@@ -17,6 +22,13 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_ledger"
+)
+
+var (
+	DefaultStakingRewardCommission = utils.MustNewDecFromStr("0.1")
+	DefaultUnbondCommission        = utils.MustNewDecFromStr("0.002")
+	DefaultUnbondRelayFee          = sdk.NewCoin(utils.FisDenom, sdk.NewInt(1000000))
+	DefaultEraUnbondLimit          = uint32(200)
 )
 
 var (

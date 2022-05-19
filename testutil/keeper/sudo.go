@@ -57,7 +57,6 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		cdc,
 		sudoStoreKey,
 		sudoMemStoreKey,
-		bankKeeper,
 	)
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
 	require.NotNil(t, sample.TestAdminAcc)

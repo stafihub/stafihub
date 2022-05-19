@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/stafihub/stafihub/testutil/keeper"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stretchr/testify/require"
 )
@@ -52,32 +53,14 @@ func TestKeeper_BondPipeline(t *testing.T) {
 func TestKeeper_SetEraUnbondLimit(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	_, found := k.GetEraUnbondLimit(ctx, sample.TestDenom)
-	require.False(t, found)
+	_ = k.GetEraUnbondLimit(ctx, sample.TestDenom)
 
 	limit := uint32(30)
 	k.SetEraUnbondLimit(ctx, sample.TestDenom, limit)
 
-	eul, found := k.GetEraUnbondLimit(ctx, sample.TestDenom)
-	require.True(t, found)
+	eul := k.GetEraUnbondLimit(ctx, sample.TestDenom)
 	eptEul := types.EraUnbondLimit{Denom: sample.TestDenom, Limit: limit}
 	require.Equal(t, eptEul, eul)
-}
-
-func TestKeeper_SetChainBondingDuration(t *testing.T) {
-	k, ctx := testkeeper.LedgerKeeper(t)
-
-	_, found := k.GetChainBondingDuration(ctx, sample.TestDenom)
-	require.False(t, found)
-
-	era := uint32(10)
-	k.SetChainBondingDuration(ctx, sample.TestDenom, era)
-
-	cbd, found := k.GetChainBondingDuration(ctx, sample.TestDenom)
-	require.True(t, found)
-
-	require.Equal(t, sample.TestDenom, cbd.Denom)
-	require.Equal(t, era, cbd.Era)
 }
 
 func TestKeeper_SetPoolDetail(t *testing.T) {
@@ -96,23 +79,6 @@ func TestKeeper_SetPoolDetail(t *testing.T) {
 	pd, found := k.GetPoolDetail(ctx, sample.TestDenom, pool)
 	require.True(t, found)
 	require.Equal(t, types.NewPoolDetail(sample.TestDenom, pool, subAccounts, threshold), pd)
-}
-
-func TestKeeper_SetLeastBond(t *testing.T) {
-	k, ctx := testkeeper.LedgerKeeper(t)
-
-	_, found := k.LeastBond(ctx, sample.TestDenom)
-	require.False(t, found)
-
-	expLb := types.LeastBond{
-		Denom:  sample.TestDenom,
-		Amount: sdk.NewInt(100),
-	}
-	k.SetLeastBond(ctx, expLb.Denom, expLb.Amount)
-
-	lb, found := k.LeastBond(ctx, sample.TestDenom)
-	require.True(t, found)
-	require.Equal(t, expLb, lb)
 }
 
 func TestKeeper_CurrentEraSnapshots(t *testing.T) {
@@ -144,7 +110,7 @@ func TestKeeper_SetSnapshot(t *testing.T) {
 	require.False(t, found)
 
 	bs := types.NewBondSnapshot(sample.TestDenom, sample.AccAddress(), uint32(100),
-		types.LinkChunk{Bond: sdk.NewInt(0), Unbond: sdk.NewInt(0), Active: sdk.NewInt(0)}, sample.AccAddress())
+		types.LinkChunk{Bond: sdk.NewInt(0), Unbond: sdk.NewInt(0), Active: sdk.NewInt(0)})
 	k.SetSnapshot(ctx, shotId, bs)
 
 	shot, found := k.Snapshot(ctx, shotId)
@@ -186,15 +152,15 @@ func TestKeeper_SetChainEra(t *testing.T) {
 func TestKeeper_Commission(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	cms := k.Commission(ctx)
-	require.Equal(t, sdk.ZeroDec(), cms)
+	cms := k.GetStakingRewardCommission(ctx, "uratom")
+	require.Equal(t, types.DefaultStakingRewardCommission, cms)
 
-	dec, err := sdk.NewDecFromStr("0.5")
+	dec, err := utils.NewDecFromStr("0.5")
 	require.Nil(t, err)
 	t.Log(dec)
-	k.SetCommission(ctx, dec)
+	k.SetStakingRewardCommission(ctx, "uratom", dec)
 
-	cms = k.Commission(ctx)
+	cms = k.GetStakingRewardCommission(ctx, "uratom")
 	require.Equal(t, dec, cms)
 }
 
@@ -217,61 +183,46 @@ func TestKeeper_GetPoolUnbond(t *testing.T) {
 
 	pool := sample.AccAddress()
 	era := uint32(100)
-	_, found := k.GetPoolUnbond(ctx, sample.TestDenom, pool, era)
+	_, found := k.GetPoolUnbonding(ctx, sample.TestDenom, pool, era, 1)
 	require.False(t, found)
 
-	pu1 := types.NewPoolUnbond(sample.TestDenom, pool, era, []types.Unbonding{})
-	k.SetPoolUnbond(ctx, pu1)
+	pu1 := types.NewUnbonding(sample.TestDenom, pool, sdk.NewInt(10))
+	k.SetPoolUnbonding(ctx, sample.TestDenom, pool, era, 1, &pu1)
 
-	pu, found := k.GetPoolUnbond(ctx, sample.TestDenom, pool, era)
+	pu, found := k.GetPoolUnbonding(ctx, sample.TestDenom, pool, era, 1)
 	require.True(t, found)
-	require.Equal(t, pu1, pu)
+	require.Equal(t, pu1, *pu)
 }
 
 func TestKeeper_SetUnbondFee(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	_, found := k.GetUnbondFee(ctx, sample.TestDenom)
-	require.False(t, found)
-
-	uf1 := types.UnbondFee{
+	retFee := k.GetUnbondRelayFee(ctx, sample.TestDenom)
+	require.Equal(t, types.UnbondRelayFee{
 		Denom: sample.TestDenom,
-		Value: sdk.NewCoin(sample.TestDenom, sdk.NewInt(100)),
-	}
-	k.SetUnbondFee(ctx, uf1.Denom, uf1.Value)
+		Value: types.DefaultUnbondRelayFee,
+	}, retFee)
 
-	uf, found := k.GetUnbondFee(ctx, sample.TestDenom)
-	require.True(t, found)
-	require.Equal(t, uf1, uf)
+	fee := sdk.NewCoin(sample.TestDenom, sdk.NewInt(1))
+
+	k.SetUnbondRelayFee(ctx, sample.TestDenom, fee)
+
+	uf := k.GetUnbondRelayFee(ctx, sample.TestDenom)
+	require.Equal(t, fee.String(), uf.Value.String())
 }
 
 func TestKeeper_SetUnbondCommission(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	cms := k.GetUnbondCommission(ctx)
-	require.Equal(t, sdk.ZeroDec(), cms)
+	cms := k.GetUnbondCommission(ctx, sample.TestDenom)
+	require.Equal(t, types.DefaultUnbondCommission, cms)
 
-	dec, err := sdk.NewDecFromStr("0.5")
+	dec, err := utils.NewDecFromStr("0.5")
 	require.Nil(t, err)
-	k.SetUnbondCommission(ctx, dec)
+	k.SetUnbondCommission(ctx, sample.TestDenom, dec)
 
-	cms = k.GetUnbondCommission(ctx)
-	require.Equal(t, dec, cms)
-}
-
-func TestKeeper_SetAccountUnbond(t *testing.T) {
-	k, ctx := testkeeper.LedgerKeeper(t)
-
-	unbonder := sample.AccAddress()
-	_, found := k.GetAccountUnbond(ctx, sample.TestDenom, unbonder)
-	require.False(t, found)
-
-	au1 := types.NewAccountUnbond(sample.TestDenom, unbonder, []types.UserUnlockChunk{})
-	k.SetAccountUnbond(ctx, au1)
-
-	au, found := k.GetAccountUnbond(ctx, sample.TestDenom, unbonder)
-	require.True(t, found)
-	require.Equal(t, au1, au)
+	cms = k.GetUnbondCommission(ctx, sample.TestDenom)
+	require.Equal(t, dec.String(), cms.String())
 }
 
 func TestKeeper_SetSignature(t *testing.T) {
@@ -285,5 +236,5 @@ func TestKeeper_SetSignature(t *testing.T) {
 
 	sig, found := k.GetSignature(ctx, sig1.Denom, sig1.Era, sig1.Pool, sig1.TxType, sig1.PropId)
 	require.True(t, found)
-	require.Equal(t, sig1, sig)
+	require.Equal(t, sig1.String(), sig.String())
 }

@@ -9,13 +9,6 @@ import (
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
-var (
-	defaultStakingRewardCommission = utils.MustNewDecFromStr("0.1")
-	defaultUnbondCommission        = utils.MustNewDecFromStr("0.002")
-	defaultUnbondFee               = sdk.NewCoin(utils.FisDenom, sdk.NewInt(1000000))
-	defaultEraUnbondLimit          = uint32(200)
-)
-
 func (k Keeper) IsBondedPoolExist(ctx sdk.Context, denom string, addr string) bool {
 	pool, ok := k.GetBondedPool(ctx, denom)
 	if !ok {
@@ -144,7 +137,7 @@ func (k Keeper) GetEraUnbondLimit(ctx sdk.Context, denom string) (val types.EraU
 	b := store.Get([]byte(denom))
 	if b == nil {
 		val.Denom = denom
-		val.Limit = defaultEraUnbondLimit
+		val.Limit = types.DefaultEraUnbondLimit
 		return val
 	}
 	k.cdc.MustUnmarshal(b, &val)
@@ -389,7 +382,7 @@ func (k Keeper) GetStakingRewardCommission(ctx sdk.Context, denom string) utils.
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.StakingRewardCommissionStoreKey(denom))
 	if b == nil {
-		return defaultStakingRewardCommission
+		return types.DefaultStakingRewardCommission
 	}
 
 	var val utils.Dec
@@ -614,7 +607,7 @@ func (k Keeper) GetUnbondRelayFee(ctx sdk.Context, denom string) (val types.Unbo
 	b := store.Get([]byte(denom))
 	if b == nil {
 		val.Denom = denom
-		val.Value = defaultUnbondFee
+		val.Value = types.DefaultUnbondRelayFee
 		return
 	}
 
@@ -650,7 +643,7 @@ func (k Keeper) GetUnbondCommission(ctx sdk.Context, denom string) utils.Dec {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.UnbondCommissionStoreKey(denom))
 	if b == nil {
-		return defaultUnbondCommission
+		return types.DefaultUnbondCommission
 	}
 	var val utils.Dec
 	if err := val.Unmarshal(b); err != nil {
