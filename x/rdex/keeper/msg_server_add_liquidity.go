@@ -38,8 +38,8 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 		return nil, types.ErrInsufficientTokenBalance
 	}
 
-	newTotalPoolUnit, addLpUnit := calPoolUnit(swapPool.LpToken.Amount, swapPool.Tokens[0].Amount, swapPool.Tokens[1].Amount, tokens[0].Amount, tokens[1].Amount)
-	if addLpUnit.LTE(sdk.ZeroInt()) {
+	newTotalPoolUnit, addLpUnit := CalPoolUnit(swapPool.LpToken.Amount, swapPool.Tokens[0].Amount, swapPool.Tokens[1].Amount, tokens[0].Amount, tokens[1].Amount)
+	if !addLpUnit.IsPositive() {
 		return nil, types.ErrAddLpUnitZero
 	}
 

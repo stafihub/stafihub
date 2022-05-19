@@ -4,54 +4,65 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// F = fis Balance (before)
-// R = rToken Balance (before)
-// f = fis added;
-// r = rToken added
+// F = pool baseToken Balance (before)
+// R = poo token Balance (before)
+// f = baseToken added;
+// r = token added
 // P = existing Pool Units
 // slipAdjustment = (1 - ABS((F r - f R)/((f + F) (r + R))))
 // units = ((P (r F + R f))/(2 R F))*slipAdjustment
-func calPoolUnit(oldPoolUnit, fisBalance, rTokenBalance, fisAmount, rTokenAmount sdk.Int) (totalUnit, addUnit sdk.Int) {
-	if fisAmount.Equal(sdk.ZeroInt()) || rTokenAmount.Equal(sdk.ZeroInt()) {
+func CalPoolUnit(oldPoolUnit, baseTokenBalance, tokenBalance, baseTokenAmount, tokenAmount sdk.Int) (totalUnit, addUnit sdk.Int) {
+	if oldPoolUnit.IsNegative() || baseTokenBalance.IsNegative() || tokenBalance.IsNegative() ||
+		baseTokenAmount.IsNegative() || tokenAmount.IsNegative() {
 		return sdk.ZeroInt(), sdk.ZeroInt()
 	}
-	if fisBalance.Add(fisAmount).Equal(sdk.ZeroInt()) || rTokenBalance.Add(rTokenAmount).Equal(sdk.ZeroInt()) {
+
+	if baseTokenAmount.IsZero() && tokenAmount.IsZero() {
+		return sdk.ZeroInt(), sdk.ZeroInt()
+	}
+	if baseTokenBalance.Add(baseTokenAmount).IsZero() || tokenBalance.Add(tokenAmount).IsZero() {
 		return sdk.ZeroInt(), sdk.ZeroInt()
 	}
 
-	if fisBalance.Equal(sdk.ZeroInt()) || rTokenBalance.Equal(sdk.ZeroInt()) {
-		return fisAmount, fisAmount
+	if baseTokenBalance.IsZero() || tokenBalance.IsZero() {
+		return baseTokenAmount, baseTokenAmount
 	}
 
-	P := oldPoolUnit
-	F := fisBalance
-	R := rTokenBalance
-	f := fisAmount
-	r := rTokenAmount
+	P := sdk.NewDecFromInt(oldPoolUnit)
+	F := sdk.NewDecFromInt(baseTokenBalance)
+	R := sdk.NewDecFromInt(tokenBalance)
+	f := sdk.NewDecFromInt(baseTokenAmount)
+	r := sdk.NewDecFromInt(tokenAmount)
 
-	numerator := F.Mul(r).Add(f.Mul(R))
-	rawUnit := numerator.Mul(P).Quo(R.Mul(F).Mul(sdk.NewInt(2)))
+	// P(r F + R f)
+	numerator := P.Mul(F.Mul(r).Add(f.Mul(R)))
+	// (P (r F + R f))/(2 R F)
+	rawUnit := numerator.Quo(R.Mul(F).Mul(sdk.NewDec(2)))
+
+	// (f + F) (r + R))
 	slipAdjDenominator := F.Add(f).Mul(R.Add(r))
-	adjUnit := F.Mul(r).Sub(f.Mul(R)).Abs().Quo(slipAdjDenominator)
+	// ABS(F r - f R)
+	slipAdjNumerator := F.Mul(r).Sub(f.Mul(R)).Abs()
+	slipAdjustment := sdk.OneDec().Sub(slipAdjNumerator.Quo(slipAdjDenominator))
 
-	addUnit = rawUnit.Sub(adjUnit)
-	totalUnit = P.Add(addUnit)
+	addUnit = rawUnit.Mul(slipAdjustment).TruncateInt()
+	totalUnit = oldPoolUnit.Add(addUnit)
 	return
 }
 
 // y = (x * X * Y) / (x + X)^2
 // fee = (x^2 * Y)/(x + X)^2
-func calSwapResult(fisBalance, rTokenBalance, inputAmount sdk.Int, inputIsFis bool) (y, fee sdk.Int) {
-	if fisBalance.Equal(sdk.ZeroInt()) || rTokenBalance.Equal(sdk.ZeroInt()) || inputAmount.Equal(sdk.ZeroInt()) {
+func CalSwapResult(baseTokenBalance, tokenBalance, inputAmount sdk.Int, inputIsBase bool) (y, fee sdk.Int) {
+	if !baseTokenBalance.IsPositive() || !tokenBalance.IsPositive() || !inputAmount.IsPositive() {
 		return sdk.ZeroInt(), sdk.ZeroInt()
 	}
 
 	x := inputAmount
-	X := rTokenBalance
-	Y := fisBalance
-	if inputIsFis {
-		X = fisBalance
-		Y = rTokenBalance
+	X := tokenBalance
+	Y := baseTokenBalance
+	if inputIsBase {
+		X = baseTokenBalance
+		Y = tokenBalance
 	}
 
 	t := x.Add(X)
@@ -62,20 +73,24 @@ func calSwapResult(fisBalance, rTokenBalance, inputAmount sdk.Int, inputIsFis bo
 	return
 }
 
-func calRemoveAmount(poolUnit, rmUnit, swapUnit, fisBalance, rtokenBalance sdk.Int, inputIsFis bool) (fisAmount, rtokenAmount, swapAmount sdk.Int) {
-	if poolUnit.IsZero() || rmUnit.IsZero() {
+func CalRemoveAmount(poolUnit, rmUnit, swapUnit, baseTokenBalance, tokenBalance sdk.Int, inputIsBase bool) (baseTokenAmount, tokenAmount, swapAmount sdk.Int) {
+	if swapUnit.IsNegative() || baseTokenBalance.IsNegative() || tokenBalance.IsNegative() {
+		return sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt()
+	}
+
+	if !poolUnit.IsPositive() || !rmUnit.IsPositive() {
 		return sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt()
 	}
 	if rmUnit.GT(poolUnit) {
 		rmUnit = poolUnit
 	}
-	fisAmount = fisBalance.Mul(rmUnit).Quo(poolUnit)
-	rtokenAmount = rtokenBalance.Mul(rmUnit).Quo(poolUnit)
+	baseTokenAmount = baseTokenBalance.Mul(rmUnit).Quo(poolUnit)
+	tokenAmount = tokenBalance.Mul(rmUnit).Quo(poolUnit)
 
-	if inputIsFis {
-		swapAmount = fisBalance.Mul(swapUnit).Quo(poolUnit)
+	if inputIsBase {
+		swapAmount = baseTokenBalance.Mul(swapUnit).Quo(poolUnit)
 	} else {
-		swapAmount = rtokenBalance.Mul(swapUnit).Quo(poolUnit)
+		swapAmount = tokenBalance.Mul(swapUnit).Quo(poolUnit)
 	}
 	return
 }

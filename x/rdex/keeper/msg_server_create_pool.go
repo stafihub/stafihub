@@ -10,6 +10,7 @@ import (
 
 func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (*types.MsgCreatePoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
@@ -33,12 +34,16 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 			return nil, types.ErrInsufficientTokenBalance
 		}
 	}
-	poolTotalUnit, lpUnit := calPoolUnit(sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt(), tokens[0].Amount, tokens[1].Amount)
+	poolTotalUnit, addLpUnit := CalPoolUnit(sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt(), tokens[0].Amount, tokens[1].Amount)
+	if !addLpUnit.IsPositive() {
+		return nil, types.ErrAddLpUnitZero
+	}
+
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, tokens); err != nil {
 		return nil, err
 	}
 
-	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(lpDenom, lpUnit))
+	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(lpDenom, addLpUnit))
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, lpTokenCoins); err != nil {
 		return nil, err
 	}
@@ -47,7 +52,7 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	}
 
 	swapPool := types.SwapPool{
-		LpToken: sdk.NewCoin(lpDenom, lpUnit),
+		LpToken: sdk.NewCoin(lpDenom, addLpUnit),
 		Tokens:  tokens,
 	}
 
@@ -59,7 +64,7 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 			sdk.NewAttribute(types.AttributeKeyLpDenom, lpDenom),
 			sdk.NewAttribute(types.AttributeKeyAddTokens, tokens.String()),
 			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, poolTotalUnit.String()),
-			sdk.NewAttribute(types.AttributeKeyAddLpUnit, lpUnit.String()),
+			sdk.NewAttribute(types.AttributeKeyAddLpUnit, addLpUnit.String()),
 			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
 		),
 	)

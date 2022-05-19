@@ -32,7 +32,7 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	poolBaseTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, poolBaseToken.Denom)
 	poolTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, poolToken.Denom)
 
-	if msg.RmUnit.LTE(sdk.ZeroInt()) || msg.RmUnit.GT(poolLpToken.Amount) || msg.SwapUnit.GT(msg.RmUnit) {
+	if !msg.RmUnit.IsPositive() || msg.RmUnit.GT(poolLpToken.Amount) || msg.SwapUnit.GT(msg.RmUnit) {
 		return nil, types.ErrUnitAmount
 	}
 
@@ -41,14 +41,14 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 		inputIsBase = true
 	}
 
-	rmBaseTokenAmount, rmTokenAmount, swapInputAmount := calRemoveAmount(poolLpToken.Amount, msg.RmUnit, msg.SwapUnit, poolBaseToken.Amount, poolToken.Amount, inputIsBase)
+	rmBaseTokenAmount, rmTokenAmount, swapInputAmount := CalRemoveAmount(poolLpToken.Amount, msg.RmUnit, msg.SwapUnit, poolBaseToken.Amount, poolToken.Amount, inputIsBase)
 	poolLpToken.Amount = poolLpToken.Amount.Sub(msg.RmUnit)
 	poolBaseToken.Amount = poolBaseToken.Amount.Sub(rmBaseTokenAmount)
 	poolToken.Amount = poolToken.Amount.Sub(rmTokenAmount)
 
-	if swapInputAmount.GT(sdk.ZeroInt()) {
-		swapResult, _ := calSwapResult(poolBaseToken.Amount, poolToken.Amount, swapInputAmount, inputIsBase)
-		if swapResult.LTE(sdk.ZeroInt()) {
+	if swapInputAmount.IsPositive() {
+		swapResult, _ := CalSwapResult(poolBaseToken.Amount, poolToken.Amount, swapInputAmount, inputIsBase)
+		if !swapResult.IsPositive() {
 			return nil, types.ErrSwapAmountTooFew
 		}
 
@@ -92,10 +92,10 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	}
 
 	willSendCoin := sdk.NewCoins()
-	if rmBaseTokenAmount.GT(sdk.ZeroInt()) {
+	if rmBaseTokenAmount.IsPositive() {
 		willSendCoin = willSendCoin.Add(sdk.NewCoin(poolBaseToken.Denom, rmBaseTokenAmount))
 	}
-	if rmTokenAmount.GT(sdk.ZeroInt()) {
+	if rmTokenAmount.IsPositive() {
 		willSendCoin = willSendCoin.Add(sdk.NewCoin(poolToken.Denom, rmTokenAmount))
 	}
 

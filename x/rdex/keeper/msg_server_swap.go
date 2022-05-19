@@ -29,8 +29,8 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		inputIsBase = true
 	}
 
-	outAmount, feeAmount := calSwapResult(poolBaseToken.Amount, poolToken.Amount, msg.InputToken.Amount, inputIsBase)
-	if outAmount.LTE(sdk.ZeroInt()) {
+	outAmount, feeAmount := CalSwapResult(poolBaseToken.Amount, poolToken.Amount, msg.InputToken.Amount, inputIsBase)
+	if !outAmount.IsPositive() {
 		return nil, types.ErrSwapAmountTooFew
 	}
 
