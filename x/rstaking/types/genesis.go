@@ -15,7 +15,7 @@ func DefaultGenesis() *GenesisState {
 		Params:             DefaultParams(),
 		InflationBase:      sdk.NewIntFromUint64(1000000000000),
 		CoinToBeBurned:     sdk.Coin{Denom: utils.FisDenom, Amount: sdk.NewIntFromUint64(1000000000000)},
-		ValidatorWhitelist: []string{"stafivaloper1d3eqy2l7r65myfh9l38sj566qe29hw5casxvpv"}, //in case of test err
+		ValidatorWhitelist: []string{},
 		WhitelistSwitch:    true,
 	}
 }

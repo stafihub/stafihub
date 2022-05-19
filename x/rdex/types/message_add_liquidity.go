@@ -9,10 +9,11 @@ const TypeMsgAddLiquidity = "add_liquidity"
 
 var _ sdk.Msg = &MsgAddLiquidity{}
 
-func NewMsgAddLiquidity(creator string, tokens sdk.Coins) *MsgAddLiquidity {
+func NewMsgAddLiquidity(creator string, token0, token1 sdk.Coin) *MsgAddLiquidity {
 	return &MsgAddLiquidity{
 		Creator: creator,
-		Tokens:  tokens,
+		Token0:  token0,
+		Token1:  token1,
 	}
 }
 
@@ -42,12 +43,9 @@ func (msg *MsgAddLiquidity) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if len(msg.Tokens) != 2 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length (%d)", len(msg.Tokens))
-	}
 
-	if !msg.Tokens[0].IsPositive() && !msg.Tokens[1].IsPositive() {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token amount (%s)", msg.Tokens.String())
+	if !msg.Token0.IsPositive() && !msg.Token1.IsPositive() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token amount token0(%s) token1(%s)", msg.Token0, msg.Token1)
 	}
 
 	return nil

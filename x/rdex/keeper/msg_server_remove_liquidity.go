@@ -13,15 +13,15 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	if err != nil {
 		return nil, types.ErrInvalidAddress
 	}
-	minOutTokens := msg.MinOutTokens.Sort()
-	lpDenom := types.GetLpTokenDenom(minOutTokens)
+	orderMinOutTokens := sdk.Coins{msg.MinOutToken0, msg.MinOutToken1}.Sort()
+	lpDenom := types.GetLpTokenDenom(orderMinOutTokens)
 
 	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
 	if !found {
 		return nil, types.ErrSwapPoolNotExit
 	}
-	poolBaseToken := swapPool.Tokens[0]
-	poolToken := swapPool.Tokens[1]
+	poolBaseToken := swapPool.BaseToken
+	poolToken := swapPool.Token
 	poolLpToken := swapPool.LpToken
 
 	userLpTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, lpDenom)
@@ -75,7 +75,7 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 		}
 	}
 
-	if rmBaseTokenAmount.LT(minOutTokens[0].Amount) || rmTokenAmount.LT(minOutTokens[1].Amount) {
+	if rmBaseTokenAmount.LT(orderMinOutTokens[0].Amount) || rmTokenAmount.LT(orderMinOutTokens[1].Amount) {
 		return nil, types.ErrLessThanMinOutAmount
 	}
 
@@ -113,8 +113,8 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 		return nil, err
 	}
 
-	swapPool.Tokens[0] = poolBaseToken
-	swapPool.Tokens[1] = poolToken
+	swapPool.BaseToken = poolBaseToken
+	swapPool.Token = poolToken
 	swapPool.LpToken = poolLpToken
 
 	k.SetSwapPool(ctx, lpDenom, swapPool)
@@ -129,7 +129,8 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, swapPool.LpToken.Amount.String()),
 			sdk.NewAttribute(types.AttributeKeyRemoveBaseTokenAmount, rmBaseTokenAmount.String()),
 			sdk.NewAttribute(types.AttributeKeyRemoveTokenAmount, rmTokenAmount.String()),
-			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolBaseTokenBalance, swapPool.BaseToken.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokenBalance, swapPool.Token.String()),
 		),
 	)
 	return &types.MsgRemoveLiquidityResponse{}, nil

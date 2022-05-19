@@ -38,6 +38,7 @@ func BridgeKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	)
 
 	sudoKeeper, _ := SudoKeeper(t)
+	relayerKeeper,_:=RelayersKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
@@ -46,7 +47,7 @@ func BridgeKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 		bankKeeper,
 		sudoKeeper,
-		nil,
+		relayerKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

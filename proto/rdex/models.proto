@@ -8,5 +8,6 @@ option go_package = "github.com/stafihub/stafihub/x/rdex/types";
 
 message SwapPool {
   cosmos.base.v1beta1.Coin lpToken = 1 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coin"]; 
-  repeated cosmos.base.v1beta1.Coin tokens = 2 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"]; 
+  cosmos.base.v1beta1.Coin baseToken = 2 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coin"]; 
+  cosmos.base.v1beta1.Coin token = 3 [(gogoproto.nullable) = false, (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coin"]; 
 }

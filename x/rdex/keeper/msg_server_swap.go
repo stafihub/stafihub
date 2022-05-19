@@ -21,8 +21,8 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 	if !found {
 		return nil, types.ErrSwapPoolNotExit
 	}
-	poolBaseToken := swapPool.Tokens[0]
-	poolToken := swapPool.Tokens[1]
+	poolBaseToken := swapPool.BaseToken
+	poolToken := swapPool.Token
 
 	inputIsBase := false
 	if poolBaseToken.Denom == msg.InputToken.Denom {
@@ -77,8 +77,8 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		poolToken.Amount = poolToken.Amount.Add(msg.InputToken.Amount)
 	}
 
-	swapPool.Tokens[0] = poolBaseToken
-	swapPool.Tokens[1] = poolToken
+	swapPool.BaseToken = poolBaseToken
+	swapPool.Token = poolToken
 
 	k.Keeper.SetSwapPool(ctx, lpDenom, swapPool)
 
@@ -90,7 +90,8 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 			sdk.NewAttribute(types.AttributeKeyInputToken, msg.InputToken.String()),
 			sdk.NewAttribute(types.AttributeKeyOutputToken, realOutCoin.String()),
 			sdk.NewAttribute(types.AttributeKeyFeeAmount, feeAmount.String()),
-			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolBaseTokenBalance, swapPool.BaseToken.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokenBalance, swapPool.Token.String()),
 		),
 	)
 

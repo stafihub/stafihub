@@ -15,11 +15,15 @@ var _ = strconv.Itoa(0)
 
 func CmdCreatePool() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-pool [tokens]",
+		Use:   "create-pool [token0] [token1]",
 		Short: "Create swap pool",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			coins, err := sdk.ParseCoinsNormalized(args[0])
+			coin0, err := sdk.ParseCoinNormalized(args[0])
+			if err != nil {
+				return err
+			}
+			coin1, err := sdk.ParseCoinNormalized(args[1])
 			if err != nil {
 				return err
 			}
@@ -31,7 +35,8 @@ func CmdCreatePool() *cobra.Command {
 
 			msg := types.NewMsgCreatePool(
 				clientCtx.GetFromAddress().String(),
-				coins,
+				coin0,
+				coin1,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

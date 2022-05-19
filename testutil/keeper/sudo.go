@@ -60,7 +60,6 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	)
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
 	require.NotNil(t, sample.TestAdminAcc)
-	//t.Log("TestAdmin", sample.TestAdmin)
 	sudoKeeper.SetAdmin(ctx, sample.TestAdminAcc)
 	return sudoKeeper, ctx
 }

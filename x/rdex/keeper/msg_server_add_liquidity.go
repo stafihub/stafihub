@@ -19,8 +19,8 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 		return nil, types.ErrProviderNotExist
 	}
 
-	tokens := msg.Tokens.Sort()
-	lpDenom := types.GetLpTokenDenom(tokens)
+	orderTokens := sdk.Coins{msg.Token0, msg.Token1}.Sort()
+	lpDenom := types.GetLpTokenDenom(orderTokens)
 
 	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
 	if !found {
@@ -29,7 +29,7 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 
 	// check balance
 	willSendToken := sdk.NewCoins()
-	for _, token := range tokens {
+	for _, token := range orderTokens {
 		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
 		if balance.Amount.LT(token.Amount) {
 			return nil, types.ErrInsufficientTokenBalance
@@ -38,15 +38,16 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 			willSendToken.Add(token)
 		}
 	}
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, willSendToken); err != nil {
-		return nil, types.ErrInsufficientTokenBalance
-	}
 
-	newTotalPoolUnit, addLpUnit := CalPoolUnit(swapPool.LpToken.Amount, swapPool.Tokens[0].Amount, swapPool.Tokens[1].Amount, tokens[0].Amount, tokens[1].Amount)
+	newTotalPoolUnit, addLpUnit := CalPoolUnit(swapPool.LpToken.Amount, swapPool.BaseToken.Amount, swapPool.Token.Amount, orderTokens[0].Amount, orderTokens[1].Amount)
 	if !addLpUnit.IsPositive() {
 		return nil, types.ErrAddLpUnitZero
 	}
 
+	//send coins
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, willSendToken); err != nil {
+		return nil, types.ErrInsufficientTokenBalance
+	}
 	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(lpDenom, addLpUnit))
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, lpTokenCoins); err != nil {
 		return nil, err
@@ -56,7 +57,8 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 	}
 
 	swapPool.LpToken.Amount = newTotalPoolUnit
-	swapPool.Tokens = swapPool.Tokens.Add(tokens...)
+	swapPool.BaseToken.Amount = swapPool.BaseToken.Amount.Add(orderTokens[0].Amount)
+	swapPool.Token.Amount = swapPool.Token.Amount.Add(orderTokens[1].Amount)
 
 	k.Keeper.SetSwapPool(ctx, lpDenom, swapPool)
 
@@ -65,10 +67,12 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 			types.EventTypeAddLiquidity,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
 			sdk.NewAttribute(types.AttributeKeyLpDenom, lpDenom),
-			sdk.NewAttribute(types.AttributeKeyAddTokens, tokens.String()),
+			sdk.NewAttribute(types.AttributeKeyAddBaseToken, orderTokens[0].String()),
+			sdk.NewAttribute(types.AttributeKeyAddToken, orderTokens[1].String()),
 			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, newTotalPoolUnit.String()),
 			sdk.NewAttribute(types.AttributeKeyAddLpUnit, addLpUnit.String()),
-			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolBaseTokenBalance, swapPool.BaseToken.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokenBalance, swapPool.Token.String()),
 		),
 	)
 	return &types.MsgAddLiquidityResponse{}, nil

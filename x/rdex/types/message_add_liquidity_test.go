@@ -19,14 +19,16 @@ func TestMsgAddLiquidity_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgAddLiquidity{
 				Creator: "invalid_address",
-				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
+				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)),
+				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgAddLiquidity{
 				Creator: sample.AccAddress(),
-				Tokens:  []sdk.Coin{sdk.NewCoin(sample.TestDenom, sdk.NewInt(10)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(0))},
+				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(10)),
+				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(0)),
 			},
 		},
 	}

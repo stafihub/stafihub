@@ -15,11 +15,15 @@ var _ = strconv.Itoa(0)
 
 func CmdAddLiquidity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-liquidity [tokens]",
+		Use:   "add-liquidity [token0] [token1]",
 		Short: "Add liquidity",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			coins, err := sdk.ParseCoinsNormalized(args[0])
+			coin0, err := sdk.ParseCoinNormalized(args[0])
+			if err != nil {
+				return err
+			}
+			coin1, err := sdk.ParseCoinNormalized(args[1])
 			if err != nil {
 				return err
 			}
@@ -31,7 +35,8 @@ func CmdAddLiquidity() *cobra.Command {
 
 			msg := types.NewMsgAddLiquidity(
 				clientCtx.GetFromAddress().String(),
-				coins,
+				coin0,
+				coin1,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

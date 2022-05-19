@@ -21,7 +21,8 @@ func TestMsgRemoveLiquidity_ValidateBasic(t *testing.T) {
 				Creator:      "invalid_address",
 				RmUnit:       sdk.NewInt(20),
 				SwapUnit:     sdk.NewInt(0),
-				MinOutTokens: sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2))),
+				MinOutToken0: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				MinOutToken1: sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2)),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
@@ -30,7 +31,8 @@ func TestMsgRemoveLiquidity_ValidateBasic(t *testing.T) {
 				Creator:      sample.AccAddress(),
 				RmUnit:       sdk.NewInt(20),
 				SwapUnit:     sdk.NewInt(10),
-				MinOutTokens: sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2))),
+				MinOutToken0: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				MinOutToken1: sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2)),
 			},
 		},
 	}

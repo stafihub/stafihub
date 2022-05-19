@@ -19,8 +19,8 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	if err != nil {
 		return nil, types.ErrInvalidAddress
 	}
-	tokens := msg.Tokens.Sort()
-	lpDenom := types.GetLpTokenDenom(tokens)
+	orderTokens := sdk.Coins{msg.Token0, msg.Token1}.Sort()
+	lpDenom := types.GetLpTokenDenom(orderTokens)
 
 	// check swap pool
 	_, found := k.Keeper.GetSwapPool(ctx, lpDenom)
@@ -28,21 +28,21 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 		return nil, types.ErrSwapPoolAlreadyExist
 	}
 	// check balance
-	for _, token := range tokens {
+	for _, token := range orderTokens {
 		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
 		if balance.Amount.LT(token.Amount) {
 			return nil, types.ErrInsufficientTokenBalance
 		}
 	}
-	poolTotalUnit, addLpUnit := CalPoolUnit(sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt(), tokens[0].Amount, tokens[1].Amount)
+	poolTotalUnit, addLpUnit := CalPoolUnit(sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt(), orderTokens[0].Amount, orderTokens[1].Amount)
 	if !addLpUnit.IsPositive() {
 		return nil, types.ErrAddLpUnitZero
 	}
 
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, tokens); err != nil {
+	// send coins
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, orderTokens); err != nil {
 		return nil, err
 	}
-
 	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(lpDenom, addLpUnit))
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, lpTokenCoins); err != nil {
 		return nil, err
@@ -52,8 +52,9 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	}
 
 	swapPool := types.SwapPool{
-		LpToken: sdk.NewCoin(lpDenom, addLpUnit),
-		Tokens:  tokens,
+		LpToken:   sdk.NewCoin(lpDenom, poolTotalUnit),
+		BaseToken: orderTokens[0],
+		Token:     orderTokens[1],
 	}
 
 	k.Keeper.SetSwapPool(ctx, lpDenom, &swapPool)
@@ -62,10 +63,10 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 			types.EventTypeCreatePool,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
 			sdk.NewAttribute(types.AttributeKeyLpDenom, lpDenom),
-			sdk.NewAttribute(types.AttributeKeyAddTokens, tokens.String()),
 			sdk.NewAttribute(types.AttributeKeyNewTotalUnit, poolTotalUnit.String()),
 			sdk.NewAttribute(types.AttributeKeyAddLpUnit, addLpUnit.String()),
-			sdk.NewAttribute(types.AttributeKeyPoolTokensBalance, swapPool.Tokens.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolBaseTokenBalance, swapPool.BaseToken.String()),
+			sdk.NewAttribute(types.AttributeKeyPoolTokenBalance, swapPool.Token.String()),
 		),
 	)
 

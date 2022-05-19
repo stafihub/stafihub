@@ -16,9 +16,9 @@ var _ = strconv.Itoa(0)
 
 func CmdRemoveLiquidity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "remove-liquidity [rm-unit] [swap-unit] [min-out-tokens] [input-token-denom]",
+		Use:   "remove-liquidity [rm-unit] [swap-unit] [min-out-token0] [min-out-token1] [input-token-denom]",
 		Short: "Remove liquidity",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRmUnit, ok := sdk.NewIntFromString(args[0])
 			if !ok {
@@ -29,12 +29,16 @@ func CmdRemoveLiquidity() *cobra.Command {
 				return fmt.Errorf("swap unit params err")
 			}
 
-			minOutTokens, err := sdk.ParseCoinsNormalized(args[2])
+			minOutToken0, err := sdk.ParseCoinNormalized(args[2])
+			if err != nil {
+				return err
+			}
+			minOutToken1, err := sdk.ParseCoinNormalized(args[3])
 			if err != nil {
 				return err
 			}
 
-			inputTokenDenom := args[3]
+			inputTokenDenom := args[4]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -45,7 +49,8 @@ func CmdRemoveLiquidity() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argRmUnit,
 				argSwapUnit,
-				minOutTokens,
+				minOutToken0,
+				minOutToken1,
 				inputTokenDenom,
 			)
 			if err := msg.ValidateBasic(); err != nil {

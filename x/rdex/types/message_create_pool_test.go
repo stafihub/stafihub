@@ -19,20 +19,23 @@ func TestMsgCreatePool_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgCreatePool{
 				Creator: "invalid_address",
-				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
+				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)),
+				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgCreatePool{
 				Creator: sample.AccAddress(),
-				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
+				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)),
+				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
 			},
 		}, {
 			name: "invalid coins",
 			msg: MsgCreatePool{
 				Creator: sample.AccAddress(),
-				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(0)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
+				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(0)),
+				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
 			},
 			err: sdkerrors.ErrInvalidCoins,
 		},
