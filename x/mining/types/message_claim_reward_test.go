@@ -17,13 +17,15 @@ func TestMsgClaimReward_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgClaimReward{
-				Creator: "invalid_address",
+				Creator:         "invalid_address",
+				StakeTokenDenom: sample.TestDenom,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgClaimReward{
-				Creator: sample.AccAddress(),
+				Creator:         sample.AccAddress(),
+				StakeTokenDenom: sample.TestDenom,
 			},
 		},
 	}

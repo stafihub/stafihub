@@ -43,12 +43,11 @@ func (msg *MsgCreatePool) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	if len(msg.Tokens) != 2 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length (%s)", len(msg.Tokens))
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length (%d)", len(msg.Tokens))
 	}
-	for _, token := range msg.Tokens {
-		if token.Amount.LTE(sdk.ZeroInt()) {
-			sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token amount (%s)", token.Amount)
-		}
+
+	if !msg.Tokens[0].IsPositive() || !msg.Tokens[1].IsPositive() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token amount (%s)", msg.Tokens.String())
 	}
 
 	return nil

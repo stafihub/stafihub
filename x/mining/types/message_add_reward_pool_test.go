@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
@@ -17,13 +18,21 @@ func TestMsgAddRewardPool_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgAddRewardPool{
-				Creator: "invalid_address",
+				Creator:           "invalid_address",
+				StakeTokenDenom:   sample.TestDenom,
+				RewardTokenDenom:  sample.TestDenom,
+				TotalRewardAmount: sdk.NewInt(10),
+				RewardPerSecond:   sdk.NewInt(1),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgAddRewardPool{
-				Creator: sample.AccAddress(),
+				Creator:           sample.AccAddress(),
+				StakeTokenDenom:   sample.TestDenom,
+				RewardTokenDenom:  sample.TestDenom,
+				TotalRewardAmount: sdk.NewInt(5),
+				RewardPerSecond:   sdk.NewInt(1),
 			},
 		},
 	}

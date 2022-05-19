@@ -17,13 +17,15 @@ func TestMsgWithdraw_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgWithdraw{
-				Creator: "invalid_address",
+				Creator:   "invalid_address",
+				Recipient: sample.AccAddress(),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgWithdraw{
-				Creator: sample.AccAddress(),
+				Creator:   sample.AccAddress(),
+				Recipient: sample.AccAddress(),
 			},
 		},
 	}

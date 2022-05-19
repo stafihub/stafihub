@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
@@ -17,13 +18,19 @@ func TestMsgRemoveLiquidity_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgRemoveLiquidity{
-				Creator: "invalid_address",
+				Creator:      "invalid_address",
+				RmUnit:       sdk.NewInt(20),
+				SwapUnit:     sdk.NewInt(0),
+				MinOutTokens: sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2))),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgRemoveLiquidity{
-				Creator: sample.AccAddress(),
+				Creator:      sample.AccAddress(),
+				RmUnit:       sdk.NewInt(20),
+				SwapUnit:     sdk.NewInt(10),
+				MinOutTokens: sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2))),
 			},
 		},
 	}

@@ -48,7 +48,7 @@ func (msg *MsgSetEraUnbondLimit) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetEraUnbondLimit) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
@@ -84,7 +84,7 @@ func (msg *MsgSetPoolDetail) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetPoolDetail) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 	if msg.Threshold <= 0 {
@@ -124,7 +124,7 @@ func (msg *MsgSetLeastBond) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetLeastBond) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
@@ -157,7 +157,7 @@ func (msg *MsgClearCurrentEraSnapShots) GetSignBytes() []byte {
 }
 
 func (msg *MsgClearCurrentEraSnapShots) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
@@ -191,11 +191,11 @@ func (msg *MsgSetStakingRewardCommission) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetStakingRewardCommission) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.LT(utils.ZeroDec()) {
+	if msg.Commission.IsNegative() {
 		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
 	}
 
@@ -231,7 +231,10 @@ func (msg *MsgSetProtocolFeeReceiver) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetProtocolFeeReceiver) ValidateBasic() error {
-	if msg.Creator == "" || msg.Receiver == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Receiver)
+	}
+	if _, err := sdk.AccAddressFromBech32(msg.Receiver); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or receiver (%s)", msg.Creator, msg.Receiver)
 	}
 	return nil
@@ -264,11 +267,11 @@ func (msg *MsgSetUnbondCommission) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetUnbondCommission) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Commission.LT(utils.ZeroDec()) {
+	if msg.Commission.IsNegative() {
 		return fmt.Errorf("commission %s less than zeroDec", msg.Commission.String())
 	}
 
@@ -307,12 +310,12 @@ func (msg *MsgLiquidityUnbond) GetSignBytes() []byte {
 }
 
 func (msg *MsgLiquidityUnbond) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.Value.Amount.LTE(sdk.ZeroInt()) {
-		return fmt.Errorf("unbond value %s less than zeroInt", msg.Value.String())
+	if !msg.Value.Amount.IsPositive() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid creator address")
 	}
 	return nil
 }
@@ -344,7 +347,7 @@ func (msg *MsgSetUnbondRelayFee) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetUnbondRelayFee) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
@@ -382,7 +385,7 @@ func (msg *MsgSubmitSignature) GetSignBytes() []byte {
 }
 
 func (msg *MsgSubmitSignature) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 	return nil

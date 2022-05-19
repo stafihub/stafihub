@@ -11,30 +11,6 @@ import (
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
-		Relayers: []types.Relayer{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
-		Thresholds: []types.Threshold{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
-		ProposalList: []types.Proposal{
-			{
-				Index: "0",
-			},
-			{
-				Index: "1",
-			},
-		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -47,7 +23,5 @@ func TestGenesis(t *testing.T) {
 	require.Subset(t, genesisState.Relayers, got.Relayers)
 	require.Len(t, got.Thresholds, len(genesisState.Thresholds))
 	require.Subset(t, genesisState.Thresholds, got.Thresholds)
-	require.Len(t, got.ProposalList, len(genesisState.ProposalList))
-	require.Subset(t, genesisState.ProposalList, got.ProposalList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

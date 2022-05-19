@@ -18,12 +18,14 @@ func TestMsgToggleUnbondSwitch_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgToggleUnbondSwitch{
 				Creator: "invalid_address",
+				Denom:   sample.TestDenom,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgToggleUnbondSwitch{
 				Creator: sample.AccAddress(),
+				Denom:   sample.TestDenom,
 			},
 		},
 	}

@@ -18,13 +18,13 @@ func Test_ExchangeRate(t *testing.T) {
 
 	_, found := k.GetExchangeRate(ctx, sample.TestDenom)
 	require.False(t, found)
-	total := sdk.NewInt(1000)
-	rtotal := sdk.NewInt(1200)
+	rtotal := sdk.NewInt(1000)
+	total := sdk.NewInt(1200)
 	k.SetExchangeRate(ctx, sample.TestDenom, total, rtotal)
 
 	rate, found := k.GetExchangeRate(ctx, sample.TestDenom)
 	require.True(t, found)
-	require.Equal(t, sdk.OneDec().MulInt(rtotal).QuoInt(total), rate.Value)
+	require.Equal(t, utils.OneDec().MulInt(total).QuoInt(rtotal), rate.Value)
 
 	rates = k.GetAllExchangeRate(ctx)
 	require.True(t, len(rates) == 1)
@@ -48,7 +48,7 @@ func Test_EraExchangeRate(t *testing.T) {
 	rate, found := k.GetEraExchangeRate(ctx, sample.TestDenom, 1)
 	require.True(t, found)
 	require.Equal(t, sample.TestDenom, rate.Denom)
-	require.Equal(t, sdk.OneDec(), rate.Value)
+	require.Equal(t, utils.OneDec(), rate.Value)
 
 	k.SetEraExchangeRate(ctx, sample.TestDenom, 2, utils.OneDec())
 
@@ -79,14 +79,14 @@ func TestKeeper_RtokenToToken(t *testing.T) {
 	token := k.RtokenToToken(ctx, sample.TestDenom, rtoken)
 	require.Equal(t, rtoken, token)
 
-	total := sdk.NewInt(1000)
-	rtotal := sdk.NewInt(1200)
+	rtotal := sdk.NewInt(1000)
+	total := sdk.NewInt(1200)
 	k.SetExchangeRate(ctx, sample.TestDenom, total, rtotal)
 
-	token = k.RtokenToToken(ctx, sample.TestDenom, rtoken)
-	require.Equal(t, sdk.NewInt(125), token)
+	token = k.TokenToRtoken(ctx, sample.TestDenom, token)
+	require.Equal(t, sdk.NewInt(125).String(), token.String())
 
 	rtoken = sdk.NewInt(100)
 	token = k.RtokenToToken(ctx, sample.TestDenom, rtoken)
-	require.Equal(t, sdk.NewInt(83), token)
+	require.Equal(t, sdk.NewInt(120), token)
 }

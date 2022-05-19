@@ -43,11 +43,11 @@ func (msg *MsgSwap) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	if msg.InputToken.Amount.LTE(sdk.ZeroInt()) {
-		sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid input token amount (%s)", msg.InputToken.Amount)
+	if !msg.InputToken.Amount.IsPositive() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid input token amount (%s)", msg.InputToken.Amount)
 	}
-	if msg.MinOutToken.Amount.LTE(sdk.ZeroInt()) {
-		sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid input token amount (%s)", msg.InputToken.Amount)
+	if msg.MinOutToken.Amount.IsNegative() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid minout token amount (%s)", msg.InputToken.Amount)
 	}
 	return nil
 }

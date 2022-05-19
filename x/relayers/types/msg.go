@@ -1,7 +1,9 @@
 package types
 
 import (
+	"errors"
 	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -43,7 +45,7 @@ func (msg *MsgAddRelayer) GetSignBytes() []byte {
 }
 
 func (msg *MsgAddRelayer) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
@@ -95,7 +97,10 @@ func (msg *MsgDeleteRelayer) ValidateBasic() error {
 	if len(msg.Arena) == 0 {
 		return fmt.Errorf("Arena should not be empty")
 	}
-	if msg.Creator == "" || msg.Address == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
+	}
+	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator (%s) or address (%s)", msg.Creator, msg.Address)
 	}
 	return nil
@@ -132,11 +137,14 @@ func (msg *MsgSetThreshold) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetThreshold) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 	if len(msg.Arena) == 0 {
-		return fmt.Errorf("Arena should not be empty")
+		return errors.New("arena should not be empty")
+	}
+	if len(msg.Denom) == 0 {
+		return errors.New("denom should not be empty")
 	}
 	if msg.Value <= 0 {
 		return fmt.Errorf("threshold should be greater than 0")

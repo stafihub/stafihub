@@ -3,57 +3,28 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stretchr/testify/require"
 )
-
-func TestMsgAddNewPool_ValidateBasic(t *testing.T) {
-	tests := []struct {
-		name string
-		msg  MsgAddNewPool
-		err  error
-	}{
-		{
-			name: "invalid address",
-			msg: MsgAddNewPool{
-				Creator: "invalid_address",
-			},
-			err: sdkerrors.ErrInvalidAddress,
-		}, {
-			name: "valid address",
-			msg: MsgAddNewPool{
-				Creator: sample.AccAddress(),
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			err := tt.msg.ValidateBasic()
-			if tt.err != nil {
-				require.ErrorIs(t, err, tt.err)
-				return
-			}
-			require.NoError(t, err)
-		})
-	}
-}
 
 func TestMsgRemovePool_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRemovePool
+		msg  MsgRmBondedPool
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRemovePool{
+			msg: MsgRmBondedPool{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRemovePool{
+			msg: MsgRmBondedPool{
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -104,18 +75,18 @@ func TestMsgSetEraUnbondLimit_ValidateBasic(t *testing.T) {
 func TestMsgSetInitBond_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetInitBond
+		msg  MsgSetLeastBond
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetInitBond{
+			msg: MsgSetLeastBond{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetInitBond{
+			msg: MsgSetLeastBond{
 				Creator: sample.AccAddress(),
 			},
 		},
@@ -135,19 +106,21 @@ func TestMsgSetInitBond_ValidateBasic(t *testing.T) {
 func TestMsgSetChainBondingDuration_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetChainBondingDuration
+		msg  MsgSetRParams
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetChainBondingDuration{
-				Creator: "invalid_address",
+			msg: MsgSetRParams{
+				Creator:    "invalid_address",
+				EraSeconds: 1000,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetChainBondingDuration{
-				Creator: sample.AccAddress(),
+			msg: MsgSetRParams{
+				Creator:    sample.AccAddress(),
+				EraSeconds: 20000,
 			},
 		},
 	}
@@ -172,13 +145,17 @@ func TestMsgSetPoolDetail_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgSetPoolDetail{
-				Creator: "invalid_address",
+				Creator:     "invalid_address",
+				Threshold:   1,
+				SubAccounts: []string{sample.AccAddress()},
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgSetPoolDetail{
-				Creator: sample.AccAddress(),
+				Creator:     sample.AccAddress(),
+				Threshold:   1,
+				SubAccounts: []string{sample.AccAddress()},
 			},
 		},
 	}
@@ -259,19 +236,21 @@ func TestMsgClearCurrentEraSnapShots_ValidateBasic(t *testing.T) {
 func TestMsgSetCommission_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetCommission
+		msg  MsgSetStakingRewardCommission
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetCommission{
-				Creator: "invalid_address",
+			msg: MsgSetStakingRewardCommission{
+				Creator:    "invalid_address",
+				Commission: utils.MustNewDecFromStr("0.1"),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetCommission{
-				Creator: sample.AccAddress(),
+			msg: MsgSetStakingRewardCommission{
+				Creator:    sample.AccAddress(),
+				Commission: utils.MustNewDecFromStr("0.02"),
 			},
 		},
 	}
@@ -290,19 +269,21 @@ func TestMsgSetCommission_ValidateBasic(t *testing.T) {
 func TestMsgSetReceiver_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetReceiver
+		msg  MsgSetProtocolFeeReceiver
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetReceiver{
-				Creator: "invalid_address",
+			msg: MsgSetProtocolFeeReceiver{
+				Creator:  "invalid_address",
+				Receiver: "ff",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetReceiver{
-				Creator: sample.AccAddress(),
+			msg: MsgSetProtocolFeeReceiver{
+				Creator:  sample.AccAddress(),
+				Receiver: sample.AccAddress(),
 			},
 		},
 	}
@@ -327,13 +308,15 @@ func TestMsgSetUnbondCommission_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgSetUnbondCommission{
-				Creator: "invalid_address",
+				Creator:    "invalid_address",
+				Commission: utils.MustNewDecFromStr("0.1"),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgSetUnbondCommission{
-				Creator: sample.AccAddress(),
+				Creator:    sample.AccAddress(),
+				Commission: utils.MustNewDecFromStr("0"),
 			},
 		},
 	}
@@ -359,13 +342,22 @@ func TestMsgLiquidityUnbond_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgLiquidityUnbond{
 				Creator: "invalid_address",
+				Value:   sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgLiquidityUnbond{
 				Creator: sample.AccAddress(),
+				Value:   sdk.NewCoin(sample.TestDenom, sdk.NewInt(2)),
 			},
+		}, {
+			name: "valid address",
+			msg: MsgLiquidityUnbond{
+				Creator: sample.AccAddress(),
+				Value:   sdk.NewCoin(sample.TestDenom, sdk.NewInt(0)),
+			},
+			err: sdkerrors.ErrInvalidCoins,
 		},
 	}
 	for _, tt := range tests {
@@ -383,18 +375,18 @@ func TestMsgLiquidityUnbond_ValidateBasic(t *testing.T) {
 func TestMsgSetUnbondFee_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetUnbondFee
+		msg  MsgSetUnbondRelayFee
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetUnbondFee{
+			msg: MsgSetUnbondRelayFee{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetUnbondFee{
+			msg: MsgSetUnbondRelayFee{
 				Creator: sample.AccAddress(),
 			},
 		},

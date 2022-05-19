@@ -1,6 +1,8 @@
 package types
 
 import (
+	fmt "fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/utils"
@@ -45,6 +47,9 @@ func (msg *MsgUpdateStakeItem) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if !msg.PowerRewardRate.IsPositive() {
+		return fmt.Errorf("powerRewardRate is not positive")
 	}
 	return nil
 }

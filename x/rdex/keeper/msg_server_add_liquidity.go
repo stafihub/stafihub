@@ -28,13 +28,17 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 	}
 
 	// check balance
+	willSendToken := sdk.NewCoins()
 	for _, token := range tokens {
 		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
 		if balance.Amount.LT(token.Amount) {
 			return nil, types.ErrInsufficientTokenBalance
 		}
+		if token.Amount.IsPositive() {
+			willSendToken.Add(token)
+		}
 	}
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, tokens); err != nil {
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, willSendToken); err != nil {
 		return nil, types.ErrInsufficientTokenBalance
 	}
 

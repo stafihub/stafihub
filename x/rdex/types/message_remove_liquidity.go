@@ -48,10 +48,10 @@ func (msg *MsgRemoveLiquidity) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	if len(msg.MinOutTokens) != 2 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%s)", len(msg.MinOutTokens))
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid tokens length(%d)", len(msg.MinOutTokens))
 	}
 
-	if msg.RmUnit.LTE(sdk.ZeroInt()) {
+	if !msg.RmUnit.IsPositive() {
 		return fmt.Errorf("invalid rm unit amount")
 	}
 	if msg.RmUnit.LT(msg.SwapUnit) {

@@ -5,6 +5,7 @@ import (
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,12 +19,14 @@ func TestMsgAddStakeItem_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgAddStakeItem{
 				Creator: "invalid_address",
+				PowerRewardRate: utils.MustNewDecFromStr("1.8"),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgAddStakeItem{
 				Creator: sample.AccAddress(),
+				PowerRewardRate: utils.MustNewDecFromStr("0.5"),
 			},
 		},
 	}

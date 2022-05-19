@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
@@ -17,13 +18,17 @@ func TestMsgUpdateStakePool_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgUpdateStakePool{
-				Creator: "invalid_address",
+				Creator:              "invalid_address",
+				StakeTokenDenom:      sample.TestDenom,
+				MinTotalRewardAmount: sdk.NewInt(1),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgUpdateStakePool{
-				Creator: sample.AccAddress(),
+				Creator:              sample.AccAddress(),
+				StakeTokenDenom:      sample.TestDenom,
+				MinTotalRewardAmount: sdk.NewInt(1),
 			},
 		},
 	}

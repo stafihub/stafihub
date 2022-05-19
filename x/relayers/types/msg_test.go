@@ -1,29 +1,34 @@
-package types
+package types_test
 
 import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/relayers/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateRelayer_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateRelayer
+		msg  types.MsgAddRelayer
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateRelayer{
-				Creator: "invalid_address",
+			msg: types.MsgAddRelayer{
+				Creator:   "invalid_address",
+				Arena:     types.ModuleName,
+				Addresses: []string{sample.AccAddress()},
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateRelayer{
-				Creator: sample.AccAddress(),
+			msg: types.MsgAddRelayer{
+				Creator:   sample.AccAddress(),
+				Arena:     types.ModuleName,
+				Addresses: []string{sample.AccAddress()},
 			},
 		},
 	}
@@ -42,19 +47,23 @@ func TestMsgCreateRelayer_ValidateBasic(t *testing.T) {
 func TestMsgDeleteRelayer_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgDeleteRelayer
+		msg  types.MsgDeleteRelayer
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgDeleteRelayer{
+			msg: types.MsgDeleteRelayer{
 				Creator: "invalid_address",
+				Arena:   types.ModuleName,
+				Address: sample.AccAddress(),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgDeleteRelayer{
+			msg: types.MsgDeleteRelayer{
 				Creator: sample.AccAddress(),
+				Arena:   types.ModuleName,
+				Address: sample.AccAddress(),
 			},
 		},
 	}
@@ -73,19 +82,25 @@ func TestMsgDeleteRelayer_ValidateBasic(t *testing.T) {
 func TestMsgUpdateThreshold_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdateThreshold
+		msg  types.MsgSetThreshold
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdateThreshold{
+			msg: types.MsgSetThreshold{
 				Creator: "invalid_address",
+				Arena:   types.ModuleName,
+				Denom:   sample.TestDenom,
+				Value:   1,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdateThreshold{
+			msg: types.MsgSetThreshold{
 				Creator: sample.AccAddress(),
+				Arena:   types.ModuleName,
+				Denom:   sample.TestDenom,
+				Value:   1,
 			},
 		},
 	}

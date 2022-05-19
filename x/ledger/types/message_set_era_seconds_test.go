@@ -18,12 +18,14 @@ func TestMsgSetEraSeconds_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgSetEraSeconds{
 				Creator: "invalid_address",
+				EraSeconds: 2000,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgSetEraSeconds{
 				Creator: sample.AccAddress(),
+				EraSeconds: 3000,
 			},
 		},
 	}

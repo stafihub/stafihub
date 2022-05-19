@@ -17,13 +17,15 @@ func TestMsgRmRewarder_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgRmRewarder{
-				Creator: "invalid_address",
+				Creator:     "invalid_address",
+				UserAddress: sample.AccAddress(),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgRmRewarder{
-				Creator: sample.AccAddress(),
+				Creator:     sample.AccAddress(),
+				UserAddress: sample.AccAddress(),
 			},
 		},
 	}

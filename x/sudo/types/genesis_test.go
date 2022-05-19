@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stafihub/stafihub/x/sudo/types"
 	"github.com/stretchr/testify/require"
 )
@@ -19,9 +20,9 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
-				// this line is used by starport scaffolding # types/genesis/validField
+				Admin: sample.TestAdmin,
 			},
 			valid: true,
 		},

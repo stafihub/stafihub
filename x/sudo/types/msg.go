@@ -2,6 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 var (
@@ -39,11 +40,11 @@ func (msg *MsgUpdateAdmin) GetSignBytes() []byte {
 func (msg *MsgUpdateAdmin) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return err
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Creator)
 	}
 	_, err = sdk.AccAddressFromBech32(msg.Address)
 	if err != nil {
-		return err
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Address)
 	}
 	return nil
 }

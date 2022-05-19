@@ -42,7 +42,7 @@ func (msg *MsgSetProposalLife) GetSignBytes() []byte {
 }
 
 func (msg *MsgSetProposalLife) ValidateBasic() error {
-	if msg.Creator == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
@@ -89,7 +89,7 @@ func (m MsgSubmitProposal) String() string {
 }
 
 func (msg *MsgSubmitProposal) ValidateBasic() error {
-	if msg.Proposer == "" {
+	if _, err := sdk.AccAddressFromBech32(msg.Proposer); err != nil {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Proposer)
 	}
 

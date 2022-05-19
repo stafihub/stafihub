@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
@@ -18,13 +19,22 @@ func TestMsgCreatePool_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgCreatePool{
 				Creator: "invalid_address",
+				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgCreatePool{
 				Creator: sample.AccAddress(),
+				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
 			},
+		}, {
+			name: "invalid coins",
+			msg: MsgCreatePool{
+				Creator: sample.AccAddress(),
+				Tokens:  sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(0)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1))),
+			},
+			err: sdkerrors.ErrInvalidCoins,
 		},
 	}
 	for _, tt := range tests {
