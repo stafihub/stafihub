@@ -63,19 +63,20 @@ func (k Keeper) UpdateUserClaimInfo(ctx sdk.Context, user sdk.AccAddress, denom 
 	}
 
 	for _, rewardInfo := range act.TokenRewardInfos {
-		if rewardInfo.LeftAmount.LTE(sdk.ZeroInt()) {
-			continue
-		}
-		shouldRewardAmount := rewardInfo.RewardRate.MulInt(nativeTokenAmount).RoundInt()
+		shouldRewardAmount := rewardInfo.RewardRate.MulInt(nativeTokenAmount).TruncateInt()
 
 		if shouldRewardAmount.GT(rewardInfo.LeftAmount) {
 			shouldRewardAmount = rewardInfo.LeftAmount
 		}
-		if rewardInfo.UserLimit.GT(sdk.ZeroInt()) && shouldRewardAmount.GT(rewardInfo.UserLimit) {
+		if rewardInfo.UserLimit.IsPositive() && shouldRewardAmount.GT(rewardInfo.UserLimit) {
 			shouldRewardAmount = rewardInfo.UserLimit
 		}
 
 		rewardInfo.LeftAmount = rewardInfo.LeftAmount.Sub(shouldRewardAmount)
+		if rewardInfo.LeftAmount.IsNegative() {
+			rewardInfo.LeftAmount = sdk.ZeroInt()
+		}
+
 		userClaimInfo.TokenClaimInfos = append(userClaimInfo.TokenClaimInfos, &types.TokenClaimInfo{
 			Denom:              rewardInfo.Denom,
 			TotalRewardAmount:  shouldRewardAmount,

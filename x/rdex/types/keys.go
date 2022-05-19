@@ -48,6 +48,7 @@ func GetLpTokenDenom(coins sdk.Coins) string {
 	if len(coins) != 2 {
 		panic("coins length err")
 	}
+
 	coins = coins.Sort()
 
 	hash := sha256.Sum256([]byte(coins[0].Denom + coins[1].Denom))
