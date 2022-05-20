@@ -2,7 +2,7 @@
 
 ## Setting examples for admin
 
-global:
+### global:
 
 ```
 stafihubd tx ledger set-protocol-fee-receiver stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
@@ -10,7 +10,7 @@ stafihubd tx ledger set-protocol-fee-receiver stafi1ukq4mtq604prn5yxul7syh5ysvj0
 stafihubd query ledger protocol-fee-receiver 
 ```
 
-add new rtoken:
+### add new rtoken:
 
 ```
 # set rtoken metadata
@@ -72,7 +72,7 @@ stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwp
 
 
 
-bridge:
+### bridge:
 
 ```
 stafihubd tx bridge add-chain-id 1 --from admin --keyring-backend file --chain-id local-stafihub
@@ -111,7 +111,7 @@ stafihubd query bridge  relay-fee 1
 ```
 
 
-migrate rtoken (after adding new rtoken step):
+### migrate rtoken (after adding new rtoken step):
 
 ```
 stafihubd tx ledger migrate-init uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100000000 150000000 200000000 300000000 1.23 --from admin --keyring-backend file --chain-id local-stafihub
@@ -136,27 +136,41 @@ stafihubd query bridge denom-types
 ```
 
 
+### rdex:
+
+stafihubd tx rdex create-pool 10ufis 20uratom --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx rdex add-provider stafi1qzt0qajzr9df3en5sk06xlk26n30003c8uhdkg --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx rdex add-liquidity  100ufis 200uratom --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx rdex remove-liquidity 10 5 1uratom 1ufis ufis --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx rdex swap 2ufis 1uratom  --from admin --chain-id local-stafihub --keyring-backend file
+
 ## Operate examples for user
 
-liquidity bond (gaiad example):
+### liquidity bond (gaiad example):
 
 ```
 gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
 ```
 
-recover (gaiad example):
+### recover (gaiad example):
 
 ```
 gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1stake --memo 2:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:9A80F3E6A007E1144BE34F4A0AC35B9288C19641BCAD3464277168000AF5FC66 --keyring-backend file --chain-id local-cosmos
 ```
 
-liquidity unbond:
+### liquidity unbond:
 
 ```
 stafihubd tx ledger liquidity-unbond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100uratom cosmos1j9dues7ey2a39nes4ewfvyma96d3f5zrdhnfan --keyring-backend file --from user --home /Users/tpkeeper/gowork/stafi/rtoken-relay-core/keys/stafihub --chain-id local-stafihub
 ```
 
-deposit (transfer token to external chain):
+### deposit (transfer token to external chain):
 ```
 stafihubd tx bridge deposit 1 uratom 800 dccf954570063847d73746afa0b0878f2c779d42089c5d9a107f2aca176e985f --from my-account --chain-id local-stafihub --keyring-backend file
 ```
+
+
