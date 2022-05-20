@@ -28,14 +28,17 @@ func LedgerKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 	sudoKeeper, _ := SudoKeeper(t)
 	relayersKeeper, _ := RelayersKeeper(t)
+	rmintRewardKeeper, _ := RmintrewardKeeper(t)
+	rBankKeeper, _ := RbankKeeper(t)
 	ledgerKeeper := keeper.NewKeeper(
 		cdc,
 		ledgertoreKey,
 		ledgerMemStoreKey,
 		sudoKeeper,
-		bankKeeper,
+		BankKeeper,
 		relayersKeeper,
-		nil, nil,
+		rmintRewardKeeper,
+		rBankKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

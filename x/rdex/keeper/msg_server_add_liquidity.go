@@ -32,7 +32,7 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 	for _, token := range orderTokens {
 		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
 		if balance.Amount.LT(token.Amount) {
-			return nil, types.ErrInsufficientTokenBalance
+			return nil, types.ErrUserTokenBalanceInsufficient
 		}
 		if token.Amount.IsPositive() {
 			willSendToken = willSendToken.Add(token)
@@ -46,7 +46,7 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 
 	//send coins
 	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, willSendToken); err != nil {
-		return nil, types.ErrInsufficientTokenBalance
+		return nil, types.ErrUserTokenBalanceInsufficient
 	}
 	lpTokenCoins := sdk.NewCoins(sdk.NewCoin(lpDenom, addLpUnit))
 	if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, lpTokenCoins); err != nil {

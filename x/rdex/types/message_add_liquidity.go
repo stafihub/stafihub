@@ -1,6 +1,8 @@
 package types
 
 import (
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -42,6 +44,12 @@ func (msg *MsgAddLiquidity) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if !msg.Token0.IsValid() || !msg.Token1.IsValid() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token token0(%s) token1(%s)", msg.Token0, msg.Token1)
+	}
+	if strings.EqualFold(msg.Token0.Denom, msg.Token1.Denom) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token denom token0(%s) token1(%s)", msg.Token0, msg.Token1)
 	}
 
 	if !msg.Token0.IsPositive() && !msg.Token1.IsPositive() {

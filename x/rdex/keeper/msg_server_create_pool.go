@@ -31,7 +31,7 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	for _, token := range orderTokens {
 		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
 		if balance.Amount.LT(token.Amount) {
-			return nil, types.ErrInsufficientTokenBalance
+			return nil, types.ErrUserTokenBalanceInsufficient
 		}
 	}
 	poolTotalUnit, addLpUnit := CalPoolUnit(sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt(), orderTokens[0].Amount, orderTokens[1].Amount)

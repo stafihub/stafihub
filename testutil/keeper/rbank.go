@@ -36,13 +36,15 @@ func RbankKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"RbankParams",
 	)
+
+	sudoKeeper, _ := SudoKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		nil,
-		nil,
+		sudoKeeper,
+		BankKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

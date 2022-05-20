@@ -593,8 +593,8 @@ func New(
 		keys[miningmoduletypes.StoreKey],
 		keys[miningmoduletypes.MemStoreKey],
 		app.GetSubspace(miningmoduletypes.ModuleName),
-		app.BankKeeper,
 		app.SudoKeeper,
+		app.BankKeeper,
 	)
 	miningModule := miningmodule.NewAppModule(appCodec, app.MiningKeeper, app.AccountKeeper, app.BankKeeper)
 

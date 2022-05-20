@@ -26,6 +26,7 @@ import (
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	rdextypes "github.com/stafihub/stafihub/x/rdex/types"
 )
 
 var (
@@ -36,9 +37,9 @@ var (
 	stateStore = store.NewCommitMultiStore(db)
 	encCfg     = app.MakeTestEncodingConfig()
 
-	paramsKeeper  = ParamsKeeper(&encCfg)
-	accountKeeper = AccountKeeper(&encCfg, paramsKeeper)
-	bankKeeper    = BankKeeper(&encCfg, paramsKeeper, accountKeeper)
+	ParamsKeeper  = NewParamsKeeper(&encCfg)
+	AccountKeeper = NewAccountKeeper(&encCfg, ParamsKeeper)
+	BankKeeper    = NewBankKeeper(&encCfg, ParamsKeeper, AccountKeeper)
 
 	sudoStoreKey    = sdk.NewKVStoreKey(types.StoreKey)
 	sudoMemStoreKey = storetypes.NewMemoryStoreKey(types.MemStoreKey)
@@ -60,11 +61,16 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	)
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
 	require.NotNil(t, sample.TestAdminAcc)
+
 	sudoKeeper.SetAdmin(ctx, sample.TestAdminAcc)
+
+	willMintCoins := sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(100e6)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(100e6)))
+	BankKeeper.MintCoins(ctx, types.ModuleName, willMintCoins)
+	BankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sample.TestAdminAcc, willMintCoins)
 	return sudoKeeper, ctx
 }
 
-func ParamsKeeper(encCfg *params.EncodingConfig) *paramskeeper.Keeper {
+func NewParamsKeeper(encCfg *params.EncodingConfig) *paramskeeper.Keeper {
 	keyParams := sdk.NewKVStoreKey(paramstypes.StoreKey)
 	tkeyParams := sdk.NewTransientStoreKey(paramstypes.TStoreKey)
 	stateStore.MountStoreWithDB(keyParams, sdk.StoreTypeIAVL, db)
@@ -74,7 +80,7 @@ func ParamsKeeper(encCfg *params.EncodingConfig) *paramskeeper.Keeper {
 	return &k
 }
 
-func AccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper) *authkeeper.AccountKeeper {
+func NewAccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper) *authkeeper.AccountKeeper {
 	keyAcc := sdk.NewKVStoreKey(authtypes.StoreKey)
 	stateStore.MountStoreWithDB(keyAcc, sdk.StoreTypeIAVL, db)
 
@@ -83,6 +89,7 @@ func AccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Kee
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		types.ModuleName:               {authtypes.Burner, authtypes.Minter},
+		rdextypes.ModuleName:           {authtypes.Burner, authtypes.Minter},
 	}
 
 	k := authkeeper.NewAccountKeeper(
@@ -95,7 +102,7 @@ func AccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Kee
 	return &k
 }
 
-func BankKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper, accountKeeper *authkeeper.AccountKeeper) bankkeeper.Keeper {
+func NewBankKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper, accountKeeper *authkeeper.AccountKeeper) bankkeeper.Keeper {
 	storeKey := sdk.NewKVStoreKey(banktypes.StoreKey)
 	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
 

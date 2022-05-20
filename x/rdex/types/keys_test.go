@@ -27,11 +27,11 @@ func TestParseCoins(t *testing.T) {
 	require.False(t, coins.IsValid())
 }
 
-func TestAddCoins(t *testing.T){
-	coinA:=sdk.NewCoin("ufis",sdk.NewInt(30))
-	coinB:=sdk.NewCoin("uratom",sdk.NewInt(1))
+func TestAddCoins(t *testing.T) {
+	coinA := sdk.NewCoin("ufis", sdk.NewInt(30))
+	coinB := sdk.NewCoin("uratom", sdk.NewInt(1))
 
-	coins:=sdk.NewCoins()
+	coins := sdk.NewCoins()
 	coins = coins.Add(coinA)
 	coins = coins.Add(coinB)
 	t.Log(coins.String())

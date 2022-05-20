@@ -1,11 +1,11 @@
 package keeper
 
 import (
+	"sync"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/store"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -14,35 +14,37 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmdb "github.com/tendermint/tm-db"
+)
+
+var (
+	rdexStoreKey    = sdk.NewKVStoreKey(types.StoreKey)
+	rdexMemStoreKey = storetypes.NewMemoryStoreKey(types.MemStoreKey)
+	rdexOnce        sync.Once
 )
 
 func RdexKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	storeKey := sdk.NewKVStoreKey(types.StoreKey)
-	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
-
-	db := tmdb.NewMemDB()
-	stateStore := store.NewCommitMultiStore(db)
-	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
-	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
+	rdexOnce.Do(func() {
+		stateStore.MountStoreWithDB(rdexStoreKey, sdk.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(rdexMemStoreKey, sdk.StoreTypeMemory, nil)
+	})
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
-
 	paramsSubspace := typesparams.NewSubspace(cdc,
 		types.Amino,
-		storeKey,
-		memStoreKey,
+		rdexStoreKey,
+		rdexMemStoreKey,
 		"RdexParams",
 	)
+	sudoKeeper, _ := SudoKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
-		storeKey,
-		memStoreKey,
+		rdexStoreKey,
+		rdexMemStoreKey,
 		paramsSubspace,
-		bankKeeper,
-		nil,
+		BankKeeper,
+		sudoKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

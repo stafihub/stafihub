@@ -32,7 +32,7 @@ func RelayersKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		relayersStoreKey,
 		relayersMemStoreKey,
 		sudoKeeper,
-		bankKeeper,
+		BankKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

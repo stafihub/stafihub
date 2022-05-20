@@ -40,12 +40,12 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 
 	realOutCoin := sdk.NewCoin(msg.MinOutToken.Denom, outAmount)
 	if inputIsBase {
-		fisBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolBaseToken.Denom)
-		if fisBalance.Amount.LT(msg.InputToken.Amount) {
-			return nil, types.ErrInsufficientFisBalance
+		baseTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolBaseToken.Denom)
+		if baseTokenBalance.Amount.LT(msg.InputToken.Amount) {
+			return nil, types.ErrUserBaseTokenBalanceInsufficient
 		}
 		if poolToken.Amount.LTE(outAmount) {
-			return nil, types.ErrInsufficientTokenBalance
+			return nil, types.ErrPoolTokenBalanceInsufficient
 		}
 
 		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {
@@ -58,12 +58,12 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		poolBaseToken.Amount = poolBaseToken.Amount.Add(msg.InputToken.Amount)
 		poolToken.Amount = poolToken.Amount.Sub(outAmount)
 	} else {
-		rTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolToken.Denom)
-		if rTokenBalance.Amount.LT(msg.InputToken.Amount) {
-			return nil, types.ErrInsufficientTokenBalance
+		tokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolToken.Denom)
+		if tokenBalance.Amount.LT(msg.InputToken.Amount) {
+			return nil, types.ErrUserTokenBalanceInsufficient
 		}
 		if poolBaseToken.Amount.LTE(outAmount) {
-			return nil, types.ErrInsufficientTokenBalance
+			return nil, types.ErrPoolBaseTokenBalanceInsufficient
 		}
 
 		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {

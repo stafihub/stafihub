@@ -18,14 +18,14 @@ func TestMsgAddStakeItem_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgAddStakeItem{
-				Creator: "invalid_address",
+				Creator:         "invalid_address",
 				PowerRewardRate: utils.MustNewDecFromStr("1.8"),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgAddStakeItem{
-				Creator: sample.AccAddress(),
+				Creator:         sample.AccAddress(),
 				PowerRewardRate: utils.MustNewDecFromStr("0.5"),
 			},
 		},

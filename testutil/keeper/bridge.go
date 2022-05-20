@@ -38,14 +38,14 @@ func BridgeKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	)
 
 	sudoKeeper, _ := SudoKeeper(t)
-	relayerKeeper,_:=RelayersKeeper(t)
+	relayerKeeper, _ := RelayersKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
 
-		bankKeeper,
+		BankKeeper,
 		sudoKeeper,
 		relayerKeeper,
 	)

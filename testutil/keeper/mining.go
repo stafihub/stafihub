@@ -36,12 +36,15 @@ func MiningKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"MiningParams",
 	)
+
+	sudoKeeper, _ := SudoKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		nil,nil,
+		sudoKeeper,
+		BankKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

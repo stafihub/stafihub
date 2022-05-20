@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -54,6 +55,14 @@ func (msg *MsgRemoveLiquidity) ValidateBasic() error {
 	}
 	if msg.RmUnit.LT(msg.SwapUnit) {
 		return fmt.Errorf("rm unit must bigger or equal to swap unit")
+	}
+
+	if !msg.MinOutToken0.IsValid() || !msg.MinOutToken1.IsValid() {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token minOutToken0(%s) minOutToken1(%s)", msg.MinOutToken0, msg.MinOutToken1)
+	}
+
+	if strings.EqualFold(msg.MinOutToken0.Denom, msg.MinOutToken1.Denom) {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token denom minOutToken0(%s) minOutToken1(%s)", msg.MinOutToken0, msg.MinOutToken1)
 	}
 
 	return nil
