@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stafihub/stafihub/x/rdex/types"
@@ -54,7 +55,7 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 
 		if inputIsBase {
 			if swapResult.GTE(poolToken.Amount) {
-				return nil, types.ErrPoolRTokenBalanceInsufficient
+				return nil, types.ErrPoolTokenBalanceInsufficient
 			}
 
 			poolBaseToken.Amount = poolBaseToken.Amount.Add(swapInputAmount)
@@ -64,7 +65,7 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 			rmTokenAmount = rmTokenAmount.Add(swapResult)
 		} else {
 			if swapResult.GTE(poolBaseToken.Amount) {
-				return nil, types.ErrPoolFisBalanceInsufficient
+				return nil, types.ErrPoolBaseTokenBalanceInsufficient
 			}
 
 			poolToken.Amount = poolToken.Amount.Add(swapInputAmount)
@@ -80,11 +81,11 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	}
 
 	if rmBaseTokenAmount.GT(poolBaseTokenBalance.Amount) {
-		return nil, types.ErrPoolFisBalanceInsufficient
+		return nil, types.ErrPoolBaseTokenBalanceInsufficient
 	}
 
 	if rmTokenAmount.GT(poolTokenBalance.Amount) {
-		return nil, types.ErrPoolRTokenBalanceInsufficient
+		return nil, types.ErrPoolTokenBalanceInsufficient
 	}
 
 	if (poolBaseToken.Amount.IsZero() && !poolToken.Amount.IsZero()) || (poolToken.Amount.IsZero() && !poolBaseToken.Amount.IsZero()) {

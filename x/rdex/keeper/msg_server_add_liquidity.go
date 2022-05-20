@@ -35,7 +35,7 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 			return nil, types.ErrInsufficientTokenBalance
 		}
 		if token.Amount.IsPositive() {
-			willSendToken.Add(token)
+			willSendToken = willSendToken.Add(token)
 		}
 	}
 
