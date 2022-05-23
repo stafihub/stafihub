@@ -150,15 +150,6 @@ func TestCalPoolUnit(t *testing.T) {
 			lpunits:              stringToInt("803080648314941877218").Mul(sdk.NewInt(2)),
 			poolUnits:            stringToInt("803080648314941877218").Mul(sdk.NewInt(3)),
 		},
-		//  {
-		// 	oldPoolUnits: sdk.NewInt(1),
-		// 	nativeAssetBalance: sdk.NewInt(1),
-		// 	externalAssetBalance: sdk.NewInt(1),
-		// 	nativeAssetAmount: sdk.int,
-		// 	externalAssetAmount: u128::max_value(),
-		// 	lpunits: u128::max_value(),
-		// 	poolUnits: u128::max_value(),
-		// },
 		{
 			name:                 "successful6",
 			oldPoolUnits:         sdk.NewInt(2),
@@ -262,14 +253,6 @@ func TestCalcSwapResult(t *testing.T) {
 			y:           sdk.NewInt(0),
 			fee:         sdk.NewInt(0),
 		},
-		// {
-		// 	Y:           stringToInt("1000000000000000000000000000"),
-		// 	X:           stringToInt("1000000000000000000000000000"),
-		// 	x:           stringToInt("100000000000000000000000000"),
-		// 	inputIsBase: true,
-		// 	y:           stringToInt("82644628099173553719008264"),
-		// 	fee:         stringToInt("8264462809917355371900826"),
-		// },
 		{
 			Y:           sdk.NewInt(100),
 			X:           sdk.NewInt(1000),
@@ -361,17 +344,6 @@ func TestCalRemoveAmount(t *testing.T) {
 			expectRmTokenAmount:     sdk.NewInt(2),
 			expectSwapAmount:        sdk.NewInt(2),
 		},
-		// {
-		// 	poolUnits: u128::max_value(),
-		// 	rmUnits: u128::max_value(),
-		// 	swapUnits: 1,
-		// 	nativeAssetBalance: u128::max_value(),
-		// 	externalAssetBalance: u128::max_value(),
-		// 	inputIsBase: true,
-		// 	expectRmBaseTokenAmount: u128::max_value(),
-		// 	expectRmTokenAmount: u128::max_value(),
-		// 	expectSwapAmount: 1,
-		// },
 	}
 
 	for _, tc := range testcases {

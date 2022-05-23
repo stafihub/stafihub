@@ -17,13 +17,15 @@ func TestMsgAddProvider_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgAddProvider{
-				Creator: "invalid_address",
+				Creator:     "invalid_address",
+				UserAddress: sample.AccAddress(),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgAddProvider{
-				Creator: sample.AccAddress(),
+				Creator:     sample.AccAddress(),
+				UserAddress: sample.AccAddress(),
 			},
 		},
 	}

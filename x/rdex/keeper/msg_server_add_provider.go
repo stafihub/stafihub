@@ -14,11 +14,11 @@ func (k msgServer) AddProvider(goCtx context.Context, msg *types.MsgAddProvider)
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
-	addr, err := sdk.AccAddressFromBech32(msg.Creator)
+	provider, err := sdk.AccAddressFromBech32(msg.UserAddress)
 	if err != nil {
 		return nil, err
 	}
-	k.Keeper.AddProvider(ctx, addr)
+	k.Keeper.AddProvider(ctx, provider)
 
 	return &types.MsgAddProviderResponse{}, nil
 }

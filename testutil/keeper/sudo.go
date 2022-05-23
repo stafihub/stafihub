@@ -44,6 +44,7 @@ var (
 	sudoStoreKey    = sdk.NewKVStoreKey(types.StoreKey)
 	sudoMemStoreKey = storetypes.NewMemoryStoreKey(types.MemStoreKey)
 	sudoOnce        sync.Once
+	willMintCoins   = sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(500e8)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(500e8)))
 )
 
 func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -64,7 +65,6 @@ func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 
 	sudoKeeper.SetAdmin(ctx, sample.TestAdminAcc)
 
-	willMintCoins := sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(100e6)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(100e6)))
 	BankKeeper.MintCoins(ctx, types.ModuleName, willMintCoins)
 	BankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, sample.TestAdminAcc, willMintCoins)
 	return sudoKeeper, ctx

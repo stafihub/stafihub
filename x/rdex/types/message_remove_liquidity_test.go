@@ -28,11 +28,12 @@ func TestMsgRemoveLiquidity_ValidateBasic(t *testing.T) {
 		}, {
 			name: "valid address",
 			msg: MsgRemoveLiquidity{
-				Creator:      sample.AccAddress(),
-				RmUnit:       sdk.NewInt(20),
-				SwapUnit:     sdk.NewInt(10),
-				MinOutToken0: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
-				MinOutToken1: sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2)),
+				Creator:         sample.AccAddress(),
+				RmUnit:          sdk.NewInt(20),
+				SwapUnit:        sdk.NewInt(10),
+				MinOutToken0:    sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				MinOutToken1:    sdk.NewCoin(sample.TestDenom1, sdk.NewInt(2)),
+				InputTokenDenom: sample.TestDenom,
 			},
 		},
 	}

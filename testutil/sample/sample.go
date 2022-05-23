@@ -9,6 +9,7 @@ import (
 var (
 	TestDenom      = "TestDenom"
 	TestDenom1     = "TestDenom1"
+	TestDenom2     = "TestDenom2"
 	TestAddrPrefix = "Tstafi"
 	TestAdmin      string
 	TestAdminAcc   sdk.AccAddress

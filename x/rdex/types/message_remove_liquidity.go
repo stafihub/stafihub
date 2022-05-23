@@ -53,6 +53,10 @@ func (msg *MsgRemoveLiquidity) ValidateBasic() error {
 	if !msg.RmUnit.IsPositive() {
 		return fmt.Errorf("invalid rm unit amount")
 	}
+	if msg.SwapUnit.IsNegative() {
+		return fmt.Errorf("invalid swap unit amount")
+	}
+
 	if msg.RmUnit.LT(msg.SwapUnit) {
 		return fmt.Errorf("rm unit must bigger or equal to swap unit")
 	}
@@ -65,5 +69,10 @@ func (msg *MsgRemoveLiquidity) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid token denom minOutToken0(%s) minOutToken1(%s)", msg.MinOutToken0, msg.MinOutToken1)
 	}
 
+	if !msg.SwapUnit.IsZero() {
+		if msg.InputTokenDenom != msg.MinOutToken0.Denom && msg.InputTokenDenom != msg.MinOutToken1.Denom {
+			return fmt.Errorf("inputTokenDenom err")
+		}
+	}
 	return nil
 }
