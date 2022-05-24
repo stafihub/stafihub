@@ -53,6 +53,9 @@ func (msg *MsgAddStakePool) ValidateBasic() error {
 	if len(msg.RewardPoolInfoList) == 0 {
 		return fmt.Errorf("reward pool list empty")
 	}
+	if len(msg.StakeItemInfoList) == 0 {
+		return fmt.Errorf("stake item list empty")
+	}
 
 	for _, rewardPool := range msg.RewardPoolInfoList {
 		err = sdk.ValidateDenom(rewardPool.RewardTokenDenom)

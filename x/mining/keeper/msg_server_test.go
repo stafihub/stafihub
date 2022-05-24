@@ -53,9 +53,10 @@ func TestAddAndUpdateStakeItemSuccess(t *testing.T) {
 	srv, miningKeeper, ctx, sdkCtx := setupMsgServer(t)
 	admin := sample.TestAdminAcc
 
-	// add stakeItem fail when user is not admin
+	// add stakeItem fail when user is not admin/not provider
 	msgAddStakeItem := types.MsgAddStakeItem{
 		Creator:         sample.AccAddress(),
+		StakePoolIndex:  0,
 		LockSecond:      0,
 		PowerRewardRate: utils.MustNewDecFromStr("1.5"),
 		Enable:          true,
@@ -67,24 +68,26 @@ func TestAddAndUpdateStakeItemSuccess(t *testing.T) {
 	powerRewardRate := utils.MustNewDecFromStr("2.5")
 	msgAddStakeItem2 := types.MsgAddStakeItem{
 		Creator:         admin.String(),
+		StakePoolIndex:  0,
 		LockSecond:      0,
 		PowerRewardRate: powerRewardRate,
 		Enable:          true,
 	}
 	_, err = srv.AddStakeItem(ctx, &msgAddStakeItem2)
 	require.NoError(t, err)
-	stakeItem, found := miningKeeper.GetStakeItem(sdkCtx, 0)
+	stakeItem, found := miningKeeper.GetStakeItem(sdkCtx, 0, 0)
 	require.True(t, found)
 	require.EqualValues(t, stakeItem.Index, 0)
 	require.EqualValues(t, stakeItem.Enable, true)
 	require.EqualValues(t, stakeItem.LockSecond, 0)
 	require.EqualValues(t, stakeItem.PowerRewardRate, powerRewardRate)
 
-	// update Stake item fail whe user is not admin
+	// update Stake item fail whe user is not admin/not provider
 	newPowerRewardRate := utils.MustNewDecFromStr("1.5")
 	msgUpdateStakeItem := types.MsgUpdateStakeItem{
 		Creator:         sample.AccAddress(),
 		Index:           0,
+		StakePoolIndex:  0,
 		LockSecond:      5,
 		PowerRewardRate: newPowerRewardRate,
 		Enable:          false,
@@ -96,14 +99,14 @@ func TestAddAndUpdateStakeItemSuccess(t *testing.T) {
 	msgUpdateStakeItem.Creator = admin.String()
 	_, err = srv.UpdateStakeItem(ctx, &msgUpdateStakeItem)
 	require.NoError(t, err)
-	stakeItem, found = miningKeeper.GetStakeItem(sdkCtx, 0)
+	stakeItem, found = miningKeeper.GetStakeItem(sdkCtx, 0, 0)
 	require.True(t, found)
 	require.EqualValues(t, stakeItem.Index, 0)
 	require.EqualValues(t, stakeItem.Enable, false)
 	require.EqualValues(t, stakeItem.LockSecond, 5)
 	require.EqualValues(t, stakeItem.PowerRewardRate, newPowerRewardRate)
 
-	nextIndex := miningKeeper.GetStakeItemNextIndex(sdkCtx)
+	nextIndex := miningKeeper.GetStakeItemNextIndex(sdkCtx, 0)
 	require.EqualValues(t, nextIndex, 1)
 
 }
@@ -137,13 +140,25 @@ func TestAddStakePoolSuccess(t *testing.T) {
 	require.NoError(t, err)
 
 	//add stake pool
+	lockSecond := uint64(100)
+	powerRewardRate := utils.MustNewDecFromStr("1.5")
 	msgAddStakePool := types.MsgAddStakePool{
-		Creator:           miningProvider.String(),
-		StakeTokenDenom:   stakeTokenDenom,
-		RewardTokenDenom:  rewardTokenDenom,
-		TotalRewardAmount: sdk.NewInt(1e4),
-		RewardPerSecond:   sdk.NewInt(2),
-		StartTimestamp:    4567,
+		Creator:         miningProvider.String(),
+		StakeTokenDenom: stakeTokenDenom,
+		RewardPoolInfoList: []*types.CreateRewardPoolInfo{
+			{
+				RewardTokenDenom:  rewardTokenDenom,
+				TotalRewardAmount: sdk.NewInt(1e4),
+				RewardPerSecond:   sdk.NewInt(2),
+				StartTimestamp:    4567,
+			},
+		},
+		StakeItemInfoList: []*types.CreateStakeItemInfo{
+			{
+				LockSecond:      lockSecond,
+				PowerRewardRate: powerRewardRate,
+			},
+		},
 	}
 
 	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
@@ -156,6 +171,14 @@ func TestAddStakePoolSuccess(t *testing.T) {
 	require.EqualValues(t, stakePool.StakeTokenDenom, msgAddStakePool.StakeTokenDenom)
 	require.EqualValues(t, stakePool.TotalStakedAmount, sdk.ZeroInt())
 	require.EqualValues(t, stakePool.TotalStakedPower, sdk.ZeroInt())
+	require.EqualValues(t, stakePool.RewardPools[0].Index, 0)
+
+	stakeItem, found := miningKeeper.GetStakeItem(sdkCtx, 0, 0)
+	require.True(t, found)
+	require.EqualValues(t, stakeItem.Index, 0)
+	require.EqualValues(t, stakeItem.StakePoolIndex, 0)
+	require.EqualValues(t, stakeItem.LockSecond, lockSecond)
+	require.EqualValues(t, stakeItem.PowerRewardRate, powerRewardRate)
 }
 
 func TestAddStakePoolFail(t *testing.T) {
@@ -164,7 +187,7 @@ func TestAddStakePoolFail(t *testing.T) {
 	stakeTokenDenom := sample.TestDenom
 	rewardTokenDenom := sample.TestDenom1
 
-	// add rewarder
+	// add mining provider
 	miningProvider := sample.OriginAccAddress()
 	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
 	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
@@ -186,14 +209,26 @@ func TestAddStakePoolFail(t *testing.T) {
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
 	require.NoError(t, err)
 
-	//add stake pool fail
+	//add stake pool fail if use admin
+	lockSecond := uint64(100)
+	powerRewardRate := utils.MustNewDecFromStr("1.5")
 	msgAddStakePool := types.MsgAddStakePool{
-		Creator:           admin.String(),
-		StakeTokenDenom:   stakeTokenDenom,
-		RewardTokenDenom:  rewardTokenDenom,
-		TotalRewardAmount: sdk.NewInt(1e4),
-		RewardPerSecond:   sdk.NewInt(2),
-		StartTimestamp:    4567,
+		Creator:         admin.String(),
+		StakeTokenDenom: stakeTokenDenom,
+		RewardPoolInfoList: []*types.CreateRewardPoolInfo{
+			{
+				RewardTokenDenom:  rewardTokenDenom,
+				TotalRewardAmount: sdk.NewInt(1e4),
+				RewardPerSecond:   sdk.NewInt(2),
+				StartTimestamp:    4567,
+			},
+		},
+		StakeItemInfoList: []*types.CreateStakeItemInfo{
+			{
+				LockSecond:      lockSecond,
+				PowerRewardRate: powerRewardRate,
+			},
+		},
 	}
 
 	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
@@ -201,14 +236,24 @@ func TestAddStakePoolFail(t *testing.T) {
 	_, err = srv.AddStakePool(ctx, &msgAddStakePool)
 	require.Error(t, err)
 
-	//add stake pool fail
+	//add stake pool fail, totalrewardAmount less than limit
 	msgAddStakePool1 := types.MsgAddStakePool{
-		Creator:           miningProvider.String(),
-		StakeTokenDenom:   stakeTokenDenom,
-		RewardTokenDenom:  rewardTokenDenom,
-		TotalRewardAmount: sdk.NewInt(1e4 - 1),
-		RewardPerSecond:   sdk.NewInt(2),
-		StartTimestamp:    4567,
+		Creator:         miningProvider.String(),
+		StakeTokenDenom: stakeTokenDenom,
+		RewardPoolInfoList: []*types.CreateRewardPoolInfo{
+			{
+				RewardTokenDenom:  rewardTokenDenom,
+				TotalRewardAmount: sdk.NewInt(1e4 - 1),
+				RewardPerSecond:   sdk.NewInt(2),
+				StartTimestamp:    4567,
+			},
+		},
+		StakeItemInfoList: []*types.CreateStakeItemInfo{
+			{
+				LockSecond:      lockSecond,
+				PowerRewardRate: powerRewardRate,
+			},
+		},
 	}
 
 	_, found = miningKeeper.GetStakePool(sdkCtx, 0)
@@ -247,13 +292,25 @@ func TestAddRewardPoolSuccess(t *testing.T) {
 	require.NoError(t, err)
 
 	//add stake pool
+	lockSecond := uint64(100)
+	powerRewardRate := utils.MustNewDecFromStr("1.5")
 	msgAddStakePool := types.MsgAddStakePool{
-		Creator:           miningProvider.String(),
-		StakeTokenDenom:   stakeTokenDenom,
-		RewardTokenDenom:  rewardTokenDenom,
-		TotalRewardAmount: sdk.NewInt(1e4),
-		RewardPerSecond:   sdk.NewInt(2),
-		StartTimestamp:    4567,
+		Creator:         miningProvider.String(),
+		StakeTokenDenom: stakeTokenDenom,
+		RewardPoolInfoList: []*types.CreateRewardPoolInfo{
+			{
+				RewardTokenDenom:  rewardTokenDenom,
+				TotalRewardAmount: sdk.NewInt(1e4),
+				RewardPerSecond:   sdk.NewInt(2),
+				StartTimestamp:    4567,
+			},
+		},
+		StakeItemInfoList: []*types.CreateStakeItemInfo{
+			{
+				LockSecond:      lockSecond,
+				PowerRewardRate: powerRewardRate,
+			},
+		},
 	}
 
 	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
@@ -335,13 +392,25 @@ func TestAddRewardPoolFail(t *testing.T) {
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
 	require.NoError(t, err)
 	//add stake pool
+	lockSecond := uint64(100)
+	powerRewardRate := utils.MustNewDecFromStr("1.5")
 	msgAddStakePool := types.MsgAddStakePool{
-		Creator:           miningProvider.String(),
-		StakeTokenDenom:   stakeTokenDenom,
-		RewardTokenDenom:  rewardTokenDenom,
-		TotalRewardAmount: sdk.NewInt(1e4),
-		RewardPerSecond:   sdk.NewInt(2),
-		StartTimestamp:    4567,
+		Creator:         miningProvider.String(),
+		StakeTokenDenom: stakeTokenDenom,
+		RewardPoolInfoList: []*types.CreateRewardPoolInfo{
+			{
+				RewardTokenDenom:  rewardTokenDenom,
+				TotalRewardAmount: sdk.NewInt(1e4),
+				RewardPerSecond:   sdk.NewInt(2),
+				StartTimestamp:    4567,
+			},
+		},
+		StakeItemInfoList: []*types.CreateStakeItemInfo{
+			{
+				LockSecond:      lockSecond,
+				PowerRewardRate: powerRewardRate,
+			},
+		},
 	}
 
 	_, found := miningKeeper.GetStakePool(sdkCtx, 0)

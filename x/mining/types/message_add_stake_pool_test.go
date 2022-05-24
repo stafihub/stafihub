@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/mining/types"
 	"github.com/stretchr/testify/require"
 )
@@ -27,6 +28,12 @@ func TestMsgAddStakePool_ValidateBasic(t *testing.T) {
 						RewardPerSecond:   sdk.NewInt(2),
 					},
 				},
+				StakeItemInfoList: []*types.CreateStakeItemInfo{
+					{
+						LockSecond:      100,
+						PowerRewardRate: utils.MustNewDecFromStr("1.5"),
+					},
+				},
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
@@ -39,6 +46,12 @@ func TestMsgAddStakePool_ValidateBasic(t *testing.T) {
 						RewardTokenDenom:  sample.TestDenom1,
 						TotalRewardAmount: sdk.NewInt(0),
 						RewardPerSecond:   sdk.NewInt(2),
+					},
+				},
+				StakeItemInfoList: []*types.CreateStakeItemInfo{
+					{
+						LockSecond:      100,
+						PowerRewardRate: utils.MustNewDecFromStr("1.5"),
 					},
 				},
 			},

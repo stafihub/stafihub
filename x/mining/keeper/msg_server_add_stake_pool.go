@@ -52,7 +52,6 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		}
 
 		rewardPools = append(rewardPools, &rewardPool)
-
 	}
 
 	stakePool := types.StakePool{
@@ -63,9 +62,21 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		TotalStakedPower:  sdk.ZeroInt(),
 	}
 
+	for i, stakeItemInfo := range msg.StakeItemInfoList {
+		stakeItem := types.StakeItem{
+			Index:           uint32(i),
+			StakePoolIndex:  willUseStakePoolIndex,
+			LockSecond:      stakeItemInfo.LockSecond,
+			PowerRewardRate: stakeItemInfo.PowerRewardRate,
+			Enable:          true,
+		}
+		k.Keeper.SetStakeItem(ctx, &stakeItem)
+	}
+	k.Keeper.SetStakeItemIndex(ctx, willUseStakePoolIndex, uint32(len(msg.StakeItemInfoList)-1))
+
 	k.SetStakePool(ctx, &stakePool)
-	k.Keeper.SetRewardPoolIndex(ctx, willUseStakePoolIndex, uint32(len(rewardPools)-1))
 	k.Keeper.SetStakePoolIndex(ctx, willUseStakePoolIndex)
+	k.Keeper.SetRewardPoolIndex(ctx, willUseStakePoolIndex, uint32(len(rewardPools)-1))
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

@@ -89,9 +89,9 @@ func (k Keeper) SetStakeItem(ctx sdk.Context, stakeItem *types.StakeItem) {
 	store.Set(types.StakeItemStoreKey(stakeItem.StakePoolIndex, stakeItem.Index), k.cdc.MustMarshal(stakeItem))
 }
 
-func (k Keeper) GetStakeItem(ctx sdk.Context,stakePoolIndex, index uint32) (*types.StakeItem, bool) {
+func (k Keeper) GetStakeItem(ctx sdk.Context, stakePoolIndex, index uint32) (*types.StakeItem, bool) {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.StakeItemStoreKey(stakePoolIndex,index))
+	bts := store.Get(types.StakeItemStoreKey(stakePoolIndex, index))
 	if bts == nil {
 		return nil, false
 	}
@@ -101,12 +101,12 @@ func (k Keeper) GetStakeItem(ctx sdk.Context,stakePoolIndex, index uint32) (*typ
 	return &stakeItem, true
 }
 
-func (k Keeper) GetStakeItemList(ctx sdk.Context,stakePoolIndex uint32) []*types.StakeItem {
+func (k Keeper) GetStakeItemList(ctx sdk.Context, stakePoolIndex uint32) []*types.StakeItem {
 	store := ctx.KVStore(k.storeKey)
-	bts:=make([]byte,4)
-	binary.LittleEndian.PutUint32(bts,stakePoolIndex)
+	bts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bts, stakePoolIndex)
 
-	iterator := sdk.KVStorePrefixIterator(store, append(types.StakeItemStoreKeyPrefix,bts...))
+	iterator := sdk.KVStorePrefixIterator(store, append(types.StakeItemStoreKeyPrefix, bts...))
 	defer iterator.Close()
 
 	stakeItemList := make([]*types.StakeItem, 0)
@@ -192,7 +192,7 @@ func (k Keeper) SetStakePoolIndex(ctx sdk.Context, index uint32) {
 	store.Set(types.StakePoolIndexStoreKey, seqBts)
 }
 
-func (k Keeper) GetStakeItemNextIndex(ctx sdk.Context,stakePoolIndex uint32) uint32 {
+func (k Keeper) GetStakeItemNextIndex(ctx sdk.Context, stakePoolIndex uint32) uint32 {
 	store := ctx.KVStore(k.storeKey)
 	seqBts := store.Get(types.StakeItemIndexStoreKey(stakePoolIndex))
 	if seqBts == nil {
@@ -203,12 +203,12 @@ func (k Keeper) GetStakeItemNextIndex(ctx sdk.Context,stakePoolIndex uint32) uin
 	return seq + 1
 }
 
-func (k Keeper) SetStakeItemIndex(ctx sdk.Context,stakePoolIndex, index uint32) {
+func (k Keeper) SetStakeItemIndex(ctx sdk.Context, stakePoolIndex, index uint32) {
 	store := ctx.KVStore(k.storeKey)
 
 	seqBts := make([]byte, 4)
 	binary.LittleEndian.PutUint32(seqBts, index)
-	
+
 	store.Set(types.StakeItemIndexStoreKey(stakePoolIndex), seqBts)
 }
 
