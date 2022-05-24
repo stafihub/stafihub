@@ -13,7 +13,7 @@ func (k msgServer) UpdateStakeItem(goCtx context.Context, msg *types.MsgUpdateSt
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
-	stakeItem, found := k.GetStakeItem(ctx, msg.Index)
+	stakeItem, found := k.GetStakeItem(ctx, msg.StakePoolIndex, msg.Index)
 	if !found {
 		return nil, types.ErrStakeItemNotExist
 	}

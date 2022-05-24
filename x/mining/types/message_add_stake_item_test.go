@@ -1,4 +1,4 @@
-package types
+package types_test
 
 import (
 	"testing"
@@ -7,24 +7,25 @@ import (
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stafihub/stafihub/utils"
 	"github.com/stretchr/testify/require"
+	"github.com/stafihub/stafihub/x/mining/types"
 )
 
 func TestMsgAddStakeItem_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgAddStakeItem
+		msg  types.MsgAddStakeItem
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgAddStakeItem{
+			msg: types.MsgAddStakeItem{
 				Creator:         "invalid_address",
 				PowerRewardRate: utils.MustNewDecFromStr("1.8"),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgAddStakeItem{
+			msg: types.MsgAddStakeItem{
 				Creator:         sample.AccAddress(),
 				PowerRewardRate: utils.MustNewDecFromStr("0.5"),
 			},

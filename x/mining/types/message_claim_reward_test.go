@@ -1,28 +1,29 @@
-package types
+package types_test
 
 import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/mining/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgClaimReward_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgClaimReward
+		msg  types.MsgClaimReward
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgClaimReward{
+			msg: types.MsgClaimReward{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgClaimReward{
+			msg: types.MsgClaimReward{
 				Creator: sample.AccAddress(),
 			},
 		},

@@ -1,13 +1,14 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/mining/types"
 )
@@ -16,25 +17,17 @@ var _ = strconv.Itoa(0)
 
 func CmdAddStakePool() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-stake-pool [stake-token-denom] [reward-token-denom] [total-reward-amount] [reward-per-second] [start-timestamp]",
+		Use:   "add-stake-pool [stake-token-denom] [path-to-add_stake_pool.json]",
 		Short: "Add stake pool",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argStakeTokenDenom := args[0]
-			argRewardTokenDenom := args[1]
-			argTotalRewardAmount, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("totalRewardAmount format err")
-			}
-			argRewardPerSecond, ok := sdk.NewIntFromString(args[3])
-			if !ok {
-				return fmt.Errorf("rewardPerSecond format err")
-			}
 
-			argStartTimestamp, err := sdk.ParseUint(args[4])
+			createInfo, err := parseCreateInfo(args[1])
 			if err != nil {
 				return err
 			}
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -43,10 +36,8 @@ func CmdAddStakePool() *cobra.Command {
 			msg := types.NewMsgAddStakePool(
 				clientCtx.GetFromAddress().String(),
 				argStakeTokenDenom,
-				argRewardTokenDenom,
-				argTotalRewardAmount,
-				argRewardPerSecond,
-				argStartTimestamp.Uint64(),
+				createInfo.RewardPoolList,
+				createInfo.StakeItemList,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -58,4 +49,26 @@ func CmdAddStakePool() *cobra.Command {
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
+}
+
+type CreateInfo struct {
+	RewardPoolList []*types.CreateRewardPoolInfo `json:"rewardPoolList"`
+	StakeItemList  []*types.CreateStakeItemInfo  `json:"stakeItemList"`
+}
+
+func parseCreateInfo(path string) (*CreateInfo, error) {
+	var createInfo *CreateInfo
+	if path == "" {
+		return nil, fmt.Errorf("reward pool list json file path not give")
+	}
+
+	contents, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(contents, createInfo)
+	if err != nil {
+		return nil, err
+	}
+	return createInfo, nil
 }

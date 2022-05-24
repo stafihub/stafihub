@@ -26,6 +26,7 @@ import (
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	miningtypes "github.com/stafihub/stafihub/x/mining/types"
 	rdextypes "github.com/stafihub/stafihub/x/rdex/types"
 )
 
@@ -90,6 +91,7 @@ func NewAccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		types.ModuleName:               {authtypes.Burner, authtypes.Minter},
 		rdextypes.ModuleName:           {authtypes.Burner, authtypes.Minter},
+		miningtypes.ModuleName:         {authtypes.Burner, authtypes.Minter},
 	}
 
 	k := authkeeper.NewAccountKeeper(

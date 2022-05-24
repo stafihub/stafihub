@@ -1,4 +1,4 @@
-package types
+package types_test
 
 import (
 	"testing"
@@ -6,18 +6,19 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/rdex/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgSwap_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSwap
+		msg  types.MsgSwap
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSwap{
+			msg: types.MsgSwap{
 				Creator:     "invalid_address",
 				InputToken:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
 				MinOutToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
@@ -25,7 +26,7 @@ func TestMsgSwap_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSwap{
+			msg: types.MsgSwap{
 				Creator:     sample.AccAddress(),
 				InputToken:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
 				MinOutToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(0)),

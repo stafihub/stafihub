@@ -34,8 +34,8 @@ var (
 	UserStakeRecordStoreKeyPrefix      = []byte{0x03}
 	UserStakeRecordIndexStoreKeyPrefix = []byte{0x04}
 	RewardPoolIndexStoreKeyPrefix      = []byte{0x05}
-	StakeItemIndexStoreKey             = []byte{0x06}
-	RewarderStoreKeyPrefix             = []byte{0x07}
+	StakeItemIndexStoreKeyPrefix       = []byte{0x06}
+	MiningProviderStoreKeyPrefix       = []byte{0x07}
 	StakePoolIndexStoreKey             = []byte{0x08}
 	RewardTokenStoreKeyPrefix          = []byte{0x09}
 	MaxRewardPoolNumberStoreKey        = []byte{0x0a}
@@ -53,10 +53,21 @@ func StakePoolStoreKey(index uint32) []byte {
 	return append(StakePoolStoreKeyPrefix, bts...)
 }
 
-func StakeItemStoreKey(index uint32) []byte {
-	indexBts := make([]byte, 4)
-	binary.LittleEndian.PutUint32(indexBts, index)
+func StakeItemStoreKey(stakePoolIndex, index uint32) []byte {
+	indexBts := make([]byte, 8)
+
+	binary.LittleEndian.PutUint32(indexBts, stakePoolIndex)
+	binary.LittleEndian.PutUint32(indexBts[4:], index)
+
 	return append(StakeItemStoreKeyPrefix, indexBts...)
+}
+
+func StakeItemIndexStoreKey(stakePoolIndex uint32) []byte {
+	indexBts := make([]byte, 4)
+
+	binary.LittleEndian.PutUint32(indexBts, stakePoolIndex)
+
+	return append(StakeItemIndexStoreKeyPrefix, indexBts...)
 }
 
 // prefix + len(userAddress) + userAddress + stakePoolIndex + index
@@ -73,8 +84,8 @@ func UserStakeRecordStoreKey(userAddress string, stakePoolIndex, index uint32) [
 	return key
 }
 
-func RewarderStoreKey(addr sdk.AccAddress) []byte {
-	return append(RewarderStoreKeyPrefix, addr.Bytes()...)
+func MiningProviderStoreKey(addr sdk.AccAddress) []byte {
+	return append(MiningProviderStoreKeyPrefix, addr.Bytes()...)
 }
 
 func RewardTokenStoreKey(denom string) []byte {

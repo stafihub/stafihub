@@ -1,10 +1,11 @@
-package types
+package types_test
 
 import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/mining/types"
 	"github.com/stafihub/stafihub/utils"
 	"github.com/stretchr/testify/require"
 )
@@ -12,19 +13,19 @@ import (
 func TestMsgUpdateStakeItem_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgUpdateStakeItem
+		msg  types.MsgUpdateStakeItem
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgUpdateStakeItem{
+			msg: types.MsgUpdateStakeItem{
 				Creator:         "invalid_address",
 				PowerRewardRate: utils.MustNewDecFromStr("0.1"),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgUpdateStakeItem{
+			msg:types.MsgUpdateStakeItem{
 				Creator:         sample.AccAddress(),
 				PowerRewardRate: utils.MustNewDecFromStr("3.1"),
 			},

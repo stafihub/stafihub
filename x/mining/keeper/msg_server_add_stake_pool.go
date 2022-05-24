@@ -17,49 +17,54 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	if k.GetMiningProviderSwitch(ctx) && !k.HasMiningProvider(ctx, user) {
 		return nil, types.ErrUserNotAdminOrMiningProvider
 	}
-
-	rewardToken, found := k.Keeper.GetRewardToken(ctx, msg.RewardTokenDenom)
-	if !found {
-		return nil, types.ErrRewardTokenNotSupport
-	}
-	if msg.TotalRewardAmount.LT(rewardToken.MinTotalRewardAmount) {
-		return nil, types.ErrTotalRewardAmountLessThanLimit
-	}
-
 	curBlockTime := uint64(ctx.BlockTime().Unix())
-
 	willUseStakePoolIndex := k.Keeper.GetStakePoolNextIndex(ctx)
 
-	willUseLastRewardTimestamp := msg.StartTimestamp
-	if msg.StartTimestamp < curBlockTime {
-		willUseLastRewardTimestamp = curBlockTime
-	}
+	rewardPools := make([]*types.RewardPool, 0)
+	for i, rewardPool := range msg.RewardPoolInfoList {
+		rewardToken, found := k.Keeper.GetRewardToken(ctx, rewardPool.RewardTokenDenom)
+		if !found {
+			return nil, types.ErrRewardTokenNotSupport
+		}
+		if rewardPool.TotalRewardAmount.LT(rewardToken.MinTotalRewardAmount) {
+			return nil, types.ErrTotalRewardAmountLessThanLimit
+		}
 
-	rewardTokens := sdk.NewCoins(sdk.NewCoin(msg.RewardTokenDenom, msg.TotalRewardAmount))
-	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, user, types.ModuleName, rewardTokens); err != nil {
-		return nil, err
+		willUseLastRewardTimestamp := rewardPool.StartTimestamp
+		if rewardPool.StartTimestamp < curBlockTime {
+			willUseLastRewardTimestamp = curBlockTime
+		}
+
+		rewardTokens := sdk.NewCoins(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardPool.TotalRewardAmount))
+		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, user, types.ModuleName, rewardTokens); err != nil {
+			return nil, err
+		}
+
+		rewardPool := types.RewardPool{
+			Index:               uint32(i),
+			RewardTokenDenom:    rewardPool.RewardTokenDenom,
+			TotalRewardAmount:   rewardPool.TotalRewardAmount,
+			LeftRewardAmount:    rewardPool.TotalRewardAmount,
+			RewardPerSecond:     rewardPool.RewardPerSecond,
+			StartTimestamp:      rewardPool.StartTimestamp,
+			RewardPerPower:      sdk.ZeroInt(),
+			LastRewardTimestamp: willUseLastRewardTimestamp,
+		}
+
+		rewardPools = append(rewardPools, &rewardPool)
+
 	}
 
 	stakePool := types.StakePool{
-		Index:           willUseStakePoolIndex,
-		StakeTokenDenom: msg.StakeTokenDenom,
-		RewardPools: []*types.RewardPool{
-			{
-				Index:               0,
-				RewardTokenDenom:    msg.RewardTokenDenom,
-				TotalRewardAmount:   msg.TotalRewardAmount,
-				LeftRewardAmount:    msg.TotalRewardAmount,
-				RewardPerSecond:     msg.RewardPerSecond,
-				StartTimestamp:      msg.StartTimestamp,
-				RewardPerPower:      sdk.ZeroInt(),
-				LastRewardTimestamp: willUseLastRewardTimestamp,
-			}},
+		Index:             willUseStakePoolIndex,
+		StakeTokenDenom:   msg.StakeTokenDenom,
+		RewardPools:       rewardPools,
 		TotalStakedAmount: sdk.ZeroInt(),
 		TotalStakedPower:  sdk.ZeroInt(),
 	}
 
 	k.SetStakePool(ctx, &stakePool)
-	k.Keeper.SetRewardPoolIndex(ctx, willUseStakePoolIndex, 0)
+	k.Keeper.SetRewardPoolIndex(ctx, willUseStakePoolIndex, uint32(len(rewardPools)-1))
 	k.Keeper.SetStakePoolIndex(ctx, willUseStakePoolIndex)
 
 	ctx.EventManager().EmitEvent(

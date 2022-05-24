@@ -1,4 +1,4 @@
-package types
+package types_test
 
 import (
 	"testing"
@@ -6,18 +6,19 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/rdex/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgRemoveLiquidity_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRemoveLiquidity
+		msg  types.MsgRemoveLiquidity
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRemoveLiquidity{
+			msg: types.MsgRemoveLiquidity{
 				Creator:      "invalid_address",
 				RmUnit:       sdk.NewInt(20),
 				SwapUnit:     sdk.NewInt(0),
@@ -27,7 +28,7 @@ func TestMsgRemoveLiquidity_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRemoveLiquidity{
+			msg: types.MsgRemoveLiquidity{
 				Creator:         sample.AccAddress(),
 				RmUnit:          sdk.NewInt(20),
 				SwapUnit:        sdk.NewInt(10),

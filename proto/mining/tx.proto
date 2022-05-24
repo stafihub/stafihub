@@ -29,20 +29,33 @@ service Msg {
 message MsgAddStakePool {
   string creator = 1;
   string stakeTokenDenom = 2;
-  string rewardTokenDenom = 3;
-  string totalRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string rewardPerSecond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  uint64 startTimestamp = 6;
+  repeated CreateRewardPoolInfo rewardPoolInfoList = 3;
+  repeated CreateStakeItemInfo stakeItemInfoList = 4;
 }
+
+message CreateRewardPoolInfo {
+  string rewardTokenDenom = 1;
+  string totalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string rewardPerSecond = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  uint64 startTimestamp = 4;
+}
+
+message CreateStakeItemInfo {
+  uint64 lockSecond = 1;
+  // user stakedPower = powerRewardRate * stakedAmount
+  string powerRewardRate = 2 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+}
+
 
 message MsgAddStakePoolResponse {
 }
 
 message MsgAddStakeItem {
   string creator = 1;
-  uint64 lockSecond = 2;
-  string powerRewardRate = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
-  bool enable = 4;
+  uint32 stakePoolIndex = 2;
+  uint64 lockSecond = 3;
+  string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+  bool enable = 5;
 }
 
 message MsgAddStakeItemResponse {
@@ -92,9 +105,10 @@ message MsgWithdrawResponse {
 message MsgUpdateStakeItem {
   string creator = 1;
   uint32 index = 2;
-  uint64 lockSecond = 3;
-  string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
-  bool enable = 5;
+  uint32 stakePoolIndex = 3;
+  uint64 lockSecond = 4;
+  string powerRewardRate = 5 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+  bool enable = 6;
 }
 
 message MsgUpdateStakeItemResponse {

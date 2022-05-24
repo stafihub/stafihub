@@ -88,6 +88,7 @@ message QueryStakePoolInfoResponse {
 }
 
 message QueryStakeItemListRequest {
+	uint32 stakePoolIndex = 1;
 }
 
 message QueryStakeItemListResponse {

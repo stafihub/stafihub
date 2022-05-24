@@ -1,4 +1,4 @@
-package types
+package types_test
 
 import (
 	"testing"
@@ -6,23 +6,24 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
+	"github.com/stafihub/stafihub/x/mining/types"
 )
 
 func TestMsgRmRewardPool_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRmRewardPool
+		msg  types.MsgRmRewardPool
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRmRewardPool{
+			msg: types.MsgRmRewardPool{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRmRewardPool{
+			msg: types.MsgRmRewardPool{
 				Creator: sample.AccAddress(),
 			},
 		},

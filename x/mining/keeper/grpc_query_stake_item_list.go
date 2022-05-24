@@ -17,6 +17,6 @@ func (k Keeper) StakeItemList(goCtx context.Context, req *types.QueryStakeItemLi
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryStakeItemListResponse{
-		StakeItemList: k.GetStakeItemList(ctx),
+		StakeItemList: k.GetStakeItemList(ctx, req.StakePoolIndex),
 	}, nil
 }

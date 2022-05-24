@@ -25,28 +25,28 @@ func TestAddAndRmRewarderSuccess(t *testing.T) {
 	rewarder := sample.OriginAccAddress()
 
 	// add rewarder fail when user is not admin
-	msgAddRewarder := types.MsgAddRewarder{
+	msgAddRewarder := types.MsgAddMiningProvider{
 		Creator:     sample.AccAddress(),
 		UserAddress: rewarder.String(),
 	}
-	_, err := srv.AddRewarder(ctx, &msgAddRewarder)
+	_, err := srv.AddMiningProvider(ctx, &msgAddRewarder)
 	require.Error(t, err)
 	// add rewarder
-	msgAddRewarder2 := types.MsgAddRewarder{
+	msgAddRewarder2 := types.MsgAddMiningProvider{
 		Creator:     admin.String(),
 		UserAddress: rewarder.String(),
 	}
-	_, err = srv.AddRewarder(ctx, &msgAddRewarder2)
+	_, err = srv.AddMiningProvider(ctx, &msgAddRewarder2)
 	require.NoError(t, err)
-	require.True(t, miningKeeper.HasRewarder(sdkCtx, rewarder))
+	require.True(t, miningKeeper.HasMiningProvider(sdkCtx, rewarder))
 	// rm rewarder
-	msgRmRewarder := types.MsgRmRewarder{
+	msgRmRewarder := types.MsgRmMiningProvider{
 		Creator:     admin.String(),
 		UserAddress: rewarder.String(),
 	}
-	_, err = srv.RmRewarder(ctx, &msgRmRewarder)
+	_, err = srv.RmMiningProvider(ctx, &msgRmRewarder)
 	require.NoError(t, err)
-	require.False(t, miningKeeper.HasRewarder(sdkCtx, rewarder))
+	require.False(t, miningKeeper.HasMiningProvider(sdkCtx, rewarder))
 }
 
 func TestAddAndUpdateStakeItemSuccess(t *testing.T) {
@@ -112,25 +112,47 @@ func TestAddStakePoolSuccess(t *testing.T) {
 	srv, miningKeeper, ctx, sdkCtx := setupMsgServer(t)
 	admin := sample.TestAdminAcc
 	stakeTokenDenom := sample.TestDenom
-	maxRewardPools := uint32(32)
-	minTotalRewardAmount := sdk.NewInt(1e4)
+	rewardTokenDenom := sample.TestDenom1
 
-	msgAddStakePool := types.MsgAddStakePool{
-		Creator:              admin.String(),
-		StakeTokenDenom:      stakeTokenDenom,
-		MaxRewardPools:       maxRewardPools,
-		MinTotalRewardAmount: minTotalRewardAmount,
+	// add rewarder
+	miningProvider := sample.OriginAccAddress()
+	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
+
+	msgAddRewarder := types.MsgAddMiningProvider{
+		Creator:     admin.String(),
+		UserAddress: miningProvider.String(),
 	}
-
-	_, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
-	require.False(t, found)
-	_, err := srv.AddStakePool(ctx, &msgAddStakePool)
+	_, err := srv.AddMiningProvider(ctx, &msgAddRewarder)
 	require.NoError(t, err)
 
-	stakePool, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
+	// add reward token
+	msgAddRewardToken := types.MsgAddRewardToken{
+		Creator:              admin.String(),
+		Denom:                rewardTokenDenom,
+		MinTotalRewardAmount: sdk.NewInt(1e4),
+	}
+	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	//add stake pool
+	msgAddStakePool := types.MsgAddStakePool{
+		Creator:           miningProvider.String(),
+		StakeTokenDenom:   stakeTokenDenom,
+		RewardTokenDenom:  rewardTokenDenom,
+		TotalRewardAmount: sdk.NewInt(1e4),
+		RewardPerSecond:   sdk.NewInt(2),
+		StartTimestamp:    4567,
+	}
+
+	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.False(t, found)
+	_, err = srv.AddStakePool(ctx, &msgAddStakePool)
+	require.NoError(t, err)
+
+	stakePool, found := miningKeeper.GetStakePool(sdkCtx, 0)
 	require.True(t, found)
-	require.EqualValues(t, stakePool.MaxRewardPools, msgAddStakePool.MaxRewardPools)
-	require.EqualValues(t, stakePool.MinTotalRewardAmount, msgAddStakePool.MinTotalRewardAmount)
 	require.EqualValues(t, stakePool.StakeTokenDenom, msgAddStakePool.StakeTokenDenom)
 	require.EqualValues(t, stakePool.TotalStakedAmount, sdk.ZeroInt())
 	require.EqualValues(t, stakePool.TotalStakedPower, sdk.ZeroInt())
@@ -140,42 +162,58 @@ func TestAddStakePoolFail(t *testing.T) {
 	srv, miningKeeper, ctx, sdkCtx := setupMsgServer(t)
 	admin := sample.TestAdminAcc
 	stakeTokenDenom := sample.TestDenom
-	maxRewardPools := uint32(32)
-	minTotalRewardAmount := sdk.NewInt(1e4)
+	rewardTokenDenom := sample.TestDenom1
 
-	_, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
-	require.False(t, found)
+	// add rewarder
+	miningProvider := sample.OriginAccAddress()
+	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
 
-	// success
-	msgAddStakePool := types.MsgAddStakePool{
-		Creator:              admin.String(),
-		StakeTokenDenom:      stakeTokenDenom,
-		MaxRewardPools:       maxRewardPools,
-		MinTotalRewardAmount: minTotalRewardAmount,
+	msgAddRewarder := types.MsgAddMiningProvider{
+		Creator:     admin.String(),
+		UserAddress: miningProvider.String(),
 	}
-	_, err := srv.AddStakePool(ctx, &msgAddStakePool)
+	_, err := srv.AddMiningProvider(ctx, &msgAddRewarder)
 	require.NoError(t, err)
 
-	stakePool, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
-	require.True(t, found)
-	require.EqualValues(t, stakePool.MaxRewardPools, msgAddStakePool.MaxRewardPools)
-	require.EqualValues(t, stakePool.MinTotalRewardAmount, msgAddStakePool.MinTotalRewardAmount)
-	require.EqualValues(t, stakePool.StakeTokenDenom, msgAddStakePool.StakeTokenDenom)
-	require.EqualValues(t, stakePool.TotalStakedAmount, sdk.ZeroInt())
-	require.EqualValues(t, stakePool.TotalStakedPower, sdk.ZeroInt())
+	// add reward token
+	msgAddRewardToken := types.MsgAddRewardToken{
+		Creator:              admin.String(),
+		Denom:                rewardTokenDenom,
+		MinTotalRewardAmount: sdk.NewInt(1e4),
+	}
+	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
 
-	// fail
+	//add stake pool fail
+	msgAddStakePool := types.MsgAddStakePool{
+		Creator:           admin.String(),
+		StakeTokenDenom:   stakeTokenDenom,
+		RewardTokenDenom:  rewardTokenDenom,
+		TotalRewardAmount: sdk.NewInt(1e4),
+		RewardPerSecond:   sdk.NewInt(2),
+		StartTimestamp:    4567,
+	}
+
+	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.False(t, found)
 	_, err = srv.AddStakePool(ctx, &msgAddStakePool)
 	require.Error(t, err)
 
-	//fail
-	msgAddStakePoolNoAdmin := types.MsgAddStakePool{
-		Creator:              sample.AccAddress(),
-		StakeTokenDenom:      stakeTokenDenom,
-		MaxRewardPools:       maxRewardPools,
-		MinTotalRewardAmount: minTotalRewardAmount,
+	//add stake pool fail
+	msgAddStakePool1 := types.MsgAddStakePool{
+		Creator:           miningProvider.String(),
+		StakeTokenDenom:   stakeTokenDenom,
+		RewardTokenDenom:  rewardTokenDenom,
+		TotalRewardAmount: sdk.NewInt(1e4 - 1),
+		RewardPerSecond:   sdk.NewInt(2),
+		StartTimestamp:    4567,
 	}
-	_, err = srv.AddStakePool(ctx, &msgAddStakePoolNoAdmin)
+
+	_, found = miningKeeper.GetStakePool(sdkCtx, 0)
+	require.False(t, found)
+	_, err = srv.AddStakePool(ctx, &msgAddStakePool1)
 	require.Error(t, err)
 
 }
@@ -184,52 +222,69 @@ func TestAddRewardPoolSuccess(t *testing.T) {
 	srv, miningKeeper, ctx, sdkCtx := setupMsgServer(t)
 	admin := sample.TestAdminAcc
 	stakeTokenDenom := sample.TestDenom
-	maxRewardPools := uint32(32)
-	minTotalRewardAmount := sdk.NewInt(1e4)
+	rewardTokenDenom := sample.TestDenom1
 
-	msgAddStakePool := types.MsgAddStakePool{
-		Creator:              admin.String(),
-		StakeTokenDenom:      stakeTokenDenom,
-		MaxRewardPools:       maxRewardPools,
-		MinTotalRewardAmount: minTotalRewardAmount,
+	// add rewarder
+	miningProvider := sample.OriginAccAddress()
+	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
+
+	msgAddRewarder := types.MsgAddMiningProvider{
+		Creator:     admin.String(),
+		UserAddress: miningProvider.String(),
 	}
-
-	_, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
-	require.False(t, found)
-	_, err := srv.AddStakePool(ctx, &msgAddStakePool)
+	_, err := srv.AddMiningProvider(ctx, &msgAddRewarder)
 	require.NoError(t, err)
 
-	stakePool, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
+	// add reward token
+	msgAddRewardToken := types.MsgAddRewardToken{
+		Creator:              admin.String(),
+		Denom:                rewardTokenDenom,
+		MinTotalRewardAmount: sdk.NewInt(1e4),
+	}
+	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	//add stake pool
+	msgAddStakePool := types.MsgAddStakePool{
+		Creator:           miningProvider.String(),
+		StakeTokenDenom:   stakeTokenDenom,
+		RewardTokenDenom:  rewardTokenDenom,
+		TotalRewardAmount: sdk.NewInt(1e4),
+		RewardPerSecond:   sdk.NewInt(2),
+		StartTimestamp:    4567,
+	}
+
+	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.False(t, found)
+	_, err = srv.AddStakePool(ctx, &msgAddStakePool)
+	require.NoError(t, err)
+
+	stakePool, found := miningKeeper.GetStakePool(sdkCtx, 0)
 	require.True(t, found)
-	require.EqualValues(t, stakePool.MaxRewardPools, msgAddStakePool.MaxRewardPools)
-	require.EqualValues(t, stakePool.MinTotalRewardAmount, msgAddStakePool.MinTotalRewardAmount)
 	require.EqualValues(t, stakePool.StakeTokenDenom, msgAddStakePool.StakeTokenDenom)
 	require.EqualValues(t, stakePool.TotalStakedAmount, sdk.ZeroInt())
 	require.EqualValues(t, stakePool.TotalStakedPower, sdk.ZeroInt())
 
-	// add rewarder
-	rewarder := sample.OriginAccAddress()
-	msgAddRewarder := types.MsgAddRewarder{
-		Creator:     admin.String(),
-		UserAddress: rewarder.String(),
-	}
-	_, err = srv.AddRewarder(ctx, &msgAddRewarder)
-	require.NoError(t, err)
-	require.True(t, miningKeeper.HasRewarder(sdkCtx, rewarder))
-
-	// add reward pool using rewarder
+	// add reward pool
 	now := time.Now()
 	sdkCtx = sdkCtx.WithBlockTime(now)
 	ctx = sdk.WrapSDKContext(sdkCtx)
 
-	rewardTokenDenom := sample.TestDenom1
-	totalRewardAmount := sdk.NewInt(10e4)
+	userToAddRewardPool := sample.OriginAccAddress()
+
+	totalRewardAmount := sdk.NewInt(1e4)
 	rewardPerSecond := sdk.NewInt(10)
 	startTimestamp := uint64(2)
 
+	willMintCoins = sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, totalRewardAmount))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, userToAddRewardPool, willMintCoins)
+
 	msgAddRewardPool := types.MsgAddRewardPool{
-		Creator:           rewarder.String(),
-		StakeTokenDenom:   stakeTokenDenom,
+		Creator:           userToAddRewardPool.String(),
+		StakePoolIndex:    0,
 		RewardTokenDenom:  rewardTokenDenom,
 		TotalRewardAmount: totalRewardAmount,
 		RewardPerSecond:   rewardPerSecond,
@@ -238,41 +293,7 @@ func TestAddRewardPoolSuccess(t *testing.T) {
 	_, err = srv.AddRewardPool(ctx, &msgAddRewardPool)
 	require.NoError(t, err)
 
-	stakePool, found = miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
-	require.True(t, found)
-	require.Equal(t, len(stakePool.RewardPools), 1)
-
-	require.EqualValues(t, stakePool.RewardPools[0].Index, uint32(0))
-	require.EqualValues(t, stakePool.RewardPools[0].LastRewardTimestamp, uint64(now.Unix()))
-	require.EqualValues(t, stakePool.RewardPools[0].LeftRewardAmount, totalRewardAmount)
-	require.EqualValues(t, stakePool.RewardPools[0].RewardPerPower, sdk.ZeroInt())
-	require.EqualValues(t, stakePool.RewardPools[0].RewardPerSecond, rewardPerSecond)
-	require.EqualValues(t, stakePool.RewardPools[0].RewardTokenDenom, rewardTokenDenom)
-	require.EqualValues(t, stakePool.RewardPools[0].StartTimestamp, startTimestamp)
-	require.EqualValues(t, stakePool.RewardPools[0].TotalRewardAmount, totalRewardAmount)
-
-	// add reward pool using admin
-	now = time.Now()
-	sdkCtx = sdkCtx.WithBlockTime(now)
-	ctx = sdk.WrapSDKContext(sdkCtx)
-
-	rewardTokenDenom = sample.TestDenom1
-	totalRewardAmount = sdk.NewInt(10e4)
-	rewardPerSecond = sdk.NewInt(10)
-	startTimestamp = uint64(2)
-
-	msgAddRewardPool = types.MsgAddRewardPool{
-		Creator:           admin.String(),
-		StakeTokenDenom:   stakeTokenDenom,
-		RewardTokenDenom:  rewardTokenDenom,
-		TotalRewardAmount: totalRewardAmount,
-		RewardPerSecond:   rewardPerSecond,
-		StartTimestamp:    startTimestamp,
-	}
-	_, err = srv.AddRewardPool(ctx, &msgAddRewardPool)
-	require.NoError(t, err)
-
-	stakePool, found = miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
+	stakePool, found = miningKeeper.GetStakePool(sdkCtx, 0)
 	require.True(t, found)
 	require.Equal(t, len(stakePool.RewardPools), 2)
 
@@ -284,39 +305,57 @@ func TestAddRewardPoolSuccess(t *testing.T) {
 	require.EqualValues(t, stakePool.RewardPools[1].RewardTokenDenom, rewardTokenDenom)
 	require.EqualValues(t, stakePool.RewardPools[1].StartTimestamp, startTimestamp)
 	require.EqualValues(t, stakePool.RewardPools[1].TotalRewardAmount, totalRewardAmount)
-
-	nextIndex := miningKeeper.GetRewardPoolNextIndex(sdkCtx, stakeTokenDenom)
-	require.EqualValues(t, nextIndex, 2)
 }
 
 func TestAddRewardPoolFail(t *testing.T) {
 	srv, miningKeeper, ctx, sdkCtx := setupMsgServer(t)
 	admin := sample.TestAdminAcc
 	stakeTokenDenom := sample.TestDenom
-	maxRewardPools := uint32(32)
-	minTotalRewardAmount := sdk.NewInt(1e4)
+	rewardTokenDenom := sample.TestDenom1
 
-	msgAddStakePool := types.MsgAddStakePool{
-		Creator:              admin.String(),
-		StakeTokenDenom:      stakeTokenDenom,
-		MaxRewardPools:       maxRewardPools,
-		MinTotalRewardAmount: minTotalRewardAmount,
+	// add rewarder
+	miningProvider := sample.OriginAccAddress()
+	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
+
+	msgAddRewarder := types.MsgAddMiningProvider{
+		Creator:     admin.String(),
+		UserAddress: miningProvider.String(),
 	}
-
-	_, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
-	require.False(t, found)
-	_, err := srv.AddStakePool(ctx, &msgAddStakePool)
+	_, err := srv.AddMiningProvider(ctx, &msgAddRewarder)
 	require.NoError(t, err)
 
-	stakePool, found := miningKeeper.GetStakePool(sdkCtx, stakeTokenDenom)
+	// add reward token
+	msgAddRewardToken := types.MsgAddRewardToken{
+		Creator:              admin.String(),
+		Denom:                rewardTokenDenom,
+		MinTotalRewardAmount: sdk.NewInt(1e4),
+	}
+	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+	//add stake pool
+	msgAddStakePool := types.MsgAddStakePool{
+		Creator:           miningProvider.String(),
+		StakeTokenDenom:   stakeTokenDenom,
+		RewardTokenDenom:  rewardTokenDenom,
+		TotalRewardAmount: sdk.NewInt(1e4),
+		RewardPerSecond:   sdk.NewInt(2),
+		StartTimestamp:    4567,
+	}
+
+	_, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.False(t, found)
+	_, err = srv.AddStakePool(ctx, &msgAddStakePool)
+	require.NoError(t, err)
+
+	stakePool, found := miningKeeper.GetStakePool(sdkCtx, 0)
 	require.True(t, found)
-	require.EqualValues(t, stakePool.MaxRewardPools, msgAddStakePool.MaxRewardPools)
-	require.EqualValues(t, stakePool.MinTotalRewardAmount, msgAddStakePool.MinTotalRewardAmount)
 	require.EqualValues(t, stakePool.StakeTokenDenom, msgAddStakePool.StakeTokenDenom)
 	require.EqualValues(t, stakePool.TotalStakedAmount, sdk.ZeroInt())
 	require.EqualValues(t, stakePool.TotalStakedPower, sdk.ZeroInt())
 
-	// add reward pool
+	// add reward pool fail
 	now := time.Now()
 	sdkCtx = sdkCtx.WithBlockTime(now)
 	ctx = sdk.WrapSDKContext(sdkCtx)
@@ -324,7 +363,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 	testcases := []struct {
 		name              string
 		creator           string
-		stakeTokenDenom   string
+		stakePoolIndex    uint32
 		rewardTokenDenom  string
 		totalRewardAmount sdk.Int
 		rewardPerSecond   sdk.Int
@@ -333,7 +372,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 		{
 			name:              "not admin not rewarder",
 			creator:           sample.AccAddress(),
-			stakeTokenDenom:   sample.TestDenom,
+			stakePoolIndex:    0,
 			rewardTokenDenom:  sample.TestDenom1,
 			totalRewardAmount: sdk.NewInt(1e4),
 			rewardPerSecond:   sdk.NewInt(10),
@@ -342,7 +381,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 		{
 			name:              "stake pool not exist",
 			creator:           admin.String(),
-			stakeTokenDenom:   sample.TestDenom1,
+			stakePoolIndex:    1,
 			rewardTokenDenom:  sample.TestDenom1,
 			totalRewardAmount: sdk.NewInt(1e4),
 			rewardPerSecond:   sdk.NewInt(10),
@@ -351,7 +390,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 		{
 			name:              "less than min total reward amount",
 			creator:           admin.String(),
-			stakeTokenDenom:   sample.TestDenom,
+			stakePoolIndex:    0,
 			rewardTokenDenom:  sample.TestDenom1,
 			totalRewardAmount: sdk.NewInt(1e4 - 1),
 			rewardPerSecond:   sdk.NewInt(10),
@@ -360,7 +399,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 		{
 			name:              "total reward amount is zero",
 			creator:           admin.String(),
-			stakeTokenDenom:   sample.TestDenom,
+			stakePoolIndex:    0,
 			rewardTokenDenom:  sample.TestDenom1,
 			totalRewardAmount: sdk.NewInt(0),
 			rewardPerSecond:   sdk.NewInt(10),
@@ -369,7 +408,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 		{
 			name:              "reward per second is zero",
 			creator:           admin.String(),
-			stakeTokenDenom:   sample.TestDenom,
+			stakePoolIndex:    0,
 			rewardTokenDenom:  sample.TestDenom1,
 			totalRewardAmount: sdk.NewInt(1e4),
 			rewardPerSecond:   sdk.NewInt(0),
@@ -381,7 +420,7 @@ func TestAddRewardPoolFail(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			msgAddRewardPool := types.MsgAddRewardPool{
 				Creator:           tc.creator,
-				StakeTokenDenom:   tc.stakeTokenDenom,
+				StakePoolIndex:    tc.stakePoolIndex,
 				RewardTokenDenom:  tc.rewardTokenDenom,
 				TotalRewardAmount: tc.totalRewardAmount,
 				RewardPerSecond:   tc.rewardPerSecond,

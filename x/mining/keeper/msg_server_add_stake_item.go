@@ -6,16 +6,20 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
-	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeItem) (*types.MsgAddStakeItemResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudotypes.ErrCreatorNotAdmin
+	user, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return nil, err
 	}
 
-	willUseIndex := k.GetStakeItemNextIndex(ctx)
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) && !k.Keeper.HasMiningProvider(ctx, user) {
+		return nil, types.ErrUserNotAdminOrMiningProvider
+	}
+
+	willUseIndex := k.GetStakeItemNextIndex(ctx, msg.StakePoolIndex)
 
 	stakeItem := types.StakeItem{
 		Enable:          msg.Enable,
@@ -24,13 +28,14 @@ func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeIte
 		PowerRewardRate: msg.PowerRewardRate,
 	}
 
-	k.Keeper.SetStakeItemIndex(ctx, willUseIndex)
+	k.Keeper.SetStakeItemIndex(ctx, msg.StakePoolIndex, willUseIndex)
 	k.Keeper.SetStakeItem(ctx, &stakeItem)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeAddStakeItem,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
 			sdk.NewAttribute(types.AttributeKeyStakeItemIndex, fmt.Sprintf("%d", willUseIndex)),
 			sdk.NewAttribute(types.AttributeKeyLockSecond, fmt.Sprintf("%d", msg.LockSecond)),
 			sdk.NewAttribute(types.AttributeKeyPowerRewardRate, msg.PowerRewardRate.String()),

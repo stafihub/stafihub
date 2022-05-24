@@ -20,7 +20,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, types.ErrStakePoolNotExist
 	}
 
-	stakeItem, found := k.Keeper.GetStakeItem(ctx, msg.StakeItemIndex)
+	stakeItem, found := k.Keeper.GetStakeItem(ctx, msg.StakePoolIndex, msg.StakeItemIndex)
 	if !found {
 		return nil, types.ErrStakeItemNotExist
 	}

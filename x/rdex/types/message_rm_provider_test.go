@@ -1,29 +1,30 @@
-package types
+package types_test
 
 import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/rdex/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgRmProvider_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRmProvider
+		msg  types.MsgRmProvider
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRmProvider{
+			msg: types.MsgRmProvider{
 				Creator:     "invalid_address",
 				UserAddress: sample.AccAddress(),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRmProvider{
+			msg: types.MsgRmProvider{
 				Creator:     sample.AccAddress(),
 				UserAddress: sample.AccAddress(),
 			},

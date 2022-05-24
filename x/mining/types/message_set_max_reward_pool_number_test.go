@@ -1,28 +1,29 @@
-package types
+package types_test
 
 import (
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/mining/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgSetMaxRewardPoolNumber_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetMaxRewardPoolNumber
+		msg  types.MsgSetMaxRewardPoolNumber
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetMaxRewardPoolNumber{
+			msg: types.MsgSetMaxRewardPoolNumber{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetMaxRewardPoolNumber{
+			msg:types.MsgSetMaxRewardPoolNumber{
 				Creator: sample.AccAddress(),
 			},
 		},

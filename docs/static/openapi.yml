@@ -20789,6 +20789,9 @@ paths:
                     index:
                       type: integer
                       format: int64
+                    stakePoolIndex:
+                      type: integer
+                      format: int64
                     lockSecond:
                       type: string
                       format: uint64
@@ -20815,6 +20818,12 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: stakePoolIndex
+          in: query
+          required: false
+          type: integer
+          format: int64
       tags:
         - Query
   '/stafihub/stafihub/mining/stake_pool_info/{stakePoolIndex}':
@@ -38186,6 +38195,27 @@ definitions:
         type: string
       recipient:
         type: string
+  stafihub.stafihub.mining.CreateRewardPoolInfo:
+    type: object
+    properties:
+      rewardTokenDenom:
+        type: string
+      totalRewardAmount:
+        type: string
+      rewardPerSecond:
+        type: string
+      startTimestamp:
+        type: string
+        format: uint64
+  stafihub.stafihub.mining.CreateStakeItemInfo:
+    type: object
+    properties:
+      lockSecond:
+        type: string
+        format: uint64
+      powerRewardRate:
+        type: string
+        title: user stakedPower = powerRewardRate * stakedAmount
   stafihub.stafihub.mining.MsgAddMiningProviderResponse:
     type: object
   stafihub.stafihub.mining.MsgAddRewardPoolResponse:
@@ -38258,6 +38288,9 @@ definitions:
           type: object
           properties:
             index:
+              type: integer
+              format: int64
+            stakePoolIndex:
               type: integer
               format: int64
             lockSecond:
@@ -38492,6 +38525,9 @@ definitions:
     type: object
     properties:
       index:
+        type: integer
+        format: int64
+      stakePoolIndex:
         type: integer
         format: int64
       lockSecond:

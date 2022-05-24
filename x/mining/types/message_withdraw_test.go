@@ -1,4 +1,4 @@
-package types
+package types_test
 
 import (
 	"testing"
@@ -6,25 +6,26 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/mining/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgWithdraw_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgWithdraw
+		msg  types.MsgWithdraw
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgWithdraw{
+			msg: types.MsgWithdraw{
 				Creator:    "invalid_address",
 				StakeToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgWithdraw{
+			msg: types.MsgWithdraw{
 				Creator:    sample.AccAddress(),
 				StakeToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
 			},

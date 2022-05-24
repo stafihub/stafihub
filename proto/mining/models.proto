@@ -55,9 +55,10 @@ message RewardToken {
 
 message StakeItem {
   uint32 index = 1;
+  uint32 stakePoolIndex = 2;
 
-  uint64 lockSecond = 2;
+  uint64 lockSecond = 3;
   // user stakedPower = powerRewardRate * stakedAmount
-  string powerRewardRate = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
-  bool enable = 4;
+  string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+  bool enable = 5;
 }

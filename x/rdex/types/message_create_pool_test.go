@@ -1,4 +1,4 @@
-package types
+package types_test
 
 import (
 	"testing"
@@ -6,18 +6,19 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
+	"github.com/stafihub/stafihub/x/rdex/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreatePool_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreatePool
+		msg  types.MsgCreatePool
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreatePool{
+			msg: types.MsgCreatePool{
 				Creator: "invalid_address",
 				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)),
 				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
@@ -25,14 +26,14 @@ func TestMsgCreatePool_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreatePool{
+			msg: types.MsgCreatePool{
 				Creator: sample.AccAddress(),
 				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(21)),
 				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
 			},
 		}, {
 			name: "invalid coins",
-			msg: MsgCreatePool{
+			msg: types.MsgCreatePool{
 				Creator: sample.AccAddress(),
 				Token0:  sdk.NewCoin(sample.TestDenom, sdk.NewInt(0)),
 				Token1:  sdk.NewCoin(sample.TestDenom1, sdk.NewInt(1)),
