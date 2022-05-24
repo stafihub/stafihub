@@ -16,11 +16,15 @@ var _ = strconv.Itoa(0)
 
 func CmdAddRewardPool() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-reward-pool [stake-token-denom] [reward-token-denom] [total-reward-amount] [reward-per-second] [start-timestamp]",
+		Use:   "add-reward-pool [stake-pool-index] [reward-token-denom] [total-reward-amount] [reward-per-second] [start-timestamp]",
 		Short: "Add reward pool",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakeTokenDenom := args[0]
+			argStakePoolIndex, err := sdk.ParseUint(args[0])
+			if err != nil {
+				return err
+			}
+
 			argRewardTokenDenom := args[1]
 
 			argTotalRewardAmount, ok := sdk.NewIntFromString(args[2])
@@ -45,7 +49,7 @@ func CmdAddRewardPool() *cobra.Command {
 
 			msg := types.NewMsgAddRewardPool(
 				clientCtx.GetFromAddress().String(),
-				argStakeTokenDenom,
+				uint32(argStakePoolIndex.Uint64()),
 				argRewardTokenDenom,
 				argTotalRewardAmount,
 				argRewardPerSecond,

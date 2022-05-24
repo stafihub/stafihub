@@ -16,20 +16,25 @@ var _ = strconv.Itoa(0)
 
 func CmdAddStakePool() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-stake-pool [stake-token-denom] [max-reward-pools] [min-total-reward-amount]",
+		Use:   "add-stake-pool [stake-token-denom] [reward-token-denom] [total-reward-amount] [reward-per-second] [start-timestamp]",
 		Short: "Add stake pool",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argStakeTokenDenom := args[0]
-			argMaxRewardPools, err := sdk.ParseUint(args[1])
+			argRewardTokenDenom := args[1]
+			argTotalRewardAmount, ok := sdk.NewIntFromString(args[2])
+			if !ok {
+				return fmt.Errorf("totalRewardAmount format err")
+			}
+			argRewardPerSecond, ok := sdk.NewIntFromString(args[3])
+			if !ok {
+				return fmt.Errorf("rewardPerSecond format err")
+			}
+
+			argStartTimestamp, err := sdk.ParseUint(args[4])
 			if err != nil {
 				return err
 			}
-			argMinTotalRewardAmount, ok := sdk.NewIntFromString(args[2])
-			if !ok {
-				return fmt.Errorf("minTotalRewardAmount format err")
-			}
-
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -38,8 +43,10 @@ func CmdAddStakePool() *cobra.Command {
 			msg := types.NewMsgAddStakePool(
 				clientCtx.GetFromAddress().String(),
 				argStakeTokenDenom,
-				uint32(argMaxRewardPools.Uint64()),
-				argMinTotalRewardAmount,
+				argRewardTokenDenom,
+				argTotalRewardAmount,
+				argRewardPerSecond,
+				argStartTimestamp.Uint64(),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

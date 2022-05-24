@@ -39,7 +39,11 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdStakePoolList())
 
-	cmd.AddCommand(CmdRewarderList())
+	cmd.AddCommand(CmdMiningProviderList())
+
+	cmd.AddCommand(CmdRewardTokenList())
+
+	cmd.AddCommand(CmdMaxRewardPoolNumber())
 
 	// this line is used by starport scaffolding # 1
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -12,13 +13,13 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdStakePoolInfo() *cobra.Command {
+func CmdSetMaxRewardPoolNumber() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake-pool-info [stake-pool-index]",
-		Short: "Query stake pool info",
+		Use:   "set-max-reward-pool-number [number]",
+		Short: "Set max reward pool number",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			stakePoolIndex, err := sdk.ParseUint(args[0])
+			argNumber, err := sdk.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
@@ -28,21 +29,18 @@ func CmdStakePoolInfo() *cobra.Command {
 				return err
 			}
 
-			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryStakePoolInfoRequest{
-				StakePoolIndex: uint32(stakePoolIndex.Uint64()),
-			}
-
-			res, err := queryClient.StakePoolInfo(cmd.Context(), params)
-			if err != nil {
+			msg := types.NewMsgSetMaxRewardPoolNumber(
+				clientCtx.GetFromAddress().String(),
+				uint32(argNumber.Uint64()),
+			)
+			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
-
-			return clientCtx.PrintProto(res)
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 
-	flags.AddQueryFlagsToCmd(cmd)
+	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
 }

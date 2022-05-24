@@ -11,10 +11,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRewarderList() *cobra.Command {
+func CmdMaxRewardPoolNumber() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "rewarder-list",
-		Short: "Query rewarder list",
+		Use:   "max-reward-pool-number",
+		Short: "Query max reward pool number",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -25,9 +25,9 @@ func CmdRewarderList() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryRewarderListRequest{}
+			params := &types.QueryMaxRewardPoolNumberRequest{}
 
-			res, err := queryClient.RewarderList(cmd.Context(), params)
+			res, err := queryClient.MaxRewardPoolNumber(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

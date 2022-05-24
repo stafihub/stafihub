@@ -18,17 +18,21 @@ func TestMsgAddStakePool_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgAddStakePool{
-				Creator:              "invalid_address",
-				StakeTokenDenom:      sample.TestDenom,
-				MinTotalRewardAmount: sdk.NewInt(2),
+				Creator:           "invalid_address",
+				StakeTokenDenom:   sample.TestDenom,
+				RewardTokenDenom:  sample.TestDenom1,
+				TotalRewardAmount: sdk.NewInt(2),
+				RewardPerSecond:   sdk.NewInt(2),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgAddStakePool{
-				Creator:              sample.AccAddress(),
-				StakeTokenDenom:      sample.TestDenom,
-				MinTotalRewardAmount: sdk.NewInt(0),
+				Creator:           sample.AccAddress(),
+				StakeTokenDenom:   sample.TestDenom,
+				RewardTokenDenom:  sample.TestDenom1,
+				TotalRewardAmount: sdk.NewInt(0),
+				RewardPerSecond:   sdk.NewInt(2),
 			},
 		},
 	}

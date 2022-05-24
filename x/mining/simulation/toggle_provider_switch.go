@@ -10,7 +10,7 @@ import (
 	"github.com/stafihub/stafihub/x/mining/types"
 )
 
-func SimulateMsgStake(
+func SimulateMsgToggleProviderSwitch(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,12 +18,12 @@ func SimulateMsgStake(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgStake{
+		msg := &types.MsgToggleProviderSwitch{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the Stake simulation
+		// TODO: Handling the ToggleProviderSwitch simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Stake simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "ToggleProviderSwitch simulation not implemented"), nil, nil
 	}
 }

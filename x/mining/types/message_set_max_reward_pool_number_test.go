@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgClaimReward_ValidateBasic(t *testing.T) {
+func TestMsgSetMaxRewardPoolNumber_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgClaimReward
+		msg  MsgSetMaxRewardPoolNumber
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgClaimReward{
+			msg: MsgSetMaxRewardPoolNumber{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgClaimReward{
+			msg: MsgSetMaxRewardPoolNumber{
 				Creator: sample.AccAddress(),
 			},
 		},

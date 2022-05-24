@@ -5,26 +5,26 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgRmRewarder = "rm_rewarder"
+const TypeMsgRmMiningProvider = "rm_mining_provider"
 
-var _ sdk.Msg = &MsgRmRewarder{}
+var _ sdk.Msg = &MsgRmMiningProvider{}
 
-func NewMsgRmRewarder(creator string, userAddress string) *MsgRmRewarder {
-	return &MsgRmRewarder{
+func NewMsgRmMiningProvider(creator string, userAddress string) *MsgRmMiningProvider {
+	return &MsgRmMiningProvider{
 		Creator:     creator,
 		UserAddress: userAddress,
 	}
 }
 
-func (msg *MsgRmRewarder) Route() string {
+func (msg *MsgRmMiningProvider) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgRmRewarder) Type() string {
-	return TypeMsgRmRewarder
+func (msg *MsgRmMiningProvider) Type() string {
+	return TypeMsgRmMiningProvider
 }
 
-func (msg *MsgRmRewarder) GetSigners() []sdk.AccAddress {
+func (msg *MsgRmMiningProvider) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgRmRewarder) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgRmRewarder) GetSignBytes() []byte {
+func (msg *MsgRmMiningProvider) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgRmRewarder) ValidateBasic() error {
+func (msg *MsgRmMiningProvider) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

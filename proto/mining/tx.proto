@@ -15,19 +15,24 @@ service Msg {
   rpc Stake(MsgStake) returns (MsgStakeResponse);
   rpc ClaimReward(MsgClaimReward) returns (MsgClaimRewardResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
-  rpc ProvideRewardToken(MsgProvideRewardToken) returns (MsgProvideRewardTokenResponse);
-  rpc UpdateStakePool(MsgUpdateStakePool) returns (MsgUpdateStakePoolResponse);
   rpc UpdateStakeItem(MsgUpdateStakeItem) returns (MsgUpdateStakeItemResponse);
-  rpc AddRewarder(MsgAddRewarder) returns (MsgAddRewarderResponse);
-  rpc RmRewarder(MsgRmRewarder) returns (MsgRmRewarderResponse);
+  rpc AddMiningProvider(MsgAddMiningProvider) returns (MsgAddMiningProviderResponse);
+  rpc RmMiningProvider(MsgRmMiningProvider) returns (MsgRmMiningProviderResponse);
+  rpc AddRewardToken(MsgAddRewardToken) returns (MsgAddRewardTokenResponse);
+  rpc SetMaxRewardPoolNumber(MsgSetMaxRewardPoolNumber) returns (MsgSetMaxRewardPoolNumberResponse);
+  rpc UpdateRewardPool(MsgUpdateRewardPool) returns (MsgUpdateRewardPoolResponse);
+  rpc RmRewardPool(MsgRmRewardPool) returns (MsgRmRewardPoolResponse);
+  rpc ToggleProviderSwitch(MsgToggleProviderSwitch) returns (MsgToggleProviderSwitchResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgAddStakePool {
   string creator = 1;
   string stakeTokenDenom = 2;
-  uint32 maxRewardPools = 3;
-  string minTotalRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string rewardTokenDenom = 3;
+  string totalRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string rewardPerSecond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  uint64 startTimestamp = 6;
 }
 
 message MsgAddStakePoolResponse {
@@ -45,7 +50,7 @@ message MsgAddStakeItemResponse {
 
 message MsgAddRewardPool {
   string creator = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
   string rewardTokenDenom = 3;
   string totalRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string rewardPerSecond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
@@ -57,8 +62,9 @@ message MsgAddRewardPoolResponse {
 
 message MsgStake {
   string creator = 1;
-  cosmos.base.v1beta1.Coin stakeToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-  uint32 stakeItemIndex = 3;
+  uint32 stakePoolIndex = 2;
+  cosmos.base.v1beta1.Coin stakeToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  uint32 stakeItemIndex = 4;
 }
 
 message MsgStakeResponse {
@@ -66,7 +72,7 @@ message MsgStakeResponse {
 
 message MsgClaimReward {
   string creator = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
   uint32 stakeRecordIndex = 3;
 }
 
@@ -75,29 +81,12 @@ message MsgClaimRewardResponse {
 
 message MsgWithdraw {
   string creator = 1;
-  cosmos.base.v1beta1.Coin stakeToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-  uint32 stakeRecordIndex = 3;
+  uint32 stakePoolIndex = 2;
+  cosmos.base.v1beta1.Coin stakeToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  uint32 stakeRecordIndex = 4;
 }
 
 message MsgWithdrawResponse {
-}
-
-message MsgProvideRewardToken {
-  string creator = 1;
-  cosmos.base.v1beta1.Coin token = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-}
-
-message MsgProvideRewardTokenResponse {
-}
-
-message MsgUpdateStakePool {
-  string creator = 1;
-  string stakeTokenDenom = 2;
-  uint32 maxRewardPools = 3;
-  string minTotalRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-}
-
-message MsgUpdateStakePoolResponse {
 }
 
 message MsgUpdateStakeItem {
@@ -111,20 +100,63 @@ message MsgUpdateStakeItem {
 message MsgUpdateStakeItemResponse {
 }
 
-message MsgAddRewarder {
+message MsgAddMiningProvider {
   string creator = 1;
   string userAddress = 2;
 }
 
-message MsgAddRewarderResponse {
+message MsgAddMiningProviderResponse {
 }
 
-message MsgRmRewarder {
+message MsgRmMiningProvider {
   string creator = 1;
   string userAddress = 2;
 }
 
-message MsgRmRewarderResponse {
+message MsgRmMiningProviderResponse {
+}
+
+message MsgAddRewardToken {
+  string creator = 1;
+  string denom = 2;
+  string minTotalRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgAddRewardTokenResponse {
+}
+
+message MsgSetMaxRewardPoolNumber {
+  string creator = 1;
+  uint32 number = 2;
+}
+
+message MsgSetMaxRewardPoolNumberResponse {
+}
+
+message MsgUpdateRewardPool {
+  string creator = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 rewardPoolIndex = 3;
+  string newRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgUpdateRewardPoolResponse {
+}
+
+message MsgRmRewardPool {
+  string creator = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 rewardPoolIndex = 3;
+}
+
+message MsgRmRewardPoolResponse {
+}
+
+message MsgToggleProviderSwitch {
+  string creator = 1;
+}
+
+message MsgToggleProviderSwitchResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

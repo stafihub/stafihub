@@ -12,10 +12,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRmRewarder() *cobra.Command {
+func CmdRmMiningProvider() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "rm-rewarder [user-address]",
-		Short: "Remove rewarder",
+		Use:   "rm-mining-provider [user-address]",
+		Short: "Remove mining provider",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argUserAddress := args[0]
@@ -25,7 +25,7 @@ func CmdRmRewarder() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgRmRewarder(
+			msg := types.NewMsgRmMiningProvider(
 				clientCtx.GetFromAddress().String(),
 				argUserAddress,
 			)

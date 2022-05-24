@@ -17,11 +17,11 @@ func (k Keeper) StakeReward(goCtx context.Context, req *types.QueryStakeRewardRe
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
-	userStakeRecord, found := k.GetUserStakeRecord(ctx, req.StakeUserAddress, req.StakeTokenDenom, req.StakeRecordIndex)
+	userStakeRecord, found := k.GetUserStakeRecord(ctx, req.StakeUserAddress, req.StakePoolIndex, req.StakeRecordIndex)
 	if !found {
 		return nil, types.ErrUserStakeRecordNotExist
 	}
-	stakePool, found := k.GetStakePool(ctx, req.StakeTokenDenom)
+	stakePool, found := k.GetStakePool(ctx, req.StakePoolIndex)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}

@@ -17,6 +17,6 @@ func (k Keeper) StakeRecordList(goCtx context.Context, req *types.QueryStakeReco
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryStakeRecordListResponse{
-		StakeRecordList: k.GetUserStakeRecordList(ctx, req.UserAddress, req.StakeTokenDenom),
+		StakeRecordList: k.GetUserStakeRecordList(ctx, req.UserAddress, req.StakePoolIndex),
 	}, nil
 }

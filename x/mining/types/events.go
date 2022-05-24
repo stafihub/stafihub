@@ -11,6 +11,7 @@ const (
 
 	AttributeKeyAccount         = "account"
 	AttributeKeyStakeTokenDenom = "stake_token_denom"
+	AttributeKeyStakePoolIndex  = "stake_pool_index"
 	AttributeKeyMaxRewardPools  = "max_reward_pools"
 
 	AttributeKeyStakeItemIndex  = "stake_item_index"

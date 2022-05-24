@@ -116,7 +116,7 @@ func (m *QueryParamsResponse) GetParams() Params {
 }
 
 type QueryStakePoolInfoRequest struct {
-	StakeTokenDenom string `protobuf:"bytes,1,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
+	StakePoolIndex uint32 `protobuf:"varint,1,opt,name=stakePoolIndex,proto3" json:"stakePoolIndex,omitempty"`
 }
 
 func (m *QueryStakePoolInfoRequest) Reset()         { *m = QueryStakePoolInfoRequest{} }
@@ -152,11 +152,11 @@ func (m *QueryStakePoolInfoRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryStakePoolInfoRequest proto.InternalMessageInfo
 
-func (m *QueryStakePoolInfoRequest) GetStakeTokenDenom() string {
+func (m *QueryStakePoolInfoRequest) GetStakePoolIndex() uint32 {
 	if m != nil {
-		return m.StakeTokenDenom
+		return m.StakePoolIndex
 	}
-	return ""
+	return 0
 }
 
 type QueryStakePoolInfoResponse struct {
@@ -285,7 +285,7 @@ func (m *QueryStakeItemListResponse) GetStakeItemList() []*StakeItem {
 
 type QueryStakeRewardRequest struct {
 	StakeUserAddress string `protobuf:"bytes,1,opt,name=stakeUserAddress,proto3" json:"stakeUserAddress,omitempty"`
-	StakeTokenDenom  string `protobuf:"bytes,2,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
+	StakePoolIndex   uint32 `protobuf:"varint,2,opt,name=stakePoolIndex,proto3" json:"stakePoolIndex,omitempty"`
 	StakeRecordIndex uint32 `protobuf:"varint,3,opt,name=stakeRecordIndex,proto3" json:"stakeRecordIndex,omitempty"`
 }
 
@@ -329,11 +329,11 @@ func (m *QueryStakeRewardRequest) GetStakeUserAddress() string {
 	return ""
 }
 
-func (m *QueryStakeRewardRequest) GetStakeTokenDenom() string {
+func (m *QueryStakeRewardRequest) GetStakePoolIndex() uint32 {
 	if m != nil {
-		return m.StakeTokenDenom
+		return m.StakePoolIndex
 	}
-	return ""
+	return 0
 }
 
 func (m *QueryStakeRewardRequest) GetStakeRecordIndex() uint32 {
@@ -381,8 +381,8 @@ func (m *QueryStakeRewardResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_QueryStakeRewardResponse proto.InternalMessageInfo
 
 type QueryStakeRecordCountRequest struct {
-	UserAddress     string `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
-	StakeTokenDenom string `protobuf:"bytes,2,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
+	UserAddress    string `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
+	StakePoolIndex uint32 `protobuf:"varint,2,opt,name=stakePoolIndex,proto3" json:"stakePoolIndex,omitempty"`
 }
 
 func (m *QueryStakeRecordCountRequest) Reset()         { *m = QueryStakeRecordCountRequest{} }
@@ -425,11 +425,11 @@ func (m *QueryStakeRecordCountRequest) GetUserAddress() string {
 	return ""
 }
 
-func (m *QueryStakeRecordCountRequest) GetStakeTokenDenom() string {
+func (m *QueryStakeRecordCountRequest) GetStakePoolIndex() uint32 {
 	if m != nil {
-		return m.StakeTokenDenom
+		return m.StakePoolIndex
 	}
-	return ""
+	return 0
 }
 
 type QueryStakeRecordCountResponse struct {
@@ -478,7 +478,7 @@ func (m *QueryStakeRecordCountResponse) GetCount() uint32 {
 
 type QueryStakeRecordRequest struct {
 	UserAddress      string `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
-	StakeTokenDenom  string `protobuf:"bytes,2,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
+	StakePoolIndex   uint32 `protobuf:"varint,2,opt,name=stakePoolIndex,proto3" json:"stakePoolIndex,omitempty"`
 	StakeRecordIndex uint32 `protobuf:"varint,3,opt,name=stakeRecordIndex,proto3" json:"stakeRecordIndex,omitempty"`
 }
 
@@ -522,11 +522,11 @@ func (m *QueryStakeRecordRequest) GetUserAddress() string {
 	return ""
 }
 
-func (m *QueryStakeRecordRequest) GetStakeTokenDenom() string {
+func (m *QueryStakeRecordRequest) GetStakePoolIndex() uint32 {
 	if m != nil {
-		return m.StakeTokenDenom
+		return m.StakePoolIndex
 	}
-	return ""
+	return 0
 }
 
 func (m *QueryStakeRecordRequest) GetStakeRecordIndex() uint32 {
@@ -581,8 +581,8 @@ func (m *QueryStakeRecordResponse) GetStakeRecord() *UserStakeRecord {
 }
 
 type QueryStakeRecordListRequest struct {
-	UserAddress     string `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
-	StakeTokenDenom string `protobuf:"bytes,2,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
+	UserAddress    string `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
+	StakePoolIndex uint32 `protobuf:"varint,2,opt,name=stakePoolIndex,proto3" json:"stakePoolIndex,omitempty"`
 }
 
 func (m *QueryStakeRecordListRequest) Reset()         { *m = QueryStakeRecordListRequest{} }
@@ -625,11 +625,11 @@ func (m *QueryStakeRecordListRequest) GetUserAddress() string {
 	return ""
 }
 
-func (m *QueryStakeRecordListRequest) GetStakeTokenDenom() string {
+func (m *QueryStakeRecordListRequest) GetStakePoolIndex() uint32 {
 	if m != nil {
-		return m.StakeTokenDenom
+		return m.StakePoolIndex
 	}
-	return ""
+	return 0
 }
 
 type QueryStakeRecordListResponse struct {
@@ -756,21 +756,21 @@ func (m *QueryStakePoolListResponse) GetStakePoolList() []*StakePool {
 	return nil
 }
 
-type QueryRewarderListRequest struct {
+type QueryMiningProviderListRequest struct {
 }
 
-func (m *QueryRewarderListRequest) Reset()         { *m = QueryRewarderListRequest{} }
-func (m *QueryRewarderListRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryRewarderListRequest) ProtoMessage()    {}
-func (*QueryRewarderListRequest) Descriptor() ([]byte, []int) {
+func (m *QueryMiningProviderListRequest) Reset()         { *m = QueryMiningProviderListRequest{} }
+func (m *QueryMiningProviderListRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryMiningProviderListRequest) ProtoMessage()    {}
+func (*QueryMiningProviderListRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5968127a041da29a, []int{16}
 }
-func (m *QueryRewarderListRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryMiningProviderListRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRewarderListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryMiningProviderListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRewarderListRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryMiningProviderListRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -780,34 +780,34 @@ func (m *QueryRewarderListRequest) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *QueryRewarderListRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRewarderListRequest.Merge(m, src)
+func (m *QueryMiningProviderListRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryMiningProviderListRequest.Merge(m, src)
 }
-func (m *QueryRewarderListRequest) XXX_Size() int {
+func (m *QueryMiningProviderListRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRewarderListRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRewarderListRequest.DiscardUnknown(m)
+func (m *QueryMiningProviderListRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryMiningProviderListRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRewarderListRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryMiningProviderListRequest proto.InternalMessageInfo
 
-type QueryRewarderListResponse struct {
-	RewarderList []string `protobuf:"bytes,1,rep,name=rewarderList,proto3" json:"rewarderList,omitempty"`
+type QueryMiningProviderListResponse struct {
+	MiningProviderList []string `protobuf:"bytes,1,rep,name=miningProviderList,proto3" json:"miningProviderList,omitempty"`
 }
 
-func (m *QueryRewarderListResponse) Reset()         { *m = QueryRewarderListResponse{} }
-func (m *QueryRewarderListResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryRewarderListResponse) ProtoMessage()    {}
-func (*QueryRewarderListResponse) Descriptor() ([]byte, []int) {
+func (m *QueryMiningProviderListResponse) Reset()         { *m = QueryMiningProviderListResponse{} }
+func (m *QueryMiningProviderListResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryMiningProviderListResponse) ProtoMessage()    {}
+func (*QueryMiningProviderListResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5968127a041da29a, []int{17}
 }
-func (m *QueryRewarderListResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryMiningProviderListResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryRewarderListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryMiningProviderListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryRewarderListResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryMiningProviderListResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -817,23 +817,183 @@ func (m *QueryRewarderListResponse) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *QueryRewarderListResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryRewarderListResponse.Merge(m, src)
+func (m *QueryMiningProviderListResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryMiningProviderListResponse.Merge(m, src)
 }
-func (m *QueryRewarderListResponse) XXX_Size() int {
+func (m *QueryMiningProviderListResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryRewarderListResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryRewarderListResponse.DiscardUnknown(m)
+func (m *QueryMiningProviderListResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryMiningProviderListResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryRewarderListResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryMiningProviderListResponse proto.InternalMessageInfo
 
-func (m *QueryRewarderListResponse) GetRewarderList() []string {
+func (m *QueryMiningProviderListResponse) GetMiningProviderList() []string {
 	if m != nil {
-		return m.RewarderList
+		return m.MiningProviderList
 	}
 	return nil
+}
+
+type QueryRewardTokenListRequest struct {
+}
+
+func (m *QueryRewardTokenListRequest) Reset()         { *m = QueryRewardTokenListRequest{} }
+func (m *QueryRewardTokenListRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryRewardTokenListRequest) ProtoMessage()    {}
+func (*QueryRewardTokenListRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5968127a041da29a, []int{18}
+}
+func (m *QueryRewardTokenListRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryRewardTokenListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryRewardTokenListRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryRewardTokenListRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRewardTokenListRequest.Merge(m, src)
+}
+func (m *QueryRewardTokenListRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryRewardTokenListRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRewardTokenListRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryRewardTokenListRequest proto.InternalMessageInfo
+
+type QueryRewardTokenListResponse struct {
+	RewardTokenList []*RewardToken `protobuf:"bytes,1,rep,name=rewardTokenList,proto3" json:"rewardTokenList,omitempty"`
+}
+
+func (m *QueryRewardTokenListResponse) Reset()         { *m = QueryRewardTokenListResponse{} }
+func (m *QueryRewardTokenListResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryRewardTokenListResponse) ProtoMessage()    {}
+func (*QueryRewardTokenListResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5968127a041da29a, []int{19}
+}
+func (m *QueryRewardTokenListResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryRewardTokenListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryRewardTokenListResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryRewardTokenListResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryRewardTokenListResponse.Merge(m, src)
+}
+func (m *QueryRewardTokenListResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryRewardTokenListResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryRewardTokenListResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryRewardTokenListResponse proto.InternalMessageInfo
+
+func (m *QueryRewardTokenListResponse) GetRewardTokenList() []*RewardToken {
+	if m != nil {
+		return m.RewardTokenList
+	}
+	return nil
+}
+
+type QueryMaxRewardPoolNumberRequest struct {
+}
+
+func (m *QueryMaxRewardPoolNumberRequest) Reset()         { *m = QueryMaxRewardPoolNumberRequest{} }
+func (m *QueryMaxRewardPoolNumberRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryMaxRewardPoolNumberRequest) ProtoMessage()    {}
+func (*QueryMaxRewardPoolNumberRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5968127a041da29a, []int{20}
+}
+func (m *QueryMaxRewardPoolNumberRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryMaxRewardPoolNumberRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryMaxRewardPoolNumberRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryMaxRewardPoolNumberRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryMaxRewardPoolNumberRequest.Merge(m, src)
+}
+func (m *QueryMaxRewardPoolNumberRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryMaxRewardPoolNumberRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryMaxRewardPoolNumberRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryMaxRewardPoolNumberRequest proto.InternalMessageInfo
+
+type QueryMaxRewardPoolNumberResponse struct {
+	Number uint32 `protobuf:"varint,1,opt,name=number,proto3" json:"number,omitempty"`
+}
+
+func (m *QueryMaxRewardPoolNumberResponse) Reset()         { *m = QueryMaxRewardPoolNumberResponse{} }
+func (m *QueryMaxRewardPoolNumberResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryMaxRewardPoolNumberResponse) ProtoMessage()    {}
+func (*QueryMaxRewardPoolNumberResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5968127a041da29a, []int{21}
+}
+func (m *QueryMaxRewardPoolNumberResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryMaxRewardPoolNumberResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryMaxRewardPoolNumberResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryMaxRewardPoolNumberResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryMaxRewardPoolNumberResponse.Merge(m, src)
+}
+func (m *QueryMaxRewardPoolNumberResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryMaxRewardPoolNumberResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryMaxRewardPoolNumberResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryMaxRewardPoolNumberResponse proto.InternalMessageInfo
+
+func (m *QueryMaxRewardPoolNumberResponse) GetNumber() uint32 {
+	if m != nil {
+		return m.Number
+	}
+	return 0
 }
 
 func init() {
@@ -853,75 +1013,88 @@ func init() {
 	proto.RegisterType((*QueryStakeRecordListResponse)(nil), "stafihub.stafihub.mining.QueryStakeRecordListResponse")
 	proto.RegisterType((*QueryStakePoolListRequest)(nil), "stafihub.stafihub.mining.QueryStakePoolListRequest")
 	proto.RegisterType((*QueryStakePoolListResponse)(nil), "stafihub.stafihub.mining.QueryStakePoolListResponse")
-	proto.RegisterType((*QueryRewarderListRequest)(nil), "stafihub.stafihub.mining.QueryRewarderListRequest")
-	proto.RegisterType((*QueryRewarderListResponse)(nil), "stafihub.stafihub.mining.QueryRewarderListResponse")
+	proto.RegisterType((*QueryMiningProviderListRequest)(nil), "stafihub.stafihub.mining.QueryMiningProviderListRequest")
+	proto.RegisterType((*QueryMiningProviderListResponse)(nil), "stafihub.stafihub.mining.QueryMiningProviderListResponse")
+	proto.RegisterType((*QueryRewardTokenListRequest)(nil), "stafihub.stafihub.mining.QueryRewardTokenListRequest")
+	proto.RegisterType((*QueryRewardTokenListResponse)(nil), "stafihub.stafihub.mining.QueryRewardTokenListResponse")
+	proto.RegisterType((*QueryMaxRewardPoolNumberRequest)(nil), "stafihub.stafihub.mining.QueryMaxRewardPoolNumberRequest")
+	proto.RegisterType((*QueryMaxRewardPoolNumberResponse)(nil), "stafihub.stafihub.mining.QueryMaxRewardPoolNumberResponse")
 }
 
 func init() { proto.RegisterFile("mining/query.proto", fileDescriptor_5968127a041da29a) }
 
 var fileDescriptor_5968127a041da29a = []byte{
-	// 963 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0x4d, 0x4f, 0x33, 0x45,
-	0x1c, 0xef, 0x3e, 0x08, 0x09, 0x53, 0x1a, 0xc8, 0x40, 0x62, 0x59, 0xb0, 0x34, 0xe3, 0x81, 0x02,
-	0xb2, 0x9b, 0x82, 0xe0, 0xc1, 0xa8, 0x01, 0xe4, 0xd0, 0x80, 0x06, 0x17, 0x38, 0xa8, 0x89, 0x75,
-	0xdb, 0x4e, 0xd7, 0x95, 0xee, 0x4e, 0xd9, 0xd9, 0x2a, 0x84, 0x70, 0xf1, 0xe8, 0x45, 0x8d, 0x47,
-	0xbf, 0x80, 0x17, 0x3e, 0x83, 0x57, 0x8e, 0x24, 0xc4, 0xf8, 0x12, 0x43, 0x0c, 0xf8, 0x41, 0xcc,
-	0xcc, 0xce, 0xd2, 0xd9, 0xdd, 0xae, 0xdd, 0x1a, 0x3d, 0x3d, 0xfb, 0xfc, 0x5f, 0x7f, 0xff, 0x97,
-	0xf9, 0xfd, 0x0b, 0x80, 0x8e, 0xed, 0xda, 0xae, 0xa5, 0x9f, 0xf7, 0xb0, 0x77, 0xa9, 0x75, 0x3d,
-	0xe2, 0x13, 0x58, 0xa4, 0xbe, 0xd9, 0xb6, 0x3f, 0xeb, 0x35, 0xb4, 0xe7, 0x8f, 0xc0, 0x4a, 0x9d,
-	0xb3, 0x88, 0x45, 0xb8, 0x91, 0xce, 0xbe, 0x02, 0x7b, 0x75, 0xd1, 0x22, 0xc4, 0xea, 0x60, 0xdd,
-	0xec, 0xda, 0xba, 0xe9, 0xba, 0xc4, 0x37, 0x7d, 0x9b, 0xb8, 0x54, 0x68, 0x57, 0x9b, 0x84, 0x3a,
-	0x84, 0xea, 0x0d, 0x93, 0xe2, 0x20, 0x8d, 0xfe, 0x45, 0xb5, 0x81, 0x7d, 0xb3, 0xaa, 0x77, 0x4d,
-	0xcb, 0x76, 0xb9, 0xb1, 0xb0, 0x9d, 0x15, 0x68, 0xba, 0xa6, 0x67, 0x3a, 0x34, 0x26, 0x74, 0x48,
-	0x0b, 0x77, 0x42, 0x61, 0x49, 0x8e, 0x1a, 0xc6, 0x6b, 0x12, 0x5b, 0x44, 0x42, 0x73, 0x00, 0x7e,
-	0xc0, 0x72, 0x1d, 0xf1, 0x48, 0x06, 0x3e, 0xef, 0x61, 0xea, 0xa3, 0x53, 0x30, 0x1b, 0x91, 0xd2,
-	0x2e, 0x71, 0x29, 0x86, 0x6f, 0x83, 0x89, 0x20, 0x63, 0x51, 0x29, 0x2b, 0x95, 0xfc, 0x46, 0x59,
-	0x4b, 0xeb, 0x80, 0x16, 0x78, 0xee, 0xbe, 0x74, 0xfb, 0xb0, 0x94, 0x33, 0x84, 0x17, 0xda, 0x07,
-	0xf3, 0x3c, 0xec, 0xb1, 0x6f, 0x9e, 0xe1, 0x23, 0x42, 0x3a, 0x35, 0xb7, 0x4d, 0x44, 0x4e, 0x58,
-	0x01, 0xd3, 0x94, 0xc9, 0x4f, 0xc8, 0x19, 0x76, 0xdf, 0xc5, 0x2e, 0x71, 0x78, 0x96, 0x49, 0x23,
-	0x2e, 0x46, 0x75, 0xa0, 0x0e, 0x0a, 0x23, 0x40, 0xee, 0x80, 0x49, 0x1a, 0x2a, 0x04, 0xce, 0x57,
-	0xd3, 0x71, 0x3e, 0xc7, 0x30, 0xfa, 0x5e, 0x68, 0x41, 0xc6, 0x59, 0xf3, 0xb1, 0x73, 0x68, 0x53,
-	0x3f, 0xec, 0x8d, 0x25, 0x67, 0xef, 0x2b, 0x45, 0xf6, 0x1a, 0x28, 0x50, 0x59, 0x51, 0x54, 0xca,
-	0x63, 0x19, 0x10, 0x30, 0x73, 0x23, 0xea, 0x89, 0x7e, 0x50, 0xc0, 0xcb, 0xfd, 0x4c, 0x06, 0xfe,
-	0xd2, 0xf4, 0x5a, 0x61, 0xb3, 0x56, 0xc1, 0x0c, 0x37, 0x3e, 0xa5, 0xd8, 0xdb, 0x69, 0xb5, 0x3c,
-	0x4c, 0xa9, 0xe8, 0x56, 0x42, 0x3e, 0xa8, 0xb1, 0x2f, 0x06, 0x36, 0xf6, 0x39, 0xaa, 0x81, 0x9b,
-	0xc4, 0x6b, 0xd5, 0xdc, 0x16, 0xbe, 0x28, 0x8e, 0x95, 0x95, 0x4a, 0xc1, 0x48, 0xc8, 0xd1, 0xd7,
-	0x0a, 0x28, 0x26, 0xd1, 0x89, 0x2e, 0xb8, 0x60, 0xca, 0xe3, 0x12, 0x1e, 0x9c, 0x8a, 0x26, 0xcc,
-	0x6b, 0xc1, 0x32, 0x6a, 0x6c, 0x19, 0x35, 0xb1, 0x8c, 0xda, 0x1e, 0xb1, 0xdd, 0x5d, 0x9d, 0xed,
-	0xc9, 0xef, 0x0f, 0x4b, 0xcb, 0x96, 0xed, 0xb3, 0xde, 0x34, 0x89, 0xa3, 0x8b, 0xcd, 0x0d, 0xfe,
-	0x59, 0xa7, 0xad, 0x33, 0xdd, 0xbf, 0xec, 0x62, 0xca, 0x1d, 0x8c, 0x48, 0x7c, 0xf4, 0x39, 0x58,
-	0x94, 0xb1, 0x30, 0x94, 0x7b, 0xa4, 0xe7, 0x86, 0x33, 0x83, 0x65, 0x90, 0xef, 0x25, 0x3a, 0x25,
-	0x8b, 0xb2, 0x37, 0x09, 0x6d, 0x81, 0x57, 0x52, 0x72, 0x89, 0xe2, 0xe7, 0xc0, 0x78, 0x93, 0x09,
-	0x78, 0x9a, 0x82, 0x11, 0xfc, 0x07, 0x7d, 0x17, 0x9b, 0x26, 0xf3, 0xfb, 0x1f, 0xe0, 0x8d, 0x34,
-	0x43, 0x2b, 0x3a, 0xc2, 0x00, 0x92, 0xa8, 0xe2, 0x00, 0xe4, 0x25, 0x7b, 0xf1, 0x90, 0x56, 0xd2,
-	0xd7, 0x98, 0x6d, 0x9c, 0x1c, 0x47, 0xf6, 0x46, 0x36, 0x58, 0x88, 0x27, 0x92, 0x9e, 0xd4, 0x7f,
-	0x3a, 0x1e, 0x9a, 0x5c, 0x85, 0xc8, 0x03, 0x3d, 0x16, 0x91, 0xfa, 0x2a, 0xb1, 0x9d, 0x23, 0xd4,
-	0x16, 0x8f, 0x10, 0x25, 0x0c, 0x46, 0x21, 0xa9, 0x84, 0xd1, 0x57, 0xc6, 0x08, 0x23, 0x54, 0x64,
-	0x24, 0x0c, 0x4e, 0x59, 0x51, 0x4f, 0xa4, 0x8a, 0x71, 0x06, 0x8f, 0x11, 0x7b, 0x32, 0x88, 0x77,
-	0x04, 0xc2, 0xa8, 0x4e, 0x60, 0x40, 0xe1, 0x73, 0x0d, 0xe4, 0x1c, 0xc2, 0xa4, 0x11, 0x91, 0x6d,
-	0xdc, 0x17, 0xc0, 0x38, 0x8f, 0x00, 0xbf, 0x51, 0xc0, 0x44, 0x40, 0xef, 0xf0, 0xb5, 0x74, 0x94,
-	0xc9, 0xab, 0xa2, 0xae, 0x67, 0xb4, 0x0e, 0x50, 0xa1, 0xca, 0x57, 0xf7, 0x7f, 0x7d, 0xff, 0x02,
-	0xc1, 0xb2, 0x1e, 0x5a, 0xf7, 0x3f, 0x22, 0xf7, 0x0f, 0xfe, 0xa4, 0x80, 0x42, 0xe4, 0x18, 0xc0,
-	0xcd, 0x21, 0xa9, 0x06, 0x5d, 0x20, 0xf5, 0xf5, 0xd1, 0x9c, 0x04, 0xcc, 0x3d, 0x0e, 0xf3, 0x2d,
-	0xf8, 0x66, 0x3a, 0x4c, 0x3e, 0xa6, 0x7a, 0x97, 0x90, 0x4e, 0xdd, 0x76, 0xdb, 0x44, 0xbf, 0x8a,
-	0x2d, 0xed, 0x35, 0xbc, 0x09, 0x2b, 0x08, 0xd9, 0x3f, 0x5b, 0x05, 0xb1, 0xdb, 0x94, 0xad, 0x82,
-	0xf8, 0xcd, 0x42, 0x55, 0x5e, 0xc1, 0x1a, 0x5c, 0x19, 0x56, 0x81, 0xed, 0x63, 0xa7, 0xde, 0x61,
-	0xe8, 0xfe, 0x50, 0x40, 0x5e, 0x22, 0x7e, 0x58, 0xcd, 0x92, 0x38, 0x72, 0xc2, 0xd4, 0x8d, 0x51,
-	0x5c, 0x04, 0xd2, 0x36, 0x47, 0xfa, 0x29, 0xfc, 0x64, 0x18, 0xd2, 0x60, 0x75, 0x45, 0xa3, 0xa5,
-	0x63, 0x78, 0x9d, 0xec, 0xbd, 0x90, 0x48, 0xbc, 0x78, 0x0d, 0x7f, 0x53, 0xc0, 0x4c, 0x9c, 0xdf,
-	0xe1, 0x76, 0x36, 0xc0, 0xf1, 0xe3, 0xa3, 0xbe, 0x31, 0xb2, 0x9f, 0xa8, 0xf6, 0x84, 0x57, 0xfb,
-	0x3e, 0x3c, 0x1c, 0x5e, 0x2d, 0x73, 0xae, 0xf3, 0x43, 0xa3, 0x5f, 0xf5, 0xfe, 0xb1, 0x5c, 0xf8,
-	0x4b, 0x7f, 0x74, 0xcc, 0x2b, 0xeb, 0xe8, 0xa4, 0x7b, 0x95, 0x75, 0x74, 0xf2, 0x3d, 0x41, 0x26,
-	0x2f, 0xe6, 0x63, 0xf8, 0x61, 0xb6, 0x62, 0x86, 0x95, 0x31, 0x68, 0x6a, 0x3f, 0x2b, 0x60, 0x3a,
-	0x46, 0xfb, 0x70, 0x2b, 0x3b, 0x54, 0xf9, 0x21, 0x6d, 0x8f, 0xea, 0x26, 0xaa, 0x3c, 0xe6, 0x55,
-	0xbe, 0x07, 0x0f, 0x32, 0x8e, 0x8c, 0x3d, 0xa6, 0xa1, 0x13, 0xbb, 0x91, 0xe9, 0x2d, 0x3b, 0x39,
-	0xc4, 0xee, 0x50, 0x76, 0x7a, 0xfb, 0x77, 0xe4, 0xc0, 0xe9, 0x8d, 0x93, 0xc3, 0x8f, 0x0a, 0x98,
-	0x92, 0xef, 0x0c, 0x1c, 0xb6, 0x2f, 0x03, 0x0e, 0x96, 0xba, 0x39, 0x92, 0x8f, 0x00, 0xab, 0x73,
-	0xb0, 0x2b, 0x70, 0x39, 0x1d, 0x6c, 0x78, 0xd4, 0x38, 0xd4, 0xdd, 0xfd, 0xdb, 0xc7, 0x92, 0x72,
-	0xf7, 0x58, 0x52, 0xfe, 0x7c, 0x2c, 0x29, 0xdf, 0x3e, 0x95, 0x72, 0x77, 0x4f, 0xa5, 0xdc, 0xaf,
-	0x4f, 0xa5, 0xdc, 0x47, 0x6b, 0xd2, 0x2f, 0xd1, 0x64, 0xb0, 0x8b, 0x30, 0x1c, 0xff, 0x49, 0xda,
-	0x98, 0xe0, 0x7f, 0x4c, 0x6d, 0xfe, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x7e, 0xbc, 0x33, 0xb3, 0x26,
-	0x0e, 0x00, 0x00,
+	// 1105 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x57, 0xcf, 0x6f, 0xdc, 0xc4,
+	0x17, 0x8f, 0xdb, 0x6f, 0x23, 0xe5, 0xe5, 0x1b, 0x12, 0x4d, 0x22, 0x48, 0xdd, 0x76, 0xb3, 0x0c,
+	0x02, 0xda, 0x86, 0xd8, 0x4d, 0x42, 0x43, 0x89, 0x10, 0x52, 0x13, 0x71, 0x08, 0x6d, 0x21, 0x75,
+	0xa8, 0x84, 0x2a, 0xa1, 0xc5, 0xbb, 0x3b, 0x71, 0xad, 0xec, 0x7a, 0xb6, 0x1e, 0x6f, 0x49, 0x55,
+	0xe5, 0xc2, 0x91, 0x4b, 0x91, 0x38, 0xf1, 0x47, 0xf4, 0xc8, 0x15, 0x89, 0x0b, 0xea, 0xb1, 0x12,
+	0x08, 0x55, 0x20, 0x55, 0x28, 0xe1, 0xc0, 0x9f, 0x81, 0x3c, 0xf3, 0x9c, 0x1d, 0xdb, 0xeb, 0xda,
+	0x1b, 0xf5, 0xb4, 0xde, 0x37, 0xef, 0xc7, 0xe7, 0xfd, 0x98, 0xf7, 0xb1, 0x81, 0x74, 0xfd, 0xc0,
+	0x0f, 0x3c, 0xfb, 0x7e, 0x9f, 0x85, 0x0f, 0xad, 0x5e, 0xc8, 0x23, 0x4e, 0xe6, 0x45, 0xe4, 0xee,
+	0xfa, 0xf7, 0xfa, 0x4d, 0xeb, 0xf8, 0x41, 0x69, 0x99, 0x73, 0x1e, 0xf7, 0xb8, 0x54, 0xb2, 0xe3,
+	0x27, 0xa5, 0x6f, 0x9e, 0xf7, 0x38, 0xf7, 0x3a, 0xcc, 0x76, 0x7b, 0xbe, 0xed, 0x06, 0x01, 0x8f,
+	0xdc, 0xc8, 0xe7, 0x81, 0xc0, 0xd3, 0xcb, 0x2d, 0x2e, 0xba, 0x5c, 0xd8, 0x4d, 0x57, 0x30, 0x15,
+	0xc6, 0x7e, 0xb0, 0xdc, 0x64, 0x91, 0xbb, 0x6c, 0xf7, 0x5c, 0xcf, 0x0f, 0xa4, 0x32, 0xea, 0xce,
+	0x22, 0x9a, 0x9e, 0x1b, 0xba, 0x5d, 0x91, 0x11, 0x76, 0x79, 0x9b, 0x75, 0x12, 0x61, 0x4d, 0xf7,
+	0x9a, 0xf8, 0x6b, 0x71, 0x1f, 0x3d, 0xd1, 0x39, 0x20, 0xb7, 0xe3, 0x58, 0xdb, 0xd2, 0x93, 0xc3,
+	0xee, 0xf7, 0x99, 0x88, 0xe8, 0x1d, 0x98, 0x4d, 0x49, 0x45, 0x8f, 0x07, 0x82, 0x91, 0x8f, 0x61,
+	0x5c, 0x45, 0x9c, 0x37, 0xea, 0xc6, 0xc5, 0xc9, 0x95, 0xba, 0x55, 0x54, 0x01, 0x4b, 0x59, 0x6e,
+	0xfc, 0xef, 0xe9, 0x8b, 0x85, 0x31, 0x07, 0xad, 0xe8, 0x26, 0x9c, 0x95, 0x6e, 0x77, 0x22, 0x77,
+	0x8f, 0x6d, 0x73, 0xde, 0xd9, 0x0a, 0x76, 0x39, 0xc6, 0x24, 0xef, 0xc0, 0x6b, 0x62, 0x20, 0x6f,
+	0xb3, 0x7d, 0x19, 0x64, 0xca, 0xc9, 0x48, 0x69, 0x03, 0xcc, 0x61, 0x4e, 0x10, 0xe2, 0x75, 0x98,
+	0x38, 0xd6, 0x47, 0x94, 0x6f, 0x15, 0xa3, 0x3c, 0xf6, 0xe1, 0x0c, 0xac, 0xe8, 0x39, 0x1d, 0xe5,
+	0x56, 0xc4, 0xba, 0x37, 0x7d, 0x11, 0x25, 0x95, 0xf1, 0xf4, 0xe8, 0x83, 0x43, 0x8c, 0xbe, 0x05,
+	0x53, 0x42, 0x3f, 0x98, 0x37, 0xea, 0xa7, 0x2b, 0x20, 0x88, 0xd5, 0x9d, 0xb4, 0x25, 0xfd, 0xd1,
+	0x80, 0x37, 0x06, 0x91, 0x1c, 0xf6, 0x8d, 0x1b, 0xb6, 0x93, 0x52, 0x5d, 0x86, 0x19, 0xa9, 0x7c,
+	0x47, 0xb0, 0xf0, 0x7a, 0xbb, 0x1d, 0x32, 0xa1, 0x3a, 0x32, 0xe1, 0xe4, 0xe4, 0x43, 0xca, 0x7a,
+	0x6a, 0x58, 0x59, 0x8f, 0x7d, 0x3a, 0xac, 0xc5, 0xc3, 0xb6, 0xd2, 0x3c, 0x2d, 0x35, 0x73, 0x72,
+	0xfa, 0x9d, 0x01, 0xf3, 0x79, 0x6c, 0x58, 0x83, 0x00, 0xfe, 0x1f, 0x4a, 0xc9, 0x17, 0x7c, 0x8f,
+	0x05, 0x02, 0x4b, 0x70, 0xd6, 0x52, 0x83, 0x68, 0xc5, 0x83, 0x68, 0xe1, 0x20, 0x5a, 0x9b, 0xdc,
+	0x0f, 0x36, 0xec, 0x78, 0x46, 0xfe, 0x7c, 0xb1, 0xf0, 0xae, 0xe7, 0x47, 0x71, 0x65, 0x5a, 0xbc,
+	0x6b, 0xe3, 0xd4, 0xaa, 0x9f, 0x25, 0xd1, 0xde, 0xb3, 0xa3, 0x87, 0x3d, 0x26, 0xa4, 0x81, 0x93,
+	0xf2, 0x4f, 0xef, 0xc1, 0x79, 0x1d, 0x4b, 0x8c, 0x72, 0x93, 0xf7, 0x83, 0xa4, 0x63, 0xa4, 0x0e,
+	0x93, 0xfd, 0x5c, 0x9d, 0x74, 0x51, 0xd5, 0x12, 0xd1, 0xab, 0x70, 0xa1, 0x20, 0x12, 0xa6, 0x3e,
+	0x07, 0x67, 0x5a, 0xb1, 0x00, 0x27, 0x57, 0xfd, 0xa1, 0x8f, 0x33, 0x9d, 0x8c, 0xed, 0x5e, 0x39,
+	0xb8, 0x91, 0xfa, 0xe7, 0xa5, 0xdb, 0xa7, 0x00, 0x61, 0x0e, 0x37, 0x60, 0x52, 0xd3, 0xc7, 0x2b,
+	0x74, 0xa9, 0x78, 0x80, 0xe3, 0x59, 0xd3, 0xfd, 0xe8, 0xd6, 0xd4, 0x83, 0x73, 0xd9, 0x40, 0xda,
+	0x65, 0x7a, 0x85, 0xad, 0x11, 0xf9, 0x21, 0x48, 0x5d, 0xcc, 0x1d, 0x98, 0x16, 0xe9, 0x23, 0x9c,
+	0xcb, 0x11, 0x32, 0xcb, 0x7a, 0x48, 0x2f, 0x8a, 0x18, 0x4b, 0xe1, 0xa2, 0x18, 0x1c, 0x66, 0x16,
+	0x45, 0x72, 0x50, 0x71, 0x51, 0xc8, 0x55, 0x95, 0xb6, 0xa4, 0x75, 0xa8, 0xc9, 0x40, 0xb7, 0xa4,
+	0xde, 0x76, 0xc8, 0x1f, 0xf8, 0x6d, 0x16, 0xea, 0x50, 0x6e, 0xc3, 0x42, 0xa1, 0x06, 0xe2, 0xb1,
+	0x12, 0x82, 0xd3, 0x4f, 0x25, 0xa8, 0x09, 0x67, 0xc8, 0x09, 0xbd, 0x80, 0x8d, 0x75, 0x06, 0x37,
+	0x51, 0x8f, 0xc8, 0xb1, 0x1d, 0xb9, 0x63, 0x0c, 0xf7, 0x39, 0x4c, 0x87, 0xe9, 0x23, 0x2c, 0xc0,
+	0xdb, 0xc5, 0x05, 0xd0, 0x7c, 0x39, 0x59, 0x6b, 0xfa, 0x66, 0x92, 0xa2, 0xbb, 0xaf, 0xf4, 0xe2,
+	0xf2, 0x7c, 0xd6, 0xef, 0x36, 0x59, 0x98, 0x60, 0x5a, 0x87, 0x7a, 0xb1, 0x0a, 0xe2, 0x7a, 0x1d,
+	0xc6, 0x03, 0x29, 0xc1, 0x1b, 0x8c, 0xff, 0x56, 0xfe, 0x9d, 0x81, 0x33, 0xd2, 0x98, 0x3c, 0x36,
+	0x60, 0x5c, 0x71, 0x1b, 0x79, 0xaf, 0x18, 0x6b, 0x9e, 0x52, 0xcd, 0xa5, 0x8a, 0xda, 0x0a, 0x09,
+	0xbd, 0xf8, 0xed, 0x6f, 0xff, 0xfc, 0x70, 0x8a, 0x92, 0xba, 0x9d, 0x68, 0x0f, 0x1e, 0x52, 0xe4,
+	0x4f, 0x7e, 0x36, 0x60, 0x2a, 0xc5, 0x85, 0x64, 0xb5, 0x24, 0xd4, 0x30, 0xfa, 0x35, 0xdf, 0x1f,
+	0xcd, 0x08, 0x61, 0x6e, 0x48, 0x98, 0x1f, 0x91, 0xf5, 0x62, 0x98, 0x72, 0x5a, 0x1b, 0x3d, 0xce,
+	0x3b, 0x0d, 0x3f, 0xd8, 0xe5, 0xf6, 0xa3, 0xf4, 0xd5, 0x3d, 0x20, 0x4f, 0x92, 0x04, 0x12, 0xee,
+	0xab, 0x96, 0x40, 0x86, 0x99, 0xab, 0x25, 0x90, 0x65, 0x6c, 0xba, 0x2c, 0x13, 0x58, 0x24, 0x97,
+	0xca, 0x12, 0xf0, 0x23, 0xd6, 0x6d, 0x74, 0x62, 0x74, 0x7f, 0x19, 0x30, 0xa9, 0x11, 0x1f, 0x59,
+	0xae, 0x12, 0x38, 0x45, 0xe0, 0xe6, 0xca, 0x28, 0x26, 0x88, 0x94, 0x49, 0xa4, 0x0d, 0xf2, 0x55,
+	0x19, 0x52, 0x75, 0x37, 0xb0, 0xce, 0xda, 0xab, 0xc0, 0x41, 0xae, 0xf4, 0x28, 0xd0, 0xa8, 0xe1,
+	0x80, 0x3c, 0x37, 0x60, 0x26, 0x4b, 0x70, 0x64, 0xad, 0x1a, 0xde, 0x2c, 0xf7, 0x9a, 0x1f, 0x8c,
+	0x6c, 0x87, 0xc9, 0xee, 0xc8, 0x64, 0x6f, 0x91, 0x1b, 0xe5, 0xc9, 0xc6, 0xc6, 0x0d, 0xc9, 0xb4,
+	0xf6, 0xa3, 0xfe, 0xcb, 0xb2, 0x25, 0x7f, 0x0c, 0x1a, 0x17, 0x1b, 0x55, 0x6d, 0x9c, 0xc6, 0xd7,
+	0x55, 0x1b, 0xa7, 0x33, 0x2a, 0xfd, 0x5a, 0xe6, 0x72, 0x97, 0x7c, 0x59, 0x2d, 0x97, 0x92, 0x2c,
+	0x86, 0xf5, 0xec, 0x77, 0x03, 0xa6, 0x33, 0xcc, 0x47, 0xae, 0x56, 0x47, 0xaa, 0xdf, 0xa2, 0xb5,
+	0x51, 0xcd, 0x30, 0x49, 0x47, 0x26, 0x79, 0x93, 0x7c, 0x5a, 0xb1, 0x61, 0xf1, 0x4d, 0x2a, 0xeb,
+	0xd7, 0x13, 0x7d, 0xb3, 0x55, 0x5f, 0x0c, 0x19, 0x26, 0xae, 0xbe, 0xd9, 0x4e, 0xb6, 0x18, 0xe4,
+	0x66, 0x93, 0x8b, 0xe1, 0x17, 0x03, 0x48, 0x9e, 0x63, 0xc9, 0xb5, 0x92, 0xf8, 0x85, 0xc4, 0x6d,
+	0x7e, 0x78, 0x02, 0x4b, 0x84, 0xbf, 0x26, 0xe1, 0x5f, 0x21, 0x56, 0x31, 0x7c, 0xf5, 0xd3, 0xe8,
+	0xa1, 0xb9, 0xca, 0xe1, 0x27, 0x03, 0xa6, 0x33, 0xac, 0x5d, 0x3a, 0x4a, 0xc3, 0x5f, 0x02, 0x4a,
+	0x47, 0xa9, 0xe0, 0xe5, 0x80, 0xae, 0x4a, 0xe8, 0x4b, 0x64, 0xb1, 0x18, 0xba, 0x5a, 0x71, 0x8d,
+	0x28, 0xb6, 0x55, 0xb8, 0x7f, 0x35, 0x60, 0x76, 0x08, 0xb3, 0x93, 0xd2, 0x12, 0x16, 0xbe, 0x30,
+	0x98, 0xeb, 0x27, 0x31, 0xc5, 0x1c, 0xae, 0xc9, 0x1c, 0x56, 0xc8, 0x95, 0x97, 0x94, 0xdf, 0xdd,
+	0xc7, 0x55, 0xad, 0x46, 0x48, 0xbd, 0x6a, 0x6c, 0x7c, 0xf2, 0xf4, 0xb0, 0x66, 0x3c, 0x3b, 0xac,
+	0x19, 0x7f, 0x1f, 0xd6, 0x8c, 0xef, 0x8f, 0x6a, 0x63, 0xcf, 0x8e, 0x6a, 0x63, 0xcf, 0x8f, 0x6a,
+	0x63, 0x77, 0x17, 0xb5, 0xef, 0xa3, 0xbc, 0xd7, 0xfd, 0xc4, 0xaf, 0xfc, 0x50, 0x6a, 0x8e, 0xcb,
+	0xcf, 0xfb, 0xd5, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0x9b, 0x80, 0xe9, 0x03, 0xb8, 0x10, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -952,8 +1125,12 @@ type QueryClient interface {
 	StakeRecordList(ctx context.Context, in *QueryStakeRecordListRequest, opts ...grpc.CallOption) (*QueryStakeRecordListResponse, error)
 	// Queries a list of StakePoolList items.
 	StakePoolList(ctx context.Context, in *QueryStakePoolListRequest, opts ...grpc.CallOption) (*QueryStakePoolListResponse, error)
-	// Queries a list of RewarderList items.
-	RewarderList(ctx context.Context, in *QueryRewarderListRequest, opts ...grpc.CallOption) (*QueryRewarderListResponse, error)
+	// Queries a list of MiningProviderList items.
+	MiningProviderList(ctx context.Context, in *QueryMiningProviderListRequest, opts ...grpc.CallOption) (*QueryMiningProviderListResponse, error)
+	// Queries a list of RewardTokenList items.
+	RewardTokenList(ctx context.Context, in *QueryRewardTokenListRequest, opts ...grpc.CallOption) (*QueryRewardTokenListResponse, error)
+	// Queries a list of MaxRewardPoolNumber items.
+	MaxRewardPoolNumber(ctx context.Context, in *QueryMaxRewardPoolNumberRequest, opts ...grpc.CallOption) (*QueryMaxRewardPoolNumberResponse, error)
 }
 
 type queryClient struct {
@@ -1036,9 +1213,27 @@ func (c *queryClient) StakePoolList(ctx context.Context, in *QueryStakePoolListR
 	return out, nil
 }
 
-func (c *queryClient) RewarderList(ctx context.Context, in *QueryRewarderListRequest, opts ...grpc.CallOption) (*QueryRewarderListResponse, error) {
-	out := new(QueryRewarderListResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.mining.Query/RewarderList", in, out, opts...)
+func (c *queryClient) MiningProviderList(ctx context.Context, in *QueryMiningProviderListRequest, opts ...grpc.CallOption) (*QueryMiningProviderListResponse, error) {
+	out := new(QueryMiningProviderListResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.mining.Query/MiningProviderList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) RewardTokenList(ctx context.Context, in *QueryRewardTokenListRequest, opts ...grpc.CallOption) (*QueryRewardTokenListResponse, error) {
+	out := new(QueryRewardTokenListResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.mining.Query/RewardTokenList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) MaxRewardPoolNumber(ctx context.Context, in *QueryMaxRewardPoolNumberRequest, opts ...grpc.CallOption) (*QueryMaxRewardPoolNumberResponse, error) {
+	out := new(QueryMaxRewardPoolNumberResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.mining.Query/MaxRewardPoolNumber", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1063,8 +1258,12 @@ type QueryServer interface {
 	StakeRecordList(context.Context, *QueryStakeRecordListRequest) (*QueryStakeRecordListResponse, error)
 	// Queries a list of StakePoolList items.
 	StakePoolList(context.Context, *QueryStakePoolListRequest) (*QueryStakePoolListResponse, error)
-	// Queries a list of RewarderList items.
-	RewarderList(context.Context, *QueryRewarderListRequest) (*QueryRewarderListResponse, error)
+	// Queries a list of MiningProviderList items.
+	MiningProviderList(context.Context, *QueryMiningProviderListRequest) (*QueryMiningProviderListResponse, error)
+	// Queries a list of RewardTokenList items.
+	RewardTokenList(context.Context, *QueryRewardTokenListRequest) (*QueryRewardTokenListResponse, error)
+	// Queries a list of MaxRewardPoolNumber items.
+	MaxRewardPoolNumber(context.Context, *QueryMaxRewardPoolNumberRequest) (*QueryMaxRewardPoolNumberResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -1095,8 +1294,14 @@ func (*UnimplementedQueryServer) StakeRecordList(ctx context.Context, req *Query
 func (*UnimplementedQueryServer) StakePoolList(ctx context.Context, req *QueryStakePoolListRequest) (*QueryStakePoolListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StakePoolList not implemented")
 }
-func (*UnimplementedQueryServer) RewarderList(ctx context.Context, req *QueryRewarderListRequest) (*QueryRewarderListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RewarderList not implemented")
+func (*UnimplementedQueryServer) MiningProviderList(ctx context.Context, req *QueryMiningProviderListRequest) (*QueryMiningProviderListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MiningProviderList not implemented")
+}
+func (*UnimplementedQueryServer) RewardTokenList(ctx context.Context, req *QueryRewardTokenListRequest) (*QueryRewardTokenListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RewardTokenList not implemented")
+}
+func (*UnimplementedQueryServer) MaxRewardPoolNumber(ctx context.Context, req *QueryMaxRewardPoolNumberRequest) (*QueryMaxRewardPoolNumberResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MaxRewardPoolNumber not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -1247,20 +1452,56 @@ func _Query_StakePoolList_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_RewarderList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryRewarderListRequest)
+func _Query_MiningProviderList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryMiningProviderListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).RewarderList(ctx, in)
+		return srv.(QueryServer).MiningProviderList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafihub.stafihub.mining.Query/RewarderList",
+		FullMethod: "/stafihub.stafihub.mining.Query/MiningProviderList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).RewarderList(ctx, req.(*QueryRewarderListRequest))
+		return srv.(QueryServer).MiningProviderList(ctx, req.(*QueryMiningProviderListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_RewardTokenList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryRewardTokenListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).RewardTokenList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.mining.Query/RewardTokenList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).RewardTokenList(ctx, req.(*QueryRewardTokenListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_MaxRewardPoolNumber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryMaxRewardPoolNumberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).MaxRewardPoolNumber(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.mining.Query/MaxRewardPoolNumber",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).MaxRewardPoolNumber(ctx, req.(*QueryMaxRewardPoolNumberRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1302,8 +1543,16 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_StakePoolList_Handler,
 		},
 		{
-			MethodName: "RewarderList",
-			Handler:    _Query_RewarderList_Handler,
+			MethodName: "MiningProviderList",
+			Handler:    _Query_MiningProviderList_Handler,
+		},
+		{
+			MethodName: "RewardTokenList",
+			Handler:    _Query_RewardTokenList_Handler,
+		},
+		{
+			MethodName: "MaxRewardPoolNumber",
+			Handler:    _Query_MaxRewardPoolNumber_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1386,12 +1635,10 @@ func (m *QueryStakePoolInfoRequest) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	_ = i
 	var l int
 	_ = l
-	if len(m.StakeTokenDenom) > 0 {
-		i -= len(m.StakeTokenDenom)
-		copy(dAtA[i:], m.StakeTokenDenom)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.StakeTokenDenom)))
+	if m.StakePoolIndex != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.StakePoolIndex))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -1516,12 +1763,10 @@ func (m *QueryStakeRewardRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.StakeTokenDenom) > 0 {
-		i -= len(m.StakeTokenDenom)
-		copy(dAtA[i:], m.StakeTokenDenom)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.StakeTokenDenom)))
+	if m.StakePoolIndex != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.StakePoolIndex))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.StakeUserAddress) > 0 {
 		i -= len(m.StakeUserAddress)
@@ -1590,12 +1835,10 @@ func (m *QueryStakeRecordCountRequest) MarshalToSizedBuffer(dAtA []byte) (int, e
 	_ = i
 	var l int
 	_ = l
-	if len(m.StakeTokenDenom) > 0 {
-		i -= len(m.StakeTokenDenom)
-		copy(dAtA[i:], m.StakeTokenDenom)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.StakeTokenDenom)))
+	if m.StakePoolIndex != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.StakePoolIndex))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.UserAddress) > 0 {
 		i -= len(m.UserAddress)
@@ -1660,12 +1903,10 @@ func (m *QueryStakeRecordRequest) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.StakeTokenDenom) > 0 {
-		i -= len(m.StakeTokenDenom)
-		copy(dAtA[i:], m.StakeTokenDenom)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.StakeTokenDenom)))
+	if m.StakePoolIndex != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.StakePoolIndex))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.UserAddress) > 0 {
 		i -= len(m.UserAddress)
@@ -1732,12 +1973,10 @@ func (m *QueryStakeRecordListRequest) MarshalToSizedBuffer(dAtA []byte) (int, er
 	_ = i
 	var l int
 	_ = l
-	if len(m.StakeTokenDenom) > 0 {
-		i -= len(m.StakeTokenDenom)
-		copy(dAtA[i:], m.StakeTokenDenom)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.StakeTokenDenom)))
+	if m.StakePoolIndex != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.StakePoolIndex))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.UserAddress) > 0 {
 		i -= len(m.UserAddress)
@@ -1846,7 +2085,7 @@ func (m *QueryStakePoolListResponse) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRewarderListRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryMiningProviderListRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1856,12 +2095,12 @@ func (m *QueryRewarderListRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRewarderListRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryMiningProviderListRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRewarderListRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryMiningProviderListRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1869,7 +2108,7 @@ func (m *QueryRewarderListRequest) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryRewarderListResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryMiningProviderListResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1879,24 +2118,135 @@ func (m *QueryRewarderListResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryRewarderListResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryMiningProviderListResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryRewarderListResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryMiningProviderListResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.RewarderList) > 0 {
-		for iNdEx := len(m.RewarderList) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.RewarderList[iNdEx])
-			copy(dAtA[i:], m.RewarderList[iNdEx])
-			i = encodeVarintQuery(dAtA, i, uint64(len(m.RewarderList[iNdEx])))
+	if len(m.MiningProviderList) > 0 {
+		for iNdEx := len(m.MiningProviderList) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.MiningProviderList[iNdEx])
+			copy(dAtA[i:], m.MiningProviderList[iNdEx])
+			i = encodeVarintQuery(dAtA, i, uint64(len(m.MiningProviderList[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryRewardTokenListRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryRewardTokenListRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryRewardTokenListRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryRewardTokenListResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryRewardTokenListResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryRewardTokenListResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.RewardTokenList) > 0 {
+		for iNdEx := len(m.RewardTokenList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.RewardTokenList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryMaxRewardPoolNumberRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryMaxRewardPoolNumberRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryMaxRewardPoolNumberRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryMaxRewardPoolNumberResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryMaxRewardPoolNumberResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryMaxRewardPoolNumberResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Number != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Number))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -1938,9 +2288,8 @@ func (m *QueryStakePoolInfoRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.StakeTokenDenom)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
+	if m.StakePoolIndex != 0 {
+		n += 1 + sovQuery(uint64(m.StakePoolIndex))
 	}
 	return n
 }
@@ -1992,9 +2341,8 @@ func (m *QueryStakeRewardRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	l = len(m.StakeTokenDenom)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
+	if m.StakePoolIndex != 0 {
+		n += 1 + sovQuery(uint64(m.StakePoolIndex))
 	}
 	if m.StakeRecordIndex != 0 {
 		n += 1 + sovQuery(uint64(m.StakeRecordIndex))
@@ -2027,9 +2375,8 @@ func (m *QueryStakeRecordCountRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	l = len(m.StakeTokenDenom)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
+	if m.StakePoolIndex != 0 {
+		n += 1 + sovQuery(uint64(m.StakePoolIndex))
 	}
 	return n
 }
@@ -2056,9 +2403,8 @@ func (m *QueryStakeRecordRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	l = len(m.StakeTokenDenom)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
+	if m.StakePoolIndex != 0 {
+		n += 1 + sovQuery(uint64(m.StakePoolIndex))
 	}
 	if m.StakeRecordIndex != 0 {
 		n += 1 + sovQuery(uint64(m.StakeRecordIndex))
@@ -2089,9 +2435,8 @@ func (m *QueryStakeRecordListRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	l = len(m.StakeTokenDenom)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
+	if m.StakePoolIndex != 0 {
+		n += 1 + sovQuery(uint64(m.StakePoolIndex))
 	}
 	return n
 }
@@ -2135,7 +2480,7 @@ func (m *QueryStakePoolListResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryRewarderListRequest) Size() (n int) {
+func (m *QueryMiningProviderListRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2144,17 +2489,62 @@ func (m *QueryRewarderListRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryRewarderListResponse) Size() (n int) {
+func (m *QueryMiningProviderListResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.RewarderList) > 0 {
-		for _, s := range m.RewarderList {
+	if len(m.MiningProviderList) > 0 {
+		for _, s := range m.MiningProviderList {
 			l = len(s)
 			n += 1 + l + sovQuery(uint64(l))
 		}
+	}
+	return n
+}
+
+func (m *QueryRewardTokenListRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryRewardTokenListResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.RewardTokenList) > 0 {
+		for _, e := range m.RewardTokenList {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *QueryMaxRewardPoolNumberRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryMaxRewardPoolNumberResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Number != 0 {
+		n += 1 + sovQuery(uint64(m.Number))
 	}
 	return n
 }
@@ -2328,10 +2718,10 @@ func (m *QueryStakePoolInfoRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakePoolIndex", wireType)
 			}
-			var stringLen uint64
+			m.StakePoolIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -2341,24 +2731,11 @@ func (m *QueryStakePoolInfoRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.StakePoolIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -2662,10 +3039,10 @@ func (m *QueryStakeRewardRequest) Unmarshal(dAtA []byte) error {
 			m.StakeUserAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakePoolIndex", wireType)
 			}
-			var stringLen uint64
+			m.StakePoolIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -2675,24 +3052,11 @@ func (m *QueryStakeRewardRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.StakePoolIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StakeRecordIndex", wireType)
@@ -2879,10 +3243,10 @@ func (m *QueryStakeRecordCountRequest) Unmarshal(dAtA []byte) error {
 			m.UserAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakePoolIndex", wireType)
 			}
-			var stringLen uint64
+			m.StakePoolIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -2892,24 +3256,11 @@ func (m *QueryStakeRecordCountRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.StakePoolIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -3062,10 +3413,10 @@ func (m *QueryStakeRecordRequest) Unmarshal(dAtA []byte) error {
 			m.UserAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakePoolIndex", wireType)
 			}
-			var stringLen uint64
+			m.StakePoolIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -3075,24 +3426,11 @@ func (m *QueryStakeRecordRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.StakePoolIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StakeRecordIndex", wireType)
@@ -3281,10 +3619,10 @@ func (m *QueryStakeRecordListRequest) Unmarshal(dAtA []byte) error {
 			m.UserAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakePoolIndex", wireType)
 			}
-			var stringLen uint64
+			m.StakePoolIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -3294,24 +3632,11 @@ func (m *QueryStakeRecordListRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.StakePoolIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
@@ -3551,7 +3876,7 @@ func (m *QueryStakePoolListResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRewarderListRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryMiningProviderListRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3574,10 +3899,10 @@ func (m *QueryRewarderListRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRewarderListRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryMiningProviderListRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRewarderListRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryMiningProviderListRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3601,7 +3926,7 @@ func (m *QueryRewarderListRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryRewarderListResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryMiningProviderListResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3624,15 +3949,15 @@ func (m *QueryRewarderListResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryRewarderListResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryMiningProviderListResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryRewarderListResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryMiningProviderListResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RewarderList", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MiningProviderList", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -3660,8 +3985,261 @@ func (m *QueryRewarderListResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RewarderList = append(m.RewarderList, string(dAtA[iNdEx:postIndex]))
+			m.MiningProviderList = append(m.MiningProviderList, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryRewardTokenListRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryRewardTokenListRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryRewardTokenListRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryRewardTokenListResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryRewardTokenListResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryRewardTokenListResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RewardTokenList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RewardTokenList = append(m.RewardTokenList, &RewardToken{})
+			if err := m.RewardTokenList[len(m.RewardTokenList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryMaxRewardPoolNumberRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryMaxRewardPoolNumberRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryMaxRewardPoolNumberRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryMaxRewardPoolNumberResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryMaxRewardPoolNumberResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryMaxRewardPoolNumberResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Number", wireType)
+			}
+			m.Number = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Number |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])

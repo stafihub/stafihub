@@ -19,7 +19,7 @@ service Query {
   }
   // Queries a list of StakePoolInfo items.
 	rpc StakePoolInfo(QueryStakePoolInfoRequest) returns (QueryStakePoolInfoResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_info/{stakeTokenDenom}";
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_info/{stakePoolIndex}";
 	}
 
 // Queries a list of StakeItemList items.
@@ -29,22 +29,22 @@ service Query {
 
 // Queries a list of StakeReward items.
 	rpc StakeReward(QueryStakeRewardRequest) returns (QueryStakeRewardResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/mining/stake_reward/{stakeUserAddress}/{stakeTokenDenom}/{stakeRecordIndex}";
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_reward/{stakeUserAddress}/{stakePoolIndex}/{stakeRecordIndex}";
 	}
 
 // Queries a list of StakeRecordCount items.
 	rpc StakeRecordCount(QueryStakeRecordCountRequest) returns (QueryStakeRecordCountResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_count/{userAddress}/{stakeTokenDenom}";
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_count/{userAddress}/{stakePoolIndex}";
 	}
 
 // Queries a list of StakeRecord items.
 	rpc StakeRecord(QueryStakeRecordRequest) returns (QueryStakeRecordResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record/{userAddress}/{stakeTokenDenom}/{stakeRecordIndex}";
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record/{userAddress}/{stakePoolIndex}/{stakeRecordIndex}";
 	}
 
 // Queries a list of StakeRecordList items.
 	rpc StakeRecordList(QueryStakeRecordListRequest) returns (QueryStakeRecordListResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_list/{userAddress}/{stakeTokenDenom}";
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_list/{userAddress}/{stakePoolIndex}";
 	}
 
 // Queries a list of StakePoolList items.
@@ -52,9 +52,19 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_list";
 	}
 
-// Queries a list of RewarderList items.
-	rpc RewarderList(QueryRewarderListRequest) returns (QueryRewarderListResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/mining/rewarder_list";
+// Queries a list of MiningProviderList items.
+	rpc MiningProviderList(QueryMiningProviderListRequest) returns (QueryMiningProviderListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/mining_provider_list";
+	}
+
+// Queries a list of RewardTokenList items.
+	rpc RewardTokenList(QueryRewardTokenListRequest) returns (QueryRewardTokenListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/reward_token_list";
+	}
+
+// Queries a list of MaxRewardPoolNumber items.
+	rpc MaxRewardPoolNumber(QueryMaxRewardPoolNumberRequest) returns (QueryMaxRewardPoolNumberResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/max_reward_pool_number";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -70,7 +80,7 @@ message QueryParamsResponse {
 }
 
 message QueryStakePoolInfoRequest {
-  string stakeTokenDenom = 1;
+  uint32 stakePoolIndex = 1;
 }
 
 message QueryStakePoolInfoResponse {
@@ -86,7 +96,7 @@ message QueryStakeItemListResponse {
 
 message QueryStakeRewardRequest {
   string stakeUserAddress = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
   uint32 stakeRecordIndex = 3;
 }
 
@@ -96,7 +106,7 @@ message QueryStakeRewardResponse {
 
 message QueryStakeRecordCountRequest {
   string userAddress = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
 }
 
 message QueryStakeRecordCountResponse {
@@ -105,7 +115,7 @@ message QueryStakeRecordCountResponse {
 
 message QueryStakeRecordRequest {
   string userAddress = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
   uint32 stakeRecordIndex = 3;
 }
 
@@ -115,7 +125,7 @@ message QueryStakeRecordResponse {
 
 message QueryStakeRecordListRequest {
   string userAddress = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
 }
 
 message QueryStakeRecordListResponse {
@@ -129,11 +139,25 @@ message QueryStakePoolListResponse {
   repeated StakePool stakePoolList = 1;
 }
 
-message QueryRewarderListRequest {
+message QueryMiningProviderListRequest {
 }
 
-message QueryRewarderListResponse {
-  repeated string rewarderList = 1;
+message QueryMiningProviderListResponse {
+  repeated string miningProviderList = 1;
+}
+
+message QueryRewardTokenListRequest {
+}
+
+message QueryRewardTokenListResponse {
+  repeated RewardToken rewardTokenList = 1;
+}
+
+message QueryMaxRewardPoolNumberRequest {
+}
+
+message QueryMaxRewardPoolNumberResponse {
+  uint32 number = 1;
 }
 
 // this line is used by starport scaffolding # 3

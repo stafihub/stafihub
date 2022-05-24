@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -13,19 +14,16 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdClaimReward() *cobra.Command {
+func CmdAddRewardToken() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "claim-reward [stake-pool-index] [index]",
-		Short: "Claim reward",
+		Use:   "add-reward-token [denom] [min-total-reward-amount]",
+		Short: "Add reward token",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakePoolIndex, err := sdk.ParseUint(args[0])
-			if err != nil {
-				return err
-			}
-			argIndex, err := sdk.ParseUint(args[1])
-			if err != nil {
-				return err
+			argDenom := args[0]
+			argMinTotalRewardAmount, ok := sdk.NewIntFromString(args[1])
+			if !ok {
+				return fmt.Errorf("argMinTotalRewardAmount err")
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -33,10 +31,10 @@ func CmdClaimReward() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgClaimReward(
+			msg := types.NewMsgAddRewardToken(
 				clientCtx.GetFromAddress().String(),
-				uint32(argStakePoolIndex.Uint64()),
-				uint32(argIndex.Uint64()),
+				argDenom,
+				argMinTotalRewardAmount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

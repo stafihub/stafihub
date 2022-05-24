@@ -16,7 +16,7 @@ func (k Keeper) StakeRecord(goCtx context.Context, req *types.QueryStakeRecordRe
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	stakeRecord, found := k.GetUserStakeRecord(ctx, req.UserAddress, req.StakeTokenDenom, req.StakeRecordIndex)
+	stakeRecord, found := k.GetUserStakeRecord(ctx, req.UserAddress, req.StakePoolIndex, req.StakeRecordIndex)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}

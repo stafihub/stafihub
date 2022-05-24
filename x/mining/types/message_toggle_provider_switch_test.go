@@ -8,24 +8,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgRmRewarder_ValidateBasic(t *testing.T) {
+func TestMsgToggleProviderSwitch_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRmRewarder
+		msg  MsgToggleProviderSwitch
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRmRewarder{
-				Creator:     "invalid_address",
-				UserAddress: sample.AccAddress(),
+			msg: MsgToggleProviderSwitch{
+				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRmRewarder{
-				Creator:     sample.AccAddress(),
-				UserAddress: sample.AccAddress(),
+			msg: MsgToggleProviderSwitch{
+				Creator: sample.AccAddress(),
 			},
 		},
 	}

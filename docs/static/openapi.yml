@@ -20629,6 +20629,73 @@ paths:
           type: string
       tags:
         - Query
+  /stafihub/stafihub/mining/max_reward_pool_number:
+    get:
+      summary: Queries a list of MaxRewardPoolNumber items.
+      operationId: StafihubStafihubMiningMaxRewardPoolNumber
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              number:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafihub/stafihub/mining/mining_provider_list:
+    get:
+      summary: Queries a list of MiningProviderList items.
+      operationId: StafihubStafihubMiningMiningProviderList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              miningProviderList:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/mining/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -20665,20 +20732,25 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/mining/rewarder_list:
+  /stafihub/stafihub/mining/reward_token_list:
     get:
-      summary: Queries a list of RewarderList items.
-      operationId: StafihubStafihubMiningRewarderList
+      summary: Queries a list of RewardTokenList items.
+      operationId: StafihubStafihubMiningRewardTokenList
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              rewarderList:
+              rewardTokenList:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  properties:
+                    rewardTokenDenom:
+                      type: string
+                    minTotalRewardAmount:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -20745,7 +20817,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafihub/stafihub/mining/stake_pool_info/{stakeTokenDenom}':
+  '/stafihub/stafihub/mining/stake_pool_info/{stakePoolIndex}':
     get:
       summary: Queries a list of StakePoolInfo items.
       operationId: StafihubStafihubMiningStakePoolInfo
@@ -20758,16 +20830,12 @@ paths:
               stakePool:
                 type: object
                 properties:
+                  index:
+                    type: integer
+                    format: int64
                   stakeTokenDenom:
                     type: string
                     title: staked token denom
-                  maxRewardPools:
-                    type: integer
-                    format: int64
-                    title: subpool number limit
-                  minTotalRewardAmount:
-                    type: string
-                    title: min total reward amount of every reward pool
                   rewardPools:
                     type: array
                     items:
@@ -20816,10 +20884,11 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: stakeTokenDenom
+        - name: stakePoolIndex
           in: path
           required: true
-          type: string
+          type: integer
+          format: int64
       tags:
         - Query
   /stafihub/stafihub/mining/stake_pool_list:
@@ -20837,16 +20906,12 @@ paths:
                 items:
                   type: object
                   properties:
+                    index:
+                      type: integer
+                      format: int64
                     stakeTokenDenom:
                       type: string
                       title: staked token denom
-                    maxRewardPools:
-                      type: integer
-                      format: int64
-                      title: subpool number limit
-                    minTotalRewardAmount:
-                      type: string
-                      title: min total reward amount of every reward pool
                     rewardPools:
                       type: array
                       items:
@@ -20896,7 +20961,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  '/stafihub/stafihub/mining/stake_record/{userAddress}/{stakeTokenDenom}/{stakeRecordIndex}':
+  '/stafihub/stafihub/mining/stake_record/{userAddress}/{stakePoolIndex}/{stakeRecordIndex}':
     get:
       summary: Queries a list of StakeRecord items.
       operationId: StafihubStafihubMiningStakeRecord
@@ -20911,8 +20976,9 @@ paths:
                 properties:
                   userAddress:
                     type: string
-                  stakeTokenDenom:
-                    type: string
+                  stakePoolIndex:
+                    type: integer
+                    format: int64
                   index:
                     type: integer
                     format: int64
@@ -20928,7 +20994,7 @@ paths:
                     type: string
                     format: uint64
                     title: promise not unstake before this timestamp
-                  rewardInfos:
+                  userRewardInfos:
                     type: array
                     items:
                       type: object
@@ -20966,10 +21032,11 @@ paths:
           in: path
           required: true
           type: string
-        - name: stakeTokenDenom
+        - name: stakePoolIndex
           in: path
           required: true
-          type: string
+          type: integer
+          format: int64
         - name: stakeRecordIndex
           in: path
           required: true
@@ -20977,7 +21044,7 @@ paths:
           format: int64
       tags:
         - Query
-  '/stafihub/stafihub/mining/stake_record_count/{userAddress}/{stakeTokenDenom}':
+  '/stafihub/stafihub/mining/stake_record_count/{userAddress}/{stakePoolIndex}':
     get:
       summary: Queries a list of StakeRecordCount items.
       operationId: StafihubStafihubMiningStakeRecordCount
@@ -21013,13 +21080,14 @@ paths:
           in: path
           required: true
           type: string
-        - name: stakeTokenDenom
+        - name: stakePoolIndex
           in: path
           required: true
-          type: string
+          type: integer
+          format: int64
       tags:
         - Query
-  '/stafihub/stafihub/mining/stake_record_list/{userAddress}/{stakeTokenDenom}':
+  '/stafihub/stafihub/mining/stake_record_list/{userAddress}/{stakePoolIndex}':
     get:
       summary: Queries a list of StakeRecordList items.
       operationId: StafihubStafihubMiningStakeRecordList
@@ -21036,8 +21104,9 @@ paths:
                   properties:
                     userAddress:
                       type: string
-                    stakeTokenDenom:
-                      type: string
+                    stakePoolIndex:
+                      type: integer
+                      format: int64
                     index:
                       type: integer
                       format: int64
@@ -21053,7 +21122,7 @@ paths:
                       type: string
                       format: uint64
                       title: promise not unstake before this timestamp
-                    rewardInfos:
+                    userRewardInfos:
                       type: array
                       items:
                         type: object
@@ -21091,13 +21160,14 @@ paths:
           in: path
           required: true
           type: string
-        - name: stakeTokenDenom
+        - name: stakePoolIndex
           in: path
           required: true
-          type: string
+          type: integer
+          format: int64
       tags:
         - Query
-  '/stafihub/stafihub/mining/stake_reward/{stakeUserAddress}/{stakeTokenDenom}/{stakeRecordIndex}':
+  '/stafihub/stafihub/mining/stake_reward/{stakeUserAddress}/{stakePoolIndex}/{stakeRecordIndex}':
     get:
       summary: Queries a list of StakeReward items.
       operationId: StafihubStafihubMiningStakeReward
@@ -21147,10 +21217,11 @@ paths:
           in: path
           required: true
           type: string
-        - name: stakeTokenDenom
+        - name: stakePoolIndex
           in: path
           required: true
-          type: string
+          type: integer
+          format: int64
         - name: stakeRecordIndex
           in: path
           required: true
@@ -38115,9 +38186,11 @@ definitions:
         type: string
       recipient:
         type: string
+  stafihub.stafihub.mining.MsgAddMiningProviderResponse:
+    type: object
   stafihub.stafihub.mining.MsgAddRewardPoolResponse:
     type: object
-  stafihub.stafihub.mining.MsgAddRewarderResponse:
+  stafihub.stafihub.mining.MsgAddRewardTokenResponse:
     type: object
   stafihub.stafihub.mining.MsgAddStakeItemResponse:
     type: object
@@ -38125,21 +38198,38 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgClaimRewardResponse:
     type: object
-  stafihub.stafihub.mining.MsgProvideRewardTokenResponse:
+  stafihub.stafihub.mining.MsgRmMiningProviderResponse:
     type: object
-  stafihub.stafihub.mining.MsgRmRewarderResponse:
+  stafihub.stafihub.mining.MsgRmRewardPoolResponse:
+    type: object
+  stafihub.stafihub.mining.MsgSetMaxRewardPoolNumberResponse:
     type: object
   stafihub.stafihub.mining.MsgStakeResponse:
     type: object
-  stafihub.stafihub.mining.MsgUpdateStakeItemResponse:
+  stafihub.stafihub.mining.MsgToggleProviderSwitchResponse:
     type: object
-  stafihub.stafihub.mining.MsgUpdateStakePoolResponse:
+  stafihub.stafihub.mining.MsgUpdateRewardPoolResponse:
+    type: object
+  stafihub.stafihub.mining.MsgUpdateStakeItemResponse:
     type: object
   stafihub.stafihub.mining.MsgWithdrawResponse:
     type: object
   stafihub.stafihub.mining.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.mining.QueryMaxRewardPoolNumberResponse:
+    type: object
+    properties:
+      number:
+        type: integer
+        format: int64
+  stafihub.stafihub.mining.QueryMiningProviderListResponse:
+    type: object
+    properties:
+      miningProviderList:
+        type: array
+        items:
+          type: string
   stafihub.stafihub.mining.QueryParamsResponse:
     type: object
     properties:
@@ -38147,13 +38237,18 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
-  stafihub.stafihub.mining.QueryRewarderListResponse:
+  stafihub.stafihub.mining.QueryRewardTokenListResponse:
     type: object
     properties:
-      rewarderList:
+      rewardTokenList:
         type: array
         items:
-          type: string
+          type: object
+          properties:
+            rewardTokenDenom:
+              type: string
+            minTotalRewardAmount:
+              type: string
   stafihub.stafihub.mining.QueryStakeItemListResponse:
     type: object
     properties:
@@ -38179,16 +38274,12 @@ definitions:
       stakePool:
         type: object
         properties:
+          index:
+            type: integer
+            format: int64
           stakeTokenDenom:
             type: string
             title: staked token denom
-          maxRewardPools:
-            type: integer
-            format: int64
-            title: subpool number limit
-          minTotalRewardAmount:
-            type: string
-            title: min total reward amount of every reward pool
           rewardPools:
             type: array
             items:
@@ -38226,16 +38317,12 @@ definitions:
         items:
           type: object
           properties:
+            index:
+              type: integer
+              format: int64
             stakeTokenDenom:
               type: string
               title: staked token denom
-            maxRewardPools:
-              type: integer
-              format: int64
-              title: subpool number limit
-            minTotalRewardAmount:
-              type: string
-              title: min total reward amount of every reward pool
             rewardPools:
               type: array
               items:
@@ -38281,8 +38368,9 @@ definitions:
           properties:
             userAddress:
               type: string
-            stakeTokenDenom:
-              type: string
+            stakePoolIndex:
+              type: integer
+              format: int64
             index:
               type: integer
               format: int64
@@ -38298,7 +38386,7 @@ definitions:
               type: string
               format: uint64
               title: promise not unstake before this timestamp
-            rewardInfos:
+            userRewardInfos:
               type: array
               items:
                 type: object
@@ -38321,8 +38409,9 @@ definitions:
         properties:
           userAddress:
             type: string
-          stakeTokenDenom:
-            type: string
+          stakePoolIndex:
+            type: integer
+            format: int64
           index:
             type: integer
             format: int64
@@ -38338,7 +38427,7 @@ definitions:
             type: string
             format: uint64
             title: promise not unstake before this timestamp
-          rewardInfos:
+          userRewardInfos:
             type: array
             items:
               type: object
@@ -38370,16 +38459,6 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
-  stafihub.stafihub.mining.RewardInfo:
-    type: object
-    properties:
-      rewardPoolIndex:
-        type: integer
-        format: int64
-      rewardTokenDenom:
-        type: string
-      rewardDebt:
-        type: string
   stafihub.stafihub.mining.RewardPool:
     type: object
     properties:
@@ -38402,6 +38481,13 @@ definitions:
       lastRewardTimestamp:
         type: string
         format: uint64
+  stafihub.stafihub.mining.RewardToken:
+    type: object
+    properties:
+      rewardTokenDenom:
+        type: string
+      minTotalRewardAmount:
+        type: string
   stafihub.stafihub.mining.StakeItem:
     type: object
     properties:
@@ -38419,16 +38505,12 @@ definitions:
   stafihub.stafihub.mining.StakePool:
     type: object
     properties:
+      index:
+        type: integer
+        format: int64
       stakeTokenDenom:
         type: string
         title: staked token denom
-      maxRewardPools:
-        type: integer
-        format: int64
-        title: subpool number limit
-      minTotalRewardAmount:
-        type: string
-        title: min total reward amount of every reward pool
       rewardPools:
         type: array
         items:
@@ -38458,13 +38540,24 @@ definitions:
         title: total (staked) balance of staked token
       totalStakedPower:
         type: string
+  stafihub.stafihub.mining.UserRewardInfo:
+    type: object
+    properties:
+      rewardPoolIndex:
+        type: integer
+        format: int64
+      rewardTokenDenom:
+        type: string
+      rewardDebt:
+        type: string
   stafihub.stafihub.mining.UserStakeRecord:
     type: object
     properties:
       userAddress:
         type: string
-      stakeTokenDenom:
-        type: string
+      stakePoolIndex:
+        type: integer
+        format: int64
       index:
         type: integer
         format: int64
@@ -38480,7 +38573,7 @@ definitions:
         type: string
         format: uint64
         title: promise not unstake before this timestamp
-      rewardInfos:
+      userRewardInfos:
         type: array
         items:
           type: object

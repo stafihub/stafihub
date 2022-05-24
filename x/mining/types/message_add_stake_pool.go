@@ -11,12 +11,14 @@ const TypeMsgAddStakePool = "add_stake_pool"
 
 var _ sdk.Msg = &MsgAddStakePool{}
 
-func NewMsgAddStakePool(creator string, stakeTokenDenom string, maxRewardPools uint32, minTotalRewardAmount sdk.Int) *MsgAddStakePool {
+func NewMsgAddStakePool(creator string, stakeTokenDenom, rewardTokenDenom string, totalRewardAmount, rewardPerSecond sdk.Int, startTimestamp uint64) *MsgAddStakePool {
 	return &MsgAddStakePool{
-		Creator:              creator,
-		StakeTokenDenom:      stakeTokenDenom,
-		MaxRewardPools:       maxRewardPools,
-		MinTotalRewardAmount: minTotalRewardAmount,
+		Creator:           creator,
+		StakeTokenDenom:   stakeTokenDenom,
+		RewardTokenDenom:  rewardTokenDenom,
+		TotalRewardAmount: totalRewardAmount,
+		RewardPerSecond:   rewardPerSecond,
+		StartTimestamp:    startTimestamp,
 	}
 }
 
@@ -50,8 +52,15 @@ func (msg *MsgAddStakePool) ValidateBasic() error {
 	if err != nil {
 		return err
 	}
-	if msg.MinTotalRewardAmount.IsNegative() {
+	err = sdk.ValidateDenom(msg.RewardTokenDenom)
+	if err != nil {
+		return err
+	}
+	if msg.TotalRewardAmount.IsNegative() {
 		return fmt.Errorf("minTotalRewardAmount is negative")
+	}
+	if msg.RewardPerSecond.IsNegative() {
+		return fmt.Errorf("RewardPerSecond is negative")
 	}
 	return nil
 }

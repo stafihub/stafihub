@@ -14,7 +14,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	if err != nil {
 		return nil, err
 	}
-	userStakeRecord, found := k.Keeper.GetUserStakeRecord(ctx, msg.Creator, msg.StakeToken.Denom, msg.StakeRecordIndex)
+	userStakeRecord, found := k.Keeper.GetUserStakeRecord(ctx, msg.Creator, msg.StakePoolIndex, msg.StakeRecordIndex)
 	if !found {
 		return nil, types.ErrUserStakeRecordNotExist
 	}
@@ -23,7 +23,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		return nil, types.ErrWithdrawAmountMoreThanStakeRecord
 	}
 
-	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakeToken.Denom)
+	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
@@ -68,6 +68,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		sdk.NewEvent(
 			types.EventTypeWithdraw,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
 			sdk.NewAttribute(types.AttributeKeyClaimedTokens, willClaimCoins.String()),
 			sdk.NewAttribute(types.AttributeKeyWithdrawToken, msg.StakeToken.String()),
 			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),

@@ -12,22 +12,20 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdAddRewarder() *cobra.Command {
+func CmdToggleProviderSwitch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-rewarder [user-address]",
-		Short: "Add rewarder",
-		Args:  cobra.ExactArgs(1),
+		Use:   "toggle-provider-switch",
+		Short: "Toggle mining provider switch",
+		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argUserAddress := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgAddRewarder(
+			msg := types.NewMsgToggleProviderSwitch(
 				clientCtx.GetFromAddress().String(),
-				argUserAddress,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -19,7 +19,10 @@ func CmdStakeReward() *cobra.Command {
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
-			reqStakeTokenDenom := args[1]
+			stakePoolIndex, err := sdk.ParseUint(args[1])
+			if err != nil {
+				return err
+			}
 			reqIndex, err := sdk.ParseUint(args[2])
 			if err != nil {
 				return err
@@ -34,7 +37,7 @@ func CmdStakeReward() *cobra.Command {
 
 			params := &types.QueryStakeRewardRequest{
 				StakeUserAddress: reqAddress,
-				StakeTokenDenom:  reqStakeTokenDenom,
+				StakePoolIndex:   uint32(stakePoolIndex.Uint64()),
 				StakeRecordIndex: uint32(reqIndex.Uint64()),
 			}
 

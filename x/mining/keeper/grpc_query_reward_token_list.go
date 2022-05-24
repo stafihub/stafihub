@@ -9,14 +9,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) StakeRecordCount(goCtx context.Context, req *types.QueryStakeRecordCountRequest) (*types.QueryStakeRecordCountResponse, error) {
+func (k Keeper) RewardTokenList(goCtx context.Context, req *types.QueryRewardTokenListRequest) (*types.QueryRewardTokenListResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	return &types.QueryStakeRecordCountResponse{
-		Count: k.GetUserStakeRecordNextIndex(ctx, req.UserAddress, req.StakePoolIndex),
+	return &types.QueryRewardTokenListResponse{
+		RewardTokenList: k.GetRewardTokenList(ctx),
 	}, nil
 }

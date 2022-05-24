@@ -26,16 +26,13 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type StakePool struct {
+	Index uint32 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
 	// staked token denom
-	StakeTokenDenom string `protobuf:"bytes,1,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
-	// subpool number limit
-	MaxRewardPools uint32 `protobuf:"varint,2,opt,name=maxRewardPools,proto3" json:"maxRewardPools,omitempty"`
-	// min total reward amount of every reward pool
-	MinTotalRewardAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=minTotalRewardAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"minTotalRewardAmount"`
-	RewardPools          []*RewardPool                          `protobuf:"bytes,4,rep,name=rewardPools,proto3" json:"rewardPools,omitempty"`
+	StakeTokenDenom string        `protobuf:"bytes,2,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
+	RewardPools     []*RewardPool `protobuf:"bytes,3,rep,name=rewardPools,proto3" json:"rewardPools,omitempty"`
 	// total (staked) balance of staked token
-	TotalStakedAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,5,opt,name=totalStakedAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"totalStakedAmount"`
-	TotalStakedPower  github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,6,opt,name=totalStakedPower,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"totalStakedPower"`
+	TotalStakedAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=totalStakedAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"totalStakedAmount"`
+	TotalStakedPower  github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,5,opt,name=totalStakedPower,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"totalStakedPower"`
 }
 
 func (m *StakePool) Reset()         { *m = StakePool{} }
@@ -71,18 +68,18 @@ func (m *StakePool) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_StakePool proto.InternalMessageInfo
 
+func (m *StakePool) GetIndex() uint32 {
+	if m != nil {
+		return m.Index
+	}
+	return 0
+}
+
 func (m *StakePool) GetStakeTokenDenom() string {
 	if m != nil {
 		return m.StakeTokenDenom
 	}
 	return ""
-}
-
-func (m *StakePool) GetMaxRewardPools() uint32 {
-	if m != nil {
-		return m.MaxRewardPools
-	}
-	return 0
 }
 
 func (m *StakePool) GetRewardPools() []*RewardPool {
@@ -165,17 +162,17 @@ func (m *RewardPool) GetLastRewardTimestamp() uint64 {
 }
 
 type UserStakeRecord struct {
-	UserAddress     string                                 `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
-	StakeTokenDenom string                                 `protobuf:"bytes,2,opt,name=stakeTokenDenom,proto3" json:"stakeTokenDenom,omitempty"`
-	Index           uint32                                 `protobuf:"varint,3,opt,name=index,proto3" json:"index,omitempty"`
-	StakedAmount    github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=stakedAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"stakedAmount"`
-	StakedPower     github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,5,opt,name=stakedPower,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"stakedPower"`
+	UserAddress    string                                 `protobuf:"bytes,1,opt,name=userAddress,proto3" json:"userAddress,omitempty"`
+	StakePoolIndex uint32                                 `protobuf:"varint,2,opt,name=stakePoolIndex,proto3" json:"stakePoolIndex,omitempty"`
+	Index          uint32                                 `protobuf:"varint,3,opt,name=index,proto3" json:"index,omitempty"`
+	StakedAmount   github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,4,opt,name=stakedAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"stakedAmount"`
+	StakedPower    github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,5,opt,name=stakedPower,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"stakedPower"`
 	// the begin timestamp
 	StartTimestamp uint64 `protobuf:"varint,6,opt,name=startTimestamp,proto3" json:"startTimestamp,omitempty"`
 	// promise not unstake before this timestamp
-	EndTimestamp   uint64        `protobuf:"varint,7,opt,name=endTimestamp,proto3" json:"endTimestamp,omitempty"`
-	RewardInfos    []*RewardInfo `protobuf:"bytes,8,rep,name=rewardInfos,proto3" json:"rewardInfos,omitempty"`
-	StakeItemIndex uint32        `protobuf:"varint,9,opt,name=stakeItemIndex,proto3" json:"stakeItemIndex,omitempty"`
+	EndTimestamp    uint64            `protobuf:"varint,7,opt,name=endTimestamp,proto3" json:"endTimestamp,omitempty"`
+	UserRewardInfos []*UserRewardInfo `protobuf:"bytes,8,rep,name=userRewardInfos,proto3" json:"userRewardInfos,omitempty"`
+	StakeItemIndex  uint32            `protobuf:"varint,9,opt,name=stakeItemIndex,proto3" json:"stakeItemIndex,omitempty"`
 }
 
 func (m *UserStakeRecord) Reset()         { *m = UserStakeRecord{} }
@@ -218,11 +215,11 @@ func (m *UserStakeRecord) GetUserAddress() string {
 	return ""
 }
 
-func (m *UserStakeRecord) GetStakeTokenDenom() string {
+func (m *UserStakeRecord) GetStakePoolIndex() uint32 {
 	if m != nil {
-		return m.StakeTokenDenom
+		return m.StakePoolIndex
 	}
-	return ""
+	return 0
 }
 
 func (m *UserStakeRecord) GetIndex() uint32 {
@@ -246,9 +243,9 @@ func (m *UserStakeRecord) GetEndTimestamp() uint64 {
 	return 0
 }
 
-func (m *UserStakeRecord) GetRewardInfos() []*RewardInfo {
+func (m *UserStakeRecord) GetUserRewardInfos() []*UserRewardInfo {
 	if m != nil {
-		return m.RewardInfos
+		return m.UserRewardInfos
 	}
 	return nil
 }
@@ -260,24 +257,24 @@ func (m *UserStakeRecord) GetStakeItemIndex() uint32 {
 	return 0
 }
 
-type RewardInfo struct {
+type UserRewardInfo struct {
 	RewardPoolIndex  uint32                                 `protobuf:"varint,1,opt,name=rewardPoolIndex,proto3" json:"rewardPoolIndex,omitempty"`
 	RewardTokenDenom string                                 `protobuf:"bytes,2,opt,name=rewardTokenDenom,proto3" json:"rewardTokenDenom,omitempty"`
 	RewardDebt       github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,3,opt,name=rewardDebt,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"rewardDebt"`
 }
 
-func (m *RewardInfo) Reset()         { *m = RewardInfo{} }
-func (m *RewardInfo) String() string { return proto.CompactTextString(m) }
-func (*RewardInfo) ProtoMessage()    {}
-func (*RewardInfo) Descriptor() ([]byte, []int) {
+func (m *UserRewardInfo) Reset()         { *m = UserRewardInfo{} }
+func (m *UserRewardInfo) String() string { return proto.CompactTextString(m) }
+func (*UserRewardInfo) ProtoMessage()    {}
+func (*UserRewardInfo) Descriptor() ([]byte, []int) {
 	return fileDescriptor_155eb5abfcd1d3be, []int{3}
 }
-func (m *RewardInfo) XXX_Unmarshal(b []byte) error {
+func (m *UserRewardInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RewardInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserRewardInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RewardInfo.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserRewardInfo.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -287,26 +284,71 @@ func (m *RewardInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *RewardInfo) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RewardInfo.Merge(m, src)
+func (m *UserRewardInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserRewardInfo.Merge(m, src)
 }
-func (m *RewardInfo) XXX_Size() int {
+func (m *UserRewardInfo) XXX_Size() int {
 	return m.Size()
 }
-func (m *RewardInfo) XXX_DiscardUnknown() {
-	xxx_messageInfo_RewardInfo.DiscardUnknown(m)
+func (m *UserRewardInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserRewardInfo.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RewardInfo proto.InternalMessageInfo
+var xxx_messageInfo_UserRewardInfo proto.InternalMessageInfo
 
-func (m *RewardInfo) GetRewardPoolIndex() uint32 {
+func (m *UserRewardInfo) GetRewardPoolIndex() uint32 {
 	if m != nil {
 		return m.RewardPoolIndex
 	}
 	return 0
 }
 
-func (m *RewardInfo) GetRewardTokenDenom() string {
+func (m *UserRewardInfo) GetRewardTokenDenom() string {
+	if m != nil {
+		return m.RewardTokenDenom
+	}
+	return ""
+}
+
+type RewardToken struct {
+	RewardTokenDenom     string                                 `protobuf:"bytes,1,opt,name=rewardTokenDenom,proto3" json:"rewardTokenDenom,omitempty"`
+	MinTotalRewardAmount github_com_cosmos_cosmos_sdk_types.Int `protobuf:"bytes,2,opt,name=minTotalRewardAmount,proto3,customtype=github.com/cosmos/cosmos-sdk/types.Int" json:"minTotalRewardAmount"`
+}
+
+func (m *RewardToken) Reset()         { *m = RewardToken{} }
+func (m *RewardToken) String() string { return proto.CompactTextString(m) }
+func (*RewardToken) ProtoMessage()    {}
+func (*RewardToken) Descriptor() ([]byte, []int) {
+	return fileDescriptor_155eb5abfcd1d3be, []int{4}
+}
+func (m *RewardToken) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RewardToken) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RewardToken.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RewardToken) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RewardToken.Merge(m, src)
+}
+func (m *RewardToken) XXX_Size() int {
+	return m.Size()
+}
+func (m *RewardToken) XXX_DiscardUnknown() {
+	xxx_messageInfo_RewardToken.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RewardToken proto.InternalMessageInfo
+
+func (m *RewardToken) GetRewardTokenDenom() string {
 	if m != nil {
 		return m.RewardTokenDenom
 	}
@@ -325,7 +367,7 @@ func (m *StakeItem) Reset()         { *m = StakeItem{} }
 func (m *StakeItem) String() string { return proto.CompactTextString(m) }
 func (*StakeItem) ProtoMessage()    {}
 func (*StakeItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_155eb5abfcd1d3be, []int{4}
+	return fileDescriptor_155eb5abfcd1d3be, []int{5}
 }
 func (m *StakeItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -379,54 +421,56 @@ func init() {
 	proto.RegisterType((*StakePool)(nil), "stafihub.stafihub.mining.StakePool")
 	proto.RegisterType((*RewardPool)(nil), "stafihub.stafihub.mining.RewardPool")
 	proto.RegisterType((*UserStakeRecord)(nil), "stafihub.stafihub.mining.UserStakeRecord")
-	proto.RegisterType((*RewardInfo)(nil), "stafihub.stafihub.mining.RewardInfo")
+	proto.RegisterType((*UserRewardInfo)(nil), "stafihub.stafihub.mining.UserRewardInfo")
+	proto.RegisterType((*RewardToken)(nil), "stafihub.stafihub.mining.RewardToken")
 	proto.RegisterType((*StakeItem)(nil), "stafihub.stafihub.mining.StakeItem")
 }
 
 func init() { proto.RegisterFile("mining/models.proto", fileDescriptor_155eb5abfcd1d3be) }
 
 var fileDescriptor_155eb5abfcd1d3be = []byte{
-	// 636 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x55, 0xcd, 0x6e, 0xd3, 0x4c,
-	0x14, 0x8d, 0x93, 0xf4, 0xef, 0xa6, 0x7f, 0xdf, 0xb4, 0xfa, 0x64, 0xb1, 0x70, 0x23, 0x0b, 0x55,
-	0x11, 0x08, 0x07, 0xc1, 0x13, 0xb4, 0x2a, 0x48, 0xd9, 0xa0, 0x6a, 0x5a, 0x10, 0xaa, 0xd8, 0x38,
-	0xf6, 0x6d, 0xb0, 0x62, 0xcf, 0x44, 0x9e, 0x89, 0x5a, 0xde, 0x82, 0x05, 0x4f, 0x02, 0x8f, 0xc0,
-	0xa6, 0xcb, 0x6e, 0x90, 0x10, 0x8b, 0x0a, 0xb5, 0x2f, 0x82, 0x66, 0xec, 0xc6, 0x13, 0x27, 0xad,
-	0x8a, 0xc5, 0x2a, 0x33, 0x27, 0x33, 0xc7, 0x67, 0xce, 0x99, 0x7b, 0x07, 0xb6, 0x92, 0x88, 0x45,
-	0x6c, 0xd0, 0x4d, 0x78, 0x88, 0xb1, 0xf0, 0x46, 0x29, 0x97, 0x9c, 0xd8, 0x42, 0xfa, 0xa7, 0xd1,
-	0xc7, 0x71, 0xdf, 0x9b, 0x0c, 0xb2, 0x65, 0x8f, 0xb6, 0x07, 0x7c, 0xc0, 0xf5, 0xa2, 0xae, 0x1a,
-	0x65, 0xeb, 0xdd, 0xef, 0x0d, 0x58, 0x39, 0x92, 0xfe, 0x10, 0x0f, 0x39, 0x8f, 0x49, 0x07, 0x36,
-	0x84, 0x9a, 0x1c, 0xf3, 0x21, 0xb2, 0x03, 0x64, 0x3c, 0xb1, 0xad, 0xb6, 0xd5, 0x59, 0xa1, 0x65,
-	0x98, 0xec, 0xc2, 0x7a, 0xe2, 0x9f, 0x53, 0x3c, 0xf3, 0xd3, 0x50, 0x6d, 0x15, 0x76, 0xbd, 0x6d,
-	0x75, 0xd6, 0x68, 0x09, 0x25, 0x7d, 0xd8, 0x4e, 0x22, 0x76, 0xcc, 0xa5, 0x1f, 0x67, 0xf0, 0x5e,
-	0xc2, 0xc7, 0x4c, 0xda, 0x0d, 0x45, 0xbb, 0xef, 0x5d, 0x5c, 0xed, 0xd4, 0x7e, 0x5d, 0xed, 0xec,
-	0x0e, 0x22, 0xa9, 0xa4, 0x06, 0x3c, 0xe9, 0x06, 0x5c, 0x24, 0x5c, 0xe4, 0x3f, 0xcf, 0x44, 0x38,
-	0xec, 0xca, 0x4f, 0x23, 0x14, 0x5e, 0x8f, 0x49, 0x3a, 0x97, 0x8b, 0xbc, 0x86, 0x56, 0x6a, 0x08,
-	0x69, 0xb6, 0x1b, 0x9d, 0xd6, 0x8b, 0xc7, 0xde, 0x5d, 0x4e, 0x78, 0x85, 0x3e, 0x6a, 0x6e, 0x24,
-	0x1f, 0xe0, 0x3f, 0xa9, 0xc8, 0xb5, 0x1f, 0xb7, 0x42, 0x17, 0x2a, 0x09, 0x9d, 0x25, 0x22, 0x27,
-	0xb0, 0x69, 0x80, 0x87, 0xfc, 0x0c, 0x53, 0x7b, 0xb1, 0x12, 0xf9, 0x0c, 0x8f, 0xfb, 0xa5, 0x09,
-	0x50, 0x9c, 0x8a, 0x6c, 0xc3, 0x42, 0xc4, 0x42, 0x3c, 0xd7, 0xe1, 0xad, 0xd1, 0x6c, 0x42, 0x9e,
-	0xc0, 0x66, 0x76, 0x5a, 0x23, 0xdd, 0xba, 0x4e, 0x77, 0x06, 0x9f, 0x58, 0xf1, 0x0f, 0x32, 0x9b,
-	0x25, 0x52, 0x56, 0xc4, 0x78, 0x2a, 0xa7, 0xc8, 0x9b, 0xd5, 0xac, 0x28, 0xf3, 0x90, 0xf7, 0xb0,
-	0x91, 0x67, 0x8a, 0xe9, 0x11, 0x06, 0x9c, 0x85, 0x15, 0x23, 0x2c, 0xd3, 0xa8, 0x2b, 0x2f, 0xa4,
-	0x9f, 0xca, 0xe3, 0x28, 0x41, 0x21, 0xfd, 0x64, 0xa4, 0xe3, 0x6b, 0xd2, 0x12, 0x4a, 0xde, 0xc1,
-	0xfa, 0x64, 0x6b, 0x16, 0xf3, 0x52, 0x25, 0x01, 0x25, 0x16, 0xf2, 0x1c, 0xb6, 0x62, 0x5f, 0xe4,
-	0xa7, 0x2d, 0x44, 0x2c, 0x6b, 0x11, 0xf3, 0xfe, 0x72, 0x7f, 0x34, 0x60, 0xe3, 0xad, 0xc0, 0x54,
-	0x5f, 0x15, 0x8a, 0x01, 0x4f, 0x43, 0xd2, 0x86, 0xd6, 0x58, 0x60, 0xba, 0x17, 0x86, 0x29, 0x0a,
-	0x91, 0x97, 0xb7, 0x09, 0xcd, 0x6b, 0x02, 0xf5, 0xf9, 0x4d, 0x60, 0x72, 0xcf, 0x1a, 0xe6, 0x3d,
-	0xa3, 0xb0, 0x2a, 0xcc, 0x0a, 0xaa, 0x96, 0xec, 0x14, 0x07, 0x39, 0x84, 0x96, 0x30, 0xea, 0xa6,
-	0x5a, 0xa2, 0x26, 0xc5, 0x83, 0xd3, 0x74, 0x61, 0x15, 0x99, 0x61, 0xf7, 0x92, 0x5e, 0x35, 0x85,
-	0x15, 0x0d, 0xa8, 0xc7, 0x4e, 0xb9, 0xb0, 0x97, 0x1f, 0xd6, 0x80, 0xd4, 0x62, 0x6a, 0x6e, 0xcc,
-	0x35, 0x0d, 0xb1, 0x27, 0x31, 0xe9, 0x69, 0x63, 0x57, 0xb2, 0xa6, 0x3a, 0x8d, 0xba, 0x5f, 0xad,
-	0xdb, 0x72, 0x57, 0xfb, 0x54, 0x60, 0x45, 0x1b, 0xeb, 0x19, 0x85, 0x5f, 0x86, 0xff, 0xaa, 0x05,
-	0xbc, 0x01, 0xc8, 0xb0, 0x03, 0xec, 0x57, 0xad, 0x7d, 0x83, 0xc1, 0xfd, 0x66, 0xe5, 0x2f, 0x8d,
-	0x3a, 0xc7, 0x1d, 0x2d, 0xca, 0x01, 0x88, 0x79, 0x30, 0xcc, 0xeb, 0xb6, 0xae, 0xad, 0x36, 0x10,
-	0x55, 0xdc, 0x23, 0x95, 0x5e, 0x76, 0x78, 0xea, 0x4b, 0xbc, 0x47, 0xd8, 0xad, 0xeb, 0xc5, 0x60,
-	0x2c, 0xa3, 0x58, 0x78, 0x07, 0x18, 0xd0, 0x32, 0x0d, 0xf9, 0x1f, 0x16, 0x91, 0xf9, 0xfd, 0x18,
-	0xf5, 0x75, 0x5d, 0xa6, 0xf9, 0x6c, 0xff, 0xd5, 0xc5, 0xb5, 0x63, 0x5d, 0x5e, 0x3b, 0xd6, 0xef,
-	0x6b, 0xc7, 0xfa, 0x7c, 0xe3, 0xd4, 0x2e, 0x6f, 0x9c, 0xda, 0xcf, 0x1b, 0xa7, 0x76, 0xf2, 0xf4,
-	0xde, 0x4f, 0x9d, 0x77, 0xf3, 0xd7, 0x59, 0x9b, 0xd1, 0x5f, 0xd4, 0xaf, 0xed, 0xcb, 0x3f, 0x01,
-	0x00, 0x00, 0xff, 0xff, 0xf5, 0x56, 0xed, 0x96, 0xb4, 0x07, 0x00, 0x00,
+	// 649 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xcd, 0x6e, 0xd3, 0x4c,
+	0x14, 0x8d, 0x93, 0xfe, 0xe5, 0xa6, 0x5f, 0xd3, 0x6f, 0x1a, 0x21, 0x8b, 0x85, 0x1b, 0x59, 0xa8,
+	0xb2, 0x40, 0x38, 0x08, 0x9e, 0xa0, 0x55, 0x40, 0xca, 0x06, 0x45, 0xd3, 0x14, 0xa1, 0x8a, 0x8d,
+	0x63, 0x4f, 0x82, 0x15, 0x7b, 0x26, 0xf2, 0x4c, 0xd4, 0xf2, 0x16, 0x2c, 0xd8, 0xf2, 0x14, 0x48,
+	0x3c, 0x43, 0x37, 0x48, 0x5d, 0x22, 0x16, 0x05, 0x25, 0x2f, 0x82, 0x3c, 0x36, 0xb6, 0x63, 0x27,
+	0x15, 0x38, 0xab, 0x8c, 0x4f, 0xee, 0x9c, 0xb9, 0x73, 0xee, 0xbd, 0x67, 0xe0, 0xc8, 0x77, 0xa9,
+	0x4b, 0xc7, 0x1d, 0x9f, 0x39, 0xc4, 0xe3, 0xe6, 0x34, 0x60, 0x82, 0x21, 0x95, 0x0b, 0x6b, 0xe4,
+	0xbe, 0x9f, 0x0d, 0xcd, 0x64, 0x11, 0x85, 0x3d, 0x6c, 0x8d, 0xd9, 0x98, 0xc9, 0xa0, 0x4e, 0xb8,
+	0x8a, 0xe2, 0xf5, 0x6f, 0x55, 0xa8, 0x9f, 0x0b, 0x6b, 0x42, 0xfa, 0x8c, 0x79, 0xa8, 0x05, 0xdb,
+	0x2e, 0x75, 0xc8, 0xb5, 0xaa, 0xb4, 0x15, 0xe3, 0x3f, 0x1c, 0x7d, 0x20, 0x03, 0x9a, 0x3c, 0x0c,
+	0x19, 0xb0, 0x09, 0xa1, 0x5d, 0x42, 0x99, 0xaf, 0x56, 0xdb, 0x8a, 0x51, 0xc7, 0x79, 0x18, 0xbd,
+	0x82, 0x46, 0x40, 0xae, 0xac, 0xc0, 0x09, 0xd9, 0xb8, 0x5a, 0x6b, 0xd7, 0x8c, 0xc6, 0xf3, 0x47,
+	0xe6, 0xba, 0x9c, 0x4c, 0x9c, 0x04, 0xe3, 0xec, 0x46, 0xf4, 0x0e, 0xfe, 0x17, 0x4c, 0x58, 0x9e,
+	0xcc, 0xcc, 0x39, 0xf5, 0xd9, 0x8c, 0x0a, 0x75, 0x2b, 0x3c, 0xf3, 0xcc, 0xbc, 0xb9, 0x3b, 0xae,
+	0xfc, 0xb8, 0x3b, 0x3e, 0x19, 0xbb, 0x22, 0x64, 0xb2, 0x99, 0xdf, 0xb1, 0x19, 0xf7, 0x19, 0x8f,
+	0x7f, 0x9e, 0x72, 0x67, 0xd2, 0x11, 0x1f, 0xa6, 0x84, 0x9b, 0x3d, 0x2a, 0x70, 0x91, 0x08, 0x5d,
+	0xc2, 0x61, 0x06, 0xec, 0xb3, 0x2b, 0x12, 0xa8, 0xdb, 0xa5, 0xc8, 0x0b, 0x3c, 0xfa, 0xa7, 0x2d,
+	0x80, 0xf4, 0x56, 0x6b, 0x04, 0x7d, 0x0c, 0x87, 0xd1, 0x6d, 0x0b, 0x8a, 0x16, 0xf0, 0x44, 0x8a,
+	0x88, 0x34, 0x96, 0xa2, 0xb6, 0x81, 0x14, 0x59, 0xa2, 0x50, 0x0a, 0x8f, 0x8c, 0xc4, 0x12, 0x79,
+	0x39, 0x9d, 0x0b, 0x3c, 0xe8, 0x2d, 0x34, 0xe3, 0x9a, 0x92, 0xe0, 0x9c, 0xd8, 0x8c, 0x3a, 0x25,
+	0x55, 0xce, 0xd3, 0xa0, 0x13, 0x38, 0xe0, 0xc2, 0x0a, 0xc4, 0xc0, 0xf5, 0x09, 0x17, 0x96, 0x3f,
+	0x55, 0x77, 0xda, 0x8a, 0xb1, 0x85, 0x73, 0x28, 0x7a, 0x03, 0x07, 0xc9, 0xd6, 0xa8, 0xcc, 0xbb,
+	0xa5, 0x12, 0xc8, 0xb1, 0xa0, 0x67, 0x70, 0xe4, 0x59, 0x3c, 0xbe, 0x6d, 0x9a, 0xc4, 0x9e, 0x4c,
+	0x62, 0xd5, 0x5f, 0xfa, 0xcf, 0x1a, 0x34, 0x2f, 0x38, 0x09, 0x64, 0xab, 0x60, 0x62, 0xb3, 0xc0,
+	0x41, 0x6d, 0x68, 0xcc, 0x38, 0x09, 0x4e, 0x1d, 0x27, 0x20, 0x9c, 0xcb, 0x0e, 0xa9, 0xe3, 0x2c,
+	0x14, 0xdf, 0x33, 0x9a, 0xcd, 0x9e, 0x6c, 0xa3, 0xaa, 0x6c, 0xa3, 0x1c, 0x9a, 0x76, 0x59, 0x2d,
+	0xdb, 0x65, 0x18, 0xf6, 0xf9, 0xe6, 0xf3, 0xb3, 0xc4, 0x81, 0xfa, 0xd0, 0xe0, 0x1b, 0x4f, 0x4d,
+	0x96, 0xe2, 0xaf, 0x6b, 0xa9, 0xc3, 0x3e, 0xa1, 0x19, 0xb1, 0x77, 0x65, 0xd4, 0x12, 0x86, 0x30,
+	0x34, 0x43, 0xf9, 0x22, 0xf1, 0x7b, 0x74, 0xc4, 0xb8, 0xba, 0x27, 0x2d, 0xc8, 0x58, 0x6f, 0x41,
+	0x17, 0x4b, 0x1b, 0x70, 0x9e, 0x20, 0xa9, 0x41, 0x4f, 0x10, 0x3f, 0xaa, 0x41, 0x3d, 0x53, 0x83,
+	0x04, 0xd5, 0xbf, 0x2a, 0x70, 0xb0, 0xcc, 0x15, 0xfa, 0x66, 0x6a, 0x6a, 0xbd, 0x8c, 0x0d, 0xe4,
+	0xe1, 0x7f, 0x32, 0x84, 0xd7, 0x00, 0x11, 0xd6, 0x25, 0xc3, 0xb2, 0x4e, 0x90, 0x61, 0xd0, 0x3f,
+	0x2b, 0xd0, 0xc0, 0xe9, 0x21, 0x2b, 0x73, 0x51, 0xd6, 0xe4, 0x32, 0x84, 0x96, 0xef, 0xd2, 0x41,
+	0xc1, 0x9f, 0xaa, 0xa5, 0xb2, 0x5a, 0xc9, 0xa5, 0x7f, 0x51, 0xe2, 0x17, 0x2a, 0xd4, 0x7a, 0x8d,
+	0xa1, 0x6a, 0x00, 0x1e, 0xb3, 0x27, 0xb1, 0xcb, 0x54, 0x65, 0x6b, 0x64, 0x90, 0xd0, 0x8a, 0xa6,
+	0x61, 0xb7, 0x45, 0xc4, 0xd8, 0x12, 0xe4, 0x1e, 0xe1, 0xfe, 0x74, 0x48, 0xba, 0x98, 0x09, 0xd7,
+	0xe3, 0x66, 0x97, 0xd8, 0x38, 0x4f, 0x83, 0x1e, 0xc0, 0x0e, 0xa1, 0xd6, 0xd0, 0x23, 0x72, 0xbc,
+	0xf6, 0x70, 0xfc, 0x75, 0xf6, 0xf2, 0x66, 0xae, 0x29, 0xb7, 0x73, 0x4d, 0xf9, 0x35, 0xd7, 0x94,
+	0x8f, 0x0b, 0xad, 0x72, 0xbb, 0xd0, 0x2a, 0xdf, 0x17, 0x5a, 0xe5, 0xf2, 0xc9, 0xbd, 0x47, 0x5d,
+	0x77, 0xe2, 0x57, 0x5d, 0xca, 0x32, 0xdc, 0x91, 0xaf, 0xf4, 0x8b, 0xdf, 0x01, 0x00, 0x00, 0xff,
+	0xff, 0x90, 0x22, 0x59, 0x0d, 0xec, 0x07, 0x00, 0x00,
 }
 
 func (m *StakePool) Marshal() (dAtA []byte, err error) {
@@ -458,7 +502,7 @@ func (m *StakePool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintModels(dAtA, i, uint64(size))
 	}
 	i--
-	dAtA[i] = 0x32
+	dAtA[i] = 0x2a
 	{
 		size := m.TotalStakedAmount.Size()
 		i -= size
@@ -468,7 +512,7 @@ func (m *StakePool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintModels(dAtA, i, uint64(size))
 	}
 	i--
-	dAtA[i] = 0x2a
+	dAtA[i] = 0x22
 	if len(m.RewardPools) > 0 {
 		for iNdEx := len(m.RewardPools) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -480,30 +524,20 @@ func (m *StakePool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintModels(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0x1a
 		}
-	}
-	{
-		size := m.MinTotalRewardAmount.Size()
-		i -= size
-		if _, err := m.MinTotalRewardAmount.MarshalTo(dAtA[i:]); err != nil {
-			return 0, err
-		}
-		i = encodeVarintModels(dAtA, i, uint64(size))
-	}
-	i--
-	dAtA[i] = 0x1a
-	if m.MaxRewardPools != 0 {
-		i = encodeVarintModels(dAtA, i, uint64(m.MaxRewardPools))
-		i--
-		dAtA[i] = 0x10
 	}
 	if len(m.StakeTokenDenom) > 0 {
 		i -= len(m.StakeTokenDenom)
 		copy(dAtA[i:], m.StakeTokenDenom)
 		i = encodeVarintModels(dAtA, i, uint64(len(m.StakeTokenDenom)))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x12
+	}
+	if m.Index != 0 {
+		i = encodeVarintModels(dAtA, i, uint64(m.Index))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -618,10 +652,10 @@ func (m *UserStakeRecord) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x48
 	}
-	if len(m.RewardInfos) > 0 {
-		for iNdEx := len(m.RewardInfos) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.UserRewardInfos) > 0 {
+		for iNdEx := len(m.UserRewardInfos) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.RewardInfos[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.UserRewardInfos[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -667,12 +701,10 @@ func (m *UserStakeRecord) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.StakeTokenDenom) > 0 {
-		i -= len(m.StakeTokenDenom)
-		copy(dAtA[i:], m.StakeTokenDenom)
-		i = encodeVarintModels(dAtA, i, uint64(len(m.StakeTokenDenom)))
+	if m.StakePoolIndex != 0 {
+		i = encodeVarintModels(dAtA, i, uint64(m.StakePoolIndex))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.UserAddress) > 0 {
 		i -= len(m.UserAddress)
@@ -684,7 +716,7 @@ func (m *UserStakeRecord) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *RewardInfo) Marshal() (dAtA []byte, err error) {
+func (m *UserRewardInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -694,12 +726,12 @@ func (m *RewardInfo) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RewardInfo) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserRewardInfo) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RewardInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserRewardInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -725,6 +757,46 @@ func (m *RewardInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintModels(dAtA, i, uint64(m.RewardPoolIndex))
 		i--
 		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RewardToken) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RewardToken) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RewardToken) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size := m.MinTotalRewardAmount.Size()
+		i -= size
+		if _, err := m.MinTotalRewardAmount.MarshalTo(dAtA[i:]); err != nil {
+			return 0, err
+		}
+		i = encodeVarintModels(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	if len(m.RewardTokenDenom) > 0 {
+		i -= len(m.RewardTokenDenom)
+		copy(dAtA[i:], m.RewardTokenDenom)
+		i = encodeVarintModels(dAtA, i, uint64(len(m.RewardTokenDenom)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -799,15 +871,13 @@ func (m *StakePool) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Index != 0 {
+		n += 1 + sovModels(uint64(m.Index))
+	}
 	l = len(m.StakeTokenDenom)
 	if l > 0 {
 		n += 1 + l + sovModels(uint64(l))
 	}
-	if m.MaxRewardPools != 0 {
-		n += 1 + sovModels(uint64(m.MaxRewardPools))
-	}
-	l = m.MinTotalRewardAmount.Size()
-	n += 1 + l + sovModels(uint64(l))
 	if len(m.RewardPools) > 0 {
 		for _, e := range m.RewardPools {
 			l = e.Size()
@@ -861,9 +931,8 @@ func (m *UserStakeRecord) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovModels(uint64(l))
 	}
-	l = len(m.StakeTokenDenom)
-	if l > 0 {
-		n += 1 + l + sovModels(uint64(l))
+	if m.StakePoolIndex != 0 {
+		n += 1 + sovModels(uint64(m.StakePoolIndex))
 	}
 	if m.Index != 0 {
 		n += 1 + sovModels(uint64(m.Index))
@@ -878,8 +947,8 @@ func (m *UserStakeRecord) Size() (n int) {
 	if m.EndTimestamp != 0 {
 		n += 1 + sovModels(uint64(m.EndTimestamp))
 	}
-	if len(m.RewardInfos) > 0 {
-		for _, e := range m.RewardInfos {
+	if len(m.UserRewardInfos) > 0 {
+		for _, e := range m.UserRewardInfos {
 			l = e.Size()
 			n += 1 + l + sovModels(uint64(l))
 		}
@@ -890,7 +959,7 @@ func (m *UserStakeRecord) Size() (n int) {
 	return n
 }
 
-func (m *RewardInfo) Size() (n int) {
+func (m *UserRewardInfo) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -904,6 +973,21 @@ func (m *RewardInfo) Size() (n int) {
 		n += 1 + l + sovModels(uint64(l))
 	}
 	l = m.RewardDebt.Size()
+	n += 1 + l + sovModels(uint64(l))
+	return n
+}
+
+func (m *RewardToken) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.RewardTokenDenom)
+	if l > 0 {
+		n += 1 + l + sovModels(uint64(l))
+	}
+	l = m.MinTotalRewardAmount.Size()
 	n += 1 + l + sovModels(uint64(l))
 	return n
 }
@@ -964,6 +1048,25 @@ func (m *StakePool) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			m.Index = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModels
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Index |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
 			}
@@ -995,60 +1098,7 @@ func (m *StakePool) Unmarshal(dAtA []byte) error {
 			}
 			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MaxRewardPools", wireType)
-			}
-			m.MaxRewardPools = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModels
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.MaxRewardPools |= uint32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MinTotalRewardAmount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowModels
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthModels
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthModels
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if err := m.MinTotalRewardAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field RewardPools", wireType)
 			}
@@ -1082,7 +1132,7 @@ func (m *StakePool) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 5:
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TotalStakedAmount", wireType)
 			}
@@ -1116,7 +1166,7 @@ func (m *StakePool) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 6:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TotalStakedPower", wireType)
 			}
@@ -1508,10 +1558,10 @@ func (m *UserStakeRecord) Unmarshal(dAtA []byte) error {
 			m.UserAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StakeTokenDenom", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StakePoolIndex", wireType)
 			}
-			var stringLen uint64
+			m.StakePoolIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowModels
@@ -1521,24 +1571,11 @@ func (m *UserStakeRecord) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.StakePoolIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthModels
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthModels
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StakeTokenDenom = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
@@ -1666,7 +1703,7 @@ func (m *UserStakeRecord) Unmarshal(dAtA []byte) error {
 			}
 		case 8:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RewardInfos", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field UserRewardInfos", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1693,8 +1730,8 @@ func (m *UserStakeRecord) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RewardInfos = append(m.RewardInfos, &RewardInfo{})
-			if err := m.RewardInfos[len(m.RewardInfos)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.UserRewardInfos = append(m.UserRewardInfos, &UserRewardInfo{})
+			if err := m.UserRewardInfos[len(m.UserRewardInfos)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1738,7 +1775,7 @@ func (m *UserStakeRecord) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RewardInfo) Unmarshal(dAtA []byte) error {
+func (m *UserRewardInfo) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1761,10 +1798,10 @@ func (m *RewardInfo) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RewardInfo: wiretype end group for non-group")
+			return fmt.Errorf("proto: UserRewardInfo: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RewardInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UserRewardInfo: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1849,6 +1886,122 @@ func (m *RewardInfo) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.RewardDebt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipModels(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthModels
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RewardToken) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowModels
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RewardToken: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RewardToken: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RewardTokenDenom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModels
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModels
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModels
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RewardTokenDenom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MinTotalRewardAmount", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowModels
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthModels
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthModels
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MinTotalRewardAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

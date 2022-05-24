@@ -14,11 +14,14 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgStake{}, "mining/Stake", nil)
 	cdc.RegisterConcrete(&MsgClaimReward{}, "mining/ClaimReward", nil)
 	cdc.RegisterConcrete(&MsgWithdraw{}, "mining/Withdraw", nil)
-	cdc.RegisterConcrete(&MsgProvideRewardToken{}, "mining/ProvideRewardToken", nil)
-	cdc.RegisterConcrete(&MsgUpdateStakePool{}, "mining/UpdateStakePool", nil)
 	cdc.RegisterConcrete(&MsgUpdateStakeItem{}, "mining/UpdateStakeItem", nil)
-	cdc.RegisterConcrete(&MsgAddRewarder{}, "mining/AddRewarder", nil)
-	cdc.RegisterConcrete(&MsgRmRewarder{}, "mining/RmRewarder", nil)
+	cdc.RegisterConcrete(&MsgAddMiningProvider{}, "mining/AddMiningProvider", nil)
+	cdc.RegisterConcrete(&MsgRmMiningProvider{}, "mining/RmMiningProvider", nil)
+	cdc.RegisterConcrete(&MsgAddRewardToken{}, "mining/AddRewardToken", nil)
+	cdc.RegisterConcrete(&MsgSetMaxRewardPoolNumber{}, "mining/SetMaxRewardPoolNumber", nil)
+	cdc.RegisterConcrete(&MsgUpdateRewardPool{}, "mining/UpdateRewardPool", nil)
+	cdc.RegisterConcrete(&MsgRmRewardPool{}, "mining/RmRewardPool", nil)
+	cdc.RegisterConcrete(&MsgToggleProviderSwitch{}, "mining/ToggleProviderSwitch", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -42,19 +45,28 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgWithdraw{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgProvideRewardToken{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgUpdateStakePool{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateStakeItem{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddRewarder{},
+		&MsgAddMiningProvider{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRmRewarder{},
+		&MsgRmMiningProvider{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddRewardToken{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetMaxRewardPoolNumber{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateRewardPool{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmRewardPool{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgToggleProviderSwitch{},
 	)
 	// this line is used by starport scaffolding # 3
 

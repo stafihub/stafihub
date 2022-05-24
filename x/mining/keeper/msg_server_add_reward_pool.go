@@ -10,32 +10,40 @@ import (
 
 func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardPool) (*types.MsgAddRewardPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	userAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	user, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, err
 	}
 
-	if !(k.sudoKeeper.IsAdmin(ctx, userAddr.String()) || k.HasRewarder(ctx, userAddr)) {
-		return nil, types.ErrUserNotAdminOrRewarder
-	}
-	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakeTokenDenom)
+	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
 	if !found {
-		return nil, types.ErrStakePoolAlreadyExist
+		return nil, types.ErrStakePoolNotExist
 	}
 
-	if msg.TotalRewardAmount.LT(stakePool.MinTotalRewardAmount) {
+	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
+	if len(stakePool.RewardPools) >= int(maxRewardPoolNumber) {
+		return nil, types.ErrRewardPoolNumberReachLimit
+	}
+
+	rewardToken, found := k.Keeper.GetRewardToken(ctx, msg.RewardTokenDenom)
+	if !found {
+		return nil, types.ErrRewardTokenNotSupport
+	}
+	if msg.TotalRewardAmount.LT(rewardToken.MinTotalRewardAmount) {
 		return nil, types.ErrTotalRewardAmountLessThanLimit
 	}
 
-	if len(stakePool.RewardPools) >= int(stakePool.MaxRewardPools) {
-		return nil, types.ErrRewardPoolNumberReachLimit
-	}
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
-	willUseIndex := k.Keeper.GetRewardPoolNextIndex(ctx, msg.StakeTokenDenom)
+	willUseIndex := k.Keeper.GetRewardPoolNextIndex(ctx, msg.StakePoolIndex)
 	willUseLastRewardTimestamp := msg.StartTimestamp
 	if msg.StartTimestamp < curBlockTime {
 		willUseLastRewardTimestamp = curBlockTime
+	}
+
+	rewardTokens := sdk.NewCoins(sdk.NewCoin(msg.RewardTokenDenom, msg.TotalRewardAmount))
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, user, types.ModuleName, rewardTokens); err != nil {
+		return nil, err
 	}
 
 	stakePool.RewardPools = append(stakePool.RewardPools, &types.RewardPool{
@@ -49,13 +57,14 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		LastRewardTimestamp: willUseLastRewardTimestamp,
 	})
 
-	k.Keeper.SetRewardPoolIndex(ctx, msg.StakeTokenDenom, willUseIndex)
+	k.Keeper.SetRewardPoolIndex(ctx, msg.StakePoolIndex, willUseIndex)
 	k.Keeper.SetStakePool(ctx, stakePool)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeAddRewardPool,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
 			sdk.NewAttribute(types.AttributeKeyRewardTokenDenom, msg.RewardTokenDenom),
 			sdk.NewAttribute(types.AttributeKeyTotalRewardAmount, msg.TotalRewardAmount.String()),
 			sdk.NewAttribute(types.AttributeKeyRewardPerSecond, msg.RewardPerSecond.String()),

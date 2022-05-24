@@ -5,23 +5,18 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/mining/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdStakePoolInfo() *cobra.Command {
+func CmdMiningProviderList() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake-pool-info [stake-pool-index]",
-		Short: "Query stake pool info",
-		Args:  cobra.ExactArgs(1),
+		Use:   "mining-provider-list",
+		Short: "Query mining provider list",
+		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			stakePoolIndex, err := sdk.ParseUint(args[0])
-			if err != nil {
-				return err
-			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,11 +24,10 @@ func CmdStakePoolInfo() *cobra.Command {
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
-			params := &types.QueryStakePoolInfoRequest{
-				StakePoolIndex: uint32(stakePoolIndex.Uint64()),
-			}
 
-			res, err := queryClient.StakePoolInfo(cmd.Context(), params)
+			params := &types.QueryMiningProviderListRequest{}
+
+			res, err := queryClient.MiningProviderList(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

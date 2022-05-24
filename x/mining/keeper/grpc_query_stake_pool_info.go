@@ -16,7 +16,7 @@ func (k Keeper) StakePoolInfo(goCtx context.Context, req *types.QueryStakePoolIn
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	stakePool, found := k.GetStakePool(ctx, req.StakeTokenDenom)
+	stakePool, found := k.GetStakePool(ctx, req.StakePoolIndex)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}

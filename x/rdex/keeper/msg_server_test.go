@@ -111,7 +111,12 @@ func TestMsgServerCreatePoolFailed(t *testing.T) {
 				Token0:  tc.token0,
 				Token1:  tc.token1,
 			}
-			_, err := srv.CreatePool(ctx, &msgCreatePool)
+			err := msgCreatePool.ValidateBasic()
+			if err != nil {
+				t.Log(err)
+				return
+			}
+			_, err = srv.CreatePool(ctx, &msgCreatePool)
 			require.Error(t, err)
 		})
 	}
@@ -338,6 +343,12 @@ func TestMsgServerAddLiquidityFail(t *testing.T) {
 				Token0:  tc.token0,
 				Token1:  tc.token1,
 			}
+			err := msgAddLiquidity.ValidateBasic()
+			if err != nil {
+				t.Log(err)
+				return
+			}
+
 			_, err = srv.AddLiquidity(ctx, &msgAddLiquidity)
 			require.Error(t, err)
 		})
@@ -560,6 +571,11 @@ func TestMsgServerSwapFail(t *testing.T) {
 				Creator:     tc.creator,
 				InputToken:  tc.inputToken,
 				MinOutToken: tc.minOutToken,
+			}
+			err := msgSwap.ValidateBasic()
+			if err != nil {
+				t.Log(err)
+				return
 			}
 			_, err = srv.Swap(ctx, &msgSwap)
 			require.Error(t, err)

@@ -6,17 +6,13 @@ import "gogoproto/gogo.proto";
 option go_package = "github.com/stafihub/stafihub/x/mining/types";
 
 message StakePool {
+  uint32 index = 1;
   // staked token denom
-  string stakeTokenDenom = 1;
-
-  // subpool number limit
-  uint32 maxRewardPools = 2;
-  // min total reward amount of every reward pool
-  string minTotalRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  repeated RewardPool rewardPools = 4;
+  string stakeTokenDenom = 2;
+  repeated RewardPool rewardPools = 3;
   // total (staked) balance of staked token
-  string totalStakedAmount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string totalStakedPower = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string totalStakedAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string totalStakedPower = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message RewardPool {
@@ -32,7 +28,7 @@ message RewardPool {
 
 message UserStakeRecord {
   string userAddress = 1;
-  string stakeTokenDenom = 2;
+  uint32 stakePoolIndex = 2;
   uint32 index = 3;
 
   string stakedAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
@@ -41,15 +37,20 @@ message UserStakeRecord {
   uint64 startTimestamp = 6;
   // promise not unstake before this timestamp
   uint64 endTimestamp = 7;
-  repeated RewardInfo rewardInfos = 8; 
+  repeated UserRewardInfo userRewardInfos = 8; 
 
   uint32 stakeItemIndex = 9;
 }
 
-message RewardInfo {
+message UserRewardInfo {
   uint32 rewardPoolIndex = 1;
   string rewardTokenDenom = 2;
   string rewardDebt = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message RewardToken {
+  string rewardTokenDenom = 1;
+  string minTotalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message StakeItem {

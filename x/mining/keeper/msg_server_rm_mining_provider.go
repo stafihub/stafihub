@@ -8,7 +8,7 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-func (k msgServer) AddRewarder(goCtx context.Context, msg *types.MsgAddRewarder) (*types.MsgAddRewarderResponse, error) {
+func (k msgServer) RmMiningProvider(goCtx context.Context, msg *types.MsgRmMiningProvider) (*types.MsgRmMiningProviderResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -19,7 +19,11 @@ func (k msgServer) AddRewarder(goCtx context.Context, msg *types.MsgAddRewarder)
 	if err != nil {
 		return nil, err
 	}
-	k.Keeper.AddRewarder(ctx, userAddr)
 
-	return &types.MsgAddRewarderResponse{}, nil
+	if !k.Keeper.HasMiningProvider(ctx, userAddr) {
+		return nil, types.ErrUserNotAdminOrMiningProvider
+	}
+
+	k.Keeper.RemoveMiningProvider(ctx, userAddr)
+	return &types.MsgRmMiningProviderResponse{}, nil
 }

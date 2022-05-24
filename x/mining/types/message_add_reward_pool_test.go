@@ -19,7 +19,6 @@ func TestMsgAddRewardPool_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgAddRewardPool{
 				Creator:           "invalid_address",
-				StakeTokenDenom:   sample.TestDenom,
 				RewardTokenDenom:  sample.TestDenom,
 				TotalRewardAmount: sdk.NewInt(10),
 				RewardPerSecond:   sdk.NewInt(1),
@@ -29,7 +28,6 @@ func TestMsgAddRewardPool_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgAddRewardPool{
 				Creator:           sample.AccAddress(),
-				StakeTokenDenom:   sample.TestDenom,
 				RewardTokenDenom:  sample.TestDenom,
 				TotalRewardAmount: sdk.NewInt(5),
 				RewardPerSecond:   sdk.NewInt(1),

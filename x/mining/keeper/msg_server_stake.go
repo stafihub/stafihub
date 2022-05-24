@@ -15,7 +15,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	if err != nil {
 		return nil, err
 	}
-	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakeToken.Denom)
+	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
@@ -33,11 +33,11 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	userStakePower := stakeItem.PowerRewardRate.MulInt(msg.StakeToken.Amount).TruncateInt()
 	stakePool.TotalStakedPower = stakePool.TotalStakedPower.Add(userStakePower)
 
-	willUseIndex := k.Keeper.GetUserStakeRecordNextIndex(ctx, msg.Creator, msg.StakeToken.Denom)
+	willUseIndex := k.Keeper.GetUserStakeRecordNextIndex(ctx, msg.Creator, msg.StakePoolIndex)
 
-	rewardInfos := make([]*types.RewardInfo, 0)
+	rewardInfos := make([]*types.UserRewardInfo, 0)
 	for _, rewardPool := range stakePool.RewardPools {
-		rewardInfos = append(rewardInfos, &types.RewardInfo{
+		rewardInfos = append(rewardInfos, &types.UserRewardInfo{
 			RewardPoolIndex:  rewardPool.Index,
 			RewardTokenDenom: rewardPool.RewardTokenDenom,
 			RewardDebt:       userStakePower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
@@ -46,13 +46,13 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 
 	userStakeRecord := types.UserStakeRecord{
 		UserAddress:     msg.Creator,
-		StakeTokenDenom: msg.StakeToken.Denom,
+		StakePoolIndex:  msg.StakePoolIndex,
 		Index:           willUseIndex,
 		StakedAmount:    msg.StakeToken.Amount,
 		StakedPower:     userStakePower,
 		StartTimestamp:  curBlockTime,
 		EndTimestamp:    curBlockTime + stakeItem.LockSecond,
-		RewardInfos:     rewardInfos,
+		UserRewardInfos: rewardInfos,
 		StakeItemIndex:  msg.StakeItemIndex,
 	}
 
@@ -60,7 +60,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, err
 	}
 
-	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakeToken.Denom, willUseIndex)
+	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakePoolIndex, willUseIndex)
 	k.Keeper.SetUserStakeRecord(ctx, &userStakeRecord)
 	k.Keeper.SetStakePool(ctx, stakePool)
 
@@ -68,6 +68,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		sdk.NewEvent(
 			types.EventTypeStake,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
 			sdk.NewAttribute(types.AttributeKeyStakeTokenDenom, msg.StakeToken.Denom),
 			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", willUseIndex)),
 			sdk.NewAttribute(types.AttributeKeyStakeTokenAmount, msg.StakeToken.Amount.String()),

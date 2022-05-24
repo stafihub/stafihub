@@ -35,7 +35,7 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 	for _, rewardPool := range stakePool.RewardPools {
 		rewardDebt := sdk.ZeroInt()
 		existInRewardInfos := false
-		for _, rewardInfo := range userStakeRecord.RewardInfos {
+		for _, rewardInfo := range userStakeRecord.UserRewardInfos {
 			if rewardPool.Index == rewardInfo.RewardPoolIndex {
 				rewardDebt = rewardInfo.RewardDebt
 				rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
@@ -44,7 +44,7 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 			}
 		}
 		if !existInRewardInfos {
-			userStakeRecord.RewardInfos = append(userStakeRecord.RewardInfos, &types.RewardInfo{
+			userStakeRecord.UserRewardInfos = append(userStakeRecord.UserRewardInfos, &types.UserRewardInfo{
 				RewardPoolIndex:  rewardPool.Index,
 				RewardTokenDenom: rewardPool.RewardTokenDenom,
 				RewardDebt:       userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),

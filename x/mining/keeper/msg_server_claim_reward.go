@@ -15,11 +15,11 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 		return nil, err
 	}
 
-	userStakeRecord, found := k.Keeper.GetUserStakeRecord(ctx, msg.Creator, msg.StakeTokenDenom, msg.StakeRecordIndex)
+	userStakeRecord, found := k.Keeper.GetUserStakeRecord(ctx, msg.Creator, msg.StakePoolIndex, msg.StakeRecordIndex)
 	if !found {
 		return nil, types.ErrUserStakeRecordNotExist
 	}
-	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakeTokenDenom)
+	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
@@ -42,8 +42,8 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 		sdk.NewEvent(
 			types.EventTypeClaimReward,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
 			sdk.NewAttribute(types.AttributeKeyClaimedTokens, willClaimCoins.String()),
-			sdk.NewAttribute(types.AttributeKeyStakeTokenDenom, msg.StakeTokenDenom),
 			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),
 		),
 	)

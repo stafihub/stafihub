@@ -35,20 +35,29 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgWithdraw:
 			res, err := msgServer.Withdraw(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgProvideRewardToken:
-			res, err := msgServer.ProvideRewardToken(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdateStakePool:
-			res, err := msgServer.UpdateStakePool(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgUpdateStakeItem:
 			res, err := msgServer.UpdateStakeItem(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgAddRewarder:
-			res, err := msgServer.AddRewarder(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgAddMiningProvider:
+			res, err := msgServer.AddMiningProvider(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRmRewarder:
-			res, err := msgServer.RmRewarder(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRmMiningProvider:
+			res, err := msgServer.RmMiningProvider(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAddRewardToken:
+			res, err := msgServer.AddRewardToken(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgSetMaxRewardPoolNumber:
+			res, err := msgServer.SetMaxRewardPoolNumber(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateRewardPool:
+			res, err := msgServer.UpdateRewardPool(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRmRewardPool:
+			res, err := msgServer.RmRewardPool(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgToggleProviderSwitch:
+			res, err := msgServer.ToggleProviderSwitch(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

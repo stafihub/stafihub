@@ -11,10 +11,10 @@ const TypeMsgAddRewardPool = "add_reward_pool"
 
 var _ sdk.Msg = &MsgAddRewardPool{}
 
-func NewMsgAddRewardPool(creator string, stakeTokenDenom string, rewardTokenDenom string, totalRewardAmount sdk.Int, rewardPerSecond sdk.Int, startTimestamp uint64) *MsgAddRewardPool {
+func NewMsgAddRewardPool(creator string, stakePoolIndex uint32, rewardTokenDenom string, totalRewardAmount sdk.Int, rewardPerSecond sdk.Int, startTimestamp uint64) *MsgAddRewardPool {
 	return &MsgAddRewardPool{
 		Creator:           creator,
-		StakeTokenDenom:   stakeTokenDenom,
+		StakePoolIndex:    stakePoolIndex,
 		RewardTokenDenom:  rewardTokenDenom,
 		TotalRewardAmount: totalRewardAmount,
 		RewardPerSecond:   rewardPerSecond,
@@ -47,10 +47,6 @@ func (msg *MsgAddRewardPool) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-	err = sdk.ValidateDenom(msg.StakeTokenDenom)
-	if err != nil {
-		return err
 	}
 	err = sdk.ValidateDenom(msg.RewardTokenDenom)
 	if err != nil {
