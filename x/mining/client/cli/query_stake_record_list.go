@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdStakeRecordList() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake-record-list [user-address] [stake-token-denom]",
+		Use:   "stake-record-list [user-address] [stake-pool-index]",
 		Short: "Query stake record list",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

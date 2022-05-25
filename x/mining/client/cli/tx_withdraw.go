@@ -15,15 +15,19 @@ var _ = strconv.Itoa(0)
 
 func CmdWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "withdraw [stake-token] [stake-record-index]",
+		Use:   "withdraw [stake-pool-index] [stake-token] [stake-record-index]",
 		Short: "Withdraw",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakeTokenDenom, err := sdk.ParseCoinNormalized(args[0])
+			argStakePoolIndex, err := sdk.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
-			argStakeRecordIndex, err := sdk.ParseUint(args[1])
+			argStakeTokenDenom, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
+			}
+			argStakeRecordIndex, err := sdk.ParseUint(args[2])
 			if err != nil {
 				return err
 			}
@@ -35,6 +39,7 @@ func CmdWithdraw() *cobra.Command {
 
 			msg := types.NewMsgWithdraw(
 				clientCtx.GetFromAddress().String(),
+				uint32(argStakePoolIndex.Uint64()),
 				argStakeTokenDenom,
 				uint32(argStakeRecordIndex.Uint64()),
 			)
