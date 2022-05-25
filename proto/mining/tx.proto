@@ -23,6 +23,7 @@ service Msg {
   rpc UpdateRewardPool(MsgUpdateRewardPool) returns (MsgUpdateRewardPoolResponse);
   rpc RmRewardPool(MsgRmRewardPool) returns (MsgRmRewardPoolResponse);
   rpc ToggleProviderSwitch(MsgToggleProviderSwitch) returns (MsgToggleProviderSwitchResponse);
+  rpc SetMaxStakeItemNumber(MsgSetMaxStakeItemNumber) returns (MsgSetMaxStakeItemNumberResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -171,6 +172,14 @@ message MsgToggleProviderSwitch {
 }
 
 message MsgToggleProviderSwitchResponse {
+}
+
+message MsgSetMaxStakeItemNumber {
+  string creator = 1;
+  uint32 number = 2;
+}
+
+message MsgSetMaxStakeItemNumberResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

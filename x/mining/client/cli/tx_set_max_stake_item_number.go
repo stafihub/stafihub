@@ -13,23 +13,13 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdStake() *cobra.Command {
+func CmdSetMaxStakeItemNumber() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake [stake-pool-index] [stake-token] [stake-item-index]",
-		Short: "Stake token ",
-		Args:  cobra.ExactArgs(3),
+		Use:   "set-max-stake-item-number [number]",
+		Short: "Set max stake item number",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakePoolIndex, err := sdk.ParseUint(args[0])
-			if err != nil {
-				return err
-			}
-
-			argStakeToken, err := sdk.ParseCoinNormalized(args[1])
-			if err != nil {
-				return err
-			}
-
-			argStakeItemIndex, err := sdk.ParseUint(args[2])
+			argNumber, err := sdk.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
@@ -39,11 +29,9 @@ func CmdStake() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgStake(
+			msg := types.NewMsgSetMaxStakeItemNumber(
 				clientCtx.GetFromAddress().String(),
-				uint32(argStakePoolIndex.Uint64()),
-				argStakeToken,
-				uint32(argStakeItemIndex.Uint64()),
+				uint32(argNumber.Uint64()),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

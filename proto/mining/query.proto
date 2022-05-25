@@ -67,6 +67,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/mining/max_reward_pool_number";
 	}
 
+// Queries a list of MaxStakeItemNumber items.
+	rpc MaxStakeItemNumber(QueryMaxStakeItemNumberRequest) returns (QueryMaxStakeItemNumberResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/max_stake_item_number";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -158,6 +163,13 @@ message QueryMaxRewardPoolNumberRequest {
 }
 
 message QueryMaxRewardPoolNumberResponse {
+  uint32 number = 1;
+}
+
+message QueryMaxStakeItemNumberRequest {
+}
+
+message QueryMaxStakeItemNumberResponse {
   uint32 number = 1;
 }
 

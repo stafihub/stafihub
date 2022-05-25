@@ -15,12 +15,22 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		return nil, err
 	}
 	if k.GetMiningProviderSwitch(ctx) && !k.HasMiningProvider(ctx, user) {
-		return nil, types.ErrUserNotAdminOrMiningProvider
+		return nil, types.ErrUserNotMiningProvider
 	}
+	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
+	if len(msg.RewardPoolInfoList) > int(maxRewardPoolNumber) {
+		return nil, types.ErrRewardPoolNumberReachLimit
+	}
+	maxStakeItemNumber := k.Keeper.GetMaxStakeItemNumber(ctx)
+	if len(msg.StakeItemInfoList) > int(maxStakeItemNumber) {
+		return nil, types.ErrStakeItemNumberReachLimit
+	}
+
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 	willUseStakePoolIndex := k.Keeper.GetStakePoolNextIndex(ctx)
 
 	rewardPools := make([]*types.RewardPool, 0)
+	rewardTokens := sdk.NewCoins()
 	for i, rewardPool := range msg.RewardPoolInfoList {
 		rewardToken, found := k.Keeper.GetRewardToken(ctx, rewardPool.RewardTokenDenom)
 		if !found {
@@ -35,10 +45,7 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 			willUseLastRewardTimestamp = curBlockTime
 		}
 
-		rewardTokens := sdk.NewCoins(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardPool.TotalRewardAmount))
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, user, types.ModuleName, rewardTokens); err != nil {
-			return nil, err
-		}
+		rewardTokens = rewardTokens.Add(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardPool.TotalRewardAmount))
 
 		rewardPool := types.RewardPool{
 			Index:               uint32(i),
@@ -50,8 +57,10 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 			RewardPerPower:      sdk.ZeroInt(),
 			LastRewardTimestamp: willUseLastRewardTimestamp,
 		}
-
 		rewardPools = append(rewardPools, &rewardPool)
+	}
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, user, types.ModuleName, rewardTokens); err != nil {
+		return nil, err
 	}
 
 	stakePool := types.StakePool{

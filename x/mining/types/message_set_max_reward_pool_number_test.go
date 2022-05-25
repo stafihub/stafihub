@@ -23,7 +23,7 @@ func TestMsgSetMaxRewardPoolNumber_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg:types.MsgSetMaxRewardPoolNumber{
+			msg: types.MsgSetMaxRewardPoolNumber{
 				Creator: sample.AccAddress(),
 			},
 		},

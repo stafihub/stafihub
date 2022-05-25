@@ -21,7 +21,7 @@ func (k msgServer) RmMiningProvider(goCtx context.Context, msg *types.MsgRmMinin
 	}
 
 	if !k.Keeper.HasMiningProvider(ctx, userAddr) {
-		return nil, types.ErrUserNotAdminOrMiningProvider
+		return nil, types.ErrMiningProviderNotExist
 	}
 
 	k.Keeper.RemoveMiningProvider(ctx, userAddr)

@@ -148,6 +148,18 @@ stafihubd tx rdex remove-liquidity 10 5 1uratom 1ufis ufis --from admin --chain-
 
 stafihubd tx rdex swap 2ufis 1uratom  --from admin --chain-id local-stafihub --keyring-backend file
 
+### mining:
+
+stafihubd tx mining add-mining-provider stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx  --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx mining add-reward-token ufis 200 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx mining add-stake-pool ufis ./add_stake_pool_example.json  --from relay1 --chain-id local-stafihub --keyring-backend file
+
+stafihubd tx mining stake 0 10ufis 0 --from my-account --chain-id local-stafihub --keyring-backend file 
+
+stafihubd tx mining claim-reward 0 0 --from my-account --chain-id local-stafihub --keyring-backend file
+
 ## Operate examples for user
 
 ### liquidity bond (gaiad example):

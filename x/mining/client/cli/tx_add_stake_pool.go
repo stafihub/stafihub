@@ -57,7 +57,7 @@ type CreateInfo struct {
 }
 
 func parseCreateInfo(path string) (*CreateInfo, error) {
-	var createInfo *CreateInfo
+	createInfo := CreateInfo{}
 	if path == "" {
 		return nil, fmt.Errorf("reward pool list json file path not give")
 	}
@@ -66,9 +66,9 @@ func parseCreateInfo(path string) (*CreateInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = json.Unmarshal(contents, createInfo)
+	err = json.Unmarshal(contents, &createInfo)
 	if err != nil {
 		return nil, err
 	}
-	return createInfo, nil
+	return &createInfo, nil
 }

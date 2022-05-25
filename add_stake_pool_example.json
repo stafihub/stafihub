@@ -1,0 +1,16 @@
+{
+    "rewardPoolList": [
+        {
+            "rewardTokenDenom": "ufis",
+            "totalRewardAmount": "300",
+            "rewardPerSecond": "1",
+            "startTimestamp": 3
+        }
+    ],
+    "stakeItemList": [
+        {
+            "lockSecond": 100,
+            "powerRewardRate": "1.5"
+        }
+    ]
+}

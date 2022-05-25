@@ -69,5 +69,12 @@ func (msg *MsgAddStakePool) ValidateBasic() error {
 			return fmt.Errorf("RewardPerSecond is negative")
 		}
 	}
+
+	for _, stakeItem := range msg.StakeItemInfoList {
+		if !stakeItem.PowerRewardRate.IsPositive() {
+			return fmt.Errorf("PowerRewardRate is not positive")
+		}
+	}
+
 	return nil
 }

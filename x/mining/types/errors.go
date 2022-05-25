@@ -21,4 +21,6 @@ var (
 	ErrRewardTokenNotSupport             = sdkerrors.Register(ModuleName, 1111, "reward token not support")
 	ErrRewardPoolNotExist                = sdkerrors.Register(ModuleName, 1112, "reward pool not exist")
 	ErrRewardPoolLeftRewardAmountNotZero = sdkerrors.Register(ModuleName, 1113, "reward pool left reward amount not zero")
+	ErrMiningProviderNotExist            = sdkerrors.Register(ModuleName, 1114, "mining provider not exist")
+	ErrStakeItemNumberReachLimit         = sdkerrors.Register(ModuleName, 1115, "stake item number reach limit")
 )

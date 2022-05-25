@@ -6,8 +6,8 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stafihub/stafihub/utils"
-	"github.com/stretchr/testify/require"
 	"github.com/stafihub/stafihub/x/mining/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgAddStakeItem_ValidateBasic(t *testing.T) {

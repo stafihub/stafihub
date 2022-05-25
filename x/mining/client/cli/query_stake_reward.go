@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdStakeReward() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake-reward [stake-user-address] [stake-token-denom] [stake-record-index]",
+		Use:   "stake-reward [stake-user-address] [stake-pool-index] [stake-record-index]",
 		Short: "Query stake reward",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

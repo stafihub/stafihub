@@ -20662,6 +20662,39 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/mining/max_stake_item_number:
+    get:
+      summary: Queries a list of MaxStakeItemNumber items.
+      operationId: StafihubStafihubMiningMaxStakeItemNumber
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              number:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/mining/mining_provider_list:
     get:
       summary: Queries a list of MiningProviderList items.
@@ -38234,6 +38267,8 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgSetMaxRewardPoolNumberResponse:
     type: object
+  stafihub.stafihub.mining.MsgSetMaxStakeItemNumberResponse:
+    type: object
   stafihub.stafihub.mining.MsgStakeResponse:
     type: object
   stafihub.stafihub.mining.MsgToggleProviderSwitchResponse:
@@ -38248,6 +38283,12 @@ definitions:
     type: object
     description: Params defines the parameters for the module.
   stafihub.stafihub.mining.QueryMaxRewardPoolNumberResponse:
+    type: object
+    properties:
+      number:
+        type: integer
+        format: int64
+  stafihub.stafihub.mining.QueryMaxStakeItemNumberResponse:
     type: object
     properties:
       number:

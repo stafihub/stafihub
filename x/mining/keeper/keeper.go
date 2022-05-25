@@ -368,3 +368,20 @@ func (k Keeper) GetMiningProviderSwitch(ctx sdk.Context) bool {
 	}
 	return bytes.Equal(bts, types.SwitchStateOpen)
 }
+
+func (k Keeper) SetMaxStakeItemNumber(ctx sdk.Context, number uint32) {
+	store := ctx.KVStore(k.storeKey)
+	bts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bts, number)
+
+	store.Set(types.MaxRewardPoolNumberStoreKey, bts)
+}
+
+func (k Keeper) GetMaxStakeItemNumber(ctx sdk.Context) uint32 {
+	store := ctx.KVStore(k.storeKey)
+	b := store.Get(types.MaxRewardPoolNumberStoreKey)
+	if b == nil {
+		return 6
+	}
+	return binary.LittleEndian.Uint32(b)
+}

@@ -18,8 +18,12 @@ func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeIte
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) && !k.Keeper.HasMiningProvider(ctx, user) {
 		return nil, types.ErrUserNotAdminOrMiningProvider
 	}
-
 	willUseIndex := k.GetStakeItemNextIndex(ctx, msg.StakePoolIndex)
+
+	maxStakeItemNumber := k.Keeper.GetMaxStakeItemNumber(ctx)
+	if willUseIndex >= maxStakeItemNumber {
+		return nil, types.ErrStakeItemNumberReachLimit
+	}
 
 	stakeItem := types.StakeItem{
 		Enable:          msg.Enable,
