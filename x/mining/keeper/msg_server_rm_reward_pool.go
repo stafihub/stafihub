@@ -30,7 +30,7 @@ func (k msgServer) RmRewardPool(goCtx context.Context, msg *types.MsgRmRewardPoo
 	if willUseRewardPool == nil {
 		return nil, types.ErrRewardPoolNotExist
 	}
-	if !willUseRewardPool.LeftRewardAmount.IsPositive() {
+	if willUseRewardPool.LeftRewardAmount.IsPositive() {
 		return nil, types.ErrRewardPoolLeftRewardAmountNotZero
 	}
 
