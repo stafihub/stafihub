@@ -31,19 +31,18 @@ func updateStakePool(stakePool *types.StakePool, curBlockTime uint64) {
 
 // will update {userStakeRecord.RewardInfos}
 func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStakeRecord) sdk.Coins {
+	userRewardInfoMap := make(map[uint32]*types.UserRewardInfo)
+	for _, rewardInfo := range userStakeRecord.UserRewardInfos {
+		userRewardInfoMap[rewardInfo.RewardPoolIndex] = rewardInfo
+	}
+
 	rewardCoins := sdk.NewCoins()
 	for _, rewardPool := range stakePool.RewardPools {
-		rewardDebt := sdk.ZeroInt()
-		existInRewardInfos := false
-		for _, rewardInfo := range userStakeRecord.UserRewardInfos {
-			if rewardPool.Index == rewardInfo.RewardPoolIndex {
-				rewardDebt = rewardInfo.RewardDebt
-				rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
-				existInRewardInfos = true
-				break
-			}
-		}
-		if !existInRewardInfos {
+		preRewardDebt := sdk.ZeroInt()
+		if rewardInfo, exist := userRewardInfoMap[rewardPool.Index]; exist {
+			preRewardDebt = rewardInfo.RewardDebt
+			rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
+		} else {
 			userStakeRecord.UserRewardInfos = append(userStakeRecord.UserRewardInfos, &types.UserRewardInfo{
 				RewardPoolIndex:  rewardPool.Index,
 				RewardTokenDenom: rewardPool.RewardTokenDenom,
@@ -51,7 +50,7 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 			})
 		}
 
-		rewardAmount := userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor).Sub(rewardDebt)
+		rewardAmount := userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor).Sub(preRewardDebt)
 		if rewardAmount.IsPositive() {
 			rewardCoins = rewardCoins.Add(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardAmount))
 		}
