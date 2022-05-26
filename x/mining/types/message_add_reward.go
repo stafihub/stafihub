@@ -49,7 +49,7 @@ func (msg *MsgAddReward) ValidateBasic() error {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
 	if !msg.AddAmount.IsPositive() {
-		return fmt.Errorf("totalRewardAmount is not positive")
+		return fmt.Errorf("addAmount is not positive")
 	}
 
 	if msg.RewardPerSecond.IsNegative() {

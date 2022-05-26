@@ -53,7 +53,7 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 			TotalRewardAmount:   rewardPool.TotalRewardAmount,
 			LeftRewardAmount:    rewardPool.TotalRewardAmount,
 			RewardPerSecond:     rewardPool.RewardPerSecond,
-			StartTimestamp:      rewardPool.StartTimestamp,
+			StartTimestamp:      willUseLastRewardTimestamp,
 			RewardPerPower:      sdk.ZeroInt(),
 			LastRewardTimestamp: willUseLastRewardTimestamp,
 		}

@@ -44,16 +44,15 @@ func (k msgServer) AddReward(goCtx context.Context, msg *types.MsgAddReward) (*t
 			return nil, types.ErrTotalRewardAmountLessThanLimit
 		}
 
-		if msg.StartTimestamp != 0 {
-			willUseRewardPool.StartTimestamp = msg.StartTimestamp
+		willUseRewardPool.StartTimestamp = msg.StartTimestamp
+		willUseRewardPool.LastRewardTimestamp = msg.StartTimestamp
 
-			willUseLastRewardTimestamp := msg.StartTimestamp
-			if msg.StartTimestamp < curBlockTime {
-				willUseLastRewardTimestamp = curBlockTime
-			}
-			willUseRewardPool.LastRewardTimestamp = willUseLastRewardTimestamp
+		if msg.StartTimestamp < curBlockTime {
+			willUseRewardPool.StartTimestamp = curBlockTime
+			willUseRewardPool.LastRewardTimestamp = curBlockTime
 		}
-		if !msg.RewardPerSecond.IsZero() {
+
+		if msg.RewardPerSecond.IsPositive() {
 			willUseRewardPool.RewardPerSecond = msg.RewardPerSecond
 		}
 	} else {
