@@ -19,6 +19,9 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
+	if stakePool.EmergencySwitch {
+		return nil, types.ErrEmergencySwitchOpen
+	}
 
 	denomMap := make(map[string]bool)
 	for _, rewardPool := range stakePool.RewardPools {

@@ -23,6 +23,9 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
+	if stakePool.EmergencySwitch {
+		return nil, types.ErrEmergencySwitchOpen
+	}
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
 	updateStakePool(stakePool, curBlockTime)

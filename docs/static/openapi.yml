@@ -20907,6 +20907,8 @@ paths:
                     title: total (staked) balance of staked token
                   totalStakedPower:
                     type: string
+                  emergencySwitch:
+                    type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -20983,6 +20985,8 @@ paths:
                       title: total (staked) balance of staked token
                     totalStakedPower:
                       type: string
+                    emergencySwitch:
+                      type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -21032,7 +21036,7 @@ paths:
                     type: string
                     format: uint64
                     title: the begin timestamp
-                  endTimestamp:
+                  lockEndTimestamp:
                     type: string
                     format: uint64
                     title: promise not unstake before this timestamp
@@ -21162,7 +21166,7 @@ paths:
                       type: string
                       format: uint64
                       title: the begin timestamp
-                    endTimestamp:
+                    lockEndTimestamp:
                       type: string
                       format: uint64
                       title: promise not unstake before this timestamp
@@ -38267,6 +38271,8 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgClaimRewardResponse:
     type: object
+  stafihub.stafihub.mining.MsgEmergencyWithdrawResponse:
+    type: object
   stafihub.stafihub.mining.MsgRmMiningProviderResponse:
     type: object
   stafihub.stafihub.mining.MsgSetMaxRewardPoolNumberResponse:
@@ -38274,6 +38280,8 @@ definitions:
   stafihub.stafihub.mining.MsgSetMaxStakeItemNumberResponse:
     type: object
   stafihub.stafihub.mining.MsgStakeResponse:
+    type: object
+  stafihub.stafihub.mining.MsgToggleEmergencySwitchResponse:
     type: object
   stafihub.stafihub.mining.MsgToggleProviderSwitchResponse:
     type: object
@@ -38387,6 +38395,8 @@ definitions:
             title: total (staked) balance of staked token
           totalStakedPower:
             type: string
+          emergencySwitch:
+            type: boolean
   stafihub.stafihub.mining.QueryStakePoolListResponse:
     type: object
     properties:
@@ -38430,6 +38440,8 @@ definitions:
               title: total (staked) balance of staked token
             totalStakedPower:
               type: string
+            emergencySwitch:
+              type: boolean
   stafihub.stafihub.mining.QueryStakeRecordCountResponse:
     type: object
     properties:
@@ -38460,7 +38472,7 @@ definitions:
               type: string
               format: uint64
               title: the begin timestamp
-            endTimestamp:
+            lockEndTimestamp:
               type: string
               format: uint64
               title: promise not unstake before this timestamp
@@ -38503,7 +38515,7 @@ definitions:
             type: string
             format: uint64
             title: the begin timestamp
-          endTimestamp:
+          lockEndTimestamp:
             type: string
             format: uint64
             title: promise not unstake before this timestamp
@@ -38625,6 +38637,8 @@ definitions:
         title: total (staked) balance of staked token
       totalStakedPower:
         type: string
+      emergencySwitch:
+        type: boolean
   stafihub.stafihub.mining.UserRewardInfo:
     type: object
     properties:
@@ -38656,7 +38670,7 @@ definitions:
         type: string
         format: uint64
         title: the begin timestamp
-      endTimestamp:
+      lockEndTimestamp:
         type: string
         format: uint64
         title: promise not unstake before this timestamp

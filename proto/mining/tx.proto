@@ -24,6 +24,8 @@ service Msg {
   rpc ToggleProviderSwitch(MsgToggleProviderSwitch) returns (MsgToggleProviderSwitchResponse);
   rpc SetMaxStakeItemNumber(MsgSetMaxStakeItemNumber) returns (MsgSetMaxStakeItemNumberResponse);
   rpc AddReward(MsgAddReward) returns (MsgAddRewardResponse);
+  rpc ToggleEmergencySwitch(MsgToggleEmergencySwitch) returns (MsgToggleEmergencySwitchResponse);
+  rpc EmergencyWithdraw(MsgEmergencyWithdraw) returns (MsgEmergencyWithdrawResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -183,6 +185,23 @@ message MsgAddReward {
 }
 
 message MsgAddRewardResponse {
+}
+
+message MsgToggleEmergencySwitch {
+  string creator = 1;
+  uint32 stakePoolIndex = 2;
+}
+
+message MsgToggleEmergencySwitchResponse {
+}
+
+message MsgEmergencyWithdraw {
+  string creator = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 stakeRecordIndex = 3;
+}
+
+message MsgEmergencyWithdrawResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

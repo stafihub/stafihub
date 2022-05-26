@@ -2,12 +2,13 @@ package types
 
 // sudo module event types
 const (
-	EventTypeAddStakePool  = "add_stake_pool"
-	EventTypeAddStakeItem  = "add_stake_item"
-	EventTypeAddRewardPool = "add_reward_pool"
-	EventTypeStake         = "stake"
-	EventTypeClaimReward   = "claim_reward"
-	EventTypeWithdraw      = "withdraw"
+	EventTypeAddStakePool      = "add_stake_pool"
+	EventTypeAddStakeItem      = "add_stake_item"
+	EventTypeAddRewardPool     = "add_reward_pool"
+	EventTypeStake             = "stake"
+	EventTypeClaimReward       = "claim_reward"
+	EventTypeWithdraw          = "withdraw"
+	EventTypeEmergencyWithdraw = "emergency_withdraw"
 
 	AttributeKeyAccount         = "account"
 	AttributeKeyStakeTokenDenom = "stake_token_denom"

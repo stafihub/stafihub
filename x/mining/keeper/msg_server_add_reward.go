@@ -20,6 +20,9 @@ func (k msgServer) AddReward(goCtx context.Context, msg *types.MsgAddReward) (*t
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
+	if stakePool.EmergencySwitch {
+		return nil, types.ErrEmergencySwitchOpen
+	}
 
 	var willUseRewardPool *types.RewardPool
 	for _, rewardPool := range stakePool.RewardPools {

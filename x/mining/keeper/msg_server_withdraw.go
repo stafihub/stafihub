@@ -27,9 +27,12 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
+	if stakePool.EmergencySwitch {
+		return nil, types.ErrEmergencySwitchOpen
+	}
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
-	if userStakeRecord.EndTimestamp > curBlockTime {
+	if userStakeRecord.LockEndTimestamp > curBlockTime {
 		return nil, types.ErrStakeTokenStillLocked
 	}
 
@@ -69,9 +72,9 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 			types.EventTypeWithdraw,
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
 			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
+			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),
 			sdk.NewAttribute(types.AttributeKeyClaimedTokens, willClaimCoins.String()),
 			sdk.NewAttribute(types.AttributeKeyWithdrawAmount, msg.WithdrawAmount.String()),
-			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),
 		),
 	)
 

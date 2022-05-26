@@ -13,6 +13,7 @@ message StakePool {
   // total (staked) balance of staked token
   string totalStakedAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string totalStakedPower = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  bool emergencySwitch = 6;
 }
 
 message RewardPool {
@@ -36,7 +37,7 @@ message UserStakeRecord {
   // the begin timestamp
   uint64 startTimestamp = 6;
   // promise not unstake before this timestamp
-  uint64 endTimestamp = 7;
+  uint64 lockEndTimestamp = 7;
   repeated UserRewardInfo userRewardInfos = 8; 
 
   uint32 stakeItemIndex = 9;

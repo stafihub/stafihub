@@ -19,17 +19,18 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	if !found {
 		return nil, types.ErrStakePoolNotExist
 	}
-
+	if stakePool.EmergencySwitch {
+		return nil, types.ErrEmergencySwitchOpen
+	}
 	if stakePool.StakeTokenDenom != msg.StakeToken.Denom {
 		return nil, types.ErrStakeDenomNotMatch
 	}
-
 	stakeItem, found := k.Keeper.GetStakeItem(ctx, msg.StakePoolIndex, msg.StakeItemIndex)
 	if !found {
 		return nil, types.ErrStakeItemNotExist
 	}
-
 	curBlockTime := uint64(ctx.BlockTime().Unix())
+
 	// update pools
 	updateStakePool(stakePool, curBlockTime)
 
@@ -49,15 +50,15 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	}
 
 	userStakeRecord := types.UserStakeRecord{
-		UserAddress:     msg.Creator,
-		StakePoolIndex:  msg.StakePoolIndex,
-		Index:           willUseIndex,
-		StakedAmount:    msg.StakeToken.Amount,
-		StakedPower:     userStakePower,
-		StartTimestamp:  curBlockTime,
-		EndTimestamp:    curBlockTime + stakeItem.LockSecond,
-		UserRewardInfos: rewardInfos,
-		StakeItemIndex:  msg.StakeItemIndex,
+		UserAddress:      msg.Creator,
+		StakePoolIndex:   msg.StakePoolIndex,
+		Index:            willUseIndex,
+		StakedAmount:     msg.StakeToken.Amount,
+		StakedPower:      userStakePower,
+		StartTimestamp:   curBlockTime,
+		LockEndTimestamp: curBlockTime + stakeItem.LockSecond,
+		UserRewardInfos:  rewardInfos,
+		StakeItemIndex:   msg.StakeItemIndex,
 	}
 
 	if err := k.Keeper.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddr, types.ModuleName, sdk.NewCoins(msg.StakeToken)); err != nil {
@@ -78,7 +79,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 			sdk.NewAttribute(types.AttributeKeyStakeTokenAmount, msg.StakeToken.Amount.String()),
 			sdk.NewAttribute(types.AttributeKeyStakePower, userStakePower.String()),
 			sdk.NewAttribute(types.AttributeKeyStartTimestamp, fmt.Sprintf("%d", userStakeRecord.StartTimestamp)),
-			sdk.NewAttribute(types.AttributeKeyEndTimestamp, fmt.Sprintf("%d", userStakeRecord.EndTimestamp)),
+			sdk.NewAttribute(types.AttributeKeyEndTimestamp, fmt.Sprintf("%d", userStakeRecord.LockEndTimestamp)),
 			sdk.NewAttribute(types.AttributeKeyStakeItemIndex, fmt.Sprintf("%d", msg.StakeItemIndex)),
 		),
 	)
