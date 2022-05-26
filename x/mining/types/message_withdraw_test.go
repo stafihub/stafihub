@@ -19,15 +19,15 @@ func TestMsgWithdraw_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: types.MsgWithdraw{
-				Creator:    "invalid_address",
-				StakeToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				Creator:        "invalid_address",
+				WithdrawAmount: sdk.NewInt(10),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: types.MsgWithdraw{
-				Creator:    sample.AccAddress(),
-				StakeToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				Creator:        sample.AccAddress(),
+				WithdrawAmount: sdk.NewInt(10),
 			},
 		},
 	}

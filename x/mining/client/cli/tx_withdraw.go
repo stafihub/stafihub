@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -15,7 +16,7 @@ var _ = strconv.Itoa(0)
 
 func CmdWithdraw() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "withdraw [stake-pool-index] [stake-token] [stake-record-index]",
+		Use:   "withdraw [stake-pool-index] [stake-record-index] [withdraw-amount]",
 		Short: "Withdraw",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -23,13 +24,14 @@ func CmdWithdraw() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argStakeTokenDenom, err := sdk.ParseCoinNormalized(args[1])
+			argStakeRecordIndex, err := sdk.ParseUint(args[1])
 			if err != nil {
 				return err
 			}
-			argStakeRecordIndex, err := sdk.ParseUint(args[2])
-			if err != nil {
-				return err
+
+			argWithdrawAmount, ok := sdk.NewIntFromString(args[2])
+			if !ok {
+				return fmt.Errorf("arg withdrawAmount err")
 			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -40,8 +42,8 @@ func CmdWithdraw() *cobra.Command {
 			msg := types.NewMsgWithdraw(
 				clientCtx.GetFromAddress().String(),
 				uint32(argStakePoolIndex.Uint64()),
-				argStakeTokenDenom,
 				uint32(argStakeRecordIndex.Uint64()),
+				argWithdrawAmount,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

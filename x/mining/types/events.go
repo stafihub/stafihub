@@ -31,5 +31,5 @@ const (
 
 	AttributeKeyClaimedTokens = "claimed_tokens"
 
-	AttributeKeyWithdrawToken = "withdraw_token"
+	AttributeKeyWithdrawAmount = "withdraw_amount"
 )

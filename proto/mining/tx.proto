@@ -96,8 +96,8 @@ message MsgClaimRewardResponse {
 message MsgWithdraw {
   string creator = 1;
   uint32 stakePoolIndex = 2;
-  cosmos.base.v1beta1.Coin stakeToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-  uint32 stakeRecordIndex = 4;
+  uint32 stakeRecordIndex = 3;
+  string withdrawAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message MsgWithdrawResponse {

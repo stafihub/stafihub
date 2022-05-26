@@ -21048,6 +21048,8 @@ paths:
                           type: string
                         rewardDebt:
                           type: string
+                        claimedAmount:
+                          type: string
                   stakeItemIndex:
                     type: integer
                     format: int64
@@ -21175,6 +21177,8 @@ paths:
                           rewardTokenDenom:
                             type: string
                           rewardDebt:
+                            type: string
+                          claimedAmount:
                             type: string
                     stakeItemIndex:
                       type: integer
@@ -38472,6 +38476,8 @@ definitions:
                     type: string
                   rewardDebt:
                     type: string
+                  claimedAmount:
+                    type: string
             stakeItemIndex:
               type: integer
               format: int64
@@ -38512,6 +38518,8 @@ definitions:
                 rewardTokenDenom:
                   type: string
                 rewardDebt:
+                  type: string
+                claimedAmount:
                   type: string
           stakeItemIndex:
             type: integer
@@ -38627,6 +38635,8 @@ definitions:
         type: string
       rewardDebt:
         type: string
+      claimedAmount:
+        type: string
   stafihub.stafihub.mining.UserStakeRecord:
     type: object
     properties:
@@ -38661,6 +38671,8 @@ definitions:
             rewardTokenDenom:
               type: string
             rewardDebt:
+              type: string
+            claimedAmount:
               type: string
       stakeItemIndex:
         type: integer

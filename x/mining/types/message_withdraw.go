@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -9,12 +10,12 @@ const TypeMsgWithdraw = "withdraw"
 
 var _ sdk.Msg = &MsgWithdraw{}
 
-func NewMsgWithdraw(creator string, stakePoolIndex uint32, stakeToken sdk.Coin, stakeRecordIndex uint32) *MsgWithdraw {
+func NewMsgWithdraw(creator string, stakePoolIndex uint32, stakeRecordIndex uint32, withdrawAmount sdk.Int) *MsgWithdraw {
 	return &MsgWithdraw{
 		Creator:          creator,
 		StakePoolIndex:   stakePoolIndex,
-		StakeToken:       stakeToken,
 		StakeRecordIndex: stakeRecordIndex,
+		WithdrawAmount:   withdrawAmount,
 	}
 }
 
@@ -44,9 +45,8 @@ func (msg *MsgWithdraw) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	err = msg.StakeToken.Validate()
-	if err != nil {
-		return err
+	if !msg.WithdrawAmount.IsPositive() {
+		return fmt.Errorf("withdraw amount not positive")
 	}
 	return nil
 }

@@ -39,20 +39,26 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 	rewardCoins := sdk.NewCoins()
 	for _, rewardPool := range stakePool.RewardPools {
 		preRewardDebt := sdk.ZeroInt()
+		var willUseRewardInfo *types.UserRewardInfo
+
 		if rewardInfo, exist := userRewardInfoMap[rewardPool.Index]; exist {
 			preRewardDebt = rewardInfo.RewardDebt
 			rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
+			willUseRewardInfo = rewardInfo
 		} else {
-			userStakeRecord.UserRewardInfos = append(userStakeRecord.UserRewardInfos, &types.UserRewardInfo{
+			willUseRewardInfo = &types.UserRewardInfo{
 				RewardPoolIndex:  rewardPool.Index,
 				RewardTokenDenom: rewardPool.RewardTokenDenom,
 				RewardDebt:       userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
-			})
+				ClaimedAmount:    sdk.ZeroInt(),
+			}
+			userStakeRecord.UserRewardInfos = append(userStakeRecord.UserRewardInfos, willUseRewardInfo)
 		}
 
 		rewardAmount := userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor).Sub(preRewardDebt)
 		if rewardAmount.IsPositive() {
 			rewardCoins = rewardCoins.Add(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardAmount))
+			willUseRewardInfo.ClaimedAmount = willUseRewardInfo.ClaimedAmount.Add(rewardAmount)
 		}
 	}
 	return rewardCoins

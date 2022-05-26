@@ -19,7 +19,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		return nil, types.ErrUserStakeRecordNotExist
 	}
 
-	if msg.StakeToken.Amount.GT(userStakeRecord.StakedAmount) {
+	if msg.WithdrawAmount.GT(userStakeRecord.StakedAmount) {
 		return nil, types.ErrWithdrawAmountMoreThanStakeRecord
 	}
 
@@ -36,9 +36,9 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 	updateStakePool(stakePool, curBlockTime)
 	willClaimCoins := calRewardTokens(stakePool, userStakeRecord)
 
-	willRmPower := msg.StakeToken.Amount.Mul(userStakeRecord.StakedPower).Quo(userStakeRecord.StakedAmount)
+	willRmPower := msg.WithdrawAmount.Mul(userStakeRecord.StakedPower).Quo(userStakeRecord.StakedAmount)
 
-	stakePool.TotalStakedAmount = stakePool.TotalStakedAmount.Sub(msg.StakeToken.Amount)
+	stakePool.TotalStakedAmount = stakePool.TotalStakedAmount.Sub(msg.WithdrawAmount)
 	if stakePool.TotalStakedAmount.IsNegative() {
 		stakePool.TotalStakedAmount = sdk.ZeroInt()
 	}
@@ -47,7 +47,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		stakePool.TotalStakedPower = sdk.ZeroInt()
 	}
 
-	userStakeRecord.StakedAmount = userStakeRecord.StakedAmount.Sub(msg.StakeToken.Amount)
+	userStakeRecord.StakedAmount = userStakeRecord.StakedAmount.Sub(msg.WithdrawAmount)
 	if userStakeRecord.StakedAmount.IsNegative() {
 		userStakeRecord.StakedAmount = sdk.ZeroInt()
 	}
@@ -56,7 +56,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		userStakeRecord.StakedPower = sdk.ZeroInt()
 	}
 
-	willClaimCoins = willClaimCoins.Add(msg.StakeToken)
+	willClaimCoins = willClaimCoins.Add(sdk.NewCoin(stakePool.StakeTokenDenom, msg.WithdrawAmount))
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipientAddr, willClaimCoins); err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 			sdk.NewAttribute(types.AttributeKeyAccount, msg.Creator),
 			sdk.NewAttribute(types.AttributeKeyStakePoolIndex, fmt.Sprintf("%d", msg.StakePoolIndex)),
 			sdk.NewAttribute(types.AttributeKeyClaimedTokens, willClaimCoins.String()),
-			sdk.NewAttribute(types.AttributeKeyWithdrawToken, msg.StakeToken.String()),
+			sdk.NewAttribute(types.AttributeKeyWithdrawAmount, msg.WithdrawAmount.String()),
 			sdk.NewAttribute(types.AttributeKeyStakeRecordIndex, fmt.Sprintf("%d", msg.StakeRecordIndex)),
 		),
 	)

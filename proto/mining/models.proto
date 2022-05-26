@@ -46,6 +46,7 @@ message UserRewardInfo {
   uint32 rewardPoolIndex = 1;
   string rewardTokenDenom = 2;
   string rewardDebt = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string claimedAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message RewardToken {
