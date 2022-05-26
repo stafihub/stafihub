@@ -27,6 +27,9 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		}
 		denomMap[rewardPool.RewardTokenDenom] = true
 	}
+	if denomMap[msg.RewardTokenDenom] {
+		return nil, types.ErrRewardTokenDenomDuplicate
+	}
 
 	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
 	if len(stakePool.RewardPools) >= int(maxRewardPoolNumber) {
