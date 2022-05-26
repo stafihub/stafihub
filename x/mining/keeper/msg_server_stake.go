@@ -20,6 +20,10 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, types.ErrStakePoolNotExist
 	}
 
+	if stakePool.StakeTokenDenom != msg.StakeToken.Denom {
+		return nil, types.ErrStakeDenomNotMatch
+	}
+
 	stakeItem, found := k.Keeper.GetStakeItem(ctx, msg.StakePoolIndex, msg.StakeItemIndex)
 	if !found {
 		return nil, types.ErrStakeItemNotExist
@@ -60,9 +64,9 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 		return nil, err
 	}
 
-	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakePoolIndex, willUseIndex)
-	k.Keeper.SetUserStakeRecord(ctx, &userStakeRecord)
 	k.Keeper.SetStakePool(ctx, stakePool)
+	k.Keeper.SetUserStakeRecord(ctx, &userStakeRecord)
+	k.Keeper.SetUserStakeRecordIndex(ctx, msg.Creator, msg.StakePoolIndex, willUseIndex)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

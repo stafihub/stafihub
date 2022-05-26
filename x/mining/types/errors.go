@@ -25,4 +25,5 @@ var (
 	ErrStakeItemNumberReachLimit               = sdkerrors.Register(ModuleName, 1115, "stake item number reach limit")
 	ErrStartTimestampAndRewardPerSecondNotZero = sdkerrors.Register(ModuleName, 1116, "start timestamp and reward per second not zero")
 	ErrRewardTokenDenomDuplicate               = sdkerrors.Register(ModuleName, 1117, "reward token denom duplicate")
+	ErrStakeDenomNotMatch                      = sdkerrors.Register(ModuleName, 1118, "stake denom not match")
 )

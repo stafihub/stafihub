@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -47,6 +49,9 @@ func (msg *MsgStake) ValidateBasic() error {
 	err = msg.StakeToken.Validate()
 	if err != nil {
 		return err
+	}
+	if !msg.StakeToken.Amount.IsPositive() {
+		return fmt.Errorf("stake token amount not positive")
 	}
 
 	return nil
