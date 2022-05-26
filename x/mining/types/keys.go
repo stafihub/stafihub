@@ -33,7 +33,6 @@ var (
 	StakeItemStoreKeyPrefix            = []byte{0x02}
 	UserStakeRecordStoreKeyPrefix      = []byte{0x03}
 	UserStakeRecordIndexStoreKeyPrefix = []byte{0x04}
-	RewardPoolIndexStoreKeyPrefix      = []byte{0x05}
 	StakeItemIndexStoreKeyPrefix       = []byte{0x06}
 	MiningProviderStoreKeyPrefix       = []byte{0x07}
 	StakePoolIndexStoreKey             = []byte{0x08}

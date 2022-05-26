@@ -56,12 +56,17 @@ func (msg *MsgAddStakePool) ValidateBasic() error {
 	if len(msg.StakeItemInfoList) == 0 {
 		return fmt.Errorf("stake item list empty")
 	}
-
+	denomMap := make(map[string]bool)
 	for _, rewardPool := range msg.RewardPoolInfoList {
 		err = sdk.ValidateDenom(rewardPool.RewardTokenDenom)
 		if err != nil {
 			return err
 		}
+		if denomMap[rewardPool.RewardTokenDenom] {
+			return ErrRewardTokenDenomDuplicate
+		}
+		denomMap[rewardPool.RewardTokenDenom] = true
+
 		if rewardPool.TotalRewardAmount.IsNegative() {
 			return fmt.Errorf("minTotalRewardAmount is negative")
 		}

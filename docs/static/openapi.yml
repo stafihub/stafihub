@@ -38253,6 +38253,8 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgAddRewardPoolResponse:
     type: object
+  stafihub.stafihub.mining.MsgAddRewardResponse:
+    type: object
   stafihub.stafihub.mining.MsgAddRewardTokenResponse:
     type: object
   stafihub.stafihub.mining.MsgAddStakeItemResponse:
@@ -38262,8 +38264,6 @@ definitions:
   stafihub.stafihub.mining.MsgClaimRewardResponse:
     type: object
   stafihub.stafihub.mining.MsgRmMiningProviderResponse:
-    type: object
-  stafihub.stafihub.mining.MsgRmRewardPoolResponse:
     type: object
   stafihub.stafihub.mining.MsgSetMaxRewardPoolNumberResponse:
     type: object

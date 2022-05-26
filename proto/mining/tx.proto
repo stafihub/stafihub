@@ -21,9 +21,9 @@ service Msg {
   rpc AddRewardToken(MsgAddRewardToken) returns (MsgAddRewardTokenResponse);
   rpc SetMaxRewardPoolNumber(MsgSetMaxRewardPoolNumber) returns (MsgSetMaxRewardPoolNumberResponse);
   rpc UpdateRewardPool(MsgUpdateRewardPool) returns (MsgUpdateRewardPoolResponse);
-  rpc RmRewardPool(MsgRmRewardPool) returns (MsgRmRewardPoolResponse);
   rpc ToggleProviderSwitch(MsgToggleProviderSwitch) returns (MsgToggleProviderSwitchResponse);
   rpc SetMaxStakeItemNumber(MsgSetMaxStakeItemNumber) returns (MsgSetMaxStakeItemNumberResponse);
+  rpc AddReward(MsgAddReward) returns (MsgAddRewardResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -152,19 +152,10 @@ message MsgUpdateRewardPool {
   string creator = 1;
   uint32 stakePoolIndex = 2;
   uint32 rewardPoolIndex = 3;
-  string newRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string rewardPerSecond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message MsgUpdateRewardPoolResponse {
-}
-
-message MsgRmRewardPool {
-  string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 rewardPoolIndex = 3;
-}
-
-message MsgRmRewardPoolResponse {
 }
 
 message MsgToggleProviderSwitch {
@@ -180,6 +171,18 @@ message MsgSetMaxStakeItemNumber {
 }
 
 message MsgSetMaxStakeItemNumberResponse {
+}
+
+message MsgAddReward {
+  string creator = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 rewardPoolIndex = 3;
+  string addAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  uint64 startTimestamp = 5;
+  string rewardPerSecond = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgAddRewardResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

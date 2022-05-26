@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -18,13 +19,15 @@ func TestMsgUpdateRewardPool_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: types.MsgUpdateRewardPool{
-				Creator: "invalid_address",
+				Creator:         "invalid_address",
+				RewardPerSecond: sdk.NewInt(2),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: types.MsgUpdateRewardPool{
-				Creator: sample.AccAddress(),
+				Creator:         sample.AccAddress(),
+				RewardPerSecond: sdk.NewInt(2),
 			},
 		},
 	}

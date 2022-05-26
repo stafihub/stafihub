@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -13,11 +14,11 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRmRewardPool() *cobra.Command {
+func CmdAddReward() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "rm-reward-pool [stake-pool-index] [reward-pool-index]",
-		Short: "Remove reward pool",
-		Args:  cobra.ExactArgs(2),
+		Use:   "add-reward [stake-pool-index] [reward-pool-index] [add-amount] [start-timestamp] [reward-per-second]",
+		Short: "Add new reward to reward pool, if pool is not end, startTimestamp/rewardPersecond should be zero",
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argStakePoolIndex, err := sdk.ParseUint(args[0])
 			if err != nil {
@@ -27,16 +28,31 @@ func CmdRmRewardPool() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			argAddAmount, ok := sdk.NewIntFromString(args[2])
+			if !ok {
+				return fmt.Errorf("argAddAmount err")
+			}
+			argStartTimestamp, err := sdk.ParseUint(args[3])
+			if err != nil {
+				return err
+			}
+			argRewardPerSecond, ok := sdk.NewIntFromString(args[4])
+			if !ok {
+				return fmt.Errorf("argRewardPersecond err")
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgRmRewardPool(
+			msg := types.NewMsgAddReward(
 				clientCtx.GetFromAddress().String(),
 				uint32(argStakePoolIndex.Uint64()),
 				uint32(argRewardPoolIndex.Uint64()),
+				argAddAmount,
+				argStartTimestamp.Uint64(),
+				argRewardPerSecond,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

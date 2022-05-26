@@ -85,7 +85,6 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 
 	k.SetStakePool(ctx, &stakePool)
 	k.Keeper.SetStakePoolIndex(ctx, willUseStakePoolIndex)
-	k.Keeper.SetRewardPoolIndex(ctx, willUseStakePoolIndex, uint32(len(rewardPools)-1))
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

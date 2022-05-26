@@ -53,14 +53,14 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgUpdateRewardPool:
 			res, err := msgServer.UpdateRewardPool(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRmRewardPool:
-			res, err := msgServer.RmRewardPool(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgToggleProviderSwitch:
 			res, err := msgServer.ToggleProviderSwitch(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetMaxStakeItemNumber:
 			res, err := msgServer.SetMaxStakeItemNumber(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAddReward:
+			res, err := msgServer.AddReward(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

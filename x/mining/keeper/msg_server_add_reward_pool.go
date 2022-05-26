@@ -20,6 +20,14 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		return nil, types.ErrStakePoolNotExist
 	}
 
+	denomMap := make(map[string]bool)
+	for _, rewardPool := range stakePool.RewardPools {
+		if denomMap[rewardPool.RewardTokenDenom] {
+			return nil, types.ErrRewardTokenDenomDuplicate
+		}
+		denomMap[rewardPool.RewardTokenDenom] = true
+	}
+
 	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
 	if len(stakePool.RewardPools) >= int(maxRewardPoolNumber) {
 		return nil, types.ErrRewardPoolNumberReachLimit
@@ -35,7 +43,7 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
-	willUseIndex := k.Keeper.GetRewardPoolNextIndex(ctx, msg.StakePoolIndex)
+	willUseIndex := uint32(len(stakePool.RewardPools))
 	willUseLastRewardTimestamp := msg.StartTimestamp
 	if msg.StartTimestamp < curBlockTime {
 		willUseLastRewardTimestamp = curBlockTime
@@ -57,7 +65,6 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		LastRewardTimestamp: willUseLastRewardTimestamp,
 	})
 
-	k.Keeper.SetRewardPoolIndex(ctx, msg.StakePoolIndex, willUseIndex)
 	k.Keeper.SetStakePool(ctx, stakePool)
 
 	ctx.EventManager().EmitEvent(

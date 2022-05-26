@@ -16,8 +16,8 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateRewardPool() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-reward-pool [stake-pool-index] [reward-pool-index] [new-reward-amount]",
-		Short: "Add new reward to reward pool",
+		Use:   "update-reward-pool [stake-pool-index] [reward-pool-index] [reward-per-second]",
+		Short: "Update reward per second",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argStakePoolIndex, err := sdk.ParseUint(args[0])
@@ -28,7 +28,7 @@ func CmdUpdateRewardPool() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argNewRewardAmount, ok := sdk.NewIntFromString(args[2])
+			argRewardPerSecond, ok := sdk.NewIntFromString(args[2])
 			if !ok {
 				return fmt.Errorf("argNewRewardAmount err")
 			}
@@ -42,7 +42,7 @@ func CmdUpdateRewardPool() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				uint32(argStakePoolIndex.Uint64()),
 				uint32(argRewardPoolIndex.Uint64()),
-				argNewRewardAmount,
+				argRewardPerSecond,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
