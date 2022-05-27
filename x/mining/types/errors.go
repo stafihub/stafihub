@@ -28,4 +28,6 @@ var (
 	ErrStakeDenomNotMatch                      = sdkerrors.Register(ModuleName, 1118, "stake denom not match")
 	ErrEmergencySwitchOpen                     = sdkerrors.Register(ModuleName, 1119, "emergency switch is open")
 	ErrEmergencySwitchClose                    = sdkerrors.Register(ModuleName, 1120, "emergency switch is close")
+	ErrLockTimeOverRewardTime                  = sdkerrors.Register(ModuleName, 1121, "lock time over reward time")
+	ErrUpdateStakeItemPermissionDeny           = sdkerrors.Register(ModuleName, 1122, "update stake item permisson deny")
 )

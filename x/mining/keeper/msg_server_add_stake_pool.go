@@ -69,6 +69,8 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		RewardPools:       rewardPools,
 		TotalStakedAmount: sdk.ZeroInt(),
 		TotalStakedPower:  sdk.ZeroInt(),
+		EmergencySwitch:   false,
+		Creator:           msg.Creator,
 	}
 
 	for i, stakeItemInfo := range msg.StakeItemInfoList {

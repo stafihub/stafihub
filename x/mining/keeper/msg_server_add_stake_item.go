@@ -14,9 +14,13 @@ func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeIte
 	if err != nil {
 		return nil, err
 	}
+	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
+	if !found {
+		return nil, types.ErrStakePoolNotExist
+	}
 
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) && !k.Keeper.HasMiningProvider(ctx, user) {
-		return nil, types.ErrUserNotAdminOrMiningProvider
+	if !(k.sudoKeeper.IsAdmin(ctx, msg.Creator) || k.Keeper.HasMiningProvider(ctx, user) && msg.Creator == stakePool.Creator) {
+		return nil, types.ErrUpdateStakeItemPermissionDeny
 	}
 	willUseIndex := k.GetStakeItemNextIndex(ctx, msg.StakePoolIndex)
 

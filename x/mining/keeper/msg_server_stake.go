@@ -40,13 +40,23 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 
 	willUseIndex := k.Keeper.GetUserStakeRecordNextIndex(ctx, msg.Creator, msg.StakePoolIndex)
 
+	canStake := false
 	rewardInfos := make([]*types.UserRewardInfo, 0)
 	for _, rewardPool := range stakePool.RewardPools {
+		if !canStake && rewardPool.RewardPerSecond.IsPositive() {
+			if stakeItem.LockSecond <= rewardPool.LeftRewardAmount.Quo(rewardPool.RewardPerSecond).Uint64() {
+				canStake = true
+			}
+		}
+
 		rewardInfos = append(rewardInfos, &types.UserRewardInfo{
 			RewardPoolIndex:  rewardPool.Index,
 			RewardTokenDenom: rewardPool.RewardTokenDenom,
 			RewardDebt:       userStakePower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
 		})
+	}
+	if !canStake {
+		return nil, types.ErrLockTimeOverRewardTime
 	}
 
 	userStakeRecord := types.UserStakeRecord{
