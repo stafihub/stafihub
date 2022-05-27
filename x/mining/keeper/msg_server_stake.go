@@ -44,7 +44,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	rewardInfos := make([]*types.UserRewardInfo, 0)
 	for _, rewardPool := range stakePool.RewardPools {
 		if !canStake && rewardPool.RewardPerSecond.IsPositive() {
-			if stakeItem.LockSecond <= rewardPool.LeftRewardAmount.Quo(rewardPool.RewardPerSecond).Uint64() {
+			if stakeItem.LockSecond < rewardPool.LeftRewardAmount.Quo(rewardPool.RewardPerSecond).Uint64() {
 				canStake = true
 			}
 		}
