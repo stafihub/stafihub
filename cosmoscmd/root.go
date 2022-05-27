@@ -2,6 +2,7 @@ package cosmoscmd
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -22,6 +23,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
@@ -192,7 +194,7 @@ func initRootCmd(
 		genutilcli.ValidateGenesisCmd(moduleBasics),
 		AddGenesisAccountCmd(defaultNodeHome),
 		tmcli.NewCompletionCmd(rootCmd, true),
-		debug.Cmd(),
+		debugCmd(),
 		config.Cmd(),
 	)
 
@@ -430,4 +432,39 @@ func initAppConfig() (string, interface{}) {
 	customAppTemplate := serverconfig.DefaultConfigTemplate
 
 	return customAppTemplate, customAppConfig
+}
+
+func debugCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "debug",
+		Short: "Tool for helping with debugging your application",
+		RunE:  client.ValidateCmd,
+	}
+
+	cmd.AddCommand(debug.PubkeyCmd())
+	cmd.AddCommand(debug.AddrCmd())
+	cmd.AddCommand(debug.RawBytesCmd())
+	cmd.AddCommand(ModuleAddrCmd())
+
+	return cmd
+}
+
+func ModuleAddrCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "module-addr [module-name]",
+		Short: "Convert module name to address of bech32",
+		Long: fmt.Sprintf(`Convert module name to bech32 address.
+
+Example:
+$ %s debug module-addr rdex
+			`, "stafihubd"),
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			addr := authTypes.NewModuleAddress(args[0])
+
+			cmd.Println("Address:", addr.String())
+			return nil
+		},
+	}
 }
