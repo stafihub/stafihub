@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -15,7 +16,7 @@ var _ = strconv.Itoa(0)
 
 func CmdStake() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "stake [stake-pool-index] [stake-token] [stake-item-index]",
+		Use:   "stake [stake-pool-index] [stake-amount] [stake-item-index]",
 		Short: "Stake token ",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -24,9 +25,9 @@ func CmdStake() *cobra.Command {
 				return err
 			}
 
-			argStakeToken, err := sdk.ParseCoinNormalized(args[1])
-			if err != nil {
-				return err
+			argStakeAmount, ok := sdk.NewIntFromString(args[1])
+			if !ok {
+				return fmt.Errorf("argStakeAmount err")
 			}
 
 			argStakeItemIndex, err := sdk.ParseUint(args[2])
@@ -42,7 +43,7 @@ func CmdStake() *cobra.Command {
 			msg := types.NewMsgStake(
 				clientCtx.GetFromAddress().String(),
 				uint32(argStakePoolIndex.Uint64()),
-				argStakeToken,
+				argStakeAmount,
 				uint32(argStakeItemIndex.Uint64()),
 			)
 			if err := msg.ValidateBasic(); err != nil {

@@ -11,11 +11,11 @@ const TypeMsgStake = "stake"
 
 var _ sdk.Msg = &MsgStake{}
 
-func NewMsgStake(creator string, stakePoolIndex uint32, stakeToken sdk.Coin, stakeItemIndex uint32) *MsgStake {
+func NewMsgStake(creator string, stakePoolIndex uint32, stakeAmount sdk.Int, stakeItemIndex uint32) *MsgStake {
 	return &MsgStake{
 		Creator:        creator,
 		StakePoolIndex: stakePoolIndex,
-		StakeToken:     stakeToken,
+		StakeAmount:    stakeAmount,
 		StakeItemIndex: stakeItemIndex,
 	}
 }
@@ -46,11 +46,7 @@ func (msg *MsgStake) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
-	err = msg.StakeToken.Validate()
-	if err != nil {
-		return err
-	}
-	if !msg.StakeToken.Amount.IsPositive() {
+	if !msg.StakeAmount.IsPositive() {
 		return fmt.Errorf("stake token amount not positive")
 	}
 

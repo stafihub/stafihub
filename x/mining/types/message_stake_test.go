@@ -19,15 +19,15 @@ func TestMsgStake_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: types.MsgStake{
-				Creator:    "invalid_address",
-				StakeToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				Creator:     "invalid_address",
+				StakeAmount: sdk.NewInt(1),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: types.MsgStake{
-				Creator:    sample.AccAddress(),
-				StakeToken: sdk.NewCoin(sample.TestDenom, sdk.NewInt(1)),
+				Creator:     sample.AccAddress(),
+				StakeAmount: sdk.NewInt(1),
 			},
 		},
 	}
