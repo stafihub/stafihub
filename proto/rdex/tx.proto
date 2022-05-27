@@ -16,6 +16,8 @@ service Msg {
   rpc ToggleProviderSwitch(MsgToggleProviderSwitch) returns (MsgToggleProviderSwitchResponse);
   rpc AddProvider(MsgAddProvider) returns (MsgAddProviderResponse);
   rpc RmProvider(MsgRmProvider) returns (MsgRmProviderResponse);
+  rpc AddPoolCreator(MsgAddPoolCreator) returns (MsgAddPoolCreatorResponse);
+  rpc RmPoolCreator(MsgRmPoolCreator) returns (MsgRmPoolCreatorResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -79,6 +81,22 @@ message MsgRmProvider {
 }
 
 message MsgRmProviderResponse {
+}
+
+message MsgAddPoolCreator {
+  string creator = 1;
+  string userAddress = 2;
+}
+
+message MsgAddPoolCreatorResponse {
+}
+
+message MsgRmPoolCreator {
+  string creator = 1;
+  string userAddress = 2;
+}
+
+message MsgRmPoolCreatorResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

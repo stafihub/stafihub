@@ -5,20 +5,19 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/rdex/types"
-	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (*types.MsgCreatePoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudotypes.ErrCreatorNotAdmin
-	}
-
 	userAddress, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, types.ErrInvalidAddress
 	}
+	if !k.Keeper.HasPoolCreator(ctx, userAddress) {
+		return nil, types.ErrPermissionDeny
+	}
+
 	orderTokens := sdk.Coins{msg.Token0, msg.Token1}.Sort()
 	lpDenom := types.GetLpTokenDenom(orderTokens)
 

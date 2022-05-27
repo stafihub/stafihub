@@ -35,9 +35,10 @@ var (
 )
 
 var (
-	SwapPoolStoreKeyPrefix = []byte{0x01}
-	ProviderStoreKeyPrefix = []byte{0x02}
-	ProviderSwitchStoreKey = []byte{0x03}
+	SwapPoolStoreKeyPrefix    = []byte{0x01}
+	ProviderStoreKeyPrefix    = []byte{0x02}
+	ProviderSwitchStoreKey    = []byte{0x03}
+	PoolCreatorStoreKeyPrefix = []byte{0x04}
 )
 
 func SwapPoolStoreKey(denom string) []byte {
@@ -59,4 +60,8 @@ func GetLpTokenDenom(coins sdk.Coins) string {
 
 func ProviderStoreKey(addr sdk.AccAddress) []byte {
 	return append(ProviderStoreKeyPrefix, addr.Bytes()...)
+}
+
+func PoolCreatorStoreKey(addr sdk.AccAddress) []byte {
+	return append(PoolCreatorStoreKeyPrefix, addr.Bytes()...)
 }
