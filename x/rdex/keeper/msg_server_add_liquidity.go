@@ -27,13 +27,9 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 		return nil, types.ErrSwapPoolNotExit
 	}
 
-	// check balance
+	// filter token that is positive
 	willSendToken := sdk.NewCoins()
 	for _, token := range orderTokens {
-		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
-		if balance.Amount.LT(token.Amount) {
-			return nil, types.ErrUserTokenBalanceInsufficient
-		}
 		if token.Amount.IsPositive() {
 			willSendToken = willSendToken.Add(token)
 		}

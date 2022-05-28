@@ -23,18 +23,6 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	willUseSwapPoolIndex := k.Keeper.GetSwapPoolNextIndex(ctx)
 	lpDenom := types.GetLpTokenDenom(willUseSwapPoolIndex)
 
-	// check swap pool
-	_, found := k.Keeper.GetSwapPool(ctx, lpDenom)
-	if found {
-		return nil, types.ErrSwapPoolAlreadyExist
-	}
-	// check balance
-	for _, token := range orderTokens {
-		balance := k.bankKeeper.GetBalance(ctx, userAddress, token.Denom)
-		if balance.Amount.LT(token.Amount) {
-			return nil, types.ErrUserTokenBalanceInsufficient
-		}
-	}
 	poolTotalUnit, addLpUnit := CalPoolUnit(sdk.ZeroInt(), sdk.ZeroInt(), sdk.ZeroInt(), orderTokens[0].Amount, orderTokens[1].Amount)
 	if !addLpUnit.IsPositive() {
 		return nil, types.ErrAddLpUnitZero

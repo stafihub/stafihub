@@ -9,12 +9,8 @@ import (
 )
 
 func TestGetLpTokenDenom(t *testing.T) {
-	coinsA := sdk.NewCoins(sdk.NewCoin("ufis", sdk.NewInt(5)), sdk.NewCoin("ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2", sdk.NewInt(7)))
-	coinsB := sdk.NewCoins(sdk.NewCoin("ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2", sdk.NewInt(7)), sdk.NewCoin("ufis", sdk.NewInt(5)))
-
-	require.Equal(t, types.GetLpTokenDenom(coinsA), types.GetLpTokenDenom(coinsB))
-	require.Equal(t, types.GetLpTokenDenom(coinsA), "rdexlp/30bc849e631c1b8230cb9ee822fa6848235fdef5653205c298883864592b9079")
-	require.Equal(t, coinsA.String(), "7ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2,5ufis")
+	require.NotEqual(t, types.GetLpTokenDenom(0), types.GetLpTokenDenom(1))
+	require.Equal(t, types.GetLpTokenDenom(0), "rdexlp/0")
 
 }
 

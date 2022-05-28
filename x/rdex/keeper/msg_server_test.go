@@ -40,7 +40,7 @@ func TestMsgServerCreatePoolSuccess(t *testing.T) {
 	require.NoError(t, err)
 
 	// create pool
-	lpDenom := types.GetLpTokenDenom(sdk.Coins{token0, token1})
+	lpDenom := types.GetLpTokenDenom(0)
 
 	willMintLpToken := sdk.NewCoin(lpDenom, token0.Amount)
 	msgCreatePool := types.MsgCreatePool{
@@ -241,7 +241,7 @@ func TestMsgServerAddLiquiditySuccess(t *testing.T) {
 
 	token0 := sdk.NewCoin(sample.TestDenom, sdk.NewInt(500e8))
 	token1 := sdk.NewCoin(sample.TestDenom1, sdk.NewInt(500e8))
-	lpDenom := types.GetLpTokenDenom(sdk.Coins{token0, token1})
+	lpDenom := types.GetLpTokenDenom(0)
 	willMintLpToken := sdk.NewCoin(lpDenom, token0.Amount)
 
 	// add pool creator
@@ -327,7 +327,7 @@ func TestMsgServerAddLiquidityFail(t *testing.T) {
 
 	token0 := sdk.NewCoin(sample.TestDenom, sdk.NewInt(500e8))
 	token1 := sdk.NewCoin(sample.TestDenom1, sdk.NewInt(500e8))
-	lpDenom := types.GetLpTokenDenom(sdk.Coins{token0, token1})
+	lpDenom := types.GetLpTokenDenom(0)
 	willMintLpToken := sdk.NewCoin(lpDenom, token0.Amount)
 
 	// add pool creator
@@ -451,7 +451,7 @@ func TestMsgServerSwapSuccess(t *testing.T) {
 
 	token0 := sdk.NewCoin(sample.TestDenom, sdk.NewInt(10))
 	token1 := sdk.NewCoin(sample.TestDenom1, sdk.NewInt(100))
-	lpDenom := types.GetLpTokenDenom(sdk.Coins{token0, token1})
+	lpDenom := types.GetLpTokenDenom(0)
 	willMintLpToken := sdk.NewCoin(lpDenom, token0.Amount)
 
 	swapUser := sample.OriginAccAddress()
@@ -557,7 +557,7 @@ func TestMsgServerSwapFail(t *testing.T) {
 
 	token0 := sdk.NewCoin(sample.TestDenom, sdk.NewInt(10))
 	token1 := sdk.NewCoin(sample.TestDenom1, sdk.NewInt(100))
-	lpDenom := types.GetLpTokenDenom(sdk.Coins{token0, token1})
+	lpDenom := types.GetLpTokenDenom(0)
 	willMintLpToken := sdk.NewCoin(lpDenom, token0.Amount)
 
 	swapUser := sample.OriginAccAddress()
@@ -709,7 +709,7 @@ func TestMsgServerRmLiquiditySuccess(t *testing.T) {
 
 	token0 := sdk.NewCoin(sample.TestDenom, sdk.NewInt(500e8))
 	token1 := sdk.NewCoin(sample.TestDenom1, sdk.NewInt(500e8))
-	lpDenom := types.GetLpTokenDenom(sdk.Coins{token0, token1})
+	lpDenom := types.GetLpTokenDenom(0)
 	willMintLpToken := sdk.NewCoin(lpDenom, token0.Amount)
 
 	// add pool creator
