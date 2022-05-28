@@ -43,13 +43,6 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 			return nil, types.ErrPoolTokenBalanceInsufficient
 		}
 
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {
-			return nil, err
-		}
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(realOutCoin)); err != nil {
-			return nil, err
-		}
-
 		poolBaseToken.Amount = poolBaseToken.Amount.Add(msg.InputToken.Amount)
 		poolToken.Amount = poolToken.Amount.Sub(outAmount)
 	} else {
@@ -57,15 +50,16 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 			return nil, types.ErrPoolBaseTokenBalanceInsufficient
 		}
 
-		if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {
-			return nil, err
-		}
-		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(realOutCoin)); err != nil {
-			return nil, err
-		}
-
 		poolBaseToken.Amount = poolBaseToken.Amount.Sub(outAmount)
 		poolToken.Amount = poolToken.Amount.Add(msg.InputToken.Amount)
+	}
+
+	// send coins
+	if err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, userAddress, types.ModuleName, sdk.NewCoins(msg.InputToken)); err != nil {
+		return nil, err
+	}
+	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, userAddress, sdk.NewCoins(realOutCoin)); err != nil {
+		return nil, err
 	}
 
 	swapPool.BaseToken = poolBaseToken
