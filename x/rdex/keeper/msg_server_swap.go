@@ -39,10 +39,6 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 
 	realOutCoin := sdk.NewCoin(msg.MinOutToken.Denom, outAmount)
 	if inputIsBase {
-		baseTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolBaseToken.Denom)
-		if baseTokenBalance.Amount.LT(msg.InputToken.Amount) {
-			return nil, types.ErrUserBaseTokenBalanceInsufficient
-		}
 		if poolToken.Amount.LTE(outAmount) {
 			return nil, types.ErrPoolTokenBalanceInsufficient
 		}
@@ -57,10 +53,6 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		poolBaseToken.Amount = poolBaseToken.Amount.Add(msg.InputToken.Amount)
 		poolToken.Amount = poolToken.Amount.Sub(outAmount)
 	} else {
-		tokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, poolToken.Denom)
-		if tokenBalance.Amount.LT(msg.InputToken.Amount) {
-			return nil, types.ErrUserTokenBalanceInsufficient
-		}
 		if poolBaseToken.Amount.LTE(outAmount) {
 			return nil, types.ErrPoolBaseTokenBalanceInsufficient
 		}

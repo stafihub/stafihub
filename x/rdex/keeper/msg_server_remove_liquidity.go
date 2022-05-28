@@ -24,11 +24,6 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	poolToken := swapPool.Token
 	poolLpToken := swapPool.LpToken
 
-	userLpTokenBalance := k.bankKeeper.GetBalance(ctx, userAddress, lpDenom)
-	if userLpTokenBalance.Amount.LT(msg.RmUnit) {
-		return nil, types.ErrInsufficientLpTokenBalance
-	}
-
 	if !msg.RmUnit.IsPositive() || msg.RmUnit.GT(poolLpToken.Amount) || msg.SwapUnit.GT(msg.RmUnit) {
 		return nil, types.ErrUnitAmount
 	}
