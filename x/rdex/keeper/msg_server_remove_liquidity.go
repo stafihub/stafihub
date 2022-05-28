@@ -4,7 +4,6 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stafihub/stafihub/x/rdex/types"
 )
 
@@ -29,9 +28,6 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	if userLpTokenBalance.Amount.LT(msg.RmUnit) {
 		return nil, types.ErrInsufficientLpTokenBalance
 	}
-	moduleAddress := authTypes.NewModuleAddress(types.ModuleName)
-	poolBaseTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, poolBaseToken.Denom)
-	poolTokenBalance := k.bankKeeper.GetBalance(ctx, moduleAddress, poolToken.Denom)
 
 	if !msg.RmUnit.IsPositive() || msg.RmUnit.GT(poolLpToken.Amount) || msg.SwapUnit.GT(msg.RmUnit) {
 		return nil, types.ErrUnitAmount
@@ -78,14 +74,6 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 
 	if rmBaseTokenAmount.LT(orderMinOutTokens[0].Amount) || rmTokenAmount.LT(orderMinOutTokens[1].Amount) {
 		return nil, types.ErrLessThanMinOutAmount
-	}
-
-	if rmBaseTokenAmount.GT(poolBaseTokenBalance.Amount) {
-		return nil, types.ErrPoolBaseTokenBalanceInsufficient
-	}
-
-	if rmTokenAmount.GT(poolTokenBalance.Amount) {
-		return nil, types.ErrPoolTokenBalanceInsufficient
 	}
 
 	if (poolBaseToken.Amount.IsZero() && !poolToken.Amount.IsZero()) || (poolToken.Amount.IsZero() && !poolBaseToken.Amount.IsZero()) {
