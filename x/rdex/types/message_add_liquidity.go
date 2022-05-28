@@ -11,11 +11,12 @@ const TypeMsgAddLiquidity = "add_liquidity"
 
 var _ sdk.Msg = &MsgAddLiquidity{}
 
-func NewMsgAddLiquidity(creator string, token0, token1 sdk.Coin) *MsgAddLiquidity {
+func NewMsgAddLiquidity(creator string, swapPoolIndex uint32, token0, token1 sdk.Coin) *MsgAddLiquidity {
 	return &MsgAddLiquidity{
-		Creator: creator,
-		Token0:  token0,
-		Token1:  token1,
+		Creator:       creator,
+		SwapPoolIndex: swapPoolIndex,
+		Token0:        token0,
+		Token1:        token1,
 	}
 }
 

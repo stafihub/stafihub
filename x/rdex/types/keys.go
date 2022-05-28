@@ -1,8 +1,6 @@
 package types
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -39,23 +37,15 @@ var (
 	ProviderStoreKeyPrefix    = []byte{0x02}
 	ProviderSwitchStoreKey    = []byte{0x03}
 	PoolCreatorStoreKeyPrefix = []byte{0x04}
+	SwapPoolIndexStoreKey     = []byte{0x05}
 )
 
 func SwapPoolStoreKey(denom string) []byte {
 	return append(SwapPoolStoreKeyPrefix, []byte(denom)...)
 }
 
-func GetLpTokenDenom(coins sdk.Coins) string {
-	if len(coins) != 2 {
-		panic("coins length err")
-	}
-
-	coins = coins.Sort()
-
-	hash := sha256.Sum256([]byte(coins[0].Denom + coins[1].Denom))
-	denom := fmt.Sprintf("rdexlp/%s", hex.EncodeToString(hash[:]))
-
-	return denom
+func GetLpTokenDenom(index uint32) string {
+	return fmt.Sprintf("rdexlp/%d", index)
 }
 
 func ProviderStoreKey(addr sdk.AccAddress) []byte {

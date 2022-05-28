@@ -15,15 +15,20 @@ var _ = strconv.Itoa(0)
 
 func CmdSwap() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "swap [input-token] [min-out-token]",
+		Use:   "swap [swap-pool-index] [input-token] [min-out-token]",
 		Short: "Swap ",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			inputToken, err := sdk.ParseCoinNormalized(args[0])
+			swapPoolIndex, err := sdk.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
-			minOutToken, err := sdk.ParseCoinNormalized(args[1])
+
+			inputToken, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
+			}
+			minOutToken, err := sdk.ParseCoinNormalized(args[2])
 			if err != nil {
 				return err
 			}
@@ -35,6 +40,7 @@ func CmdSwap() *cobra.Command {
 
 			msg := types.NewMsgSwap(
 				clientCtx.GetFromAddress().String(),
+				uint32(swapPoolIndex.Uint64()),
 				inputToken,
 				minOutToken,
 			)

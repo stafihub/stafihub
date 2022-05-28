@@ -20,7 +20,7 @@ func (k msgServer) AddLiquidity(goCtx context.Context, msg *types.MsgAddLiquidit
 	}
 
 	orderTokens := sdk.Coins{msg.Token0, msg.Token1}.Sort()
-	lpDenom := types.GetLpTokenDenom(orderTokens)
+	lpDenom := types.GetLpTokenDenom(msg.SwapPoolIndex)
 
 	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
 	if !found {

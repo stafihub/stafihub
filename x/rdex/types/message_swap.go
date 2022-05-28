@@ -9,11 +9,12 @@ const TypeMsgSwap = "swap"
 
 var _ sdk.Msg = &MsgSwap{}
 
-func NewMsgSwap(creator string, inputToken, minOutToken sdk.Coin) *MsgSwap {
+func NewMsgSwap(creator string, swapPoolIndex uint32, inputToken, minOutToken sdk.Coin) *MsgSwap {
 	return &MsgSwap{
-		Creator:     creator,
-		InputToken:  inputToken,
-		MinOutToken: minOutToken,
+		Creator:       creator,
+		SwapPoolIndex: swapPoolIndex,
+		InputToken:    inputToken,
+		MinOutToken:   minOutToken,
 	}
 }
 

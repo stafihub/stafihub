@@ -12,9 +12,10 @@ const TypeMsgRemoveLiquidity = "remove_liquidity"
 
 var _ sdk.Msg = &MsgRemoveLiquidity{}
 
-func NewMsgRemoveLiquidity(creator string, rmUnit, swapUnit sdk.Int, minOutToken0, minOutToken1 sdk.Coin, inputTokenDenom string) *MsgRemoveLiquidity {
+func NewMsgRemoveLiquidity(creator string, swapPoolIndex uint32, rmUnit, swapUnit sdk.Int, minOutToken0, minOutToken1 sdk.Coin, inputTokenDenom string) *MsgRemoveLiquidity {
 	return &MsgRemoveLiquidity{
 		Creator:         creator,
+		SwapPoolIndex:   swapPoolIndex,
 		RmUnit:          rmUnit,
 		SwapUnit:        swapUnit,
 		MinOutToken0:    minOutToken0,

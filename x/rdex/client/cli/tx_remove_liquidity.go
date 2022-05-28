@@ -16,29 +16,34 @@ var _ = strconv.Itoa(0)
 
 func CmdRemoveLiquidity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "remove-liquidity [rm-unit] [swap-unit] [min-out-token0] [min-out-token1] [input-token-denom]",
+		Use:   "remove-liquidity [swap-pool-index] [rm-unit] [swap-unit] [min-out-token0] [min-out-token1] [input-token-denom]",
 		Short: "Remove liquidity",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argRmUnit, ok := sdk.NewIntFromString(args[0])
+			swapPoolIndex, err := sdk.ParseUint(args[0])
+			if err != nil {
+				return err
+			}
+
+			argRmUnit, ok := sdk.NewIntFromString(args[1])
 			if !ok {
 				return fmt.Errorf("rm unit params err")
 			}
-			argSwapUnit, ok := sdk.NewIntFromString(args[1])
+			argSwapUnit, ok := sdk.NewIntFromString(args[2])
 			if !ok {
 				return fmt.Errorf("swap unit params err")
 			}
 
-			minOutToken0, err := sdk.ParseCoinNormalized(args[2])
+			minOutToken0, err := sdk.ParseCoinNormalized(args[3])
 			if err != nil {
 				return err
 			}
-			minOutToken1, err := sdk.ParseCoinNormalized(args[3])
+			minOutToken1, err := sdk.ParseCoinNormalized(args[4])
 			if err != nil {
 				return err
 			}
 
-			inputTokenDenom := args[4]
+			inputTokenDenom := args[5]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -47,6 +52,7 @@ func CmdRemoveLiquidity() *cobra.Command {
 
 			msg := types.NewMsgRemoveLiquidity(
 				clientCtx.GetFromAddress().String(),
+				uint32(swapPoolIndex.Uint64()),
 				argRmUnit,
 				argSwapUnit,
 				minOutToken0,

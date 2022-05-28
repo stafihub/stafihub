@@ -14,8 +14,7 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 		return nil, types.ErrInvalidAddress
 	}
 
-	orderTokens := sdk.Coins{msg.InputToken, msg.MinOutToken}.Sort()
-	lpDenom := types.GetLpTokenDenom(orderTokens)
+	lpDenom := types.GetLpTokenDenom(msg.SwapPoolIndex)
 
 	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
 	if !found {

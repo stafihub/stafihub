@@ -14,7 +14,7 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 		return nil, types.ErrInvalidAddress
 	}
 	orderMinOutTokens := sdk.Coins{msg.MinOutToken0, msg.MinOutToken1}.Sort()
-	lpDenom := types.GetLpTokenDenom(orderMinOutTokens)
+	lpDenom := types.GetLpTokenDenom(msg.SwapPoolIndex)
 
 	swapPool, found := k.Keeper.GetSwapPool(ctx, lpDenom)
 	if !found {

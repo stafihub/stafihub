@@ -19,7 +19,9 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	}
 
 	orderTokens := sdk.Coins{msg.Token0, msg.Token1}.Sort()
-	lpDenom := types.GetLpTokenDenom(orderTokens)
+
+	willUseSwapPoolIndex := k.Keeper.GetSwapPoolNextIndex(ctx)
+	lpDenom := types.GetLpTokenDenom(willUseSwapPoolIndex)
 
 	// check swap pool
 	_, found := k.Keeper.GetSwapPool(ctx, lpDenom)
@@ -51,12 +53,15 @@ func (k msgServer) CreatePool(goCtx context.Context, msg *types.MsgCreatePool) (
 	}
 
 	swapPool := types.SwapPool{
+		Index:     willUseSwapPoolIndex,
 		LpToken:   sdk.NewCoin(lpDenom, poolTotalUnit),
 		BaseToken: orderTokens[0],
 		Token:     orderTokens[1],
 	}
 
 	k.Keeper.SetSwapPool(ctx, lpDenom, &swapPool)
+	k.Keeper.SetSwapPoolIndex(ctx, willUseSwapPoolIndex)
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeCreatePool,

@@ -15,15 +15,20 @@ var _ = strconv.Itoa(0)
 
 func CmdAddLiquidity() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-liquidity [token0] [token1]",
+		Use:   "add-liquidity [swap-pool-index] [token0] [token1]",
 		Short: "Add liquidity",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			coin0, err := sdk.ParseCoinNormalized(args[0])
+			swapPoolIndex, err := sdk.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
-			coin1, err := sdk.ParseCoinNormalized(args[1])
+
+			coin0, err := sdk.ParseCoinNormalized(args[1])
+			if err != nil {
+				return err
+			}
+			coin1, err := sdk.ParseCoinNormalized(args[2])
 			if err != nil {
 				return err
 			}
@@ -35,6 +40,7 @@ func CmdAddLiquidity() *cobra.Command {
 
 			msg := types.NewMsgAddLiquidity(
 				clientCtx.GetFromAddress().String(),
+				uint32(swapPoolIndex.Uint64()),
 				coin0,
 				coin1,
 			)

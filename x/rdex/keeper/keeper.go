@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"bytes"
+	"encoding/binary"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -167,4 +168,24 @@ func (k Keeper) GetPoolCreatorList(ctx sdk.Context) []string {
 		list = append(list, sdk.AccAddress(key[1:]).String())
 	}
 	return list
+}
+
+func (k Keeper) GetSwapPoolNextIndex(ctx sdk.Context) uint32 {
+	store := ctx.KVStore(k.storeKey)
+
+	seqBts := store.Get(types.SwapPoolIndexStoreKey)
+	if seqBts == nil {
+		return 0
+	}
+
+	seq := binary.LittleEndian.Uint32(seqBts)
+	return seq + 1
+}
+
+func (k Keeper) SetSwapPoolIndex(ctx sdk.Context, index uint32) {
+	store := ctx.KVStore(k.storeKey)
+
+	seqBts := make([]byte, 4)
+	binary.LittleEndian.PutUint32(seqBts, index)
+	store.Set(types.SwapPoolIndexStoreKey, seqBts)
 }

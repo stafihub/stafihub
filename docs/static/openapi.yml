@@ -21475,6 +21475,9 @@ paths:
               swapPool:
                 type: object
                 properties:
+                  index:
+                    type: integer
+                    format: int64
                   lpToken:
                     type: object
                     properties:
@@ -21560,6 +21563,9 @@ paths:
                 items:
                   type: object
                   properties:
+                    index:
+                      type: integer
+                      format: int64
                     lpToken:
                       type: object
                       properties:
@@ -38896,6 +38902,9 @@ definitions:
       swapPool:
         type: object
         properties:
+          index:
+            type: integer
+            format: int64
           lpToken:
             type: object
             properties:
@@ -38949,6 +38958,9 @@ definitions:
         items:
           type: object
           properties:
+            index:
+              type: integer
+              format: int64
             lpToken:
               type: object
               properties:
@@ -38997,6 +39009,9 @@ definitions:
   stafihub.stafihub.rdex.SwapPool:
     type: object
     properties:
+      index:
+        type: integer
+        format: int64
       lpToken:
         type: object
         properties:

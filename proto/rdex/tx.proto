@@ -32,8 +32,9 @@ message MsgCreatePoolResponse {
 
 message MsgAddLiquidity {
   string creator = 1;
-  cosmos.base.v1beta1.Coin token0 = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
-  cosmos.base.v1beta1.Coin token1 = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
+  uint32 swapPoolIndex = 2;
+  cosmos.base.v1beta1.Coin token0 = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
+  cosmos.base.v1beta1.Coin token1 = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
 }
 
 message MsgAddLiquidityResponse {
@@ -41,8 +42,9 @@ message MsgAddLiquidityResponse {
 
 message MsgSwap {
   string creator = 1;
-  cosmos.base.v1beta1.Coin inputToken = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
-  cosmos.base.v1beta1.Coin minOutToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  uint32 swapPoolIndex = 2;
+  cosmos.base.v1beta1.Coin inputToken = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin minOutToken = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
 message MsgSwapResponse {
@@ -50,11 +52,12 @@ message MsgSwapResponse {
 
 message MsgRemoveLiquidity {
   string creator = 1;
-  string rmUnit = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  string swapUnit = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  cosmos.base.v1beta1.Coin minOutToken0 = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
-  cosmos.base.v1beta1.Coin minOutToken1 = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
-  string inputTokenDenom = 6;
+  uint32 swapPoolIndex = 2;
+  string rmUnit = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string swapUnit = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin minOutToken0 = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
+  cosmos.base.v1beta1.Coin minOutToken1 = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false]; 
+  string inputTokenDenom = 7;
 }
 
 message MsgRemoveLiquidityResponse {
