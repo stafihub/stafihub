@@ -20,7 +20,7 @@ func (k msgServer) Swap(goCtx context.Context, msg *types.MsgSwap) (*types.MsgSw
 	if !found {
 		return nil, types.ErrSwapPoolNotExit
 	}
-	if orderTokens[0].Denom != swapPool.BaseToken.Denom && orderTokens[1].Denom != swapPool.Token.Denom {
+	if orderTokens[0].Denom != swapPool.BaseToken.Denom || orderTokens[1].Denom != swapPool.Token.Denom {
 		return nil, types.ErrDenomUnmatchSwapPool
 	}
 
