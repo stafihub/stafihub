@@ -20,6 +20,10 @@ func (k msgServer) RemoveLiquidity(goCtx context.Context, msg *types.MsgRemoveLi
 	if !found {
 		return nil, types.ErrSwapPoolNotExit
 	}
+	if orderMinOutTokens[0].Denom != swapPool.BaseToken.Denom && orderMinOutTokens[1].Denom != swapPool.Token.Denom {
+		return nil, types.ErrDenomUnmatchSwapPool
+	}
+
 	poolBaseToken := swapPool.BaseToken
 	poolToken := swapPool.Token
 	poolLpToken := swapPool.LpToken

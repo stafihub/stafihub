@@ -24,4 +24,5 @@ var (
 	ErrPoolOneSideZero                  = sdkerrors.Register(ModuleName, 1113, "pool one side zero")
 	ErrProviderNotExist                 = sdkerrors.Register(ModuleName, 1114, "provider not exist")
 	ErrPermissionDeny                   = sdkerrors.Register(ModuleName, 1115, "permission deny")
+	ErrDenomUnmatchSwapPool             = sdkerrors.Register(ModuleName, 1116, "denom unmatch swap pool")
 )
