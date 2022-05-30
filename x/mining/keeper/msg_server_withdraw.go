@@ -59,6 +59,17 @@ func (k msgServer) Withdraw(goCtx context.Context, msg *types.MsgWithdraw) (*typ
 		userStakeRecord.StakedPower = sdk.ZeroInt()
 	}
 
+	// recheck stake amount and power
+	if userStakeRecord.StakedAmount.IsZero() {
+		if userStakeRecord.StakedPower.IsPositive() {
+			stakePool.TotalStakedPower = stakePool.TotalStakedPower.Sub(userStakeRecord.StakedPower)
+			if stakePool.TotalStakedPower.IsNegative() {
+				stakePool.TotalStakedPower = sdk.ZeroInt()
+			}
+			userStakeRecord.StakedPower = sdk.ZeroInt()
+		}
+	}
+
 	willClaimCoins = willClaimCoins.Add(sdk.NewCoin(stakePool.StakeTokenDenom, msg.WithdrawAmount))
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipientAddr, willClaimCoins); err != nil {
 		return nil, err
