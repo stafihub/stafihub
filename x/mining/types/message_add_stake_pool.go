@@ -67,11 +67,11 @@ func (msg *MsgAddStakePool) ValidateBasic() error {
 		}
 		denomMap[rewardPool.RewardTokenDenom] = true
 
-		if rewardPool.TotalRewardAmount.IsNegative() {
-			return fmt.Errorf("minTotalRewardAmount is negative")
+		if !rewardPool.TotalRewardAmount.IsPositive() {
+			return fmt.Errorf("minTotalRewardAmount is not positive")
 		}
-		if rewardPool.RewardPerSecond.IsNegative() {
-			return fmt.Errorf("RewardPerSecond is negative")
+		if !rewardPool.RewardPerSecond.IsPositive() {
+			return fmt.Errorf("RewardPerSecond is not positive")
 		}
 	}
 
