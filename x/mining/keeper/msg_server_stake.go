@@ -27,6 +27,10 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 	if !found {
 		return nil, types.ErrStakeItemNotExist
 	}
+	if !stakeItem.Enable {
+		return nil, types.ErrStakeItemNotEnable
+	}
+
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
 	// update pools

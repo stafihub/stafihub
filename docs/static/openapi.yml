@@ -38377,11 +38377,17 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgAddStakePoolResponse:
     type: object
+  stafihub.stafihub.mining.MsgAddStakeTokenResponse:
+    type: object
   stafihub.stafihub.mining.MsgClaimRewardResponse:
     type: object
   stafihub.stafihub.mining.MsgEmergencyWithdrawResponse:
     type: object
   stafihub.stafihub.mining.MsgRmMiningProviderResponse:
+    type: object
+  stafihub.stafihub.mining.MsgRmRewardTokenResponse:
+    type: object
+  stafihub.stafihub.mining.MsgRmStakeTokenResponse:
     type: object
   stafihub.stafihub.mining.MsgSetMaxRewardPoolNumberResponse:
     type: object

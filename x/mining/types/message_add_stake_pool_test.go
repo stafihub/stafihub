@@ -44,7 +44,7 @@ func TestMsgAddStakePool_ValidateBasic(t *testing.T) {
 				RewardPoolInfoList: []*types.CreateRewardPoolInfo{
 					{
 						RewardTokenDenom:  sample.TestDenom1,
-						TotalRewardAmount: sdk.NewInt(0),
+						TotalRewardAmount: sdk.NewInt(1),
 						RewardPerSecond:   sdk.NewInt(2),
 					},
 				},

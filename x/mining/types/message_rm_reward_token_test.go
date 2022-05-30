@@ -3,38 +3,29 @@ package types
 import (
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgAddReward_ValidateBasic(t *testing.T) {
+func TestMsgRmRewardToken_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgAddReward
+		msg  MsgRmRewardToken
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgAddReward{
-				Creator:         "invalid_address",
-				StakePoolIndex:  0,
-				RewardPoolIndex: 0,
-				AddAmount:       sdk.NewInt(10),
-				StartTimestamp:  0,
-				RewardPerSecond: sdk.NewInt(1),
+			msg: MsgRmRewardToken{
+				Creator: "invalid_address",
+				Denom:   "testDenom",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgAddReward{
-				Creator:         sample.AccAddress(),
-				StakePoolIndex:  0,
-				RewardPoolIndex: 0,
-				AddAmount:       sdk.NewInt(10),
-				StartTimestamp:  0,
-				RewardPerSecond: sdk.NewInt(1),
+			msg: MsgRmRewardToken{
+				Creator: sample.AccAddress(),
+				Denom:   "testDenom",
 			},
 		},
 	}

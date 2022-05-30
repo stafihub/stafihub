@@ -29,4 +29,6 @@ var (
 	ErrEmergencySwitchClose                    = sdkerrors.Register(ModuleName, 1120, "emergency switch is close")
 	ErrLockTimeOverRewardTime                  = sdkerrors.Register(ModuleName, 1121, "lock time over reward time")
 	ErrUpdateStakeItemPermissionDeny           = sdkerrors.Register(ModuleName, 1122, "update stake item permisson deny")
+	ErrStakeTokenPermissionDeny                = sdkerrors.Register(ModuleName, 1123, "stake token permissin deny")
+	ErrStakeItemNotEnable                      = sdkerrors.Register(ModuleName, 1124, "stake item not enable")
 )

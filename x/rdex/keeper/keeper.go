@@ -84,6 +84,11 @@ func (k Keeper) GetSwapPoolList(ctx sdk.Context) []*types.SwapPool {
 	return swapPoolList
 }
 
+func (k Keeper) IsRDexLpToken(ctx sdk.Context, denom string) bool {
+	_, found := k.GetSwapPool(ctx, denom)
+	return found
+}
+
 func (k Keeper) AddProvider(ctx sdk.Context, addr sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.ProviderStoreKey(addr), []byte{})

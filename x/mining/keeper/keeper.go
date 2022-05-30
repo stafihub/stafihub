@@ -23,6 +23,7 @@ type (
 
 		sudoKeeper types.SudoKeeper
 		bankKeeper types.BankKeeper
+		rDexKeeper types.RDexKeeper
 	}
 )
 
@@ -33,6 +34,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	sudoKeeper types.SudoKeeper,
 	bankKeeper types.BankKeeper,
+	rDexKeeper types.RDexKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -46,6 +48,7 @@ func NewKeeper(
 		paramstore: ps,
 		sudoKeeper: sudoKeeper,
 		bankKeeper: bankKeeper,
+		rDexKeeper: rDexKeeper,
 	}
 }
 
@@ -360,4 +363,36 @@ func (k Keeper) GetMaxStakeItemNumber(ctx sdk.Context) uint32 {
 		return 6
 	}
 	return binary.LittleEndian.Uint32(b)
+}
+
+func (k Keeper) AddStakeToken(ctx sdk.Context, denom string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.StakeTokenStoreKey(denom), []byte{})
+}
+
+func (k Keeper) RemoveStakeToken(ctx sdk.Context, denom string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.StakeTokenStoreKey(denom))
+}
+
+func (k Keeper) HasStakeToken(ctx sdk.Context, denom string) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.StakeTokenStoreKey(denom))
+}
+
+func (k Keeper) GetStakeTokenList(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.StakeTokenStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]string, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		if len(key) <= 1 {
+			continue
+		}
+
+		list = append(list, string(key[1:]))
+	}
+	return list
 }

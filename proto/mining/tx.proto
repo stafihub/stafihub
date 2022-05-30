@@ -26,6 +26,9 @@ service Msg {
   rpc AddReward(MsgAddReward) returns (MsgAddRewardResponse);
   rpc ToggleEmergencySwitch(MsgToggleEmergencySwitch) returns (MsgToggleEmergencySwitchResponse);
   rpc EmergencyWithdraw(MsgEmergencyWithdraw) returns (MsgEmergencyWithdrawResponse);
+  rpc AddStakeToken(MsgAddStakeToken) returns (MsgAddStakeTokenResponse);
+  rpc RmRewardToken(MsgRmRewardToken) returns (MsgRmRewardTokenResponse);
+  rpc RmStakeToken(MsgRmStakeToken) returns (MsgRmStakeTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -202,6 +205,30 @@ message MsgEmergencyWithdraw {
 }
 
 message MsgEmergencyWithdrawResponse {
+}
+
+message MsgAddStakeToken {
+  string creator = 1;
+  string denom = 2;
+}
+
+message MsgAddStakeTokenResponse {
+}
+
+message MsgRmRewardToken {
+  string creator = 1;
+  string denom = 2;
+}
+
+message MsgRmRewardTokenResponse {
+}
+
+message MsgRmStakeToken {
+  string creator = 1;
+  string denom = 2;
+}
+
+message MsgRmStakeTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

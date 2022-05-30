@@ -17,6 +17,11 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	if k.GetMiningProviderSwitch(ctx) && !k.HasMiningProvider(ctx, user) {
 		return nil, types.ErrUserNotMiningProvider
 	}
+
+	if !k.rDexKeeper.IsRDexLpToken(ctx, msg.StakeTokenDenom) && !k.Keeper.HasStakeToken(ctx, msg.StakeTokenDenom) {
+		return nil, types.ErrStakeTokenPermissionDeny
+	}
+
 	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
 	if len(msg.RewardPoolInfoList) > int(maxRewardPoolNumber) {
 		return nil, types.ErrRewardPoolNumberReachLimit

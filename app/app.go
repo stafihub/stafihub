@@ -595,6 +595,7 @@ func New(
 		app.GetSubspace(miningmoduletypes.ModuleName),
 		app.SudoKeeper,
 		app.BankKeeper,
+		app.RdexKeeper,
 	)
 	miningModule := miningmodule.NewAppModule(appCodec, app.MiningKeeper, app.AccountKeeper, app.BankKeeper)
 

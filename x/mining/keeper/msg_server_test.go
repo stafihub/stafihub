@@ -77,6 +77,14 @@ func TestAddAndUpdateStakeItemSuccess(t *testing.T) {
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
 	require.NoError(t, err)
 
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
+	require.NoError(t, err)
+
 	//add stake pool
 	lockSecond := uint64(100)
 	powerRewardRate := utils.MustNewDecFromStr("1.5")
@@ -207,6 +215,14 @@ func TestAddStakePoolSuccess(t *testing.T) {
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
 	require.NoError(t, err)
 
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
+	require.NoError(t, err)
+
 	//add stake pool
 	now := time.Now()
 	sdkCtx = sdkCtx.WithBlockTime(now)
@@ -289,6 +305,14 @@ func TestAddStakePoolFail(t *testing.T) {
 		MinTotalRewardAmount: sdk.NewInt(1e4),
 	}
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
 	require.NoError(t, err)
 
 	//add stake pool fail if use admin
@@ -382,6 +406,14 @@ func TestAddRewardPoolSuccess(t *testing.T) {
 		MinTotalRewardAmount: sdk.NewInt(1e4),
 	}
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken2)
+	require.NoError(t, err)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
 	require.NoError(t, err)
 
 	//add stake pool
@@ -495,6 +527,14 @@ func TestAddRewardPoolFail(t *testing.T) {
 	willMintCoins2 := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom2, sdk.NewInt(1e4)))
 	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins2)
 	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, user, willMintCoins2)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
+	require.NoError(t, err)
 
 	//add stake pool
 	now := time.Now()
@@ -644,6 +684,14 @@ func TestAddRewardSuccess(t *testing.T) {
 	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
 	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
 
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
+	require.NoError(t, err)
+
 	//add stake pool
 	now := time.Now()
 	sdkCtx = sdkCtx.WithBlockTime(now)
@@ -749,6 +797,14 @@ func TestAddRewardFail(t *testing.T) {
 	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
 	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
 	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
+	require.NoError(t, err)
 
 	//add stake pool
 	now := time.Now()
@@ -901,6 +957,14 @@ func TestStakeSuccess(t *testing.T) {
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
 	require.NoError(t, err)
 
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
+	require.NoError(t, err)
+
 	//add stake pool
 	now := time.Now()
 	sdkCtx = sdkCtx.WithBlockTime(now)
@@ -998,6 +1062,14 @@ func TestClaimRewardSuccess(t *testing.T) {
 		MinTotalRewardAmount: sdk.NewInt(1e4),
 	}
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
 	require.NoError(t, err)
 
 	//add stake pool
@@ -1120,6 +1192,14 @@ func TestWithdrawSuccess(t *testing.T) {
 		MinTotalRewardAmount: sdk.NewInt(1e4),
 	}
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
 	require.NoError(t, err)
 
 	//add stake pool
@@ -1281,6 +1361,14 @@ func TestClaimMultiRewardSuccess(t *testing.T) {
 		MinTotalRewardAmount: sdk.NewInt(1e4),
 	}
 	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	// add stake token
+	msgAddStakeToken := types.MsgAddStakeToken{
+		Creator: admin.String(),
+		Denom:   stakeTokenDenom,
+	}
+	_, err = srv.AddStakeToken(ctx, &msgAddStakeToken)
 	require.NoError(t, err)
 
 	//add stake pool

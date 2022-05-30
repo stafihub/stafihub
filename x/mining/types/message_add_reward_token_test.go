@@ -3,6 +3,7 @@ package types_test
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -19,12 +20,15 @@ func TestMsgAddRewardToken_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: types.MsgAddRewardToken{
 				Creator: "invalid_address",
+				Denom:   "testdenom",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: types.MsgAddRewardToken{
-				Creator: sample.AccAddress(),
+				Creator:              sample.AccAddress(),
+				Denom:                "testdenom",
+				MinTotalRewardAmount: sdk.NewInt(1),
 			},
 		},
 	}

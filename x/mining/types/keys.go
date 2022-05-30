@@ -39,6 +39,7 @@ var (
 	RewardTokenStoreKeyPrefix          = []byte{0x09}
 	MaxRewardPoolNumberStoreKey        = []byte{0x0a}
 	MiningProviderSwitchStoreKey       = []byte{0x0b}
+	StakeTokenStoreKeyPrefix           = []byte{0x0c}
 )
 
 var (
@@ -89,4 +90,8 @@ func MiningProviderStoreKey(addr sdk.AccAddress) []byte {
 
 func RewardTokenStoreKey(denom string) []byte {
 	return append(RewardTokenStoreKeyPrefix, []byte(denom)...)
+}
+
+func StakeTokenStoreKey(denom string) []byte {
+	return append(StakeTokenStoreKeyPrefix, []byte(denom)...)
 }

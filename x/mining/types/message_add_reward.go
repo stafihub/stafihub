@@ -52,8 +52,8 @@ func (msg *MsgAddReward) ValidateBasic() error {
 		return fmt.Errorf("addAmount is not positive")
 	}
 
-	if !msg.RewardPerSecond.IsPositive() {
-		return fmt.Errorf("rewardPerSecond is not positive")
+	if msg.RewardPerSecond.IsNegative() {
+		return fmt.Errorf("rewardPerSecond is negative")
 	}
 	return nil
 }
