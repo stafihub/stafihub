@@ -36,6 +36,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rdex/pool_creator_list";
 	}
 
+// Queries a list of ProviderSwitch items.
+	rpc ProviderSwitch(QueryProviderSwitchRequest) returns (QueryProviderSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rdex/provider_switch";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -75,6 +80,13 @@ message QueryPoolCreatorListRequest {
 
 message QueryPoolCreatorListResponse {
   repeated string poolCreatorList = 1;
+}
+
+message QueryProviderSwitchRequest {
+}
+
+message QueryProviderSwitchResponse {
+  bool providerSwitch = 1;
 }
 
 // this line is used by starport scaffolding # 3

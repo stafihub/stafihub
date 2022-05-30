@@ -1081,6 +1081,16 @@ func TestClaimRewardSuccess(t *testing.T) {
 	balance := keepertest.BankKeeper.GetBalance(sdkCtx, stakeUser, rewardTokenDenom)
 	require.EqualValues(t, balance.Amount, sdk.NewInt(199))
 
+	rspStakeRecord, err := miningKeeper.StakeRecord(ctx, &types.QueryStakeRecordRequest{
+		UserAddress:      stakeUser.String(),
+		StakePoolIndex:   0,
+		StakeRecordIndex: 0,
+	})
+	require.NoError(t, err)
+
+	require.EqualValues(t, len(rspStakeRecord.StakeRecord.UserRewardInfos), 1)
+	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[0].ClaimedAmount, sdk.NewInt(199))
+
 }
 
 func TestWithdrawSuccess(t *testing.T) {
@@ -1223,4 +1233,178 @@ func TestWithdrawSuccess(t *testing.T) {
 	require.EqualValues(t, balance.Amount, sdk.NewInt(399))
 	balance = keepertest.BankKeeper.GetBalance(sdkCtx, stakeUser, stakeTokenDenom)
 	require.EqualValues(t, balance.Amount, sdk.NewInt(10))
+
+	rspStakeRecord, err := miningKeeper.StakeRecord(ctx, &types.QueryStakeRecordRequest{
+		UserAddress:      stakeUser.String(),
+		StakePoolIndex:   0,
+		StakeRecordIndex: 0,
+	})
+	require.NoError(t, err)
+
+	require.EqualValues(t, len(rspStakeRecord.StakeRecord.UserRewardInfos), 1)
+	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[0].ClaimedAmount, sdk.NewInt(399))
+}
+
+func TestClaimMultiRewardSuccess(t *testing.T) {
+	srv, miningKeeper, ctx, sdkCtx := setupMsgServer(t)
+	admin := sample.TestAdminAcc
+	stakeTokenDenom := sample.TestDenom
+	rewardTokenDenom := sample.TestDenom1
+	rewardTokenDenom2 := sample.TestDenom2
+
+	// add mining provider
+	miningProvider := sample.OriginAccAddress()
+
+	willMintCoins := sdk.NewCoins(sdk.NewCoin(rewardTokenDenom, sdk.NewInt(1e4)))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, miningProvider, willMintCoins)
+
+	msgAddMiningProvider := types.MsgAddMiningProvider{
+		Creator:     admin.String(),
+		UserAddress: miningProvider.String(),
+	}
+	_, err := srv.AddMiningProvider(ctx, &msgAddMiningProvider)
+	require.NoError(t, err)
+
+	// add reward token
+	msgAddRewardToken := types.MsgAddRewardToken{
+		Creator:              admin.String(),
+		Denom:                rewardTokenDenom,
+		MinTotalRewardAmount: sdk.NewInt(1e4),
+	}
+	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	msgAddRewardToken = types.MsgAddRewardToken{
+		Creator:              admin.String(),
+		Denom:                rewardTokenDenom2,
+		MinTotalRewardAmount: sdk.NewInt(1e4),
+	}
+	_, err = srv.AddRewardToken(ctx, &msgAddRewardToken)
+	require.NoError(t, err)
+
+	//add stake pool
+	now := time.Now()
+	sdkCtx = sdkCtx.WithBlockTime(now)
+	ctx = sdk.WrapSDKContext(sdkCtx)
+
+	lockSecond := uint64(100)
+	powerRewardRate := utils.MustNewDecFromStr("1.5")
+	msgAddStakePool := types.MsgAddStakePool{
+		Creator:         miningProvider.String(),
+		StakeTokenDenom: stakeTokenDenom,
+		RewardPoolInfoList: []*types.CreateRewardPoolInfo{
+			{
+				RewardTokenDenom:  rewardTokenDenom,
+				TotalRewardAmount: sdk.NewInt(1e4),
+				RewardPerSecond:   sdk.NewInt(2),
+				StartTimestamp:    4567,
+			},
+		},
+		StakeItemInfoList: []*types.CreateStakeItemInfo{
+			{
+				LockSecond:      lockSecond,
+				PowerRewardRate: powerRewardRate,
+			},
+		},
+	}
+	require.True(t, msgAddStakePool.ValidateBasic() == nil)
+
+	_, err = srv.AddStakePool(ctx, &msgAddStakePool)
+	require.NoError(t, err)
+
+	// stake
+	now = time.Now()
+	sdkCtx = sdkCtx.WithBlockTime(now)
+	ctx = sdk.WrapSDKContext(sdkCtx)
+
+	stakeUser := sample.OriginAccAddress()
+
+	willMintCoins = sdk.NewCoins(sdk.NewCoin(stakeTokenDenom, sdk.NewInt(10)))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, stakeUser, willMintCoins)
+
+	msgStake := types.MsgStake{
+		Creator:        stakeUser.String(),
+		StakePoolIndex: 0,
+		StakeAmount:    sdk.NewInt(10),
+		StakeItemIndex: 0,
+	}
+
+	_, err = srv.Stake(ctx, &msgStake)
+	require.NoError(t, err)
+
+	// add reward
+	duration := 50
+	now = now.Add(time.Second * time.Duration(duration))
+	sdkCtx = sdkCtx.WithBlockTime(now)
+	ctx = sdk.WrapSDKContext(sdkCtx)
+
+	userToAddReward := sample.OriginAccAddress()
+
+	addRewardAmount := sdk.NewInt(1e4)
+	newRewardPerSecond := sdk.NewInt(1)
+	newStartTimestamp := uint64(0)
+
+	willMintCoins = sdk.NewCoins(sdk.NewCoin(rewardTokenDenom2, addRewardAmount))
+	keepertest.BankKeeper.MintCoins(sdkCtx, types.ModuleName, willMintCoins)
+	keepertest.BankKeeper.SendCoinsFromModuleToAccount(sdkCtx, types.ModuleName, userToAddReward, willMintCoins)
+
+	msgAddReward := types.MsgAddRewardPool{
+		Creator:           userToAddReward.String(),
+		StakePoolIndex:    0,
+		RewardTokenDenom:  rewardTokenDenom2,
+		TotalRewardAmount: addRewardAmount,
+		StartTimestamp:    newStartTimestamp,
+		RewardPerSecond:   newRewardPerSecond,
+	}
+	require.True(t, msgAddReward.ValidateBasic() == nil)
+
+	_, err = srv.AddRewardPool(ctx, &msgAddReward)
+	require.NoError(t, err)
+
+	// claim reward
+	duration = 50
+	now = now.Add(time.Second * time.Duration(duration))
+	sdkCtx = sdkCtx.WithBlockTime(now)
+	ctx = sdk.WrapSDKContext(sdkCtx)
+
+	stakeReward, err := miningKeeper.StakeReward(ctx, &types.QueryStakeRewardRequest{
+		StakeUserAddress: stakeUser.String(),
+		StakePoolIndex:   0,
+		StakeRecordIndex: 0,
+	})
+	require.NoError(t, err)
+
+	require.EqualValues(t, len(stakeReward.RewardTokens), 2)
+	require.EqualValues(t, stakeReward.RewardTokens[0].Amount, sdk.NewInt(199))
+	require.EqualValues(t, stakeReward.RewardTokens[0].Denom, rewardTokenDenom)
+	require.EqualValues(t, stakeReward.RewardTokens[1].Amount, sdk.NewInt(49))
+	require.EqualValues(t, stakeReward.RewardTokens[1].Denom, rewardTokenDenom2)
+
+	msgClaimReward := types.MsgClaimReward{
+		Creator:          stakeUser.String(),
+		StakePoolIndex:   0,
+		StakeRecordIndex: 0,
+	}
+
+	_, err = srv.ClaimReward(ctx, &msgClaimReward)
+	require.NoError(t, err)
+
+	balance := keepertest.BankKeeper.GetBalance(sdkCtx, stakeUser, rewardTokenDenom)
+	require.EqualValues(t, balance.Amount, sdk.NewInt(199))
+	balance = keepertest.BankKeeper.GetBalance(sdkCtx, stakeUser, rewardTokenDenom2)
+	require.EqualValues(t, balance.Amount, sdk.NewInt(49))
+
+	rspStakeRecord, err := miningKeeper.StakeRecord(ctx, &types.QueryStakeRecordRequest{
+		UserAddress:      stakeUser.String(),
+		StakePoolIndex:   0,
+		StakeRecordIndex: 0,
+	})
+	require.NoError(t, err)
+
+	require.EqualValues(t, len(rspStakeRecord.StakeRecord.UserRewardInfos), 2)
+	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[0].ClaimedAmount, sdk.NewInt(199))
+	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[1].ClaimedAmount, sdk.NewInt(49))
+
 }

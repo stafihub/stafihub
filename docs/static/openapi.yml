@@ -20765,6 +20765,38 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /stafihub/stafihub/mining/provider_switch:
+    get:
+      summary: Queries a list of ProviderSwitch items.
+      operationId: StafihubStafihubMiningProviderSwitch
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              providerSwitch:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/mining/reward_token_list:
     get:
       summary: Queries a list of RewardTokenList items.
@@ -21442,6 +21474,38 @@ paths:
                 type: array
                 items:
                   type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafihub/stafihub/rdex/provider_switch:
+    get:
+      summary: Queries a list of ProviderSwitch items.
+      operationId: StafihubStafihubRdexProviderSwitch
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              providerSwitch:
+                type: boolean
         default:
           description: An unexpected error response.
           schema:
@@ -38364,6 +38428,11 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.mining.QueryProviderSwitchResponse:
+    type: object
+    properties:
+      providerSwitch:
+        type: boolean
   stafihub.stafihub.mining.QueryRewardTokenListResponse:
     type: object
     properties:
@@ -38896,6 +38965,11 @@ definitions:
         type: array
         items:
           type: string
+  stafihub.stafihub.rdex.QueryProviderSwitchResponse:
+    type: object
+    properties:
+      providerSwitch:
+        type: boolean
   stafihub.stafihub.rdex.QuerySwapPoolInfoResponse:
     type: object
     properties:
