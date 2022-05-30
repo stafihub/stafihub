@@ -29,6 +29,7 @@ service Msg {
   rpc AddStakeToken(MsgAddStakeToken) returns (MsgAddStakeTokenResponse);
   rpc RmRewardToken(MsgRmRewardToken) returns (MsgRmRewardTokenResponse);
   rpc RmStakeToken(MsgRmStakeToken) returns (MsgRmStakeTokenResponse);
+  rpc SetStakeItemLimit(MsgSetStakeItemLimit) returns (MsgSetStakeItemLimitResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -229,6 +230,15 @@ message MsgRmStakeToken {
 }
 
 message MsgRmStakeTokenResponse {
+}
+
+message MsgSetStakeItemLimit {
+  string creator = 1;
+  uint64 maxLockSecond = 2;
+  string maxPowerRewardRate = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+}
+
+message MsgSetStakeItemLimitResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

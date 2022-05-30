@@ -396,3 +396,25 @@ func (k Keeper) GetStakeTokenList(ctx sdk.Context) []string {
 	}
 	return list
 }
+
+func (k Keeper) SetStakeItemLimit(ctx sdk.Context, limit *types.StakeItemLimit) {
+	store := ctx.KVStore(k.storeKey)
+
+	store.Set(types.StakeItemLimitStoreKey, k.cdc.MustMarshal(limit))
+}
+
+func (k Keeper) GetStakeItemLimit(ctx sdk.Context) *types.StakeItemLimit {
+	store := ctx.KVStore(k.storeKey)
+
+	stakeItemLimit := types.StakeItemLimit{
+		MaxPowerRewardRate: types.DefaultMaxPowerRewardRate,
+		MaxLockSecond:      types.DefaultMaxLockSecond,
+	}
+	b := store.Get(types.StakeItemLimitStoreKey)
+	if b == nil {
+		return &stakeItemLimit
+	}
+	k.cdc.MustUnmarshal(b, &stakeItemLimit)
+
+	return &stakeItemLimit
+}

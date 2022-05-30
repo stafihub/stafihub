@@ -29,6 +29,14 @@ func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeIte
 		return nil, types.ErrStakeItemNumberReachLimit
 	}
 
+	stakeItemLimit := k.Keeper.GetStakeItemLimit(ctx)
+	if msg.LockSecond > stakeItemLimit.MaxLockSecond {
+		return nil, types.ErrStakeItemEraSecondExceedLimit
+	}
+	if msg.PowerRewardRate.GT(stakeItemLimit.MaxPowerRewardRate) {
+		return nil, types.ErrStakeItemPowerRewardRateExceedLimit
+	}
+
 	stakeItem := types.StakeItem{
 		Enable:          msg.Enable,
 		Index:           willUseIndex,

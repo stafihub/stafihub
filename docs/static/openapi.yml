@@ -38393,6 +38393,8 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgSetMaxStakeItemNumberResponse:
     type: object
+  stafihub.stafihub.mining.MsgSetStakeItemLimitResponse:
+    type: object
   stafihub.stafihub.mining.MsgStakeResponse:
     type: object
   stafihub.stafihub.mining.MsgToggleEmergencySwitchResponse:

@@ -31,4 +31,6 @@ var (
 	ErrUpdateStakeItemPermissionDeny           = sdkerrors.Register(ModuleName, 1122, "update stake item permisson deny")
 	ErrStakeTokenPermissionDeny                = sdkerrors.Register(ModuleName, 1123, "stake token permissin deny")
 	ErrStakeItemNotEnable                      = sdkerrors.Register(ModuleName, 1124, "stake item not enable")
+	ErrStakeItemEraSecondExceedLimit           = sdkerrors.Register(ModuleName, 1125, "stake item exceed limit")
+	ErrStakeItemPowerRewardRateExceedLimit     = sdkerrors.Register(ModuleName, 1126, "stake item power reward rate exceed limit")
 )

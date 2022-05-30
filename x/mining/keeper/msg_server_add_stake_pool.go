@@ -30,6 +30,7 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	if len(msg.StakeItemInfoList) > int(maxStakeItemNumber) {
 		return nil, types.ErrStakeItemNumberReachLimit
 	}
+	stakeItemLimit := k.Keeper.GetStakeItemLimit(ctx)
 
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 	willUseStakePoolIndex := k.Keeper.GetStakePoolNextIndex(ctx)
@@ -79,6 +80,13 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	}
 
 	for i, stakeItemInfo := range msg.StakeItemInfoList {
+		if stakeItemInfo.LockSecond > stakeItemLimit.MaxLockSecond {
+			return nil, types.ErrStakeItemEraSecondExceedLimit
+		}
+		if stakeItemInfo.PowerRewardRate.GT(stakeItemLimit.MaxPowerRewardRate) {
+			return nil, types.ErrStakeItemPowerRewardRateExceedLimit
+		}
+
 		stakeItem := types.StakeItem{
 			Index:           uint32(i),
 			StakePoolIndex:  willUseStakePoolIndex,

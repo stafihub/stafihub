@@ -2,7 +2,9 @@ package types
 
 import (
 	"encoding/binary"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stafihub/stafihub/utils"
 )
 
 const (
@@ -26,7 +28,11 @@ func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
 
-var RewardFactor = sdk.NewInt(1e12)
+var (
+	RewardFactor              = sdk.NewInt(1e12)
+	DefaultMaxPowerRewardRate = utils.NewDec(24)
+	DefaultMaxLockSecond      = uint64(360 * 24 * 60 * 60)
+)
 
 var (
 	StakePoolStoreKeyPrefix            = []byte{0x01}
@@ -40,6 +46,7 @@ var (
 	MaxRewardPoolNumberStoreKey        = []byte{0x0a}
 	MiningProviderSwitchStoreKey       = []byte{0x0b}
 	StakeTokenStoreKeyPrefix           = []byte{0x0c}
+	StakeItemLimitStoreKey             = []byte{0x0d}
 )
 
 var (

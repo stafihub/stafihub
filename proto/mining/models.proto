@@ -65,3 +65,8 @@ message StakeItem {
   string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
   bool enable = 5;
 }
+
+message StakeItemLimit {
+  string maxPowerRewardRate = 1 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+  uint64 maxLockSecond = 2;
+}
