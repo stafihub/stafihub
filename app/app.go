@@ -115,9 +115,6 @@ import (
 	rstakingmodule "github.com/stafihub/stafihub/x/rstaking"
 	rstakingmodulekeeper "github.com/stafihub/stafihub/x/rstaking/keeper"
 	rstakingmoduletypes "github.com/stafihub/stafihub/x/rstaking/types"
-	rvalidatormodule "github.com/stafihub/stafihub/x/rvalidator"
-	rvalidatormodulekeeper "github.com/stafihub/stafihub/x/rvalidator/keeper"
-	rvalidatormoduletypes "github.com/stafihub/stafihub/x/rvalidator/types"
 	"github.com/stafihub/stafihub/x/rvote"
 	rvotekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -187,7 +184,6 @@ var (
 		rvote.AppModuleBasic{},
 		rstakingmodule.AppModuleBasic{},
 		bridgemodule.AppModuleBasic{},
-		rvalidatormodule.AppModuleBasic{},
 		rmintrewardmodule.AppModuleBasic{},
 		rbankmodule.AppModuleBasic{},
 		rdexmodule.AppModuleBasic{},
@@ -278,8 +274,6 @@ type App struct {
 
 	BridgeKeeper bridgemodulekeeper.Keeper
 
-	RvalidatorKeeper rvalidatormodulekeeper.Keeper
-
 	RmintrewardKeeper rmintrewardmodulekeeper.Keeper
 
 	RbankKeeper rbankmodulekeeper.Keeper
@@ -324,7 +318,6 @@ func New(
 		rvotetypes.StoreKey,
 		rstakingmoduletypes.StoreKey,
 		bridgemoduletypes.StoreKey,
-		rvalidatormoduletypes.StoreKey,
 		rmintrewardmoduletypes.StoreKey,
 		rbankmoduletypes.StoreKey,
 		rdexmoduletypes.StoreKey,
@@ -565,17 +558,6 @@ func New(
 	)
 	bridgeModule := bridgemodule.NewAppModule(appCodec, app.BridgeKeeper, app.AccountKeeper, app.BankKeeper)
 
-	app.RvalidatorKeeper = *rvalidatormodulekeeper.NewKeeper(
-		appCodec,
-		keys[rvalidatormoduletypes.StoreKey],
-		keys[rvalidatormoduletypes.MemStoreKey],
-		app.SudoKeeper,
-		app.BankKeeper,
-		app.RelayersKeeper,
-		app.RbankKeeper,
-	)
-	rvalidatorModule := rvalidatormodule.NewAppModule(appCodec, app.RvalidatorKeeper)
-
 	rmintrewardModule := rmintrewardmodule.NewAppModule(appCodec, app.RmintrewardKeeper, app.AccountKeeper, app.BankKeeper)
 
 	app.RdexKeeper = *rdexmodulekeeper.NewKeeper(
@@ -644,7 +626,6 @@ func New(
 
 		rstakingModule,
 		bridgeModule,
-		rvalidatorModule,
 		rmintrewardModule,
 		rbankModule,
 		rdexModule,
@@ -681,7 +662,6 @@ func New(
 		relayerstypes.ModuleName,
 		rvotetypes.ModuleName,
 		bridgemoduletypes.ModuleName,
-		rvalidatormoduletypes.ModuleName,
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
@@ -712,7 +692,6 @@ func New(
 		relayerstypes.ModuleName,
 		rvotetypes.ModuleName,
 		bridgemoduletypes.ModuleName,
-		rvalidatormoduletypes.ModuleName,
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
@@ -750,7 +729,6 @@ func New(
 		ledgertypes.ModuleName,
 		rvotetypes.ModuleName,
 		bridgemoduletypes.ModuleName,
-		rvalidatormoduletypes.ModuleName,
 		rmintrewardmoduletypes.ModuleName,
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
@@ -949,7 +927,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 
 	paramsKeeper.Subspace(rstakingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
-	paramsKeeper.Subspace(rvalidatormoduletypes.ModuleName)
 	paramsKeeper.Subspace(rmintrewardmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rbankmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rdexmoduletypes.ModuleName)
