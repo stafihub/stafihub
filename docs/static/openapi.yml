@@ -22296,6 +22296,157 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/stafihub/stafihub/rvalidator/cycle_seconds/{denom}':
+    get:
+      summary: Queries a list of CycleSeconds items.
+      operationId: StafihubStafihubRvalidatorCycleSeconds
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              cycleSeconds:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /stafihub/stafihub/rvalidator/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: StafihubStafihubRvalidatorParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/stafihub/stafihub/rvalidator/r_validator_list/{denom}':
+    get:
+      summary: Queries a list of RValidatorList items.
+      operationId: StafihubStafihubRvalidatorRValidatorList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              rValidatorList:
+                type: array
+                items:
+                  type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  '/stafihub/stafihub/rvalidator/shuffle_seconds/{denom}':
+    get:
+      summary: Queries a list of ShuffleSeconds items.
+      operationId: StafihubStafihubRvalidatorShuffleSeconds
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              shuffleSeconds:
+                type: string
+                format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/stafihub/stafihub/rvote/get_proposal/{propId}':
     get:
       summary: Queries a list of getProposal items.
@@ -39418,6 +39569,43 @@ definitions:
     properties:
       isOpen:
         type: boolean
+  stafihub.stafihub.rvalidator.MsgAddRValidatorResponse:
+    type: object
+  stafihub.stafihub.rvalidator.MsgRmRValidatorResponse:
+    type: object
+  stafihub.stafihub.rvalidator.MsgSetCycleSecondsResponse:
+    type: object
+  stafihub.stafihub.rvalidator.MsgSetShuffleSecondsResponse:
+    type: object
+  stafihub.stafihub.rvalidator.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  stafihub.stafihub.rvalidator.QueryCycleSecondsResponse:
+    type: object
+    properties:
+      cycleSeconds:
+        type: string
+        format: uint64
+  stafihub.stafihub.rvalidator.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.rvalidator.QueryRValidatorListResponse:
+    type: object
+    properties:
+      rValidatorList:
+        type: array
+        items:
+          type: string
+  stafihub.stafihub.rvalidator.QueryShuffleSecondsResponse:
+    type: object
+    properties:
+      shuffleSeconds:
+        type: string
+        format: uint64
   stafihub.stafihub.rvote.MsgSetProposalLifeResponse:
     type: object
   stafihub.stafihub.rvote.MsgSubmitProposalResponse:

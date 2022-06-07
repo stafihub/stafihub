@@ -115,12 +115,16 @@ import (
 	rstakingmodule "github.com/stafihub/stafihub/x/rstaking"
 	rstakingmodulekeeper "github.com/stafihub/stafihub/x/rstaking/keeper"
 	rstakingmoduletypes "github.com/stafihub/stafihub/x/rstaking/types"
+	"github.com/stafihub/stafihub/x/rvalidator"
+	rvalidatormodulekeeper "github.com/stafihub/stafihub/x/rvalidator/keeper"
+	rvalidatormoduletypes "github.com/stafihub/stafihub/x/rvalidator/types"
 	"github.com/stafihub/stafihub/x/rvote"
 	rvotekeeper "github.com/stafihub/stafihub/x/rvote/keeper"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 	"github.com/stafihub/stafihub/x/sudo"
 	sudokeeper "github.com/stafihub/stafihub/x/sudo/keeper"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 	custombank "github.com/stafihub/stafihub/custom/bank"
 	customcrisis "github.com/stafihub/stafihub/custom/crisis"
@@ -188,6 +192,7 @@ var (
 		rbankmodule.AppModuleBasic{},
 		rdexmodule.AppModuleBasic{},
 		miningmodule.AppModuleBasic{},
+		rvalidator.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -281,6 +286,8 @@ type App struct {
 	RdexKeeper rdexmodulekeeper.Keeper
 
 	MiningKeeper miningmodulekeeper.Keeper
+
+	RValidatorKeeper rvalidatormodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -322,6 +329,7 @@ func New(
 		rbankmoduletypes.StoreKey,
 		rdexmoduletypes.StoreKey,
 		miningmoduletypes.StoreKey,
+		rvalidatormoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -532,9 +540,20 @@ func New(
 		app.RmintrewardKeeper,
 		app.RbankKeeper,
 	)
+	app.RValidatorKeeper = *rvalidatormodulekeeper.NewKeeper(
+		appCodec,
+		keys[rvalidatormoduletypes.StoreKey],
+		keys[rvalidatormoduletypes.MemStoreKey],
+		app.GetSubspace(rvalidatormoduletypes.ModuleName),
+		app.SudoKeeper,
+		app.RbankKeeper,
+	)
+	rvalidatorModule := rvalidator.NewAppModule(appCodec, app.RValidatorKeeper, app.AccountKeeper, app.BankKeeper)
 
 	rvoteRouter := rvotetypes.NewRouter()
 	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledger.NewProposalHandler(app.LedgerKeeper))
+	rvoteRouter.AddRoute(rvalidatormoduletypes.RouterKey, rvalidator.NewProposalHandler(app.RValidatorKeeper))
+
 	app.RvoteKeeper = *rvotekeeper.NewKeeper(
 		appCodec,
 		keys[rvotetypes.StoreKey],
@@ -581,8 +600,6 @@ func New(
 	)
 	miningModule := miningmodule.NewAppModule(appCodec, app.MiningKeeper, app.AccountKeeper, app.BankKeeper)
 
-	// this line is used by starport scaffolding # stargate/app/keeperDefinition
-
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
@@ -622,6 +639,7 @@ func New(
 		sudo.NewAppModule(appCodec, app.SudoKeeper),
 		relayers.NewAppModule(appCodec, app.RelayersKeeper),
 		ledger.NewAppModule(appCodec, app.LedgerKeeper),
+		rvalidatorModule,
 		rvote.NewAppModule(appCodec, app.RvoteKeeper),
 
 		rstakingModule,
@@ -666,6 +684,7 @@ func New(
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
 		miningmoduletypes.ModuleName,
+		rvalidatormoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -696,6 +715,7 @@ func New(
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
 		miningmoduletypes.ModuleName,
+		rvalidatormoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -733,6 +753,7 @@ func New(
 		rbankmoduletypes.ModuleName,
 		rdexmoduletypes.ModuleName,
 		miningmoduletypes.ModuleName,
+		rvalidatormoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 

@@ -1,0 +1,20 @@
+syntax = "proto3";
+package stafihub.stafihub.rvalidator;
+
+import "gogoproto/gogo.proto";
+import "rvalidator/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/stafihub/stafihub/x/rvalidator/types";
+
+// GenesisState defines the rvalidator module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
+
+
+message RValidator {
+  string denom  = 1;
+  string address = 2;
+}
