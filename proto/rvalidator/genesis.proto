@@ -18,3 +18,21 @@ message RValidator {
   string denom  = 1;
   string address = 2;
 }
+
+message Cycle {
+  string denom = 1;
+  uint64 version = 2;
+  uint64 number = 3;
+}
+
+message CycleSeconds {
+  string denom = 1;
+  uint64 version = 2;
+  uint64 seconds = 3;
+}
+
+message ShuffleSeconds {
+  string denom = 1;
+  uint64 version = 2;
+  uint64 seconds = 3;
+}

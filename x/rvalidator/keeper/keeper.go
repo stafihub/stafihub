@@ -117,44 +117,66 @@ func (k Keeper) GetSelectedRValidatorList(ctx sdk.Context) []*types.RValidator {
 	return list
 }
 
-func (k Keeper) SetLatestVotedCycle(ctx sdk.Context, denom string, cycle uint64) {
+func (k Keeper) SetLatestVotedCycle(ctx sdk.Context, cycle *types.Cycle) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.LatestVotedCycleStoreKey(denom), sdk.Uint64ToBigEndian(cycle))
+	store.Set(types.LatestVotedCycleStoreKey(cycle.Denom), k.cdc.MustMarshal(cycle))
 }
 
-func (k Keeper) GetLatestVotedCycle(ctx sdk.Context, denom string) uint64 {
+func (k Keeper) GetLatestVotedCycle(ctx sdk.Context, denom string) *types.Cycle {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.LatestVotedCycleStoreKey(denom))
 	if bts == nil {
-		return 0
+		return &types.Cycle{
+			Denom:   denom,
+			Version: 0,
+			Number:  0,
+		}
 	}
-	return sdk.BigEndianToUint64(bts)
+	cycle := types.Cycle{}
+	k.cdc.MustUnmarshal(bts, &cycle)
+
+	return &cycle
 }
 
-func (k Keeper) SetCycleSeconds(ctx sdk.Context, denom string, seconds uint64) {
+func (k Keeper) SetCycleSeconds(ctx sdk.Context, cycleSeconds *types.CycleSeconds) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.CycleSecondsStoreKey(denom), sdk.Uint64ToBigEndian(seconds))
+	store.Set(types.CycleSecondsStoreKey(cycleSeconds.Denom), k.cdc.MustMarshal(cycleSeconds))
 }
 
-func (k Keeper) GetCycleSeconds(ctx sdk.Context, denom string) uint64 {
+func (k Keeper) GetCycleSeconds(ctx sdk.Context, denom string) *types.CycleSeconds {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.CycleSecondsStoreKey(denom))
 	if bts == nil {
-		return types.DefaultCycleSeconds
+		return &types.CycleSeconds{
+			Denom:   denom,
+			Version: 0,
+			Seconds: types.DefaultCycleSeconds,
+		}
 	}
-	return sdk.BigEndianToUint64(bts)
+
+	cycleSeconds := types.CycleSeconds{}
+	k.cdc.MustUnmarshal(bts, &cycleSeconds)
+	return &cycleSeconds
 }
 
-func (k Keeper) SetShuffleSeconds(ctx sdk.Context, denom string, seconds uint64) {
+func (k Keeper) SetShuffleSeconds(ctx sdk.Context, shuffleSeconds *types.ShuffleSeconds) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ShuffleSecondsStoreKey(denom), sdk.Uint64ToBigEndian(seconds))
+	store.Set(types.ShuffleSecondsStoreKey(shuffleSeconds.Denom), k.cdc.MustMarshal(shuffleSeconds))
 }
 
-func (k Keeper) GetShuffleSeconds(ctx sdk.Context, denom string) uint64 {
+func (k Keeper) GetShuffleSeconds(ctx sdk.Context, denom string) *types.ShuffleSeconds {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.ShuffleSecondsStoreKey(denom))
 	if bts == nil {
-		return types.DefaultShuffleSeconds
+		return &types.ShuffleSeconds{
+			Denom:   denom,
+			Version: 0,
+			Seconds: types.DefaultShuffleSeconds,
+		}
 	}
-	return sdk.BigEndianToUint64(bts)
+	shuffleSeconds := types.ShuffleSeconds{}
+
+	k.cdc.MustUnmarshal(bts, &shuffleSeconds)
+
+	return &shuffleSeconds
 }

@@ -16,7 +16,13 @@ func (k msgServer) SetCycleSeconds(goCtx context.Context, msg *types.MsgSetCycle
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.SetCycleSeconds(ctx, msg.Denom, msg.Seconds)
+	cycleSeconds := k.Keeper.GetCycleSeconds(ctx, msg.Denom)
+
+	k.Keeper.SetCycleSeconds(ctx, &types.CycleSeconds{
+		Denom:   msg.Denom,
+		Version: cycleSeconds.Version + 1,
+		Seconds: cycleSeconds.Seconds,
+	})
 
 	return &types.MsgSetCycleSecondsResponse{}, nil
 }

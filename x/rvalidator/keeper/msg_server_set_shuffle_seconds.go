@@ -16,7 +16,13 @@ func (k msgServer) SetShuffleSeconds(goCtx context.Context, msg *types.MsgSetShu
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.SetShuffleSeconds(ctx, msg.Denom, msg.Seconds)
+	shuffleSeconds := k.Keeper.GetShuffleSeconds(ctx, msg.Denom)
+
+	k.Keeper.SetShuffleSeconds(ctx, &types.ShuffleSeconds{
+		Denom:   msg.Denom,
+		Version: shuffleSeconds.Version,
+		Seconds: shuffleSeconds.Seconds,
+	})
 
 	return &types.MsgSetShuffleSecondsResponse{}, nil
 }

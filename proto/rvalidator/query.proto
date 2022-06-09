@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "rvalidator/params.proto";
+import "rvalidator/genesis.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/stafihub/stafihub/x/rvalidator/types";
@@ -55,7 +56,7 @@ message QueryCycleSecondsRequest {
 }
 
 message QueryCycleSecondsResponse {
-  uint64 cycleSeconds = 1;
+  CycleSeconds cycleSeconds = 1;
 }
 
 message QueryShuffleSecondsRequest {
@@ -63,7 +64,7 @@ message QueryShuffleSecondsRequest {
 }
 
 message QueryShuffleSecondsResponse {
-  uint64 shuffleSeconds = 1;
+  ShuffleSeconds shuffleSeconds = 1;
 }
 
 // this line is used by starport scaffolding # 3

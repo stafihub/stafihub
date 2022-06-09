@@ -22307,8 +22307,16 @@ paths:
             type: object
             properties:
               cycleSeconds:
-                type: string
-                format: uint64
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  version:
+                    type: string
+                    format: uint64
+                  seconds:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -22420,8 +22428,16 @@ paths:
             type: object
             properties:
               shuffleSeconds:
-                type: string
-                format: uint64
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  version:
+                    type: string
+                    format: uint64
+                  seconds:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -39569,6 +39585,17 @@ definitions:
     properties:
       isOpen:
         type: boolean
+  stafihub.stafihub.rvalidator.CycleSeconds:
+    type: object
+    properties:
+      denom:
+        type: string
+      version:
+        type: string
+        format: uint64
+      seconds:
+        type: string
+        format: uint64
   stafihub.stafihub.rvalidator.MsgAddRValidatorResponse:
     type: object
   stafihub.stafihub.rvalidator.MsgRmRValidatorResponse:
@@ -39584,8 +39611,16 @@ definitions:
     type: object
     properties:
       cycleSeconds:
-        type: string
-        format: uint64
+        type: object
+        properties:
+          denom:
+            type: string
+          version:
+            type: string
+            format: uint64
+          seconds:
+            type: string
+            format: uint64
   stafihub.stafihub.rvalidator.QueryParamsResponse:
     type: object
     properties:
@@ -39604,6 +39639,25 @@ definitions:
     type: object
     properties:
       shuffleSeconds:
+        type: object
+        properties:
+          denom:
+            type: string
+          version:
+            type: string
+            format: uint64
+          seconds:
+            type: string
+            format: uint64
+  stafihub.stafihub.rvalidator.ShuffleSeconds:
+    type: object
+    properties:
+      denom:
+        type: string
+      version:
+        type: string
+        format: uint64
+      seconds:
         type: string
         format: uint64
   stafihub.stafihub.rvote.MsgSetProposalLifeResponse:
