@@ -5,6 +5,7 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
+	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
@@ -31,6 +32,10 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetShuffleSeconds{},
+	)
+	registry.RegisterImplementations(
+		(*rvotetypes.Content)(nil),
+		&UpdateRValidatorProposal{},
 	)
 	// this line is used by starport scaffolding # 3
 
