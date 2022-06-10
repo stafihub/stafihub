@@ -21,7 +21,7 @@ func (k msgServer) SetCycleSeconds(goCtx context.Context, msg *types.MsgSetCycle
 	k.Keeper.SetCycleSeconds(ctx, &types.CycleSeconds{
 		Denom:   msg.Denom,
 		Version: cycleSeconds.Version + 1,
-		Seconds: cycleSeconds.Seconds,
+		Seconds: msg.Seconds,
 	})
 
 	return &types.MsgSetCycleSecondsResponse{}, nil
