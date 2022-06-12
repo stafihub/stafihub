@@ -21,13 +21,14 @@ func init() {
 
 func NewUpdateRValidatorProposal(creator string, denom string, oldAddress string, newAddress string, cycle *Cycle) *UpdateRValidatorProposal {
 	msg := UpdateRValidatorProposal{
-		Creator:    creator,
 		Denom:      denom,
 		OldAddress: oldAddress,
 		NewAddress: newAddress,
 		Cycle:      cycle,
 	}
 	msg.setPropId()
+
+	msg.Creator = creator
 
 	return &msg
 }
