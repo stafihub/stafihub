@@ -31,6 +31,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rvalidator/shuffle_seconds/{denom}";
 	}
 
+// Queries a list of LatestVotedCycle items.
+	rpc LatestVotedCycle(QueryLatestVotedCycleRequest) returns (QueryLatestVotedCycleResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rvalidator/latest_voted_cycle/{denom}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -65,6 +70,14 @@ message QueryShuffleSecondsRequest {
 
 message QueryShuffleSecondsResponse {
   ShuffleSeconds shuffleSeconds = 1;
+}
+
+message QueryLatestVotedCycleRequest {
+  string denom = 1;
+}
+
+message QueryLatestVotedCycleResponse {
+  Cycle latestVotedCycle = 1;
 }
 
 // this line is used by starport scaffolding # 3

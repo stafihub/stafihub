@@ -22707,6 +22707,52 @@ paths:
           type: string
       tags:
         - Query
+  '/stafihub/stafihub/rvalidator/latest_voted_cycle/{denom}':
+    get:
+      summary: Queries a list of LatestVotedCycle items.
+      operationId: StafihubStafihubRvalidatorLatestVotedCycle
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              latestVotedCycle:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  version:
+                    type: string
+                    format: uint64
+                  number:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: denom
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /stafihub/stafihub/rvalidator/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -40053,6 +40099,17 @@ definitions:
     properties:
       isOpen:
         type: boolean
+  stafihub.stafihub.rvalidator.Cycle:
+    type: object
+    properties:
+      denom:
+        type: string
+      version:
+        type: string
+        format: uint64
+      number:
+        type: string
+        format: uint64
   stafihub.stafihub.rvalidator.CycleSeconds:
     type: object
     properties:
@@ -40087,6 +40144,20 @@ definitions:
             type: string
             format: uint64
           seconds:
+            type: string
+            format: uint64
+  stafihub.stafihub.rvalidator.QueryLatestVotedCycleResponse:
+    type: object
+    properties:
+      latestVotedCycle:
+        type: object
+        properties:
+          denom:
+            type: string
+          version:
+            type: string
+            format: uint64
+          number:
             type: string
             format: uint64
   stafihub.stafihub.rvalidator.QueryParamsResponse:
