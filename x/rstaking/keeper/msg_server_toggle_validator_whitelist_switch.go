@@ -8,14 +8,14 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-func (k msgServer) ToggleWhitelistSwitch(goCtx context.Context, msg *types.MsgToggleWhitelistSwitch) (*types.MsgToggleWhitelistSwitchResponse, error) {
+func (k msgServer) ToggleValidatorWhitelistSwitch(goCtx context.Context, msg *types.MsgToggleValidatorWhitelistSwitch) (*types.MsgToggleValidatorWhitelistSwitchResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	isAdmin := k.sudoKeeper.IsAdmin(ctx, msg.Creator)
 	if !isAdmin {
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
-	k.Keeper.ToggleWhitelistSwitch(ctx)
+	k.Keeper.ToggleValidatorWhitelistSwitch(ctx)
 
-	return &types.MsgToggleWhitelistSwitchResponse{}, nil
+	return &types.MsgToggleValidatorWhitelistSwitchResponse{}, nil
 }

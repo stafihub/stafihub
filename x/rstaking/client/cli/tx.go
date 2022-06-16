@@ -32,7 +32,7 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdSetInflationBase())
 	cmd.AddCommand(CmdAddValToWhitelist())
-	cmd.AddCommand(CmdToggleWhitelistSwitch())
+	cmd.AddCommand(CmdToggleValidatorWhitelistSwitch())
 	cmd.AddCommand(CmdWithdraw())
 	cmd.AddCommand(CmdAddDelegatorToWhitelist())
 	cmd.AddCommand(CmdToggleDelegatorWhitelistSwitch())

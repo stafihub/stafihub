@@ -5,16 +5,17 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rstaking/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdWhitelistSwitch() *cobra.Command {
+func CmdToggleValidatorWhitelistSwitch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "whitelist-switch",
-		Short: "Query whitelist switch",
+		Use:   "toggle-validator-whitelist-switch",
+		Short: "Broadcast message toggle validator whitelist switch",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -23,20 +24,17 @@ func CmdWhitelistSwitch() *cobra.Command {
 				return err
 			}
 
-			queryClient := types.NewQueryClient(clientCtx)
-
-			params := &types.QueryWhitelistSwitchRequest{}
-
-			res, err := queryClient.WhitelistSwitch(cmd.Context(), params)
-			if err != nil {
+			msg := types.NewMsgToggleValidatorWhitelistSwitch(
+				clientCtx.GetFromAddress().String(),
+			)
+			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
-
-			return clientCtx.PrintProto(res)
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}
 
-	flags.AddQueryFlagsToCmd(cmd)
+	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
 }

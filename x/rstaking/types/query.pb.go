@@ -186,86 +186,6 @@ func (m *QueryInflationBaseResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryInflationBaseResponse proto.InternalMessageInfo
 
-type QueryModuleAccountRequest struct {
-}
-
-func (m *QueryModuleAccountRequest) Reset()         { *m = QueryModuleAccountRequest{} }
-func (m *QueryModuleAccountRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryModuleAccountRequest) ProtoMessage()    {}
-func (*QueryModuleAccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e22409a29fe39f84, []int{4}
-}
-func (m *QueryModuleAccountRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryModuleAccountRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryModuleAccountRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryModuleAccountRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryModuleAccountRequest.Merge(m, src)
-}
-func (m *QueryModuleAccountRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryModuleAccountRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryModuleAccountRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryModuleAccountRequest proto.InternalMessageInfo
-
-type QueryModuleAccountResponse struct {
-	ModuleAccount string `protobuf:"bytes,1,opt,name=moduleAccount,proto3" json:"moduleAccount,omitempty"`
-}
-
-func (m *QueryModuleAccountResponse) Reset()         { *m = QueryModuleAccountResponse{} }
-func (m *QueryModuleAccountResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryModuleAccountResponse) ProtoMessage()    {}
-func (*QueryModuleAccountResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e22409a29fe39f84, []int{5}
-}
-func (m *QueryModuleAccountResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *QueryModuleAccountResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_QueryModuleAccountResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *QueryModuleAccountResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryModuleAccountResponse.Merge(m, src)
-}
-func (m *QueryModuleAccountResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *QueryModuleAccountResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryModuleAccountResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_QueryModuleAccountResponse proto.InternalMessageInfo
-
-func (m *QueryModuleAccountResponse) GetModuleAccount() string {
-	if m != nil {
-		return m.ModuleAccount
-	}
-	return ""
-}
-
 type QueryValidatorWhitelistRequest struct {
 }
 
@@ -273,7 +193,7 @@ func (m *QueryValidatorWhitelistRequest) Reset()         { *m = QueryValidatorWh
 func (m *QueryValidatorWhitelistRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryValidatorWhitelistRequest) ProtoMessage()    {}
 func (*QueryValidatorWhitelistRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e22409a29fe39f84, []int{6}
+	return fileDescriptor_e22409a29fe39f84, []int{4}
 }
 func (m *QueryValidatorWhitelistRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -310,7 +230,7 @@ func (m *QueryValidatorWhitelistResponse) Reset()         { *m = QueryValidatorW
 func (m *QueryValidatorWhitelistResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryValidatorWhitelistResponse) ProtoMessage()    {}
 func (*QueryValidatorWhitelistResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e22409a29fe39f84, []int{7}
+	return fileDescriptor_e22409a29fe39f84, []int{5}
 }
 func (m *QueryValidatorWhitelistResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -346,21 +266,21 @@ func (m *QueryValidatorWhitelistResponse) GetValAddress() []string {
 	return nil
 }
 
-type QueryWhitelistSwitchRequest struct {
+type QueryValidatorWhitelistSwitchRequest struct {
 }
 
-func (m *QueryWhitelistSwitchRequest) Reset()         { *m = QueryWhitelistSwitchRequest{} }
-func (m *QueryWhitelistSwitchRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryWhitelistSwitchRequest) ProtoMessage()    {}
-func (*QueryWhitelistSwitchRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e22409a29fe39f84, []int{8}
+func (m *QueryValidatorWhitelistSwitchRequest) Reset()         { *m = QueryValidatorWhitelistSwitchRequest{} }
+func (m *QueryValidatorWhitelistSwitchRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryValidatorWhitelistSwitchRequest) ProtoMessage()    {}
+func (*QueryValidatorWhitelistSwitchRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e22409a29fe39f84, []int{6}
 }
-func (m *QueryWhitelistSwitchRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryValidatorWhitelistSwitchRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWhitelistSwitchRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryValidatorWhitelistSwitchRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWhitelistSwitchRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryValidatorWhitelistSwitchRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -370,34 +290,34 @@ func (m *QueryWhitelistSwitchRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryWhitelistSwitchRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWhitelistSwitchRequest.Merge(m, src)
+func (m *QueryValidatorWhitelistSwitchRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryValidatorWhitelistSwitchRequest.Merge(m, src)
 }
-func (m *QueryWhitelistSwitchRequest) XXX_Size() int {
+func (m *QueryValidatorWhitelistSwitchRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWhitelistSwitchRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWhitelistSwitchRequest.DiscardUnknown(m)
+func (m *QueryValidatorWhitelistSwitchRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryValidatorWhitelistSwitchRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWhitelistSwitchRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryValidatorWhitelistSwitchRequest proto.InternalMessageInfo
 
-type QueryWhitelistSwitchResponse struct {
+type QueryValidatorWhitelistSwitchResponse struct {
 	IsOpen bool `protobuf:"varint,1,opt,name=isOpen,proto3" json:"isOpen,omitempty"`
 }
 
-func (m *QueryWhitelistSwitchResponse) Reset()         { *m = QueryWhitelistSwitchResponse{} }
-func (m *QueryWhitelistSwitchResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryWhitelistSwitchResponse) ProtoMessage()    {}
-func (*QueryWhitelistSwitchResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e22409a29fe39f84, []int{9}
+func (m *QueryValidatorWhitelistSwitchResponse) Reset()         { *m = QueryValidatorWhitelistSwitchResponse{} }
+func (m *QueryValidatorWhitelistSwitchResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryValidatorWhitelistSwitchResponse) ProtoMessage()    {}
+func (*QueryValidatorWhitelistSwitchResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e22409a29fe39f84, []int{7}
 }
-func (m *QueryWhitelistSwitchResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryValidatorWhitelistSwitchResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryWhitelistSwitchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryValidatorWhitelistSwitchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryWhitelistSwitchResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryValidatorWhitelistSwitchResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -407,19 +327,179 @@ func (m *QueryWhitelistSwitchResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *QueryWhitelistSwitchResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryWhitelistSwitchResponse.Merge(m, src)
+func (m *QueryValidatorWhitelistSwitchResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryValidatorWhitelistSwitchResponse.Merge(m, src)
 }
-func (m *QueryWhitelistSwitchResponse) XXX_Size() int {
+func (m *QueryValidatorWhitelistSwitchResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryWhitelistSwitchResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryWhitelistSwitchResponse.DiscardUnknown(m)
+func (m *QueryValidatorWhitelistSwitchResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryValidatorWhitelistSwitchResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryWhitelistSwitchResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryValidatorWhitelistSwitchResponse proto.InternalMessageInfo
 
-func (m *QueryWhitelistSwitchResponse) GetIsOpen() bool {
+func (m *QueryValidatorWhitelistSwitchResponse) GetIsOpen() bool {
+	if m != nil {
+		return m.IsOpen
+	}
+	return false
+}
+
+type QueryDelegatorWhitelistRequest struct {
+}
+
+func (m *QueryDelegatorWhitelistRequest) Reset()         { *m = QueryDelegatorWhitelistRequest{} }
+func (m *QueryDelegatorWhitelistRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryDelegatorWhitelistRequest) ProtoMessage()    {}
+func (*QueryDelegatorWhitelistRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e22409a29fe39f84, []int{8}
+}
+func (m *QueryDelegatorWhitelistRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryDelegatorWhitelistRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryDelegatorWhitelistRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryDelegatorWhitelistRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryDelegatorWhitelistRequest.Merge(m, src)
+}
+func (m *QueryDelegatorWhitelistRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryDelegatorWhitelistRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryDelegatorWhitelistRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryDelegatorWhitelistRequest proto.InternalMessageInfo
+
+type QueryDelegatorWhitelistResponse struct {
+	DelegatorAddress []string `protobuf:"bytes,1,rep,name=delegatorAddress,proto3" json:"delegatorAddress,omitempty"`
+}
+
+func (m *QueryDelegatorWhitelistResponse) Reset()         { *m = QueryDelegatorWhitelistResponse{} }
+func (m *QueryDelegatorWhitelistResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryDelegatorWhitelistResponse) ProtoMessage()    {}
+func (*QueryDelegatorWhitelistResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e22409a29fe39f84, []int{9}
+}
+func (m *QueryDelegatorWhitelistResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryDelegatorWhitelistResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryDelegatorWhitelistResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryDelegatorWhitelistResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryDelegatorWhitelistResponse.Merge(m, src)
+}
+func (m *QueryDelegatorWhitelistResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryDelegatorWhitelistResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryDelegatorWhitelistResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryDelegatorWhitelistResponse proto.InternalMessageInfo
+
+func (m *QueryDelegatorWhitelistResponse) GetDelegatorAddress() []string {
+	if m != nil {
+		return m.DelegatorAddress
+	}
+	return nil
+}
+
+type QueryDelegatorWhitelistSwitchRequest struct {
+}
+
+func (m *QueryDelegatorWhitelistSwitchRequest) Reset()         { *m = QueryDelegatorWhitelistSwitchRequest{} }
+func (m *QueryDelegatorWhitelistSwitchRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryDelegatorWhitelistSwitchRequest) ProtoMessage()    {}
+func (*QueryDelegatorWhitelistSwitchRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e22409a29fe39f84, []int{10}
+}
+func (m *QueryDelegatorWhitelistSwitchRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryDelegatorWhitelistSwitchRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryDelegatorWhitelistSwitchRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryDelegatorWhitelistSwitchRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryDelegatorWhitelistSwitchRequest.Merge(m, src)
+}
+func (m *QueryDelegatorWhitelistSwitchRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryDelegatorWhitelistSwitchRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryDelegatorWhitelistSwitchRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryDelegatorWhitelistSwitchRequest proto.InternalMessageInfo
+
+type QueryDelegatorWhitelistSwitchResponse struct {
+	IsOpen bool `protobuf:"varint,1,opt,name=isOpen,proto3" json:"isOpen,omitempty"`
+}
+
+func (m *QueryDelegatorWhitelistSwitchResponse) Reset()         { *m = QueryDelegatorWhitelistSwitchResponse{} }
+func (m *QueryDelegatorWhitelistSwitchResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryDelegatorWhitelistSwitchResponse) ProtoMessage()    {}
+func (*QueryDelegatorWhitelistSwitchResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e22409a29fe39f84, []int{11}
+}
+func (m *QueryDelegatorWhitelistSwitchResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryDelegatorWhitelistSwitchResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryDelegatorWhitelistSwitchResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryDelegatorWhitelistSwitchResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryDelegatorWhitelistSwitchResponse.Merge(m, src)
+}
+func (m *QueryDelegatorWhitelistSwitchResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryDelegatorWhitelistSwitchResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryDelegatorWhitelistSwitchResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryDelegatorWhitelistSwitchResponse proto.InternalMessageInfo
+
+func (m *QueryDelegatorWhitelistSwitchResponse) GetIsOpen() bool {
 	if m != nil {
 		return m.IsOpen
 	}
@@ -431,55 +511,59 @@ func init() {
 	proto.RegisterType((*QueryParamsResponse)(nil), "stafihub.stafihub.rstaking.QueryParamsResponse")
 	proto.RegisterType((*QueryInflationBaseRequest)(nil), "stafihub.stafihub.rstaking.QueryInflationBaseRequest")
 	proto.RegisterType((*QueryInflationBaseResponse)(nil), "stafihub.stafihub.rstaking.QueryInflationBaseResponse")
-	proto.RegisterType((*QueryModuleAccountRequest)(nil), "stafihub.stafihub.rstaking.QueryModuleAccountRequest")
-	proto.RegisterType((*QueryModuleAccountResponse)(nil), "stafihub.stafihub.rstaking.QueryModuleAccountResponse")
 	proto.RegisterType((*QueryValidatorWhitelistRequest)(nil), "stafihub.stafihub.rstaking.QueryValidatorWhitelistRequest")
 	proto.RegisterType((*QueryValidatorWhitelistResponse)(nil), "stafihub.stafihub.rstaking.QueryValidatorWhitelistResponse")
-	proto.RegisterType((*QueryWhitelistSwitchRequest)(nil), "stafihub.stafihub.rstaking.QueryWhitelistSwitchRequest")
-	proto.RegisterType((*QueryWhitelistSwitchResponse)(nil), "stafihub.stafihub.rstaking.QueryWhitelistSwitchResponse")
+	proto.RegisterType((*QueryValidatorWhitelistSwitchRequest)(nil), "stafihub.stafihub.rstaking.QueryValidatorWhitelistSwitchRequest")
+	proto.RegisterType((*QueryValidatorWhitelistSwitchResponse)(nil), "stafihub.stafihub.rstaking.QueryValidatorWhitelistSwitchResponse")
+	proto.RegisterType((*QueryDelegatorWhitelistRequest)(nil), "stafihub.stafihub.rstaking.QueryDelegatorWhitelistRequest")
+	proto.RegisterType((*QueryDelegatorWhitelistResponse)(nil), "stafihub.stafihub.rstaking.QueryDelegatorWhitelistResponse")
+	proto.RegisterType((*QueryDelegatorWhitelistSwitchRequest)(nil), "stafihub.stafihub.rstaking.QueryDelegatorWhitelistSwitchRequest")
+	proto.RegisterType((*QueryDelegatorWhitelistSwitchResponse)(nil), "stafihub.stafihub.rstaking.QueryDelegatorWhitelistSwitchResponse")
 }
 
 func init() { proto.RegisterFile("rstaking/query.proto", fileDescriptor_e22409a29fe39f84) }
 
 var fileDescriptor_e22409a29fe39f84 = []byte{
-	// 583 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xcd, 0x6e, 0xd3, 0x40,
-	0x14, 0x85, 0x63, 0x7e, 0x02, 0xbd, 0x28, 0x42, 0x1a, 0x02, 0x02, 0xb7, 0x38, 0x95, 0x55, 0xa1,
-	0xaa, 0x6a, 0x6d, 0x11, 0xa0, 0x45, 0xb0, 0x21, 0xd9, 0xa0, 0x2e, 0x10, 0x60, 0x10, 0x95, 0xd8,
-	0x44, 0x93, 0x64, 0xea, 0x8c, 0xea, 0x78, 0x5c, 0xcf, 0xa4, 0xa5, 0x5b, 0x5e, 0x00, 0x24, 0xc4,
-	0x8b, 0xb0, 0xe4, 0x01, 0x50, 0x97, 0x95, 0xd8, 0x20, 0x16, 0x15, 0x4a, 0x78, 0x10, 0xe4, 0xf1,
-	0xd8, 0x8d, 0x13, 0xe7, 0xa7, 0xac, 0x32, 0x99, 0x7b, 0xcf, 0x3d, 0xdf, 0xd8, 0xc7, 0x03, 0xe5,
-	0x90, 0x0b, 0xbc, 0x47, 0x7d, 0xd7, 0xde, 0xef, 0x91, 0xf0, 0xc8, 0x0a, 0x42, 0x26, 0x18, 0xd2,
-	0xb9, 0xc0, 0xbb, 0xb4, 0xd3, 0x6b, 0x5a, 0xe9, 0x22, 0xe9, 0xd3, 0xcb, 0x2e, 0x73, 0x99, 0x6c,
-	0xb3, 0xa3, 0x55, 0xac, 0xd0, 0x97, 0x5c, 0xc6, 0x5c, 0x8f, 0xd8, 0x38, 0xa0, 0x36, 0xf6, 0x7d,
-	0x26, 0xb0, 0xa0, 0xcc, 0xe7, 0xaa, 0x7a, 0x33, 0x75, 0x09, 0x70, 0x88, 0xbb, 0x6a, 0xdb, 0x2c,
-	0x03, 0x7a, 0x1d, 0xb9, 0xbe, 0x92, 0x9b, 0x0e, 0xd9, 0xef, 0x11, 0x2e, 0xcc, 0x1d, 0xb8, 0x91,
-	0xd9, 0xe5, 0x01, 0xf3, 0x39, 0x41, 0xcf, 0xa0, 0x18, 0x8b, 0x6f, 0x6b, 0xcb, 0xda, 0xea, 0xb5,
-	0xaa, 0x69, 0x4d, 0x86, 0xb4, 0x62, 0x6d, 0xfd, 0xd2, 0xf1, 0x69, 0xa5, 0xe0, 0x28, 0x9d, 0xb9,
-	0x08, 0x77, 0xe4, 0xe0, 0x6d, 0x7f, 0xd7, 0x93, 0x78, 0x75, 0xcc, 0x49, 0xe2, 0x1a, 0x82, 0x9e,
-	0x57, 0x54, 0xe6, 0x6f, 0xa1, 0x44, 0x87, 0x0b, 0x92, 0x61, 0xa1, 0x6e, 0x45, 0xf3, 0x7f, 0x9f,
-	0x56, 0xee, 0xb9, 0x54, 0x44, 0xfe, 0x2d, 0xd6, 0xb5, 0x5b, 0x8c, 0x77, 0x19, 0x57, 0x3f, 0x1b,
-	0xbc, 0xbd, 0x67, 0x8b, 0xa3, 0x80, 0x70, 0x6b, 0xdb, 0x17, 0x4e, 0x76, 0x48, 0x0a, 0xf4, 0x82,
-	0xb5, 0x7b, 0x1e, 0xa9, 0xb5, 0x5a, 0xac, 0xe7, 0x8b, 0x04, 0xa8, 0xae, 0x80, 0x46, 0x8a, 0x0a,
-	0x68, 0x05, 0x4a, 0xdd, 0xe1, 0x42, 0x0c, 0xe4, 0x64, 0x37, 0xcd, 0x65, 0x30, 0xe4, 0x8c, 0x77,
-	0xd8, 0xa3, 0x6d, 0x2c, 0x58, 0xb8, 0xd3, 0xa1, 0x82, 0x78, 0x94, 0xa7, 0x2e, 0x35, 0xa8, 0x4c,
-	0xec, 0x50, 0x56, 0x06, 0xc0, 0x01, 0xf6, 0x6a, 0xed, 0x76, 0x48, 0x78, 0xf4, 0xf0, 0x2f, 0xae,
-	0x2e, 0x38, 0x43, 0x3b, 0xe6, 0x5d, 0x58, 0x94, 0x23, 0x52, 0xe5, 0x9b, 0x43, 0x2a, 0x5a, 0x9d,
-	0xc4, 0x61, 0x13, 0x96, 0xf2, 0xcb, 0x6a, 0xfc, 0x2d, 0x28, 0x52, 0xfe, 0x32, 0x20, 0xbe, 0x3c,
-	0xc2, 0x55, 0x47, 0xfd, 0xab, 0x7e, 0xba, 0x02, 0x97, 0xa5, 0x10, 0x7d, 0xd5, 0xa0, 0x18, 0xbf,
-	0x50, 0x64, 0x4d, 0x7b, 0xe9, 0xe3, 0x59, 0xd2, 0xed, 0xb9, 0xfb, 0x63, 0x1a, 0x73, 0xed, 0xe3,
-	0xcf, 0xbf, 0x5f, 0x2e, 0xac, 0x20, 0xd3, 0x4e, 0xfa, 0xcf, 0x16, 0x23, 0x21, 0x46, 0xdf, 0x34,
-	0x28, 0x65, 0xe2, 0x82, 0x1e, 0xcd, 0xb4, 0xcb, 0xcb, 0x9e, 0xbe, 0x79, 0x5e, 0x99, 0x82, 0xad,
-	0x4a, 0xd8, 0x75, 0xb4, 0x36, 0x0d, 0x36, 0x8d, 0x5c, 0xa3, 0x19, 0x21, 0x46, 0xd0, 0x99, 0x48,
-	0xcd, 0x01, 0x9d, 0x97, 0xcf, 0x39, 0xa0, 0x73, 0x93, 0x3b, 0x1f, 0x74, 0x1c, 0xe3, 0x06, 0x56,
-	0x88, 0x3f, 0x34, 0x40, 0xe3, 0x09, 0x45, 0x4f, 0x66, 0x22, 0x4c, 0x0c, 0xbe, 0xfe, 0xf4, 0xbf,
-	0xb4, 0xea, 0x0c, 0x5b, 0xf2, 0x0c, 0xf7, 0x91, 0x3d, 0xed, 0x0c, 0x07, 0x89, 0xbe, 0x71, 0x98,
-	0x12, 0x7f, 0xd7, 0xe0, 0xfa, 0xc8, 0x87, 0x80, 0xb6, 0x66, 0x92, 0xe4, 0x7f, 0x59, 0xfa, 0xe3,
-	0xf3, 0x0b, 0x15, 0xff, 0x43, 0xc9, 0x6f, 0xa1, 0xf5, 0x69, 0xfc, 0x29, 0x75, 0x83, 0x4b, 0x75,
-	0xfd, 0xf9, 0x71, 0xdf, 0xd0, 0x4e, 0xfa, 0x86, 0xf6, 0xa7, 0x6f, 0x68, 0x9f, 0x07, 0x46, 0xe1,
-	0x64, 0x60, 0x14, 0x7e, 0x0d, 0x8c, 0xc2, 0xfb, 0x8d, 0xa1, 0xfb, 0x6f, 0x7c, 0xe2, 0x87, 0xb3,
-	0x99, 0xf2, 0x2a, 0x6c, 0x16, 0xe5, 0xf5, 0xff, 0xe0, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x67,
-	0xb4, 0x4b, 0x70, 0x7d, 0x06, 0x00, 0x00,
+	// 610 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xdd, 0x6a, 0xd4, 0x40,
+	0x14, 0xde, 0xf8, 0xb3, 0xd8, 0x91, 0x82, 0x8c, 0xab, 0xd4, 0x28, 0xd9, 0x12, 0x6a, 0x29, 0x8b,
+	0x4d, 0x70, 0xc5, 0x2a, 0x0a, 0xda, 0x5d, 0x04, 0xe9, 0x85, 0xa8, 0xab, 0x58, 0xf0, 0x66, 0x99,
+	0xdd, 0x4c, 0xb3, 0x43, 0xb3, 0x99, 0x34, 0x33, 0xdb, 0xda, 0x5b, 0x9f, 0x40, 0x10, 0x5f, 0xc2,
+	0x4b, 0x1f, 0x42, 0x7a, 0x59, 0xf0, 0x46, 0xbc, 0xa8, 0xb2, 0xeb, 0x83, 0x48, 0x26, 0x93, 0x74,
+	0xd3, 0x24, 0x9b, 0xb4, 0x5e, 0xed, 0xec, 0x99, 0x73, 0xbe, 0xf3, 0x7d, 0x39, 0x3f, 0x03, 0x6a,
+	0x3e, 0xe3, 0x68, 0x9b, 0xb8, 0xb6, 0xb9, 0x33, 0xc2, 0xfe, 0xbe, 0xe1, 0xf9, 0x94, 0x53, 0xa8,
+	0x32, 0x8e, 0xb6, 0xc8, 0x60, 0xd4, 0x33, 0xe2, 0x43, 0xe4, 0xa7, 0xd6, 0x6c, 0x6a, 0x53, 0xe1,
+	0x66, 0x06, 0xa7, 0x30, 0x42, 0xbd, 0x65, 0x53, 0x6a, 0x3b, 0xd8, 0x44, 0x1e, 0x31, 0x91, 0xeb,
+	0x52, 0x8e, 0x38, 0xa1, 0x2e, 0x93, 0xb7, 0xd7, 0xe2, 0x2c, 0x1e, 0xf2, 0xd1, 0x50, 0x9a, 0xf5,
+	0x1a, 0x80, 0xaf, 0x83, 0xac, 0xaf, 0x84, 0xb1, 0x83, 0x77, 0x46, 0x98, 0x71, 0x7d, 0x13, 0x5c,
+	0x4d, 0x58, 0x99, 0x47, 0x5d, 0x86, 0xe1, 0x3a, 0xa8, 0x86, 0xc1, 0x0b, 0xca, 0xa2, 0xb2, 0x72,
+	0xb9, 0xa9, 0x1b, 0xf9, 0x24, 0x8d, 0x30, 0xb6, 0x7d, 0xe1, 0xe0, 0xa8, 0x5e, 0xe9, 0xc8, 0x38,
+	0xfd, 0x26, 0xb8, 0x21, 0x80, 0x37, 0xdc, 0x2d, 0x47, 0xd0, 0x6b, 0x23, 0x86, 0xa3, 0xac, 0x3e,
+	0x50, 0xb3, 0x2e, 0x65, 0xf2, 0xb7, 0x60, 0x9e, 0x4c, 0x5f, 0x08, 0x0e, 0x73, 0x6d, 0x23, 0xc0,
+	0xff, 0x75, 0x54, 0x5f, 0xb6, 0x09, 0x0f, 0xf2, 0xf7, 0xe9, 0xd0, 0xec, 0x53, 0x36, 0xa4, 0x4c,
+	0xfe, 0xac, 0x32, 0x6b, 0xdb, 0xe4, 0xfb, 0x1e, 0x66, 0xc6, 0x86, 0xcb, 0x3b, 0x49, 0x10, 0x7d,
+	0x11, 0x68, 0x22, 0xe7, 0x3b, 0xe4, 0x10, 0x0b, 0x71, 0xea, 0x6f, 0x0e, 0x08, 0xc7, 0x0e, 0x61,
+	0x3c, 0x62, 0xd5, 0x02, 0xf5, 0x5c, 0x0f, 0x49, 0x4d, 0x03, 0x60, 0x17, 0x39, 0x2d, 0xcb, 0xf2,
+	0x31, 0x0b, 0xbe, 0xcd, 0xf9, 0x95, 0xb9, 0xce, 0x94, 0x45, 0x5f, 0x06, 0x4b, 0x39, 0x10, 0x6f,
+	0xf6, 0x08, 0xef, 0x0f, 0xa2, 0x54, 0x4f, 0xc1, 0xed, 0x02, 0x3f, 0x99, 0xf0, 0x3a, 0xa8, 0x12,
+	0xf6, 0xd2, 0xc3, 0xae, 0xf8, 0x08, 0x97, 0x3a, 0xf2, 0x5f, 0xac, 0xe6, 0x19, 0x76, 0xb0, 0x9d,
+	0xa9, 0xe6, 0x85, 0x54, 0x93, 0xe5, 0x21, 0xc1, 0x1b, 0xe0, 0x8a, 0x15, 0xdd, 0x26, 0x35, 0xa5,
+	0xec, 0xb1, 0xb2, 0x34, 0x5c, 0xb6, 0xb2, 0x7c, 0xbf, 0xd9, 0xca, 0x9a, 0x5f, 0xe7, 0xc0, 0x45,
+	0x81, 0x00, 0xbf, 0x28, 0xa0, 0x1a, 0xf6, 0x16, 0x34, 0x66, 0xf5, 0x5f, 0xba, 0xad, 0x55, 0xb3,
+	0xb4, 0x7f, 0xc8, 0x46, 0x6f, 0x7c, 0xfc, 0xf1, 0xf7, 0xf3, 0xb9, 0x25, 0xa8, 0x9b, 0x91, 0xff,
+	0xf1, 0xe1, 0xc4, 0x3c, 0xc1, 0x6f, 0x0a, 0x98, 0x4f, 0x74, 0x2e, 0xbc, 0x5f, 0x98, 0x2e, 0x6b,
+	0x0c, 0xd4, 0xb5, 0xd3, 0x86, 0x49, 0xb2, 0x4d, 0x41, 0xf6, 0x0e, 0x6c, 0xcc, 0x22, 0x1b, 0x77,
+	0x7f, 0xb7, 0x17, 0x50, 0xfc, 0xae, 0x00, 0x98, 0xee, 0x36, 0xf8, 0xa8, 0x90, 0x42, 0xee, 0xbc,
+	0xa8, 0x8f, 0xcf, 0x14, 0x2b, 0x35, 0x3c, 0x10, 0x1a, 0xee, 0x42, 0x73, 0x96, 0x86, 0xdd, 0x28,
+	0xbe, 0xbb, 0x17, 0x33, 0xfe, 0xad, 0x80, 0x85, 0xbc, 0xb1, 0x81, 0xeb, 0x67, 0xa0, 0x94, 0xe8,
+	0x5f, 0xb5, 0xf5, 0x1f, 0x08, 0x52, 0xda, 0x13, 0x21, 0xed, 0x21, 0x5c, 0x3b, 0xa5, 0xb4, 0x2e,
+	0x0b, 0x45, 0x04, 0xa5, 0x4a, 0x8f, 0x4f, 0x89, 0x52, 0xe5, 0x2e, 0x83, 0x12, 0xa5, 0xca, 0x5f,
+	0x13, 0xe5, 0x4a, 0x15, 0x2f, 0x8c, 0x13, 0xa5, 0xca, 0xdb, 0x03, 0x25, 0x4a, 0x55, 0xb0, 0x6a,
+	0x4a, 0x94, 0xaa, 0x68, 0x09, 0x95, 0x2b, 0x55, 0x86, 0x34, 0x59, 0xaa, 0xf6, 0xf3, 0x83, 0xb1,
+	0xa6, 0x1c, 0x8e, 0x35, 0xe5, 0xcf, 0x58, 0x53, 0x3e, 0x4d, 0xb4, 0xca, 0xe1, 0x44, 0xab, 0xfc,
+	0x9c, 0x68, 0x95, 0xf7, 0xab, 0x53, 0xaf, 0x54, 0x1a, 0xfb, 0xc3, 0x31, 0xba, 0x78, 0xb0, 0x7a,
+	0x55, 0xf1, 0x48, 0xdf, 0xfb, 0x17, 0x00, 0x00, 0xff, 0xff, 0x57, 0x74, 0xb9, 0x7d, 0x23, 0x08,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -498,12 +582,14 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a list of InflationBase items.
 	InflationBase(ctx context.Context, in *QueryInflationBaseRequest, opts ...grpc.CallOption) (*QueryInflationBaseResponse, error)
-	// Queries a list of ModuleAccount items.
-	ModuleAccount(ctx context.Context, in *QueryModuleAccountRequest, opts ...grpc.CallOption) (*QueryModuleAccountResponse, error)
 	// Queries a list of ValidatorWhitelist items.
 	ValidatorWhitelist(ctx context.Context, in *QueryValidatorWhitelistRequest, opts ...grpc.CallOption) (*QueryValidatorWhitelistResponse, error)
 	// Queries a list of WhitelistSwitch items.
-	WhitelistSwitch(ctx context.Context, in *QueryWhitelistSwitchRequest, opts ...grpc.CallOption) (*QueryWhitelistSwitchResponse, error)
+	ValidatorWhitelistSwitch(ctx context.Context, in *QueryValidatorWhitelistSwitchRequest, opts ...grpc.CallOption) (*QueryValidatorWhitelistSwitchResponse, error)
+	// Queries a list of DelegatorWhitelist items.
+	DelegatorWhitelist(ctx context.Context, in *QueryDelegatorWhitelistRequest, opts ...grpc.CallOption) (*QueryDelegatorWhitelistResponse, error)
+	// Queries a list of DelegatorWhitelistSwitch items.
+	DelegatorWhitelistSwitch(ctx context.Context, in *QueryDelegatorWhitelistSwitchRequest, opts ...grpc.CallOption) (*QueryDelegatorWhitelistSwitchResponse, error)
 }
 
 type queryClient struct {
@@ -532,15 +618,6 @@ func (c *queryClient) InflationBase(ctx context.Context, in *QueryInflationBaseR
 	return out, nil
 }
 
-func (c *queryClient) ModuleAccount(ctx context.Context, in *QueryModuleAccountRequest, opts ...grpc.CallOption) (*QueryModuleAccountResponse, error) {
-	out := new(QueryModuleAccountResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Query/ModuleAccount", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *queryClient) ValidatorWhitelist(ctx context.Context, in *QueryValidatorWhitelistRequest, opts ...grpc.CallOption) (*QueryValidatorWhitelistResponse, error) {
 	out := new(QueryValidatorWhitelistResponse)
 	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Query/ValidatorWhitelist", in, out, opts...)
@@ -550,9 +627,27 @@ func (c *queryClient) ValidatorWhitelist(ctx context.Context, in *QueryValidator
 	return out, nil
 }
 
-func (c *queryClient) WhitelistSwitch(ctx context.Context, in *QueryWhitelistSwitchRequest, opts ...grpc.CallOption) (*QueryWhitelistSwitchResponse, error) {
-	out := new(QueryWhitelistSwitchResponse)
-	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Query/WhitelistSwitch", in, out, opts...)
+func (c *queryClient) ValidatorWhitelistSwitch(ctx context.Context, in *QueryValidatorWhitelistSwitchRequest, opts ...grpc.CallOption) (*QueryValidatorWhitelistSwitchResponse, error) {
+	out := new(QueryValidatorWhitelistSwitchResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Query/ValidatorWhitelistSwitch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) DelegatorWhitelist(ctx context.Context, in *QueryDelegatorWhitelistRequest, opts ...grpc.CallOption) (*QueryDelegatorWhitelistResponse, error) {
+	out := new(QueryDelegatorWhitelistResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Query/DelegatorWhitelist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) DelegatorWhitelistSwitch(ctx context.Context, in *QueryDelegatorWhitelistSwitchRequest, opts ...grpc.CallOption) (*QueryDelegatorWhitelistSwitchResponse, error) {
+	out := new(QueryDelegatorWhitelistSwitchResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.rstaking.Query/DelegatorWhitelistSwitch", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -565,12 +660,14 @@ type QueryServer interface {
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a list of InflationBase items.
 	InflationBase(context.Context, *QueryInflationBaseRequest) (*QueryInflationBaseResponse, error)
-	// Queries a list of ModuleAccount items.
-	ModuleAccount(context.Context, *QueryModuleAccountRequest) (*QueryModuleAccountResponse, error)
 	// Queries a list of ValidatorWhitelist items.
 	ValidatorWhitelist(context.Context, *QueryValidatorWhitelistRequest) (*QueryValidatorWhitelistResponse, error)
 	// Queries a list of WhitelistSwitch items.
-	WhitelistSwitch(context.Context, *QueryWhitelistSwitchRequest) (*QueryWhitelistSwitchResponse, error)
+	ValidatorWhitelistSwitch(context.Context, *QueryValidatorWhitelistSwitchRequest) (*QueryValidatorWhitelistSwitchResponse, error)
+	// Queries a list of DelegatorWhitelist items.
+	DelegatorWhitelist(context.Context, *QueryDelegatorWhitelistRequest) (*QueryDelegatorWhitelistResponse, error)
+	// Queries a list of DelegatorWhitelistSwitch items.
+	DelegatorWhitelistSwitch(context.Context, *QueryDelegatorWhitelistSwitchRequest) (*QueryDelegatorWhitelistSwitchResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -583,14 +680,17 @@ func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsReq
 func (*UnimplementedQueryServer) InflationBase(ctx context.Context, req *QueryInflationBaseRequest) (*QueryInflationBaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InflationBase not implemented")
 }
-func (*UnimplementedQueryServer) ModuleAccount(ctx context.Context, req *QueryModuleAccountRequest) (*QueryModuleAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ModuleAccount not implemented")
-}
 func (*UnimplementedQueryServer) ValidatorWhitelist(ctx context.Context, req *QueryValidatorWhitelistRequest) (*QueryValidatorWhitelistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidatorWhitelist not implemented")
 }
-func (*UnimplementedQueryServer) WhitelistSwitch(ctx context.Context, req *QueryWhitelistSwitchRequest) (*QueryWhitelistSwitchResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WhitelistSwitch not implemented")
+func (*UnimplementedQueryServer) ValidatorWhitelistSwitch(ctx context.Context, req *QueryValidatorWhitelistSwitchRequest) (*QueryValidatorWhitelistSwitchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidatorWhitelistSwitch not implemented")
+}
+func (*UnimplementedQueryServer) DelegatorWhitelist(ctx context.Context, req *QueryDelegatorWhitelistRequest) (*QueryDelegatorWhitelistResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelegatorWhitelist not implemented")
+}
+func (*UnimplementedQueryServer) DelegatorWhitelistSwitch(ctx context.Context, req *QueryDelegatorWhitelistSwitchRequest) (*QueryDelegatorWhitelistSwitchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelegatorWhitelistSwitch not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -633,24 +733,6 @@ func _Query_InflationBase_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_ModuleAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryModuleAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(QueryServer).ModuleAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stafihub.stafihub.rstaking.Query/ModuleAccount",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ModuleAccount(ctx, req.(*QueryModuleAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Query_ValidatorWhitelist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryValidatorWhitelistRequest)
 	if err := dec(in); err != nil {
@@ -669,20 +751,56 @@ func _Query_ValidatorWhitelist_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_WhitelistSwitch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryWhitelistSwitchRequest)
+func _Query_ValidatorWhitelistSwitch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryValidatorWhitelistSwitchRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).WhitelistSwitch(ctx, in)
+		return srv.(QueryServer).ValidatorWhitelistSwitch(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stafihub.stafihub.rstaking.Query/WhitelistSwitch",
+		FullMethod: "/stafihub.stafihub.rstaking.Query/ValidatorWhitelistSwitch",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).WhitelistSwitch(ctx, req.(*QueryWhitelistSwitchRequest))
+		return srv.(QueryServer).ValidatorWhitelistSwitch(ctx, req.(*QueryValidatorWhitelistSwitchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_DelegatorWhitelist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDelegatorWhitelistRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).DelegatorWhitelist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.rstaking.Query/DelegatorWhitelist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).DelegatorWhitelist(ctx, req.(*QueryDelegatorWhitelistRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_DelegatorWhitelistSwitch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryDelegatorWhitelistSwitchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).DelegatorWhitelistSwitch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.rstaking.Query/DelegatorWhitelistSwitch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).DelegatorWhitelistSwitch(ctx, req.(*QueryDelegatorWhitelistSwitchRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -700,16 +818,20 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_InflationBase_Handler,
 		},
 		{
-			MethodName: "ModuleAccount",
-			Handler:    _Query_ModuleAccount_Handler,
-		},
-		{
 			MethodName: "ValidatorWhitelist",
 			Handler:    _Query_ValidatorWhitelist_Handler,
 		},
 		{
-			MethodName: "WhitelistSwitch",
-			Handler:    _Query_WhitelistSwitch_Handler,
+			MethodName: "ValidatorWhitelistSwitch",
+			Handler:    _Query_ValidatorWhitelistSwitch_Handler,
+		},
+		{
+			MethodName: "DelegatorWhitelist",
+			Handler:    _Query_DelegatorWhitelist_Handler,
+		},
+		{
+			MethodName: "DelegatorWhitelistSwitch",
+			Handler:    _Query_DelegatorWhitelistSwitch_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -828,59 +950,6 @@ func (m *QueryInflationBaseResponse) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryModuleAccountRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryModuleAccountRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryModuleAccountRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *QueryModuleAccountResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryModuleAccountResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *QueryModuleAccountResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.ModuleAccount) > 0 {
-		i -= len(m.ModuleAccount)
-		copy(dAtA[i:], m.ModuleAccount)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.ModuleAccount)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *QueryValidatorWhitelistRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -936,7 +1005,7 @@ func (m *QueryValidatorWhitelistResponse) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWhitelistSwitchRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryValidatorWhitelistSwitchRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -946,12 +1015,12 @@ func (m *QueryWhitelistSwitchRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWhitelistSwitchRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryValidatorWhitelistSwitchRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWhitelistSwitchRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryValidatorWhitelistSwitchRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -959,7 +1028,7 @@ func (m *QueryWhitelistSwitchRequest) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryWhitelistSwitchResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryValidatorWhitelistSwitchResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -969,12 +1038,123 @@ func (m *QueryWhitelistSwitchResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryWhitelistSwitchResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryValidatorWhitelistSwitchResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryWhitelistSwitchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryValidatorWhitelistSwitchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.IsOpen {
+		i--
+		if m.IsOpen {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryDelegatorWhitelistRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryDelegatorWhitelistRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryDelegatorWhitelistRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryDelegatorWhitelistResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryDelegatorWhitelistResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryDelegatorWhitelistResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.DelegatorAddress) > 0 {
+		for iNdEx := len(m.DelegatorAddress) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.DelegatorAddress[iNdEx])
+			copy(dAtA[i:], m.DelegatorAddress[iNdEx])
+			i = encodeVarintQuery(dAtA, i, uint64(len(m.DelegatorAddress[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryDelegatorWhitelistSwitchRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryDelegatorWhitelistSwitchRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryDelegatorWhitelistSwitchRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryDelegatorWhitelistSwitchResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryDelegatorWhitelistSwitchResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryDelegatorWhitelistSwitchResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1043,28 +1223,6 @@ func (m *QueryInflationBaseResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryModuleAccountRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *QueryModuleAccountResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.ModuleAccount)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	return n
-}
-
 func (m *QueryValidatorWhitelistRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1089,7 +1247,7 @@ func (m *QueryValidatorWhitelistResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryWhitelistSwitchRequest) Size() (n int) {
+func (m *QueryValidatorWhitelistSwitchRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1098,7 +1256,52 @@ func (m *QueryWhitelistSwitchRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryWhitelistSwitchResponse) Size() (n int) {
+func (m *QueryValidatorWhitelistSwitchResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.IsOpen {
+		n += 2
+	}
+	return n
+}
+
+func (m *QueryDelegatorWhitelistRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryDelegatorWhitelistResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.DelegatorAddress) > 0 {
+		for _, s := range m.DelegatorAddress {
+			l = len(s)
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *QueryDelegatorWhitelistSwitchRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *QueryDelegatorWhitelistSwitchResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1383,138 +1586,6 @@ func (m *QueryInflationBaseResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryModuleAccountRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryModuleAccountRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryModuleAccountRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryModuleAccountResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryModuleAccountResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryModuleAccountResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ModuleAccount", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ModuleAccount = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *QueryValidatorWhitelistRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1647,7 +1718,7 @@ func (m *QueryValidatorWhitelistResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWhitelistSwitchRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryValidatorWhitelistSwitchRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1670,10 +1741,10 @@ func (m *QueryWhitelistSwitchRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWhitelistSwitchRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryValidatorWhitelistSwitchRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWhitelistSwitchRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryValidatorWhitelistSwitchRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1697,7 +1768,7 @@ func (m *QueryWhitelistSwitchRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryWhitelistSwitchResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryValidatorWhitelistSwitchResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1720,10 +1791,262 @@ func (m *QueryWhitelistSwitchResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryWhitelistSwitchResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryValidatorWhitelistSwitchResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryWhitelistSwitchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryValidatorWhitelistSwitchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsOpen", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsOpen = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryDelegatorWhitelistRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryDelegatorWhitelistResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DelegatorAddress", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DelegatorAddress = append(m.DelegatorAddress, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryDelegatorWhitelistSwitchRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistSwitchRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistSwitchRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryDelegatorWhitelistSwitchResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistSwitchResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryDelegatorWhitelistSwitchResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

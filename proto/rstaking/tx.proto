@@ -12,7 +12,7 @@ option go_package = "github.com/stafihub/stafihub/x/rstaking/types";
 service Msg {
   rpc SetInflationBase(MsgSetInflationBase) returns (MsgSetInflationBaseResponse);
   rpc AddValToWhitelist(MsgAddValToWhitelist) returns (MsgAddValToWhitelistResponse);
-  rpc ToggleWhitelistSwitch(MsgToggleWhitelistSwitch) returns (MsgToggleWhitelistSwitchResponse);
+  rpc ToggleValidatorWhitelistSwitch(MsgToggleValidatorWhitelistSwitch) returns (MsgToggleValidatorWhitelistSwitchResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc AddDelegatorToWhitelist(MsgAddDelegatorToWhitelist) returns (MsgAddDelegatorToWhitelistResponse);
   rpc ToggleDelegatorWhitelistSwitch(MsgToggleDelegatorWhitelistSwitch) returns (MsgToggleDelegatorWhitelistSwitchResponse);
@@ -35,11 +35,11 @@ message MsgAddValToWhitelist {
 message MsgAddValToWhitelistResponse {
 }
 
-message MsgToggleWhitelistSwitch {
+message MsgToggleValidatorWhitelistSwitch {
   string creator = 1;
 }
 
-message MsgToggleWhitelistSwitchResponse {
+message MsgToggleValidatorWhitelistSwitchResponse {
 }
 
 message MsgWithdraw {

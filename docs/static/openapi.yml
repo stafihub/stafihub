@@ -22497,18 +22497,20 @@ paths:
           format: uint64
       tags:
         - Query
-  /stafihub/stafihub/rstaking/inflation_base:
+  /stafihub/stafihub/rstaking/delegator_whitelist:
     get:
-      summary: Queries a list of InflationBase items.
-      operationId: StafihubStafihubRstakingInflationBase
+      summary: Queries a list of DelegatorWhitelist items.
+      operationId: StafihubStafihubRstakingDelegatorWhitelist
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              inflationBase:
-                type: string
+              delegatorAddress:
+                type: array
+                items:
+                  type: string
         default:
           description: An unexpected error response.
           schema:
@@ -22529,17 +22531,49 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/rstaking/module_account:
+  /stafihub/stafihub/rstaking/delegator_whitelist_switch:
     get:
-      summary: Queries a list of ModuleAccount items.
-      operationId: StafihubStafihubRstakingModuleAccount
+      summary: Queries a list of DelegatorWhitelistSwitch items.
+      operationId: StafihubStafihubRstakingDelegatorWhitelistSwitch
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              moduleAccount:
+              isOpen:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /stafihub/stafihub/rstaking/inflation_base:
+    get:
+      summary: Queries a list of InflationBase items.
+      operationId: StafihubStafihubRstakingInflationBase
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              inflationBase:
                 type: string
         default:
           description: An unexpected error response.
@@ -22631,10 +22665,10 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/rstaking/whitelist_switch:
+  /stafihub/stafihub/rstaking/validator_whitelist_switch:
     get:
       summary: Queries a list of WhitelistSwitch items.
-      operationId: StafihubStafihubRstakingWhitelistSwitch
+      operationId: StafihubStafihubRstakingValidatorWhitelistSwitch
       responses:
         '200':
           description: A successful response.
@@ -40073,22 +40107,29 @@ definitions:
     type: object
   stafihub.stafihub.rstaking.MsgToggleDelegatorWhitelistSwitchResponse:
     type: object
-  stafihub.stafihub.rstaking.MsgToggleWhitelistSwitchResponse:
+  stafihub.stafihub.rstaking.MsgToggleValidatorWhitelistSwitchResponse:
     type: object
   stafihub.stafihub.rstaking.MsgWithdrawResponse:
     type: object
   stafihub.stafihub.rstaking.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.rstaking.QueryDelegatorWhitelistResponse:
+    type: object
+    properties:
+      delegatorAddress:
+        type: array
+        items:
+          type: string
+  stafihub.stafihub.rstaking.QueryDelegatorWhitelistSwitchResponse:
+    type: object
+    properties:
+      isOpen:
+        type: boolean
   stafihub.stafihub.rstaking.QueryInflationBaseResponse:
     type: object
     properties:
       inflationBase:
-        type: string
-  stafihub.stafihub.rstaking.QueryModuleAccountResponse:
-    type: object
-    properties:
-      moduleAccount:
         type: string
   stafihub.stafihub.rstaking.QueryParamsResponse:
     type: object
@@ -40104,7 +40145,7 @@ definitions:
         type: array
         items:
           type: string
-  stafihub.stafihub.rstaking.QueryWhitelistSwitchResponse:
+  stafihub.stafihub.rstaking.QueryValidatorWhitelistSwitchResponse:
     type: object
     properties:
       isOpen:

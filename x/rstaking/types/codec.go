@@ -10,7 +10,7 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetInflationBase{}, "rstaking/SetInflationBase", nil)
 	cdc.RegisterConcrete(&MsgAddValToWhitelist{}, "rstaking/AddValToWhitelist", nil)
-	cdc.RegisterConcrete(&MsgToggleWhitelistSwitch{}, "rstaking/ToggleWhitelistSwitch", nil)
+	cdc.RegisterConcrete(&MsgToggleValidatorWhitelistSwitch{}, "rstaking/ToggleValidatorWhitelistSwitch", nil)
 	cdc.RegisterConcrete(&MsgWithdraw{}, "rstaking/Withdraw", nil)
 	cdc.RegisterConcrete(&MsgAddDelegatorToWhitelist{}, "rstaking/AddDelegatorToWhitelist", nil)
 	cdc.RegisterConcrete(&MsgToggleDelegatorWhitelistSwitch{}, "rstaking/ToggleDelegatorWhitelistSwitch", nil)
@@ -25,7 +25,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgAddValToWhitelist{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgToggleWhitelistSwitch{},
+		&MsgToggleValidatorWhitelistSwitch{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgWithdraw{},

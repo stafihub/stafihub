@@ -17,7 +17,7 @@ func (k Keeper) Hooks() Hooks { return Hooks{k} }
 
 // initialize validator distribution record
 func (h Hooks) AfterValidatorCreated(ctx sdk.Context, valAddr sdk.ValAddress) {
-	if h.k.GetWhitelistSwitch(ctx) && !h.k.HasValAddressInWhitelist(ctx, valAddr) {
+	if h.k.GetValidatorWhitelistSwitch(ctx) && !h.k.HasValAddressInWhitelist(ctx, valAddr) {
 		panic("validator not in whitelist")
 	}
 }

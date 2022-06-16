@@ -135,22 +135,22 @@ func (k Keeper) GetValAddressWhitelist(ctx sdk.Context) []string {
 	return valList
 }
 
-func (k Keeper) ToggleWhitelistSwitch(ctx sdk.Context) {
-	k.SetWhitelistSwitch(ctx, !k.GetWhitelistSwitch(ctx))
+func (k Keeper) ToggleValidatorWhitelistSwitch(ctx sdk.Context) {
+	k.SetValidatorWhitelistSwitch(ctx, !k.GetValidatorWhitelistSwitch(ctx))
 }
 
-func (k Keeper) SetWhitelistSwitch(ctx sdk.Context, isOpen bool) {
+func (k Keeper) SetValidatorWhitelistSwitch(ctx sdk.Context, isOpen bool) {
 	store := ctx.KVStore(k.storeKey)
 	state := types.SwitchStateClose
 	if isOpen {
 		state = types.SwitchStateOpen
 	}
-	store.Set(types.WhitelistSwitchKey, state)
+	store.Set(types.ValidatorWhitelistSwitchKey, state)
 }
 
-func (k Keeper) GetWhitelistSwitch(ctx sdk.Context) bool {
+func (k Keeper) GetValidatorWhitelistSwitch(ctx sdk.Context) bool {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.WhitelistSwitchKey)
+	bts := store.Get(types.ValidatorWhitelistSwitchKey)
 	if bts == nil {
 		return true
 	}

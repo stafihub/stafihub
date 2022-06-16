@@ -23,8 +23,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgAddValToWhitelist:
 			res, err := msgServer.AddValToWhitelist(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgToggleWhitelistSwitch:
-			res, err := msgServer.ToggleWhitelistSwitch(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgToggleValidatorWhitelistSwitch:
+			res, err := msgServer.ToggleValidatorWhitelistSwitch(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgWithdraw:
 			res, err := msgServer.Withdraw(sdk.WrapSDKContext(ctx), msg)

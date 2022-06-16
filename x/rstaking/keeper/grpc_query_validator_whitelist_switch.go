@@ -9,15 +9,15 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) WhitelistSwitch(goCtx context.Context, req *types.QueryWhitelistSwitchRequest) (*types.QueryWhitelistSwitchResponse, error) {
+func (k Keeper) ValidatorWhitelistSwitch(goCtx context.Context, req *types.QueryValidatorWhitelistSwitchRequest) (*types.QueryValidatorWhitelistSwitchResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	isOpen := k.GetWhitelistSwitch(ctx)
+	isOpen := k.GetValidatorWhitelistSwitch(ctx)
 
-	return &types.QueryWhitelistSwitchResponse{
+	return &types.QueryValidatorWhitelistSwitchResponse{
 		IsOpen: isOpen,
 	}, nil
 }

@@ -21,9 +21,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 		panic("mint denom not equal coinToBeBurned denom")
 	}
 
-	if genState.WhitelistSwitch {
+	if genState.ValidatorWhitelistSwitch {
 		if len(genState.GetValidatorWhitelist()) == 0 {
 			panic("val_address_white_list empty")
+		}
+	}
+	if genState.DelegatorWhitelistSwitch {
+		if len(genState.GetDelegatorWhitelist()) == 0 {
+			panic("delegator_address_white_list empty")
 		}
 	}
 
@@ -38,6 +43,17 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 		k.AddValAddressToWhitelist(ctx, valAddr)
 	}
 
+	for _, addr := range genState.GetDelegatorWhitelist() {
+		delAddr, err := sdk.AccAddressFromBech32(addr)
+		if err != nil {
+			panic(fmt.Sprintf("delAddress format err, %s", err))
+		}
+		if k.HasDelegatorAddressInWhitelist(ctx, delAddr) {
+			continue
+		}
+		k.AddDelegatorAddressToWhitelist(ctx, delAddr)
+	}
+
 	balance := k.GetBankKeeper().GetBalance(ctx, moduleAddress, params.MintDenom)
 
 	if balance.Amount.GT(sdk.ZeroInt()) {
@@ -50,7 +66,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper, 
 	if err != nil {
 		panic(err)
 	}
-	k.SetWhitelistSwitch(ctx, genState.WhitelistSwitch)
+	k.SetValidatorWhitelistSwitch(ctx, genState.ValidatorWhitelistSwitch)
+	k.SetDelegatorWhitelistSwitch(ctx, genState.DelegatorWhitelistSwitch)
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -67,7 +84,10 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper
 	balance := k.GetBankKeeper().GetBalance(ctx, moduleAddress, params.MintDenom)
 	genesis.CoinToBeBurned = balance
 	genesis.ValidatorWhitelist = k.GetValAddressWhitelist(ctx)
-	genesis.WhitelistSwitch = k.GetWhitelistSwitch(ctx)
+	genesis.ValidatorWhitelistSwitch = k.GetValidatorWhitelistSwitch(ctx)
+
+	genesis.DelegatorWhitelist = k.GetDelegatorAddressWhitelist(ctx)
+	genesis.DelegatorWhitelistSwitch = k.GetDelegatorWhitelistSwitch(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

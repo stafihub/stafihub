@@ -19,19 +19,24 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/rstaking/inflation_base";
 	}
 
-// Queries a list of ModuleAccount items.
-	rpc ModuleAccount(QueryModuleAccountRequest) returns (QueryModuleAccountResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/rstaking/module_account";
-	}
-
 // Queries a list of ValidatorWhitelist items.
 	rpc ValidatorWhitelist(QueryValidatorWhitelistRequest) returns (QueryValidatorWhitelistResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/rstaking/validator_whitelist";
 	}
 
 // Queries a list of WhitelistSwitch items.
-	rpc WhitelistSwitch(QueryWhitelistSwitchRequest) returns (QueryWhitelistSwitchResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/rstaking/whitelist_switch";
+	rpc ValidatorWhitelistSwitch(QueryValidatorWhitelistSwitchRequest) returns (QueryValidatorWhitelistSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rstaking/validator_whitelist_switch";
+	}
+
+// Queries a list of DelegatorWhitelist items.
+	rpc DelegatorWhitelist(QueryDelegatorWhitelistRequest) returns (QueryDelegatorWhitelistResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rstaking/delegator_whitelist";
+	}
+
+// Queries a list of DelegatorWhitelistSwitch items.
+	rpc DelegatorWhitelistSwitch(QueryDelegatorWhitelistSwitchRequest) returns (QueryDelegatorWhitelistSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/rstaking/delegator_whitelist_switch";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,13 +58,6 @@ message QueryInflationBaseResponse {
   string inflationBase = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
-message QueryModuleAccountRequest {
-}
-
-message QueryModuleAccountResponse {
-  string moduleAccount = 1;
-}
-
 message QueryValidatorWhitelistRequest {
 }
 
@@ -67,10 +65,24 @@ message QueryValidatorWhitelistResponse {
   repeated string valAddress = 1;
 }
 
-message QueryWhitelistSwitchRequest {
+message QueryValidatorWhitelistSwitchRequest {
 }
 
-message QueryWhitelistSwitchResponse {
+message QueryValidatorWhitelistSwitchResponse {
+	bool isOpen = 1;
+}
+
+message QueryDelegatorWhitelistRequest {
+}
+
+message QueryDelegatorWhitelistResponse {
+	repeated string delegatorAddress = 1;
+}
+
+message QueryDelegatorWhitelistSwitchRequest {
+}
+
+message QueryDelegatorWhitelistSwitchResponse {
 	bool isOpen = 1;
 }
 

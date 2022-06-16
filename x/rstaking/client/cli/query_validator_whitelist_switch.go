@@ -5,17 +5,16 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rstaking/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdModuleAccount() *cobra.Command {
+func CmdValidatorWhitelistSwitch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "module-account",
-		Short: "Query module account",
+		Use:   "validator-whitelist-switch",
+		Short: "Query validator whitelist switch",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
@@ -24,10 +23,16 @@ func CmdModuleAccount() *cobra.Command {
 				return err
 			}
 
-			res := types.QueryModuleAccountResponse{
-				ModuleAccount: authTypes.NewModuleAddress(types.ModuleName).String(),
+			queryClient := types.NewQueryClient(clientCtx)
+
+			params := &types.QueryValidatorWhitelistSwitchRequest{}
+
+			res, err := queryClient.ValidatorWhitelistSwitch(cmd.Context(), params)
+			if err != nil {
+				return err
 			}
-			return clientCtx.PrintProto(&res)
+
+			return clientCtx.PrintProto(res)
 		},
 	}
 

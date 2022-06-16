@@ -11,18 +11,18 @@ import (
 func TestMsgToggleWhitelistSwitch_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgToggleWhitelistSwitch
+		msg  MsgToggleValidatorWhitelistSwitch
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgToggleWhitelistSwitch{
+			msg: MsgToggleValidatorWhitelistSwitch{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgToggleWhitelistSwitch{
+			msg: MsgToggleValidatorWhitelistSwitch{
 				Creator: sample.AccAddress(),
 			},
 		},
