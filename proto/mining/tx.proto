@@ -141,6 +141,7 @@ message MsgAddRewardToken {
   string creator = 1;
   string denom = 2;
   string minTotalRewardAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string minRewardPerSecond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message MsgAddRewardTokenResponse {

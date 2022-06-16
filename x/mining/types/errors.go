@@ -33,4 +33,5 @@ var (
 	ErrStakeItemNotEnable                      = sdkerrors.Register(ModuleName, 1124, "stake item not enable")
 	ErrStakeItemEraSecondExceedLimit           = sdkerrors.Register(ModuleName, 1125, "stake item exceed limit")
 	ErrStakeItemPowerRewardRateExceedLimit     = sdkerrors.Register(ModuleName, 1126, "stake item power reward rate exceed limit")
+	ErrRewardPerSecondLessThanLimit            = sdkerrors.Register(ModuleName, 1127, "reward per second is less than limit")
 )

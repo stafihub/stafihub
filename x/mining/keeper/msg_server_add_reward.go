@@ -56,6 +56,9 @@ func (k msgServer) AddReward(goCtx context.Context, msg *types.MsgAddReward) (*t
 		}
 
 		if msg.RewardPerSecond.IsPositive() {
+			if msg.RewardPerSecond.LT(rewardToken.MinRewardPerSecond) {
+				return nil, types.ErrRewardPerSecondLessThanLimit
+			}
 			willUseRewardPool.RewardPerSecond = msg.RewardPerSecond
 		}
 	} else {
