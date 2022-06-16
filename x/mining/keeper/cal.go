@@ -59,6 +59,7 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 		if rewardAmount.IsPositive() {
 			rewardCoins = rewardCoins.Add(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardAmount))
 			willUseRewardInfo.ClaimedAmount = willUseRewardInfo.ClaimedAmount.Add(rewardAmount)
+			rewardPool.TotalClaimedAmount = rewardPool.TotalClaimedAmount.Add(rewardAmount)
 		}
 	}
 	return rewardCoins

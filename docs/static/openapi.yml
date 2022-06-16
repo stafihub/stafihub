@@ -20936,6 +20936,10 @@ paths:
                         lastRewardTimestamp:
                           type: string
                           format: uint64
+                        creator:
+                          type: string
+                        totalClaimedAmount:
+                          type: string
                   totalStakedAmount:
                     type: string
                     title: total (staked) balance of staked token
@@ -21016,6 +21020,10 @@ paths:
                           lastRewardTimestamp:
                             type: string
                             format: uint64
+                          creator:
+                            type: string
+                          totalClaimedAmount:
+                            type: string
                     totalStakedAmount:
                       type: string
                       title: total (staked) balance of staked token
@@ -38409,6 +38417,8 @@ definitions:
     type: object
   stafihub.stafihub.mining.MsgWithdrawResponse:
     type: object
+  stafihub.stafihub.mining.MsgWithdrawRewardTokenResponse:
+    type: object
   stafihub.stafihub.mining.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -38515,6 +38525,10 @@ definitions:
                 lastRewardTimestamp:
                   type: string
                   format: uint64
+                creator:
+                  type: string
+                totalClaimedAmount:
+                  type: string
           totalStakedAmount:
             type: string
             title: total (staked) balance of staked token
@@ -38562,6 +38576,10 @@ definitions:
                   lastRewardTimestamp:
                     type: string
                     format: uint64
+                  creator:
+                    type: string
+                  totalClaimedAmount:
+                    type: string
             totalStakedAmount:
               type: string
               title: total (staked) balance of staked token
@@ -38704,6 +38722,10 @@ definitions:
       lastRewardTimestamp:
         type: string
         format: uint64
+      creator:
+        type: string
+      totalClaimedAmount:
+        type: string
   stafihub.stafihub.mining.RewardToken:
     type: object
     properties:
@@ -38763,6 +38785,10 @@ definitions:
             lastRewardTimestamp:
               type: string
               format: uint64
+            creator:
+              type: string
+            totalClaimedAmount:
+              type: string
       totalStakedAmount:
         type: string
         title: total (staked) balance of staked token

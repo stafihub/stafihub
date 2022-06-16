@@ -51,6 +51,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdRmRewardToken())
 	cmd.AddCommand(CmdRmStakeToken())
 	cmd.AddCommand(CmdSetStakeItemLimit())
+	cmd.AddCommand(CmdWithdrawRewardToken())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

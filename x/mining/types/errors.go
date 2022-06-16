@@ -34,4 +34,7 @@ var (
 	ErrStakeItemEraSecondExceedLimit           = sdkerrors.Register(ModuleName, 1125, "stake item exceed limit")
 	ErrStakeItemPowerRewardRateExceedLimit     = sdkerrors.Register(ModuleName, 1126, "stake item power reward rate exceed limit")
 	ErrRewardPerSecondLessThanLimit            = sdkerrors.Register(ModuleName, 1127, "reward per second is less than limit")
+	ErrUpdateRewardPoolPermissionDeny          = sdkerrors.Register(ModuleName, 1128, "update reward pool permisson deny")
+	ErrWithdrawRewardTokenPermissionDeny       = sdkerrors.Register(ModuleName, 1129, "withdraw reward token permisson deny")
+	ErrWithdrawRewardTokenAmountTooLarge       = sdkerrors.Register(ModuleName, 1130, "withdraw reward token amount too large")
 )

@@ -5,14 +5,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/mining/types"
-	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) UpdateRewardPool(goCtx context.Context, msg *types.MsgUpdateRewardPool) (*types.MsgUpdateRewardPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
-		return nil, sudotypes.ErrCreatorNotAdmin
-	}
 
 	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
 	if !found {
@@ -28,6 +24,9 @@ func (k msgServer) UpdateRewardPool(goCtx context.Context, msg *types.MsgUpdateR
 	}
 	if willUseRewardPool == nil {
 		return nil, types.ErrRewardPoolNotExist
+	}
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) && willUseRewardPool.Creator != msg.Creator {
+		return nil, types.ErrUpdateRewardPoolPermissionDeny
 	}
 
 	// check minRewardPerSecond
