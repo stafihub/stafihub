@@ -19,6 +19,7 @@ func (k msgServer) UpdateRewardPool(goCtx context.Context, msg *types.MsgUpdateR
 		return nil, types.ErrStakePoolNotExist
 	}
 
+	// find reward pool
 	var willUseRewardPool *types.RewardPool
 	for _, rewardPool := range stakePool.RewardPools {
 		if rewardPool.Index == msg.RewardPoolIndex {
@@ -27,6 +28,15 @@ func (k msgServer) UpdateRewardPool(goCtx context.Context, msg *types.MsgUpdateR
 	}
 	if willUseRewardPool == nil {
 		return nil, types.ErrRewardPoolNotExist
+	}
+
+	// check minRewardPerSecond
+	rewardToken, found := k.Keeper.GetRewardToken(ctx, willUseRewardPool.RewardTokenDenom)
+	if !found {
+		return nil, types.ErrRewardTokenNotSupport
+	}
+	if msg.RewardPerSecond.LT(rewardToken.MinRewardPerSecond) {
+		return nil, types.ErrRewardPerSecondLessThanLimit
 	}
 
 	willUseRewardPool.RewardPerSecond = msg.RewardPerSecond
