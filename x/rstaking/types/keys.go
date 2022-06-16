@@ -20,9 +20,11 @@ const (
 )
 
 var (
-	ValAddressStoreKeyPrefix = []byte{0x00}
-	InflationBaseKey         = []byte{0x01}
-	WhitelistSwitchKey       = []byte{0x02}
+	ValAddressStoreKeyPrefix       = []byte{0x00}
+	InflationBaseKey               = []byte{0x01}
+	WhitelistSwitchKey             = []byte{0x02}
+	DelegatorAddressStoreKeyPrefix = []byte{0x03}
+	DelegatorWhitelistSwitchKey    = []byte{0x04}
 )
 
 var (
@@ -36,4 +38,8 @@ func KeyPrefix(p string) []byte {
 
 func ValAddressStoreKey(addr sdk.ValAddress) []byte {
 	return append(ValAddressStoreKeyPrefix, addr.Bytes()...)
+}
+
+func DelegatorAddressStoreKey(addr sdk.AccAddress) []byte {
+	return append(DelegatorAddressStoreKeyPrefix, addr.Bytes()...)
 }

@@ -156,3 +156,52 @@ func (k Keeper) GetWhitelistSwitch(ctx sdk.Context) bool {
 	}
 	return bytes.Equal(bts, types.SwitchStateOpen)
 }
+
+func (k Keeper) AddDelegatorAddressToWhitelist(ctx sdk.Context, delegatorAddress sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.DelegatorAddressStoreKey(delegatorAddress), []byte{})
+}
+
+func (k Keeper) HasDelegatorAddressInWhitelist(ctx sdk.Context, delegatorAddress sdk.AccAddress) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.DelegatorAddressStoreKey(delegatorAddress))
+}
+
+func (k Keeper) GetDelegatorAddressWhitelist(ctx sdk.Context) []string {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.DelegatorAddressStoreKeyPrefix)
+	defer iterator.Close()
+
+	valList := make([]string, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		if len(key) <= 1 {
+			continue
+		}
+
+		valList = append(valList, sdk.ValAddress(key[1:]).String())
+	}
+	return valList
+}
+
+func (k Keeper) ToggleDelegatorWhitelistSwitch(ctx sdk.Context) {
+	k.SetDelegatorWhitelistSwitch(ctx, !k.GetDelegatorWhitelistSwitch(ctx))
+}
+
+func (k Keeper) SetDelegatorWhitelistSwitch(ctx sdk.Context, isOpen bool) {
+	store := ctx.KVStore(k.storeKey)
+	state := types.SwitchStateClose
+	if isOpen {
+		state = types.SwitchStateOpen
+	}
+	store.Set(types.DelegatorWhitelistSwitchKey, state)
+}
+
+func (k Keeper) GetDelegatorWhitelistSwitch(ctx sdk.Context) bool {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.DelegatorWhitelistSwitchKey)
+	if bts == nil {
+		return true
+	}
+	return bytes.Equal(bts, types.SwitchStateOpen)
+}

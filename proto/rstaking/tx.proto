@@ -14,6 +14,8 @@ service Msg {
   rpc AddValToWhitelist(MsgAddValToWhitelist) returns (MsgAddValToWhitelistResponse);
   rpc ToggleWhitelistSwitch(MsgToggleWhitelistSwitch) returns (MsgToggleWhitelistSwitchResponse);
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
+  rpc AddDelegatorToWhitelist(MsgAddDelegatorToWhitelist) returns (MsgAddDelegatorToWhitelistResponse);
+  rpc ToggleDelegatorWhitelistSwitch(MsgToggleDelegatorWhitelistSwitch) returns (MsgToggleDelegatorWhitelistSwitchResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -47,6 +49,21 @@ message MsgWithdraw {
 }
 
 message MsgWithdrawResponse {
+}
+
+message MsgAddDelegatorToWhitelist {
+  string creator = 1;
+  string delAddress = 2;
+}
+
+message MsgAddDelegatorToWhitelistResponse {
+}
+
+message MsgToggleDelegatorWhitelistSwitch {
+  string creator = 1;
+}
+
+message MsgToggleDelegatorWhitelistSwitchResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

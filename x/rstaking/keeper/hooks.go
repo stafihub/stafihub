@@ -27,6 +27,9 @@ func (h Hooks) AfterValidatorRemoved(ctx sdk.Context, _ sdk.ConsAddress, valAddr
 
 // increment period
 func (h Hooks) BeforeDelegationCreated(ctx sdk.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress) {
+	if h.k.GetDelegatorWhitelistSwitch(ctx) && !h.k.HasDelegatorAddressInWhitelist(ctx, delAddr) {
+		panic("delegator not in whitelist")
+	}
 }
 
 // withdraw delegation rewards (which also increments period)

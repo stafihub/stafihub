@@ -40059,9 +40059,13 @@ definitions:
               type: string
             totalClaimedAmount:
               type: string
+  stafihub.stafihub.rstaking.MsgAddDelegatorToWhitelistResponse:
+    type: object
   stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse:
     type: object
   stafihub.stafihub.rstaking.MsgSetInflationBaseResponse:
+    type: object
+  stafihub.stafihub.rstaking.MsgToggleDelegatorWhitelistSwitchResponse:
     type: object
   stafihub.stafihub.rstaking.MsgToggleWhitelistSwitchResponse:
     type: object
