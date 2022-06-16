@@ -11,11 +11,12 @@ const TypeMsgAddRewardToken = "add_reward_token"
 
 var _ sdk.Msg = &MsgAddRewardToken{}
 
-func NewMsgAddRewardToken(creator string, denom string, minTotalRewardAmount sdk.Int) *MsgAddRewardToken {
+func NewMsgAddRewardToken(creator string, denom string, minTotalRewardAmount, minRewardPerSecond sdk.Int) *MsgAddRewardToken {
 	return &MsgAddRewardToken{
 		Creator:              creator,
 		Denom:                denom,
 		MinTotalRewardAmount: minTotalRewardAmount,
+		MinRewardPerSecond:   minRewardPerSecond,
 	}
 }
 

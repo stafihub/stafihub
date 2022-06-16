@@ -18,6 +18,7 @@ func (k msgServer) AddRewardToken(goCtx context.Context, msg *types.MsgAddReward
 	rewardToken := types.RewardToken{
 		RewardTokenDenom:     msg.Denom,
 		MinTotalRewardAmount: msg.MinTotalRewardAmount,
+		MinRewardPerSecond:   msg.MinRewardPerSecond,
 	}
 
 	k.Keeper.AddRewardToken(ctx, &rewardToken)

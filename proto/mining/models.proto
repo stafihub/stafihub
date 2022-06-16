@@ -54,6 +54,7 @@ message UserRewardInfo {
 message RewardToken {
   string rewardTokenDenom = 1;
   string minTotalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string minRewardPerSecond = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message StakeItem {

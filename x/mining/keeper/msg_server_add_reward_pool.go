@@ -46,6 +46,9 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 	if msg.TotalRewardAmount.LT(rewardToken.MinTotalRewardAmount) {
 		return nil, types.ErrTotalRewardAmountLessThanLimit
 	}
+	if msg.RewardPerSecond.LT(rewardToken.MinRewardPerSecond) {
+		return nil, types.ErrRewardPerSecondLessThanLimit
+	}
 
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 

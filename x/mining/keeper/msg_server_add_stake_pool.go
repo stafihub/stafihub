@@ -45,6 +45,9 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		if rewardPool.TotalRewardAmount.LT(rewardToken.MinTotalRewardAmount) {
 			return nil, types.ErrTotalRewardAmountLessThanLimit
 		}
+		if rewardPool.RewardPerSecond.LT(rewardToken.MinRewardPerSecond) {
+			return nil, types.ErrRewardPerSecondLessThanLimit
+		}
 
 		willUseLastRewardTimestamp := rewardPool.StartTimestamp
 		if rewardPool.StartTimestamp < curBlockTime {

@@ -21181,6 +21181,8 @@ paths:
                       type: string
                     minTotalRewardAmount:
                       type: string
+                    minRewardPerSecond:
+                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -39134,6 +39136,8 @@ definitions:
               type: string
             minTotalRewardAmount:
               type: string
+            minRewardPerSecond:
+              type: string
   stafihub.stafihub.mining.QueryStakeItemListResponse:
     type: object
     properties:
@@ -39387,6 +39391,8 @@ definitions:
       rewardTokenDenom:
         type: string
       minTotalRewardAmount:
+        type: string
+      minRewardPerSecond:
         type: string
   stafihub.stafihub.mining.StakeItem:
     type: object
