@@ -30,6 +30,7 @@ service Msg {
   rpc RmRewardToken(MsgRmRewardToken) returns (MsgRmRewardTokenResponse);
   rpc RmStakeToken(MsgRmStakeToken) returns (MsgRmStakeTokenResponse);
   rpc SetStakeItemLimit(MsgSetStakeItemLimit) returns (MsgSetStakeItemLimitResponse);
+  rpc WithdrawRewardToken(MsgWithdrawRewardToken) returns (MsgWithdrawRewardTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -240,6 +241,16 @@ message MsgSetStakeItemLimit {
 }
 
 message MsgSetStakeItemLimitResponse {
+}
+
+message MsgWithdrawRewardToken {
+  string creator = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 rewardPoolIndex = 3;
+  string withdrawAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgWithdrawRewardTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

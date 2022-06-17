@@ -26,6 +26,8 @@ message RewardPool {
   uint64 startTimestamp = 6;
   string rewardPerPower = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   uint64 lastRewardTimestamp = 8;
+  string creator = 9;
+  string totalClaimedAmount = 10 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
 message UserStakeRecord {

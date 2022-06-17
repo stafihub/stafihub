@@ -72,6 +72,8 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		StartTimestamp:      willUseLastRewardTimestamp,
 		RewardPerPower:      sdk.ZeroInt(),
 		LastRewardTimestamp: willUseLastRewardTimestamp,
+		Creator:             msg.Creator,
+		TotalClaimedAmount:  sdk.ZeroInt(),
 	})
 
 	k.Keeper.SetStakePool(ctx, stakePool)
