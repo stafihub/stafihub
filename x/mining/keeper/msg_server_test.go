@@ -1163,6 +1163,11 @@ func TestClaimRewardSuccess(t *testing.T) {
 	require.EqualValues(t, len(rspStakeRecord.StakeRecord.UserRewardInfos), 1)
 	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[0].ClaimedAmount, sdk.NewInt(199))
 
+	stakePool, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.True(t, found)
+
+	require.EqualValues(t, stakePool.RewardPools[0].TotalClaimedAmount, sdk.NewInt(199))
+
 }
 
 func TestWithdrawSuccess(t *testing.T) {
@@ -1323,6 +1328,11 @@ func TestWithdrawSuccess(t *testing.T) {
 
 	require.EqualValues(t, len(rspStakeRecord.StakeRecord.UserRewardInfos), 1)
 	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[0].ClaimedAmount, sdk.NewInt(399))
+
+	stakePool, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.True(t, found)
+
+	require.EqualValues(t, stakePool.RewardPools[0].TotalClaimedAmount, sdk.NewInt(399))
 }
 
 func TestClaimMultiRewardSuccess(t *testing.T) {
@@ -1495,4 +1505,9 @@ func TestClaimMultiRewardSuccess(t *testing.T) {
 	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[0].ClaimedAmount, sdk.NewInt(199))
 	require.EqualValues(t, rspStakeRecord.StakeRecord.UserRewardInfos[1].ClaimedAmount, sdk.NewInt(49))
 
+	stakePool, found := miningKeeper.GetStakePool(sdkCtx, 0)
+	require.True(t, found)
+
+	require.EqualValues(t, stakePool.RewardPools[0].TotalClaimedAmount, sdk.NewInt(199))
+	require.EqualValues(t, stakePool.RewardPools[1].TotalClaimedAmount, sdk.NewInt(49))
 }

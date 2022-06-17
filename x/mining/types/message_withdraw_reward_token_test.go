@@ -3,6 +3,7 @@ package types
 import (
 	"testing"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stretchr/testify/require"
@@ -17,13 +18,15 @@ func TestMsgWithdrawRewardToken_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgWithdrawRewardToken{
-				Creator: "invalid_address",
+				Creator:        "invalid_address",
+				WithdrawAmount: sdk.NewInt(1),
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgWithdrawRewardToken{
-				Creator: sample.AccAddress(),
+				Creator:        sample.AccAddress(),
+				WithdrawAmount: sdk.NewInt(1),
 			},
 		},
 	}
