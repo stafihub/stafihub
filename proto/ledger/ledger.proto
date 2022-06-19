@@ -148,5 +148,4 @@ message RParams {
     int32 offset = 4;
     uint32 bondingDuration = 5;
     string leastBond = 6;
-    repeated string validators = 7;
 }

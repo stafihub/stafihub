@@ -134,7 +134,6 @@ message MsgSetRParams {
   int32 offset = 5;
   uint32 bondingDuration = 6;
   string leastBond = 7;
-  repeated string validators = 8;
 }
 
 message MsgSetRParamsResponse {

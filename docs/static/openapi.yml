@@ -20399,10 +20399,6 @@ paths:
                     format: int64
                   leastBond:
                     type: string
-                  validators:
-                    type: array
-                    items:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -38844,10 +38840,6 @@ definitions:
             format: int64
           leastBond:
             type: string
-          validators:
-            type: array
-            items:
-              type: string
   stafihub.stafihub.ledger.QueryGetSignatureResponse:
     type: object
     properties:
@@ -39006,10 +38998,6 @@ definitions:
         format: int64
       leastBond:
         type: string
-      validators:
-        type: array
-        items:
-          type: string
   stafihub.stafihub.ledger.Signature:
     type: object
     properties:

@@ -285,9 +285,9 @@ func CmdSetUnbondCommission() *cobra.Command {
 
 func CmdSetRParams() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-r-params [denom] [gas-price] [era-seconds] [offset] [bonding-duration] [least-bond] [validators]",
+		Use:   "set-r-params [denom] [gas-price] [era-seconds] [offset] [bonding-duration] [least-bond]",
 		Short: "Broadcast message set common params of rtoken relayers",
-		Args:  cobra.ExactArgs(7),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argGasPrice := args[1]
@@ -306,7 +306,6 @@ func CmdSetRParams() *cobra.Command {
 				return err
 			}
 			argLeastBond := args[5]
-			argValidators := strings.Split(args[6], ":")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -321,7 +320,6 @@ func CmdSetRParams() *cobra.Command {
 				int32(argOffset),
 				uint32(argBondingDuration),
 				argLeastBond,
-				argValidators,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
