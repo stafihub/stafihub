@@ -30,7 +30,7 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 		return types.ErrCycleVersionNotMatch
 	}
 
-	latestVotedCycle := k.GetLatestVotedCycle(ctx, p.Denom,p.PoolAddress)
+	latestVotedCycle := k.GetLatestVotedCycle(ctx, p.Denom, p.PoolAddress)
 	if !(p.Cycle.Version > latestVotedCycle.Version || (p.Cycle.Version == latestVotedCycle.Version && p.Cycle.Number > latestVotedCycle.Number)) {
 		return types.ErrCycleBehindLatestCycle
 	}

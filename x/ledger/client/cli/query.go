@@ -70,7 +70,7 @@ func CmdBondedPoolsByDenom() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -104,7 +104,7 @@ func CmdGetPoolDetail() *cobra.Command {
 			reqDenom := args[0]
 			reqPool := args[1]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -137,12 +137,10 @@ func CmdGetChainEra() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
-
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
-
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryGetChainEraRequest{
@@ -171,7 +169,7 @@ func CmdGetCurrentEraSnapshot() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -203,7 +201,7 @@ func CmdGetProtocolFeeReceiver() *cobra.Command {
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -233,7 +231,7 @@ func CmdGetStakingRewardCommission() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -266,7 +264,7 @@ func CmdGetUnbondRelayFee() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -297,7 +295,7 @@ func CmdGetUnbondCommission() *cobra.Command {
 		Short: "Query getUnbondCommission",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -329,7 +327,7 @@ func CmdGetEraUnbondLimit() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -364,7 +362,7 @@ func CmdGetBondPipeline() *cobra.Command {
 			reqDenom := args[0]
 			reqPool := args[1]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -401,7 +399,7 @@ func CmdGetEraSnapshot() *cobra.Command {
 				return err
 			}
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -434,7 +432,7 @@ func CmdGetSnapshot() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqShotId := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -470,7 +468,7 @@ func CmdGetTotalExpectedActive() *cobra.Command {
 				return err
 			}
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -505,7 +503,7 @@ func CmdGetBondRecord() *cobra.Command {
 			reqDenom := args[0]
 			reqTxhash := args[1]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -548,7 +546,7 @@ func CmdGetSignature() *cobra.Command {
 
 			reqPropId := args[4]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
@@ -584,7 +582,7 @@ func CmdGetRParams() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

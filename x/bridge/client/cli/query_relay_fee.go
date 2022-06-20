@@ -21,7 +21,7 @@ func CmdRelayFee() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

@@ -20,7 +20,7 @@ func CmdUserActs() *cobra.Command {
 			reqAddress := args[0]
 			reqDenom := args[1]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

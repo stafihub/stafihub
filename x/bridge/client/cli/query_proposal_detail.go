@@ -29,7 +29,7 @@ func CmdProposalDetail() *cobra.Command {
 			reqAmount := args[3]
 			reqReceiver := args[4]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

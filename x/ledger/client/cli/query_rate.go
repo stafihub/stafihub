@@ -22,7 +22,10 @@ func CmdListExchangeRate() *cobra.Command {
 		Use:   "exchange-rate-list",
 		Short: "List all ExchangeRate",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 
@@ -49,7 +52,10 @@ func CmdShowExchangeRate() *cobra.Command {
 		Short: "Show ExchangeRate",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 
@@ -84,7 +90,10 @@ func CmdShowEraExchangeRate() *cobra.Command {
 				return err
 			}
 
-			clientCtx := client.GetClientContextFromCmd(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 
@@ -115,7 +124,7 @@ func CmdEraExchangeRatesByDenom() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
