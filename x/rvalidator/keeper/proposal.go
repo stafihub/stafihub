@@ -10,12 +10,14 @@ import (
 func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.UpdateRValidatorProposal) error {
 
 	oldVal := types.RValidator{
-		Denom:   p.Denom,
-		Address: p.OldAddress,
+		Denom:       p.Denom,
+		PoolAddress: p.PoolAddress,
+		ValAddress:  p.OldAddress,
 	}
 	newVal := types.RValidator{
-		Denom:   p.Denom,
-		Address: p.NewAddress,
+		Denom:       p.Denom,
+		PoolAddress: p.PoolAddress,
+		ValAddress:  p.NewAddress,
 	}
 	if !k.HasSelectedRValidator(ctx, &oldVal) {
 		return types.ErrRValidatorNotExist
@@ -28,7 +30,7 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 		return types.ErrCycleVersionNotMatch
 	}
 
-	latestVotedCycle := k.GetLatestVotedCycle(ctx, p.Denom)
+	latestVotedCycle := k.GetLatestVotedCycle(ctx, p.Denom,p.PoolAddress)
 	if !(p.Cycle.Version > latestVotedCycle.Version || (p.Cycle.Version == latestVotedCycle.Version && p.Cycle.Number > latestVotedCycle.Number)) {
 		return types.ErrCycleBehindLatestCycle
 	}
@@ -41,6 +43,7 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 		sdk.NewEvent(
 			types.EventTypeUpdateRValidator,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
+			sdk.NewAttribute(types.AttributeKeyPoolAddress, p.PoolAddress),
 			sdk.NewAttribute(types.AttributeKeyOldAddress, p.OldAddress),
 			sdk.NewAttribute(types.AttributeKeyNewAddress, p.NewAddress),
 			sdk.NewAttribute(types.AttributeKeyCycleVersion, fmt.Sprintf("%d", p.Cycle.Version)),

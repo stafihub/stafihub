@@ -19,12 +19,13 @@ func init() {
 	rvotetypes.RegisterProposalTypeCodec(&UpdateRValidatorProposal{}, "rvalidator/UpdateRValidator")
 }
 
-func NewUpdateRValidatorProposal(creator string, denom string, oldAddress string, newAddress string, cycle *Cycle) *UpdateRValidatorProposal {
+func NewUpdateRValidatorProposal(creator string, denom string, poolAddress, oldAddress string, newAddress string, cycle *Cycle) *UpdateRValidatorProposal {
 	msg := UpdateRValidatorProposal{
-		Denom:      denom,
-		OldAddress: oldAddress,
-		NewAddress: newAddress,
-		Cycle:      cycle,
+		Denom:       denom,
+		PoolAddress: poolAddress,
+		OldAddress:  oldAddress,
+		NewAddress:  newAddress,
+		Cycle:       cycle,
 	}
 	msg.setPropId()
 

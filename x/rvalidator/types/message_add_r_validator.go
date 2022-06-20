@@ -11,11 +11,12 @@ const TypeMsgAddRValidator = "add_r_validator"
 
 var _ sdk.Msg = &MsgAddRValidator{}
 
-func NewMsgAddRValidator(creator string, denom string, addressList []string) *MsgAddRValidator {
+func NewMsgAddRValidator(creator string, denom, poolAddress string, addressList []string) *MsgAddRValidator {
 	return &MsgAddRValidator{
-		Creator:     creator,
-		Denom:       denom,
-		AddressList: addressList,
+		Creator:        creator,
+		Denom:          denom,
+		PoolAddress:    poolAddress,
+		ValAddressList: addressList,
 	}
 }
 
@@ -50,7 +51,7 @@ func (msg *MsgAddRValidator) ValidateBasic() error {
 		return err
 	}
 
-	if len(msg.AddressList) == 0 {
+	if len(msg.ValAddressList) == 0 {
 		return fmt.Errorf("address list is empty")
 	}
 	return nil

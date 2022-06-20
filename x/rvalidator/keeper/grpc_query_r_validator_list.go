@@ -16,8 +16,8 @@ func (k Keeper) RValidatorList(goCtx context.Context, req *types.QueryRValidator
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	list := make([]string, 0)
-	for _, val := range k.GetSelectedRValidatorListByDenom(ctx, req.Denom) {
-		list = append(list, val.Address)
+	for _, val := range k.GetSelectedRValidatorListByDenomPoolAddress(ctx, req.Denom, req.PoolAddress) {
+		list = append(list, val.ValAddress)
 	}
 
 	return &types.QueryRValidatorListResponse{

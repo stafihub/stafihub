@@ -53,27 +53,30 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) AddSelectedRValidator(ctx sdk.Context, rValidator *types.RValidator) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.SelectedRValdidatorStoreKey(rValidator.Denom, rValidator.Address), []byte{})
+	store.Set(types.SelectedRValdidatorStoreKey(rValidator.Denom, rValidator.PoolAddress, rValidator.ValAddress), []byte{})
 }
 
 func (k Keeper) RemoveSelectedRValidator(ctx sdk.Context, rValidator *types.RValidator) {
 	store := ctx.KVStore(k.storeKey)
-	store.Delete(types.SelectedRValdidatorStoreKey(rValidator.Denom, rValidator.Address))
+	store.Delete(types.SelectedRValdidatorStoreKey(rValidator.Denom, rValidator.PoolAddress, rValidator.ValAddress))
 }
 
 func (k Keeper) HasSelectedRValidator(ctx sdk.Context, rValidator *types.RValidator) bool {
 	store := ctx.KVStore(k.storeKey)
-	return store.Has(types.SelectedRValdidatorStoreKey(rValidator.Denom, rValidator.Address))
+	return store.Has(types.SelectedRValdidatorStoreKey(rValidator.Denom, rValidator.PoolAddress, rValidator.ValAddress))
 }
 
-func (k Keeper) GetSelectedRValidatorListByDenom(ctx sdk.Context, denom string) []*types.RValidator {
+func (k Keeper) GetSelectedRValidatorListByDenomPoolAddress(ctx sdk.Context, denom, poolAddress string) []*types.RValidator {
 	store := ctx.KVStore(k.storeKey)
 	denomLen := len([]byte(denom))
+	poolAddressLen := len([]byte(poolAddress))
 
-	key := make([]byte, 1+1+denomLen)
+	key := make([]byte, 1+1+denomLen+1+poolAddressLen)
 	copy(key[0:], types.SelectedRValidatorStoreKeyPrefix)
 	key[1] = byte(denomLen)
 	copy(key[2:], []byte(denom))
+	key[2+denomLen] = byte(poolAddressLen)
+	copy(key[2+denomLen+1:], []byte(poolAddress))
 
 	iterator := sdk.KVStorePrefixIterator(store, key)
 	defer iterator.Close()
@@ -82,11 +85,12 @@ func (k Keeper) GetSelectedRValidatorListByDenom(ctx sdk.Context, denom string) 
 	for ; iterator.Valid(); iterator.Next() {
 		key := iterator.Key()
 
-		address := string(key[2+denomLen:])
+		address := string(key[2+denomLen+1+poolAddressLen+1:])
 
 		rValidator := types.RValidator{
-			Denom:   denom,
-			Address: address,
+			Denom:       denom,
+			PoolAddress: poolAddress,
+			ValAddress:  address,
 		}
 
 		list = append(list, &rValidator)
@@ -105,11 +109,14 @@ func (k Keeper) GetSelectedRValidatorList(ctx sdk.Context) []*types.RValidator {
 
 		denomLen := int(key[1])
 		denom := string(key[2 : 2+denomLen])
-		address := string(key[2+denomLen:])
+		poolAddressLen := int(key[2+denomLen])
+		poolAddress := string(key[2+denomLen+1 : 2+denomLen+1+poolAddressLen])
+		valAddress := string(key[2+denomLen+1+poolAddressLen+1:])
 
 		rValidator := types.RValidator{
-			Denom:   denom,
-			Address: address,
+			Denom:       denom,
+			PoolAddress: poolAddress,
+			ValAddress:  valAddress,
 		}
 
 		list = append(list, &rValidator)
@@ -119,12 +126,12 @@ func (k Keeper) GetSelectedRValidatorList(ctx sdk.Context) []*types.RValidator {
 
 func (k Keeper) SetLatestVotedCycle(ctx sdk.Context, cycle *types.Cycle) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.LatestVotedCycleStoreKey(cycle.Denom), k.cdc.MustMarshal(cycle))
+	store.Set(types.LatestVotedCycleStoreKey(cycle.Denom, cycle.PoolAddress), k.cdc.MustMarshal(cycle))
 }
 
-func (k Keeper) GetLatestVotedCycle(ctx sdk.Context, denom string) *types.Cycle {
+func (k Keeper) GetLatestVotedCycle(ctx sdk.Context, denom, poolAddress string) *types.Cycle {
 	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.LatestVotedCycleStoreKey(denom))
+	bts := store.Get(types.LatestVotedCycleStoreKey(denom, poolAddress))
 	if bts == nil {
 		return &types.Cycle{
 			Denom:   denom,

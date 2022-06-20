@@ -15,12 +15,13 @@ var _ = strconv.Itoa(0)
 
 func CmdAddRValidator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-r-validator [denom] [address-list]",
+		Use:   "add-r-validator [denom] [pool-address] [address-list]",
 		Short: "Add rvalidator",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argAddressList := strings.Split(args[1], ":")
+			argPoolAddress := args[1]
+			argAddressList := strings.Split(args[2], ":")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -30,6 +31,7 @@ func CmdAddRValidator() *cobra.Command {
 			msg := types.NewMsgAddRValidator(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
+				argPoolAddress,
 				argAddressList,
 			)
 			if err := msg.ValidateBasic(); err != nil {

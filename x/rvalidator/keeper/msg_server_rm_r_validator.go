@@ -16,8 +16,9 @@ func (k msgServer) RmRValidator(goCtx context.Context, msg *types.MsgRmRValidato
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 	rValidator := types.RValidator{
-		Denom:   msg.Denom,
-		Address: msg.Address,
+		Denom:       msg.Denom,
+		PoolAddress: msg.PoolAddress,
+		ValAddress:  msg.ValAddress,
 	}
 
 	if !k.Keeper.HasSelectedRValidator(ctx, &rValidator) {
@@ -30,7 +31,8 @@ func (k msgServer) RmRValidator(goCtx context.Context, msg *types.MsgRmRValidato
 		sdk.NewEvent(
 			types.EventTypeRmRValidator,
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
-			sdk.NewAttribute(types.AttributeKeyAddress, msg.Address),
+			sdk.NewAttribute(types.AttributeKeyPoolAddress, msg.PoolAddress),
+			sdk.NewAttribute(types.AttributeKeyAddress, msg.ValAddress),
 		),
 	)
 	return &types.MsgRmRValidatorResponse{}, nil

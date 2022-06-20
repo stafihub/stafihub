@@ -14,12 +14,13 @@ var _ = strconv.Itoa(0)
 
 func CmdRmRValidator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "rm-r-validator [denom] [address]",
+		Use:   "rm-r-validator [denom] [pool-address] [val-address]",
 		Short: "Remove rvalidator",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argAddress := args[1]
+			argPoolAddress := args[1]
+			argValAddress := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -29,7 +30,8 @@ func CmdRmRValidator() *cobra.Command {
 			msg := types.NewMsgRmRValidator(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
-				argAddress,
+				argPoolAddress,
+				argValAddress,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

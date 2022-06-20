@@ -16,26 +16,28 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateRValidator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-r-validator [denom] [old-address] [new-address] [cycleVersion] [cycleNumber]",
+		Use:   "update-r-validator [denom] [pool-address] [old-address] [new-address] [cycleVersion] [cycleNumber]",
 		Short: "Update rvalidator",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argOldAddress := args[1]
-			argNewAddress := args[2]
-			argCycleVersion, err := sdk.ParseUint(args[3])
+			argPoolAddress := args[1]
+			argOldAddress := args[2]
+			argNewAddress := args[3]
+			argCycleVersion, err := sdk.ParseUint(args[4])
 			if err != nil {
 				return err
 			}
-			argCycleNumber, err := sdk.ParseUint(args[4])
+			argCycleNumber, err := sdk.ParseUint(args[5])
 			if err != nil {
 				return err
 			}
 
 			cycle := types.Cycle{
-				Denom:   argDenom,
-				Version: argCycleVersion.Uint64(),
-				Number:  argCycleNumber.Uint64(),
+				Denom:       argDenom,
+				PoolAddress: argPoolAddress,
+				Version:     argCycleVersion.Uint64(),
+				Number:      argCycleNumber.Uint64(),
 			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -43,6 +45,7 @@ func CmdUpdateRValidator() *cobra.Command {
 			}
 			content := types.NewUpdateRValidatorProposal(clientCtx.GetFromAddress().String(),
 				argDenom,
+				argPoolAddress,
 				argOldAddress,
 				argNewAddress,
 				&cycle)

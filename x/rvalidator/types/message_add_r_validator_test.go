@@ -18,17 +18,17 @@ func TestMsgAddRValidator_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: types.MsgAddRValidator{
-				Creator:     "invalid_address",
-				Denom:       sample.AccAddress(),
-				AddressList: []string{"cosmosvaloper1sjllsnramtg3ewxqwwrwjxfgc4n4ef9u2lcnj0"},
+				Creator:        "invalid_address",
+				Denom:          sample.AccAddress(),
+				ValAddressList: []string{"cosmosvaloper1sjllsnramtg3ewxqwwrwjxfgc4n4ef9u2lcnj0"},
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: types.MsgAddRValidator{
-				Creator:     sample.AccAddress(),
-				Denom:       sample.AccAddress(),
-				AddressList: []string{"cosmosvaloper1sjllsnramtg3ewxqwwrwjxfgc4n4ef9u2lcnj0"},
+				Creator:        sample.AccAddress(),
+				Denom:          sample.AccAddress(),
+				ValAddressList: []string{"cosmosvaloper1sjllsnramtg3ewxqwwrwjxfgc4n4ef9u2lcnj0"},
 			},
 		},
 	}

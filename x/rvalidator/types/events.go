@@ -11,6 +11,7 @@ const (
 	AttributeKeyAddress      = "address"
 	AttributeKeyNewAddress   = "new_address"
 	AttributeKeyOldAddress   = "old_address"
+	AttributeKeyPoolAddress  = "pool_address"
 	AttributeKeyCycleVersion = "cycle_version"
 	AttributeKeyCycleNumber  = "cycle_number"
 )

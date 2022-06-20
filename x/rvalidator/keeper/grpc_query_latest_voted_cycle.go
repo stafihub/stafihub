@@ -17,6 +17,6 @@ func (k Keeper) LatestVotedCycle(goCtx context.Context, req *types.QueryLatestVo
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryLatestVotedCycleResponse{
-		LatestVotedCycle: k.GetLatestVotedCycle(ctx, req.Denom),
+		LatestVotedCycle: k.GetLatestVotedCycle(ctx, req.Denom, req.PoolAddress),
 	}, nil
 }

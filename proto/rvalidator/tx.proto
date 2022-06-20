@@ -17,7 +17,8 @@ service Msg {
 message MsgAddRValidator {
   string creator = 1;
   string denom = 2;
-  repeated string addressList = 3;
+  string poolAddress = 3;
+  repeated string valAddressList = 4;
 }
 
 message MsgAddRValidatorResponse {
@@ -26,7 +27,8 @@ message MsgAddRValidatorResponse {
 message MsgRmRValidator {
   string creator = 1;
   string denom = 2;
-  string address = 3;
+  string poolAddress = 3;
+  string valAddress = 4;
 }
 
 message MsgRmRValidatorResponse {

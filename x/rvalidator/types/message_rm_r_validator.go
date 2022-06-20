@@ -9,11 +9,12 @@ const TypeMsgRmRValidator = "rm_r_validator"
 
 var _ sdk.Msg = &MsgRmRValidator{}
 
-func NewMsgRmRValidator(creator string, denom string, address string) *MsgRmRValidator {
+func NewMsgRmRValidator(creator string, denom, poolAddress string, address string) *MsgRmRValidator {
 	return &MsgRmRValidator{
-		Creator: creator,
-		Denom:   denom,
-		Address: address,
+		Creator:     creator,
+		Denom:       denom,
+		PoolAddress: poolAddress,
+		ValAddress:  address,
 	}
 }
 

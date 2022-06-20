@@ -16,13 +16,15 @@ message GenesisState {
 
 message RValidator {
   string denom  = 1;
-  string address = 2;
+  string poolAddress = 2;
+  string valAddress = 3;
 }
 
 message Cycle {
   string denom = 1;
-  uint64 version = 2;
-  uint64 number = 3;
+  string poolAddress = 2;
+  uint64 version = 3;
+  uint64 number = 4;
 }
 
 message CycleSeconds {

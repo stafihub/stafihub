@@ -73,6 +73,17 @@ func request_Query_RValidatorList_0(ctx context.Context, marshaler runtime.Marsh
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "denom", err)
 	}
 
+	val, ok = pathParams["poolAddress"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "poolAddress")
+	}
+
+	protoReq.PoolAddress, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "poolAddress", err)
+	}
+
 	msg, err := client.RValidatorList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -98,6 +109,17 @@ func local_request_Query_RValidatorList_0(ctx context.Context, marshaler runtime
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "denom", err)
+	}
+
+	val, ok = pathParams["poolAddress"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "poolAddress")
+	}
+
+	protoReq.PoolAddress, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "poolAddress", err)
 	}
 
 	msg, err := server.RValidatorList(ctx, &protoReq)
@@ -235,6 +257,17 @@ func request_Query_LatestVotedCycle_0(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "denom", err)
 	}
 
+	val, ok = pathParams["poolAddress"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "poolAddress")
+	}
+
+	protoReq.PoolAddress, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "poolAddress", err)
+	}
+
 	msg, err := client.LatestVotedCycle(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -260,6 +293,17 @@ func local_request_Query_LatestVotedCycle_0(ctx context.Context, marshaler runti
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "denom", err)
+	}
+
+	val, ok = pathParams["poolAddress"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "poolAddress")
+	}
+
+	protoReq.PoolAddress, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "poolAddress", err)
 	}
 
 	msg, err := server.LatestVotedCycle(ctx, &protoReq)
@@ -535,13 +579,13 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2}, []string{"stafihub", "rvalidator", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_RValidatorList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "rvalidator", "r_validator_list", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_RValidatorList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "rvalidator", "r_validator_list", "denom", "poolAddress"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_CycleSeconds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "rvalidator", "cycle_seconds", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_ShuffleSeconds_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "rvalidator", "shuffle_seconds", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LatestVotedCycle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"stafihub", "rvalidator", "latest_voted_cycle", "denom"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_LatestVotedCycle_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"stafihub", "rvalidator", "latest_voted_cycle", "denom", "poolAddress"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

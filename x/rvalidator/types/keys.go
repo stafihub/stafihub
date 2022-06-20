@@ -33,21 +33,36 @@ var (
 	ShuffleSecondsStoreKeyPrefix     = []byte{0x04}
 )
 
-// prefix + denomLen + denom + rValidator
-func SelectedRValdidatorStoreKey(denom, rValidator string) []byte {
+// prefix + denomLen + denom + poolAddressLen + poolAddress + rValidatorAddressLen + rValidatorAddress
+func SelectedRValdidatorStoreKey(denom, poolAddress, rValidatorAddress string) []byte {
 	denomLen := len([]byte(denom))
-	rValidatorLen := len([]byte(rValidator))
+	poolAddressLen := len([]byte(poolAddress))
+	rValidatorAddressLen := len([]byte(rValidatorAddress))
 
-	key := make([]byte, 1+1+denomLen+rValidatorLen)
+	key := make([]byte, 1+1+denomLen+1+poolAddressLen+1+rValidatorAddressLen)
 	copy(key[0:], SelectedRValidatorStoreKeyPrefix)
 	key[1] = byte(denomLen)
 	copy(key[2:], []byte(denom))
-	copy(key[2+denomLen:], []byte(rValidator))
+	key[2+denomLen] = byte(poolAddressLen)
+	copy(key[2+denomLen+1:], []byte(poolAddress))
+	key[2+denomLen+1+poolAddressLen] = byte(rValidatorAddressLen)
+	copy(key[2+denomLen+1+poolAddressLen+1:], []byte(rValidatorAddress))
 	return key
 }
 
-func LatestVotedCycleStoreKey(denom string) []byte {
-	return append(LatestVotedCycleStoreKeyPrefix, []byte(denom)...)
+// prefix + denomLen + denom + poolAddressLen + poolAddress
+func LatestVotedCycleStoreKey(denom, poolAddress string) []byte {
+	denomLen := len([]byte(denom))
+	poolAddressLen := len([]byte(poolAddress))
+
+	key := make([]byte, 1+1+denomLen+1+poolAddressLen)
+	copy(key[0:], LatestVotedCycleStoreKeyPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	key[2+denomLen] = byte(poolAddressLen)
+	copy(key[2+denomLen+1:], []byte(poolAddress))
+
+	return key
 }
 
 func CycleSecondsStoreKey(denom string) []byte {

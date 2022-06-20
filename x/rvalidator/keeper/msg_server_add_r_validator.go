@@ -17,13 +17,14 @@ func (k msgServer) AddRValidator(goCtx context.Context, msg *types.MsgAddRValida
 	}
 
 	addresses := ""
-	for _, address := range msg.AddressList {
+	for _, address := range msg.ValAddressList {
 		if err := k.rBankKeeper.CheckValAddress(ctx, msg.Denom, address); err != nil {
 			return nil, err
 		}
 		rValidator := types.RValidator{
-			Denom:   msg.Denom,
-			Address: address,
+			Denom:       msg.Denom,
+			PoolAddress: msg.PoolAddress,
+			ValAddress:  address,
 		}
 
 		if k.Keeper.HasSelectedRValidator(ctx, &rValidator) {
@@ -39,6 +40,7 @@ func (k msgServer) AddRValidator(goCtx context.Context, msg *types.MsgAddRValida
 		sdk.NewEvent(
 			types.EventTypeAddRValidator,
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyPoolAddress, msg.PoolAddress),
 			sdk.NewAttribute(types.AttributeKeyAddresses, addresses[1:]),
 		),
 	)

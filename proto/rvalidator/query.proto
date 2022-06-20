@@ -18,7 +18,7 @@ service Query {
   }
   // Queries a list of RValidatorList items.
 	rpc RValidatorList(QueryRValidatorListRequest) returns (QueryRValidatorListResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/rvalidator/r_validator_list/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/rvalidator/r_validator_list/{denom}/{poolAddress}";
 	}
 
 // Queries a list of CycleSeconds items.
@@ -33,7 +33,7 @@ service Query {
 
 // Queries a list of LatestVotedCycle items.
 	rpc LatestVotedCycle(QueryLatestVotedCycleRequest) returns (QueryLatestVotedCycleResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/rvalidator/latest_voted_cycle/{denom}";
+		option (google.api.http).get = "/stafihub/stafihub/rvalidator/latest_voted_cycle/{denom}/{poolAddress}";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -50,6 +50,7 @@ message QueryParamsResponse {
 
 message QueryRValidatorListRequest {
   string denom = 1;
+  string poolAddress = 2;
 }
 
 message QueryRValidatorListResponse {
@@ -74,6 +75,7 @@ message QueryShuffleSecondsResponse {
 
 message QueryLatestVotedCycleRequest {
   string denom = 1;
+  string poolAddress = 2;
 }
 
 message QueryLatestVotedCycleResponse {
