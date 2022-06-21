@@ -18,8 +18,9 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		sudoKeeper  types.SudoKeeper
-		rBankKeeper types.RBankKeeper
+		sudoKeeper   types.SudoKeeper
+		rBankKeeper  types.RBankKeeper
+		ledgerKeeper types.LedgerKeeper
 	}
 )
 
@@ -30,6 +31,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 	sudoKeeper types.SudoKeeper,
 	rBankKeeper types.RBankKeeper,
+	ledgerKeeper types.LedgerKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -38,12 +40,13 @@ func NewKeeper(
 
 	return &Keeper{
 
-		cdc:         cdc,
-		storeKey:    storeKey,
-		memKey:      memKey,
-		paramstore:  ps,
-		sudoKeeper:  sudoKeeper,
-		rBankKeeper: rBankKeeper,
+		cdc:          cdc,
+		storeKey:     storeKey,
+		memKey:       memKey,
+		paramstore:   ps,
+		sudoKeeper:   sudoKeeper,
+		rBankKeeper:  rBankKeeper,
+		ledgerKeeper: ledgerKeeper,
 	}
 }
 
@@ -143,6 +146,23 @@ func (k Keeper) GetLatestVotedCycle(ctx sdk.Context, denom, poolAddress string) 
 	k.cdc.MustUnmarshal(bts, &cycle)
 
 	return &cycle
+}
+
+func (k Keeper) SetLatestDealedCycle(ctx sdk.Context, cycle *types.Cycle) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.LatestDealedCycleStoreKey(cycle.Denom, cycle.PoolAddress), k.cdc.MustMarshal(cycle))
+}
+
+func (k Keeper) GetLatestDealedCycle(ctx sdk.Context, denom, poolAddress string) (*types.Cycle, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.LatestDealedCycleStoreKey(denom, poolAddress))
+	if bts == nil {
+		return nil, false
+	}
+	cycle := types.Cycle{}
+	k.cdc.MustUnmarshal(bts, &cycle)
+
+	return &cycle, true
 }
 
 func (k Keeper) SetCycleSeconds(ctx sdk.Context, cycleSeconds *types.CycleSeconds) {

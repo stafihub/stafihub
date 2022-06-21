@@ -31,6 +31,7 @@ var (
 	LatestVotedCycleStoreKeyPrefix   = []byte{0x02}
 	CycleSecondsStoreKeyPrefix       = []byte{0x03}
 	ShuffleSecondsStoreKeyPrefix     = []byte{0x04}
+	LatestDealedCycleStoreKeyPrefix  = []byte{0x05}
 )
 
 // prefix + denomLen + denom + poolAddressLen + poolAddress + rValidatorAddressLen + rValidatorAddress
@@ -57,6 +58,21 @@ func LatestVotedCycleStoreKey(denom, poolAddress string) []byte {
 
 	key := make([]byte, 1+1+denomLen+1+poolAddressLen)
 	copy(key[0:], LatestVotedCycleStoreKeyPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	key[2+denomLen] = byte(poolAddressLen)
+	copy(key[2+denomLen+1:], []byte(poolAddress))
+
+	return key
+}
+
+// prefix + denomLen + denom + poolAddressLen + poolAddress
+func LatestDealedCycleStoreKey(denom, poolAddress string) []byte {
+	denomLen := len([]byte(denom))
+	poolAddressLen := len([]byte(poolAddress))
+
+	key := make([]byte, 1+1+denomLen+1+poolAddressLen)
+	copy(key[0:], LatestDealedCycleStoreKeyPrefix)
 	key[1] = byte(denomLen)
 	copy(key[2:], []byte(denom))
 	key[2+denomLen] = byte(poolAddressLen)

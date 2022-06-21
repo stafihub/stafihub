@@ -11,28 +11,29 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdLatestVotedCycle() *cobra.Command {
+func CmdLatestDealedCycle() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "latest-voted-cycle [denom] [pool-address]",
-		Short: "Query latest voted cycle",
+		Use:   "latest-dealed-cycle [denom] [pool-address]",
+		Short: "Query latest dealed cycle",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
 			reqPoolAddress := args[1]
 
-			clientCtx, err := client.GetClientQueryContext(cmd)
+			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryLatestVotedCycleRequest{
+			params := &types.QueryLatestDealedCycleRequest{
+
 				Denom:       reqDenom,
 				PoolAddress: reqPoolAddress,
 			}
 
-			res, err := queryClient.LatestVotedCycle(cmd.Context(), params)
+			res, err := queryClient.LatestDealedCycle(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

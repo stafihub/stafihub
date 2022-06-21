@@ -52,4 +52,5 @@ message MsgSetShuffleSeconds {
 message MsgSetShuffleSecondsResponse {
 }
 
+
 // this line is used by starport scaffolding # proto/tx/message

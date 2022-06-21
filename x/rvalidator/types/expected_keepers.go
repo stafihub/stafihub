@@ -3,6 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	ledgerTypes "github.com/stafihub/stafihub/x/ledger/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -23,4 +24,8 @@ type SudoKeeper interface {
 
 type RBankKeeper interface {
 	CheckValAddress(ctx sdk.Context, denom, address string) error
+}
+
+type LedgerKeeper interface {
+	CurrentEraSnapshots(ctx sdk.Context, denom string) ledgerTypes.EraSnapshot
 }

@@ -34,6 +34,14 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 	if !(p.Cycle.Version > latestVotedCycle.Version || (p.Cycle.Version == latestVotedCycle.Version && p.Cycle.Number > latestVotedCycle.Number)) {
 		return types.ErrCycleBehindLatestCycle
 	}
+	latestDealedCycle, found := k.GetLatestDealedCycle(ctx, p.Denom, p.PoolAddress)
+	if found && (latestDealedCycle.Number != latestVotedCycle.Number || latestDealedCycle.Version != latestVotedCycle.Version) {
+		return types.ErrLatestVotedCycleNotDealed
+	}
+	snapShots := k.ledgerKeeper.CurrentEraSnapshots(ctx, p.Denom)
+	if len(snapShots.ShotIds) > 0 {
+		return types.ErrLedgerIsBusyWithEra
+	}
 
 	k.RemoveSelectedRValidator(ctx, &oldVal)
 	k.AddSelectedRValidator(ctx, &newVal)
@@ -51,5 +59,15 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 		),
 	)
 
+	return nil
+}
+
+func (k Keeper) ProcessUpdateRValidatorReportProposal(ctx sdk.Context, p *types.UpdateRValidatorReportProposal) error {
+	latestVotedCycle := k.GetLatestVotedCycle(ctx, p.Denom, p.PoolAddress)
+	if !(p.Cycle.Version == latestVotedCycle.Version && p.Cycle.Number == latestVotedCycle.Number) {
+		return types.ErrReportCycleNotMatchLatestVotedCycle
+	}
+
+	k.SetLatestDealedCycle(ctx, p.Cycle)
 	return nil
 }

@@ -547,6 +547,7 @@ func New(
 		app.GetSubspace(rvalidatormoduletypes.ModuleName),
 		app.SudoKeeper,
 		app.RbankKeeper,
+		app.LedgerKeeper,
 	)
 	rvalidatorModule := rvalidator.NewAppModule(appCodec, app.RValidatorKeeper, app.AccountKeeper, app.BankKeeper)
 

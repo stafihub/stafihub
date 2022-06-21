@@ -14,3 +14,11 @@ message UpdateRValidatorProposal {
     string propId = 6;
     Cycle cycle = 7;
 }
+
+message UpdateRValidatorReportProposal {
+    string creator = 1;
+    string denom = 2;
+    string poolAddress = 3;
+    string propId = 4;
+    Cycle cycle = 5;
+}
