@@ -14,11 +14,13 @@ const TypeUpdateRValidatorReportProposal = "update_r_validator_report"
 
 var _ sdk.Msg = &UpdateRValidatorProposal{}
 var _ sdk.Msg = &UpdateRValidatorReportProposal{}
+var _ rvotetypes.Content = &UpdateRValidatorProposal{}
+var _ rvotetypes.Content = &UpdateRValidatorReportProposal{}
 
 func init() {
 	rvotetypes.RegisterProposalType(TypeUpdateRValidatorProposal)
-	rvotetypes.RegisterProposalType(TypeUpdateRValidatorReportProposal)
 	rvotetypes.RegisterProposalTypeCodec(&UpdateRValidatorProposal{}, "rvalidator/UpdateRValidator")
+	rvotetypes.RegisterProposalType(TypeUpdateRValidatorReportProposal)
 	rvotetypes.RegisterProposalTypeCodec(&UpdateRValidatorReportProposal{}, "rvalidator/UpdateRValidatorReport")
 }
 

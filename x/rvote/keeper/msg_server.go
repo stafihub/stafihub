@@ -4,7 +4,9 @@ import (
 	"context"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	ledgertypes "github.com/stafihub/stafihub/x/ledger/types"
 	relayerstypes "github.com/stafihub/stafihub/x/relayers/types"
+	rvalidatortypes "github.com/stafihub/stafihub/x/rvalidator/types"
 	"github.com/stafihub/stafihub/x/rvote/types"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
@@ -38,6 +40,11 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 
 	content := msg.GetContent()
 	arena := content.ProposalRoute()
+
+	// will use ledger relayers in this case
+	if content.ProposalRoute() == rvalidatortypes.ModuleName && content.ProposalType() == rvalidatortypes.TypeUpdateRValidatorReportProposal {
+		arena = ledgertypes.ModuleName
+	}
 
 	relayerFlag := k.relayerKeeper.HasRelayer(ctx, arena, content.GetDenom(), msg.Proposer)
 

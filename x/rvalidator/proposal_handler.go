@@ -13,6 +13,8 @@ func NewProposalHandler(k keeper.Keeper) rvotetypes.Handler {
 		switch c := content.(type) {
 		case *types.UpdateRValidatorProposal:
 			return k.ProcessUpdateRValidatorProposal(ctx, c)
+		case *types.UpdateRValidatorReportProposal:
+			return k.ProcessUpdateRValidatorReportProposal(ctx, c)
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized param proposal content type: %T", c)
 		}
