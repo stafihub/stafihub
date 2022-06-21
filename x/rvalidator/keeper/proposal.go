@@ -64,6 +64,7 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 			sdk.NewAttribute(types.AttributeKeyNewAddress, p.NewAddress),
 			sdk.NewAttribute(types.AttributeKeyCycleVersion, fmt.Sprintf("%d", p.Cycle.Version)),
 			sdk.NewAttribute(types.AttributeKeyCycleNumber, fmt.Sprintf("%d", p.Cycle.Number)),
+			sdk.NewAttribute(types.AttributeKeyCycleSeconds, fmt.Sprintf("%d", cycleSeconds.Seconds)),
 		),
 	)
 

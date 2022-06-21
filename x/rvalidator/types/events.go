@@ -15,4 +15,5 @@ const (
 	AttributeKeyChainEra     = "chain_era"
 	AttributeKeyCycleVersion = "cycle_version"
 	AttributeKeyCycleNumber  = "cycle_number"
+	AttributeKeyCycleSeconds = "cycle_seconds"
 )
