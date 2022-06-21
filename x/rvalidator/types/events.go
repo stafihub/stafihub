@@ -12,6 +12,7 @@ const (
 	AttributeKeyNewAddress   = "new_address"
 	AttributeKeyOldAddress   = "old_address"
 	AttributeKeyPoolAddress  = "pool_address"
+	AttributeKeyChainEra     = "chain_era"
 	AttributeKeyCycleVersion = "cycle_version"
 	AttributeKeyCycleNumber  = "cycle_number"
 )

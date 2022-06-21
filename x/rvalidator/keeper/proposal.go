@@ -42,6 +42,10 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 	if len(snapShots.ShotIds) > 0 {
 		return types.ErrLedgerIsBusyWithEra
 	}
+	chainEra, found := k.ledgerKeeper.GetChainEra(ctx, p.Denom)
+	if !found {
+		return types.ErrLedgerChainEraNotExist
+	}
 
 	k.RemoveSelectedRValidator(ctx, &oldVal)
 	k.AddSelectedRValidator(ctx, &newVal)
@@ -52,6 +56,7 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 			types.EventTypeUpdateRValidator,
 			sdk.NewAttribute(types.AttributeKeyDenom, p.Denom),
 			sdk.NewAttribute(types.AttributeKeyPoolAddress, p.PoolAddress),
+			sdk.NewAttribute(types.AttributeKeyChainEra, fmt.Sprintf("%d", chainEra.Era)),
 			sdk.NewAttribute(types.AttributeKeyOldAddress, p.OldAddress),
 			sdk.NewAttribute(types.AttributeKeyNewAddress, p.NewAddress),
 			sdk.NewAttribute(types.AttributeKeyCycleVersion, fmt.Sprintf("%d", p.Cycle.Version)),

@@ -15,4 +15,5 @@ var (
 	ErrLatestVotedCycleNotDealed           = sdkerrors.Register(ModuleName, 1105, "latest voted cycle not dealed")
 	ErrLedgerIsBusyWithEra                 = sdkerrors.Register(ModuleName, 1106, "ledger is busy with era")
 	ErrReportCycleNotMatchLatestVotedCycle = sdkerrors.Register(ModuleName, 1107, "report cycle not match latest voted cycle")
+	ErrLedgerChainEraNotExist              = sdkerrors.Register(ModuleName, 1108, "ledger chain era not exist")
 )

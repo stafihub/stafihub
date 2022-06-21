@@ -28,4 +28,5 @@ type RBankKeeper interface {
 
 type LedgerKeeper interface {
 	CurrentEraSnapshots(ctx sdk.Context, denom string) ledgerTypes.EraSnapshot
+	GetChainEra(ctx sdk.Context, denom string) (val ledgerTypes.ChainEra, found bool)
 }
