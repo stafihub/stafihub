@@ -25,6 +25,9 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 	if k.HasSelectedRValidator(ctx, &newVal) {
 		return types.ErrRValidatorAlreadyExist
 	}
+	if err := k.rBankKeeper.CheckValAddress(ctx, p.Denom, p.NewAddress); err != nil {
+		return err
+	}
 	cycleSeconds := k.GetCycleSeconds(ctx, p.Denom)
 	if cycleSeconds.Version != p.Cycle.Version {
 		return types.ErrCycleVersionNotMatch

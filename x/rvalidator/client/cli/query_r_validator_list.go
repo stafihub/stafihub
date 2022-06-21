@@ -13,11 +13,12 @@ var _ = strconv.Itoa(0)
 
 func CmdRValidatorList() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "r-validator-list [denom]",
+		Use:   "r-validator-list [denom] [pool-address]",
 		Short: "Query rvalidator list",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqDenom := args[0]
+			reqPoolAddress := args[1]
 
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -27,8 +28,8 @@ func CmdRValidatorList() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryRValidatorListRequest{
-
-				Denom: reqDenom,
+				PoolAddress: reqPoolAddress,
+				Denom:       reqDenom,
 			}
 
 			res, err := queryClient.RValidatorList(cmd.Context(), params)
