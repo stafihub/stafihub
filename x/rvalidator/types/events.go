@@ -2,6 +2,7 @@ package types
 
 // sudo module event types
 const (
+	EventTypeInitRValidator   = "init_rvalidator"
 	EventTypeAddRValidator    = "add_rvalidator"
 	EventTypeRmRValidator     = "rm_rvalidator"
 	EventTypeUpdateRValidator = "update_rvalidator"

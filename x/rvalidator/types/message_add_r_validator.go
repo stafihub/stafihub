@@ -1,8 +1,6 @@
 package types
 
 import (
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -11,12 +9,12 @@ const TypeMsgAddRValidator = "add_r_validator"
 
 var _ sdk.Msg = &MsgAddRValidator{}
 
-func NewMsgAddRValidator(creator string, denom, poolAddress string, addressList []string) *MsgAddRValidator {
+func NewMsgAddRValidator(creator string, denom string, poolAddress string, valAddress string) *MsgAddRValidator {
 	return &MsgAddRValidator{
-		Creator:        creator,
-		Denom:          denom,
-		PoolAddress:    poolAddress,
-		ValAddressList: addressList,
+		Creator:     creator,
+		Denom:       denom,
+		PoolAddress: poolAddress,
+		ValAddress:  valAddress,
 	}
 }
 
@@ -45,14 +43,6 @@ func (msg *MsgAddRValidator) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
-	}
-
-	if err := sdk.ValidateDenom(msg.Denom); err != nil {
-		return err
-	}
-
-	if len(msg.ValAddressList) == 0 {
-		return fmt.Errorf("address list is empty")
 	}
 	return nil
 }

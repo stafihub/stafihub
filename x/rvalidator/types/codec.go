@@ -9,18 +9,19 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgAddRValidator{}, "rvalidator/AddRValidator", nil)
+	cdc.RegisterConcrete(&MsgInitRValidator{}, "rvalidator/InitRValidator", nil)
 	cdc.RegisterConcrete(&MsgRmRValidator{}, "rvalidator/RmRValidator", nil)
 	cdc.RegisterConcrete(&UpdateRValidatorProposal{}, "rvalidator/UpdateRValidator", nil)
 	cdc.RegisterConcrete(&UpdateRValidatorReportProposal{}, "rvalidator/UpdateRValidatorReport", nil)
 	cdc.RegisterConcrete(&MsgSetCycleSeconds{}, "rvalidator/SetCycleSeconds", nil)
 	cdc.RegisterConcrete(&MsgSetShuffleSeconds{}, "rvalidator/SetShuffleSeconds", nil)
+	cdc.RegisterConcrete(&MsgAddRValidator{}, "rvalidator/AddRValidator", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgAddRValidator{},
+		&MsgInitRValidator{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRmRValidator{},
@@ -41,6 +42,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations(
 		(*rvotetypes.Content)(nil),
 		&UpdateRValidatorReportProposal{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddRValidator{},
 	)
 	// this line is used by starport scaffolding # 3
 

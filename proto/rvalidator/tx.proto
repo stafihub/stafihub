@@ -7,21 +7,22 @@ option go_package = "github.com/stafihub/stafihub/x/rvalidator/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc AddRValidator(MsgAddRValidator) returns (MsgAddRValidatorResponse);
+  rpc InitRValidator(MsgInitRValidator) returns (MsgInitRValidatorResponse);
   rpc RmRValidator(MsgRmRValidator) returns (MsgRmRValidatorResponse);
   rpc SetCycleSeconds(MsgSetCycleSeconds) returns (MsgSetCycleSecondsResponse);
   rpc SetShuffleSeconds(MsgSetShuffleSeconds) returns (MsgSetShuffleSecondsResponse);
+  rpc AddRValidator(MsgAddRValidator) returns (MsgAddRValidatorResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgAddRValidator {
+message MsgInitRValidator {
   string creator = 1;
   string denom = 2;
   string poolAddress = 3;
   repeated string valAddressList = 4;
 }
 
-message MsgAddRValidatorResponse {
+message MsgInitRValidatorResponse {
 }
 
 message MsgRmRValidator {
@@ -52,5 +53,15 @@ message MsgSetShuffleSeconds {
 message MsgSetShuffleSecondsResponse {
 }
 
+
+message MsgAddRValidator {
+  string creator = 1;
+  string denom = 2;
+  string poolAddress = 3;
+  string valAddress = 4;
+}
+
+message MsgAddRValidatorResponse {
+}
 
 // this line is used by starport scaffolding # proto/tx/message

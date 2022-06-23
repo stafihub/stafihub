@@ -40252,6 +40252,8 @@ definitions:
         format: uint64
   stafihub.stafihub.rvalidator.MsgAddRValidatorResponse:
     type: object
+  stafihub.stafihub.rvalidator.MsgInitRValidatorResponse:
+    type: object
   stafihub.stafihub.rvalidator.MsgRmRValidatorResponse:
     type: object
   stafihub.stafihub.rvalidator.MsgSetCycleSecondsResponse:

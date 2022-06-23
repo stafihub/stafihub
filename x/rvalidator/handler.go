@@ -17,8 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgAddRValidator:
-			res, err := msgServer.AddRValidator(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgInitRValidator:
+			res, err := msgServer.InitRValidator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRmRValidator:
 			res, err := msgServer.RmRValidator(sdk.WrapSDKContext(ctx), msg)
@@ -28,6 +28,9 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetShuffleSeconds:
 			res, err := msgServer.SetShuffleSeconds(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAddRValidator:
+			res, err := msgServer.AddRValidator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:

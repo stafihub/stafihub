@@ -2,6 +2,7 @@ package cli
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -12,26 +13,26 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdAddRValidator() *cobra.Command {
+func CmdInitRValidator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "add-r-validator [denom] [pool-address] [val-address]",
-		Short: "Add rvalidator",
+		Use:   "init-r-validator [denom] [pool-address] [address-list]",
+		Short: "Init rvalidator",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argPoolAddress := args[1]
-			argValAddress := args[2]
+			argAddressList := strings.Split(args[2], ":")
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgAddRValidator(
+			msg := types.NewMsgInitRValidator(
 				clientCtx.GetFromAddress().String(),
 				argDenom,
 				argPoolAddress,
-				argValAddress,
+				argAddressList,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

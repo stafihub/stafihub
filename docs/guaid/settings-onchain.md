@@ -51,7 +51,7 @@ stafihubd query relayers threshold ledger uratom
 
 
 # set params used by relay
-stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query ledger r-params uratom
 
@@ -167,12 +167,18 @@ stafihubd tx mining add-reward 1 0 300 0 0 --from relay1 --chain-id local-stafih
 
 stafihubd tx mining withdraw 1 10ufis 0 --from test --chain-id local-stafihub --keyring-backend file
 
+### rvalidator
+
+stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
+
+stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
 ## Operate examples for user
 
 ### liquidity bond (gaiad example):
 
 ```
-gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --memo 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
+gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1000000stake --note 1:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --chain-id local-cosmos
 ```
 
 ### recover (gaiad example):
