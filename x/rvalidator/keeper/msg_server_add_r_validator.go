@@ -48,7 +48,7 @@ func (k msgServer) AddRValidator(goCtx context.Context, msg *types.MsgAddRValida
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
 			sdk.NewAttribute(types.AttributeKeyPoolAddress, msg.PoolAddress),
 			sdk.NewAttribute(types.AttributeKeyChainEra, fmt.Sprintf("%d", chainEra.Era)),
-			sdk.NewAttribute(types.AttributeKeyAddresses, msg.ValAddress),
+			sdk.NewAttribute(types.AttributeKeyAddedAddress, msg.ValAddress),
 		),
 	)
 	return &types.MsgAddRValidatorResponse{}, nil

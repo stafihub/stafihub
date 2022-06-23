@@ -20,9 +20,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgInitRValidator:
 			res, err := msgServer.InitRValidator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRmRValidator:
-			res, err := msgServer.RmRValidator(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgSetCycleSeconds:
 			res, err := msgServer.SetCycleSeconds(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

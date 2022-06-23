@@ -10,7 +10,6 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgInitRValidator{}, "rvalidator/InitRValidator", nil)
-	cdc.RegisterConcrete(&MsgRmRValidator{}, "rvalidator/RmRValidator", nil)
 	cdc.RegisterConcrete(&UpdateRValidatorProposal{}, "rvalidator/UpdateRValidator", nil)
 	cdc.RegisterConcrete(&UpdateRValidatorReportProposal{}, "rvalidator/UpdateRValidatorReport", nil)
 	cdc.RegisterConcrete(&MsgSetCycleSeconds{}, "rvalidator/SetCycleSeconds", nil)
@@ -22,9 +21,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgInitRValidator{},
-	)
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRmRValidator{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&UpdateRValidatorProposal{},

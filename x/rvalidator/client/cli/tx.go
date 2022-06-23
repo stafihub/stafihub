@@ -30,7 +30,6 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdInitRValidator())
-	cmd.AddCommand(CmdRmRValidator())
 	cmd.AddCommand(CmdUpdateRValidator())
 	cmd.AddCommand(CmdSetCycleSeconds())
 	cmd.AddCommand(CmdSetShuffleSeconds())

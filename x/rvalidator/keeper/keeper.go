@@ -207,3 +207,4 @@ func (k Keeper) GetShuffleSeconds(ctx sdk.Context, denom string) *types.ShuffleS
 
 	return &shuffleSeconds
 }
+
