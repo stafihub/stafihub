@@ -29,22 +29,28 @@ stafihubd query ledger relay-fee-receiver uratom
 
 
 # default 0.1
-stafihubd tx ledger set-staking-reward-commission uratom 0.1 --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-staking-reward-commission uratom 0.15 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd q ledger staking-reward-commission uratom
 
 # default 0.002
-stafihubd tx ledger set-unbond-commission uratom 0.002 --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-unbond-commission uratom 0.0025 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd q ledger unbond-commission uratom
 
 # default 1000000ufis
-stafihubd tx ledger set-unbond-relay-fee uratom 1000000ufis --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd tx ledger set-unbond-relay-fee uratom 1000005ufis --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd q ledger unbond-relay-fee uratom
 
 
-
+# add relayers
 stafihubd tx relayers add-relayers ledger uratom stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --from admin --chain-id local-stafihub
 
 stafihubd query relayers relayers ledger uratom
 
 
-
+# set threshold
 stafihubd tx relayers set-threshold ledger uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query relayers threshold ledger uratom
@@ -138,6 +144,7 @@ stafihubd query bridge denom-types
 
 ### rdex:
 
+```
 stafihubd tx rdex create-pool 10ufis 20uratom --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx rdex add-provider stafi1qzt0qajzr9df3en5sk06xlk26n30003c8uhdkg --from admin --chain-id local-stafihub --keyring-backend file
@@ -147,14 +154,14 @@ stafihubd tx rdex add-liquidity  100ufis 200uratom --from admin --chain-id local
 stafihubd tx rdex remove-liquidity 10 5 1uratom 1ufis ufis --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx rdex swap 2ufis 1uratom  --from admin --chain-id local-stafihub --keyring-backend file
+```
 
 ### mining:
 
+```
 stafihubd tx mining add-mining-provider stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx  --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx mining add-reward-token ufis 200 --from admin --chain-id local-stafihub --keyring-backend file
-
-
 
 
 stafihubd tx mining add-stake-pool ufis ./add_stake_pool_example.json  --from relay1 --chain-id local-stafihub --keyring-backend file
@@ -166,13 +173,31 @@ stafihubd tx mining claim-reward 0 0 --from my-account --chain-id local-stafihub
 stafihubd tx mining add-reward 1 0 300 0 0 --from relay1 --chain-id local-stafihub --keyring-backend file
 
 stafihubd tx mining withdraw 1 10ufis 0 --from test --chain-id local-stafihub --keyring-backend file
+```
 
 ### rvalidator
 
-stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
+```
+# add relayers
+stafihubd tx relayers add-relayers rvalidator uratom stafi14z467aut40mcrt2ddyxf7e74fq99udul7kaf9g:stafi15lne70yk254s0pm2da6g59r82cjymzjqvvqxz7 --keyring-backend file --from admin --chain-id local-stafihub
+
+stafihubd q relayers relayers rvalidator uratom
+
+# set threshold
+stafihubd tx relayers set-threshold rvalidator uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd q relayers threshold rvalidator uratom
+
+# init rvalidator
+stafihubd tx rvalidator init-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
 
 stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
 
+# add rvalidator
+stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper1cad0efr25faywnjp8qp36l8zlqa2sgz0h686mv  --chain-id local-stafihub --keyring-backend file --from admin
+
+stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+```
 ## Operate examples for user
 
 ### liquidity bond (gaiad example):
