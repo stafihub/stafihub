@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/rvalidator/types"
@@ -25,6 +26,16 @@ func (k msgServer) RmRValidator(goCtx context.Context, msg *types.MsgRmRValidato
 		return nil, types.ErrRValidatorNotExist
 	}
 
+	snapShots := k.ledgerKeeper.CurrentEraSnapshots(ctx, msg.Denom)
+	if len(snapShots.ShotIds) > 0 {
+		return nil, types.ErrLedgerIsBusyWithEra
+	}
+
+	chainEra, found := k.ledgerKeeper.GetChainEra(ctx, msg.Denom)
+	if !found {
+		return nil, types.ErrLedgerChainEraNotExist
+	}
+
 	k.Keeper.RemoveSelectedRValidator(ctx, &rValidator)
 
 	ctx.EventManager().EmitEvent(
@@ -32,6 +43,7 @@ func (k msgServer) RmRValidator(goCtx context.Context, msg *types.MsgRmRValidato
 			types.EventTypeRmRValidator,
 			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
 			sdk.NewAttribute(types.AttributeKeyPoolAddress, msg.PoolAddress),
+			sdk.NewAttribute(types.AttributeKeyChainEra, fmt.Sprintf("%d", chainEra.Era)),
 			sdk.NewAttribute(types.AttributeKeyAddress, msg.ValAddress),
 		),
 	)
