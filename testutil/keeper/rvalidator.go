@@ -38,6 +38,7 @@ func RvalidatorKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	)
 	sudoKeeper, _ := SudoKeeper(t)
 	rbankKeeper, _ := RbankKeeper(t)
+	ledgerKeeper, _ := LedgerKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
@@ -45,6 +46,7 @@ func RvalidatorKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		paramsSubspace,
 		sudoKeeper,
 		rbankKeeper,
+		ledgerKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
