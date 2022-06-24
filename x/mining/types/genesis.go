@@ -20,7 +20,10 @@ func DefaultGenesis() *GenesisState {
 		MiningProviderSwitch: true,
 		MaxStakeItemNumber:   DefaultMaxStakeItemNumber,
 		StakeTokenList:       []string{},
-		StakeItemLimit:       &StakeItemLimit{},
+		StakeItemLimit: &StakeItemLimit{
+			MaxPowerRewardRate: DefaultMaxPowerRewardRate,
+			MaxLockSecond:      DefaultMaxLockSecond,
+		},
 	}
 }
 
