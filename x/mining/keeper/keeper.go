@@ -121,6 +121,20 @@ func (k Keeper) GetStakeItemList(ctx sdk.Context, stakePoolIndex uint32) []*type
 	return stakeItemList
 }
 
+func (k Keeper) GetAllStakeItemList(ctx sdk.Context) []*types.StakeItem {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.StakeItemStoreKeyPrefix)
+	defer iterator.Close()
+
+	stakeItemList := make([]*types.StakeItem, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		stakeItem := types.StakeItem{}
+		k.cdc.MustUnmarshal(iterator.Value(), &stakeItem)
+		stakeItemList = append(stakeItemList, &stakeItem)
+	}
+	return stakeItemList
+}
+
 func (k Keeper) GetUserStakeRecordNextIndex(ctx sdk.Context, userAddress string, stakePoolIndex uint32) uint32 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.UserStakeRecordIndexStoreKeyPrefix)
 
@@ -233,6 +247,20 @@ func (k Keeper) GetUserStakeRecordList(ctx sdk.Context, userAddress string, stak
 	return userStakeRecordList
 }
 
+func (k Keeper) GetAllUserStakeRecordList(ctx sdk.Context) []*types.UserStakeRecord {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.UserStakeRecordStoreKeyPrefix)
+	defer iterator.Close()
+
+	userStakeRecordList := make([]*types.UserStakeRecord, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		userStakeRecordPool := types.UserStakeRecord{}
+		k.cdc.MustUnmarshal(iterator.Value(), &userStakeRecordPool)
+		userStakeRecordList = append(userStakeRecordList, &userStakeRecordPool)
+	}
+	return userStakeRecordList
+}
+
 func (k Keeper) AddMiningProvider(ctx sdk.Context, addr sdk.AccAddress) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.MiningProviderStoreKey(addr), []byte{})
@@ -321,7 +349,7 @@ func (k Keeper) GetMaxRewardPoolNumber(ctx sdk.Context) uint32 {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.MaxRewardPoolNumberStoreKey)
 	if b == nil {
-		return 32
+		return types.DefaultMaxRewardPoolNumber
 	}
 	return binary.LittleEndian.Uint32(b)
 }
@@ -360,7 +388,7 @@ func (k Keeper) GetMaxStakeItemNumber(ctx sdk.Context) uint32 {
 	store := ctx.KVStore(k.storeKey)
 	b := store.Get(types.MaxRewardPoolNumberStoreKey)
 	if b == nil {
-		return 6
+		return types.DefaultMaxStakeItemNumber
 	}
 	return binary.LittleEndian.Uint32(b)
 }

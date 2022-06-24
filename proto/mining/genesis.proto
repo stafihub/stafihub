@@ -3,6 +3,7 @@ package stafihub.stafihub.mining;
 
 import "gogoproto/gogo.proto";
 import "mining/params.proto";
+import "mining/models.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/stafihub/stafihub/x/mining/types";
@@ -10,5 +11,15 @@ option go_package = "github.com/stafihub/stafihub/x/mining/types";
 // GenesisState defines the mining module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated StakePool stakePoolList = 2;
+  repeated StakeItem stakeItemList = 3;
+  repeated UserStakeRecord userStakeRecordList = 4;
+  repeated string miningProviderList = 5;
+  repeated RewardToken rewardTokenList = 6;
+  uint32 maxRewardPoolNumber = 7;
+  bool miningProviderSwitch = 8;
+  uint32 maxStakeItemNumber = 9;
+  repeated string stakeTokenList = 10;
+  StakeItemLimit stakeItemLimit = 11;
   // this line is used by starport scaffolding # genesis/proto/state
 }

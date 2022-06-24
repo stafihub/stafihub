@@ -29,9 +29,11 @@ func KeyPrefix(p string) []byte {
 }
 
 var (
-	RewardFactor              = sdk.NewInt(1e12)
-	DefaultMaxPowerRewardRate = utils.NewDec(24)
-	DefaultMaxLockSecond      = uint64(360 * 24 * 60 * 60)
+	RewardFactor               = sdk.NewInt(1e12)
+	DefaultMaxPowerRewardRate  = utils.NewDec(24)
+	DefaultMaxLockSecond       = uint64(360 * 24 * 60 * 60)
+	DefaultMaxRewardPoolNumber = uint32(32)
+	DefaultMaxStakeItemNumber  = uint32(6)
 )
 
 var (
