@@ -24,6 +24,7 @@ type SudoKeeper interface {
 
 type RBankKeeper interface {
 	CheckValAddress(ctx sdk.Context, denom, address string) error
+	CheckAccAddress(ctx sdk.Context, denom, address string) error
 }
 
 type LedgerKeeper interface {

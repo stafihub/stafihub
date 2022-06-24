@@ -10,6 +10,11 @@ option go_package = "github.com/stafihub/stafihub/x/rvalidator/types";
 // GenesisState defines the rvalidator module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated RValidator selectedRValidatorList = 2;
+  repeated Cycle latestVotedCycleList = 3;
+  repeated Cycle latestDealedCycleList = 4;
+  repeated CycleSeconds cycleSecondsList = 5;
+  repeated ShuffleSeconds shuffleSecondsList = 6;
   // this line is used by starport scaffolding # genesis/proto/state
 }
 

@@ -17,9 +17,14 @@ func (k msgServer) AddRValidator(goCtx context.Context, msg *types.MsgAddRValida
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	if err := k.rBankKeeper.CheckValAddress(ctx, msg.Denom, msg.ValAddress); err != nil {
+	if err := k.RBankKeeper.CheckValAddress(ctx, msg.Denom, msg.ValAddress); err != nil {
 		return nil, err
 	}
+
+	if err := k.RBankKeeper.CheckAccAddress(ctx, msg.Denom, msg.PoolAddress); err != nil {
+		return nil, err
+	}
+
 	rValidator := types.RValidator{
 		Denom:       msg.Denom,
 		PoolAddress: msg.PoolAddress,

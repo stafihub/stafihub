@@ -15,10 +15,13 @@ func (k msgServer) InitRValidator(goCtx context.Context, msg *types.MsgInitRVali
 	if !isAdmin {
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
+	if err := k.RBankKeeper.CheckAccAddress(ctx, msg.Denom, msg.PoolAddress); err != nil {
+		return nil, err
+	}
 
 	addresses := ""
 	for _, address := range msg.ValAddressList {
-		if err := k.rBankKeeper.CheckValAddress(ctx, msg.Denom, address); err != nil {
+		if err := k.RBankKeeper.CheckValAddress(ctx, msg.Denom, address); err != nil {
 			return nil, err
 		}
 		rValidator := types.RValidator{

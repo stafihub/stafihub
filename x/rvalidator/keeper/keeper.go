@@ -19,7 +19,7 @@ type (
 		paramstore paramtypes.Subspace
 
 		sudoKeeper   types.SudoKeeper
-		rBankKeeper  types.RBankKeeper
+		RBankKeeper  types.RBankKeeper
 		ledgerKeeper types.LedgerKeeper
 	}
 )
@@ -45,7 +45,7 @@ func NewKeeper(
 		memKey:       memKey,
 		paramstore:   ps,
 		sudoKeeper:   sudoKeeper,
-		rBankKeeper:  rBankKeeper,
+		RBankKeeper:  rBankKeeper,
 		ledgerKeeper: ledgerKeeper,
 	}
 }
@@ -137,15 +137,31 @@ func (k Keeper) GetLatestVotedCycle(ctx sdk.Context, denom, poolAddress string) 
 	bts := store.Get(types.LatestVotedCycleStoreKey(denom, poolAddress))
 	if bts == nil {
 		return &types.Cycle{
-			Denom:   denom,
-			Version: 0,
-			Number:  0,
+			Denom:       denom,
+			PoolAddress: poolAddress,
+			Version:     0,
+			Number:      0,
 		}
 	}
 	cycle := types.Cycle{}
 	k.cdc.MustUnmarshal(bts, &cycle)
 
 	return &cycle
+}
+
+func (k Keeper) GetAllLatestVotedCycle(ctx sdk.Context) []*types.Cycle {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.LatestVotedCycleStoreKeyPrefix)
+	defer iterator.Close()
+
+	cycleList := make([]*types.Cycle, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		cycle := types.Cycle{}
+		k.cdc.MustUnmarshal(iterator.Value(), &cycle)
+		cycleList = append(cycleList, &cycle)
+	}
+
+	return cycleList
 }
 
 func (k Keeper) SetLatestDealedCycle(ctx sdk.Context, cycle *types.Cycle) {
@@ -163,6 +179,21 @@ func (k Keeper) GetLatestDealedCycle(ctx sdk.Context, denom, poolAddress string)
 	k.cdc.MustUnmarshal(bts, &cycle)
 
 	return &cycle, true
+}
+
+func (k Keeper) GetAllLatestDealedCycle(ctx sdk.Context) []*types.Cycle {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.LatestDealedCycleStoreKeyPrefix)
+	defer iterator.Close()
+
+	cycleList := make([]*types.Cycle, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		cycle := types.Cycle{}
+		k.cdc.MustUnmarshal(iterator.Value(), &cycle)
+		cycleList = append(cycleList, &cycle)
+	}
+
+	return cycleList
 }
 
 func (k Keeper) SetCycleSeconds(ctx sdk.Context, cycleSeconds *types.CycleSeconds) {
@@ -184,6 +215,20 @@ func (k Keeper) GetCycleSeconds(ctx sdk.Context, denom string) *types.CycleSecon
 	cycleSeconds := types.CycleSeconds{}
 	k.cdc.MustUnmarshal(bts, &cycleSeconds)
 	return &cycleSeconds
+}
+
+func (k Keeper) GetAllCycleSeconds(ctx sdk.Context) []*types.CycleSeconds {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.CycleSecondsStoreKeyPrefix)
+	defer iterator.Close()
+
+	cycleSecondsList := make([]*types.CycleSeconds, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		cycleSeconds := types.CycleSeconds{}
+		k.cdc.MustUnmarshal(iterator.Value(), &cycleSeconds)
+		cycleSecondsList = append(cycleSecondsList, &cycleSeconds)
+	}
+	return cycleSecondsList
 }
 
 func (k Keeper) SetShuffleSeconds(ctx sdk.Context, shuffleSeconds *types.ShuffleSeconds) {
@@ -208,3 +253,17 @@ func (k Keeper) GetShuffleSeconds(ctx sdk.Context, denom string) *types.ShuffleS
 	return &shuffleSeconds
 }
 
+func (k Keeper) GetAllShuffleSeconds(ctx sdk.Context) []*types.ShuffleSeconds {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ShuffleSecondsStoreKeyPrefix)
+	defer iterator.Close()
+
+	shuffleSecondsList := make([]*types.ShuffleSeconds, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		shuffleSeconds := types.ShuffleSeconds{}
+		k.cdc.MustUnmarshal(iterator.Value(), &shuffleSeconds)
+		shuffleSecondsList = append(shuffleSecondsList, &shuffleSeconds)
+	}
+
+	return shuffleSecondsList
+}
