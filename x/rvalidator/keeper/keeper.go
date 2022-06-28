@@ -169,16 +169,21 @@ func (k Keeper) SetLatestDealedCycle(ctx sdk.Context, cycle *types.Cycle) {
 	store.Set(types.LatestDealedCycleStoreKey(cycle.Denom, cycle.PoolAddress), k.cdc.MustMarshal(cycle))
 }
 
-func (k Keeper) GetLatestDealedCycle(ctx sdk.Context, denom, poolAddress string) (*types.Cycle, bool) {
+func (k Keeper) GetLatestDealedCycle(ctx sdk.Context, denom, poolAddress string) *types.Cycle {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.LatestDealedCycleStoreKey(denom, poolAddress))
 	if bts == nil {
-		return nil, false
+		return &types.Cycle{
+			Denom:       denom,
+			PoolAddress: poolAddress,
+			Version:     0,
+			Number:      0,
+		}
 	}
 	cycle := types.Cycle{}
 	k.cdc.MustUnmarshal(bts, &cycle)
 
-	return &cycle, true
+	return &cycle
 }
 
 func (k Keeper) GetAllLatestDealedCycle(ctx sdk.Context) []*types.Cycle {

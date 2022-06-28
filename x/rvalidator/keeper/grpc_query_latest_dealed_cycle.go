@@ -16,11 +16,7 @@ func (k Keeper) LatestDealedCycle(goCtx context.Context, req *types.QueryLatestD
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	latestDealedCycle, found := k.GetLatestDealedCycle(ctx, req.Denom, req.PoolAddress)
-	if !found {
-		return nil, status.Error(codes.NotFound, codes.NotFound.String())
-	}
 	return &types.QueryLatestDealedCycleResponse{
-		LatestDealedCycle: latestDealedCycle,
+		LatestDealedCycle: k.GetLatestDealedCycle(ctx, req.Denom, req.PoolAddress),
 	}, nil
 }

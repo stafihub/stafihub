@@ -22770,6 +22770,9 @@ paths:
                   number:
                     type: string
                     format: uint64
+                  seconds:
+                    type: string
+                    format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -22820,6 +22823,9 @@ paths:
                     type: string
                     format: uint64
                   number:
+                    type: string
+                    format: uint64
+                  seconds:
                     type: string
                     format: uint64
         default:
@@ -40239,6 +40245,9 @@ definitions:
       number:
         type: string
         format: uint64
+      seconds:
+        type: string
+        format: uint64
   stafihub.stafihub.rvalidator.CycleSeconds:
     type: object
     properties:
@@ -40291,6 +40300,9 @@ definitions:
           number:
             type: string
             format: uint64
+          seconds:
+            type: string
+            format: uint64
   stafihub.stafihub.rvalidator.QueryLatestVotedCycleResponse:
     type: object
     properties:
@@ -40305,6 +40317,9 @@ definitions:
             type: string
             format: uint64
           number:
+            type: string
+            format: uint64
+          seconds:
             type: string
             format: uint64
   stafihub.stafihub.rvalidator.QueryParamsResponse:

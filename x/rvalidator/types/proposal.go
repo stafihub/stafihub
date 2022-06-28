@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/hex"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -78,6 +79,9 @@ func (msg *UpdateRValidatorProposal) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.Denom == msg.Cycle.Denom && msg.PoolAddress == msg.Cycle.PoolAddress {
+		return fmt.Errorf("denom or pool address not equal")
+	}
 	return nil
 }
 
@@ -132,6 +136,9 @@ func (msg *UpdateRValidatorReportProposal) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	if msg.Denom == msg.Cycle.Denom && msg.PoolAddress == msg.Cycle.PoolAddress {
+		return fmt.Errorf("denom or pool address not equal")
 	}
 	return nil
 }

@@ -40,8 +40,8 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 	if !(p.Cycle.Version > latestVotedCycle.Version || (p.Cycle.Version == latestVotedCycle.Version && p.Cycle.Number > latestVotedCycle.Number)) {
 		return types.ErrCycleBehindLatestCycle
 	}
-	latestDealedCycle, found := k.GetLatestDealedCycle(ctx, p.Denom, p.PoolAddress)
-	if found && (latestDealedCycle.Number != latestVotedCycle.Number || latestDealedCycle.Version != latestVotedCycle.Version) {
+	latestDealedCycle := k.GetLatestDealedCycle(ctx, p.Denom, p.PoolAddress)
+	if latestDealedCycle.Number != latestVotedCycle.Number || latestDealedCycle.Version != latestVotedCycle.Version {
 		return types.ErrLatestVotedCycleNotDealed
 	}
 	snapShots := k.ledgerKeeper.CurrentEraSnapshots(ctx, p.Denom)
