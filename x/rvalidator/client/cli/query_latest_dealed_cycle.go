@@ -20,7 +20,7 @@ func CmdLatestDealedCycle() *cobra.Command {
 			reqDenom := args[0]
 			reqPoolAddress := args[1]
 
-			clientCtx, err := client.GetClientTxContext(cmd)
+			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}

@@ -32,7 +32,7 @@ var (
 	RewardFactor               = sdk.NewInt(1e12)
 	DefaultMaxPowerRewardRate  = utils.NewDec(24)
 	DefaultMaxLockSecond       = uint64(360 * 24 * 60 * 60)
-	DefaultMaxRewardPoolNumber = uint32(32)
+	DefaultMaxRewardPoolNumber = uint32(2)
 	DefaultMaxStakeItemNumber  = uint32(6)
 )
 
