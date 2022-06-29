@@ -2,8 +2,6 @@
 
 ## Quickstart
 
-**Get Ready**
-
 This Quickstart tutorial completes the following actions:
 
 * Ensure that you have [compilation prerequisites](./install.md)
@@ -69,7 +67,7 @@ For optimized node performance, edit the `~/.stafihub/config/app.toml` file to e
 minimum-gas-prices = "0.0025ufis"
 ```
 
-Your full node has been initialized! 
+Your full node has been initialized!
 
 ## Genesis & Seeds
 
@@ -95,7 +93,7 @@ stafihubd start
 
 Your node needs to know how to find peers. You'll need to add healthy seed nodes to `$HOME/.stafihub/config/config.toml`. The [`mainnets`](https://github.com/stafihub/network/tree/main/mainnets) repo contains links to some seed nodes.
 
-If those seeds aren't working, you can find more seeds and persistent peers on a Stafihub explorer (a list can be found on the [mainnets](https://github.com/stafihub/network/tree/main/mainnets)). 
+If those seeds aren't working, you can find more seeds and persistent peers on a Stafihub explorer (a list can be found on the [mainnets](https://github.com/stafihub/network/tree/main/mainnets)).
 
 ## A Note on Gas and Fees
 
@@ -107,13 +105,13 @@ Transactions on the Stafihub network need to include a transaction fee in order 
 fees = ceil(gas * gasPrices)
 ```
 
-The `gas` is dependent on the transaction. Different transaction require different amount of `gas`. The `gas` amount for a transaction is calculated as it is being processed, but there is a way to estimate it beforehand by using the `auto` value for the `gas` flag. Of course, this only gives an estimate. You can adjust this estimate with the flag `--gas-adjustment` (default `1.0`) if you want to be sure you provide enough `gas` for the transaction. 
+The `gas` is dependent on the transaction. Different transaction require different amount of `gas`. The `gas` amount for a transaction is calculated as it is being processed, but there is a way to estimate it beforehand by using the `auto` value for the `gas` flag. Of course, this only gives an estimate. You can adjust this estimate with the flag `--gas-adjustment` (default `1.0`) if you want to be sure you provide enough `gas` for the transaction.
 
-The `gasPrice` is the price of each unit of `gas`. Each validator sets a `min-gas-price` value, and will only include transactions that have a `gasPrice` greater than their `min-gas-price`. 
+The `gasPrice` is the price of each unit of `gas`. Each validator sets a `min-gas-price` value, and will only include transactions that have a `gasPrice` greater than their `min-gas-price`.
 
-The transaction `fees` are the product of `gas` and `gasPrice`. As a user, you have to input 2 out of 3. The higher the `gasPrice`/`fees`, the higher the chance that your transaction will get included in a block. 
+The transaction `fees` are the product of `gas` and `gasPrice`. As a user, you have to input 2 out of 3. The higher the `gasPrice`/`fees`, the higher the chance that your transaction will get included in a block.
 
-For mainnet, the recommended `gas-prices` is `0.0025ufis`. 
+For mainnet, the recommended `gas-prices` is `0.0025ufis`.
 
 ## Set `minimum-gas-prices`
 
@@ -151,11 +149,11 @@ Check that everything is running smoothly:
 stafihubd status
 ```
 
-View the status of the network with the [stafihub Explorer](https://stafihub.io). 
+View the status of the network with the [stafihub Explorer](https://stafihub.io).
 
 ## Enable the REST API
 
-By default, the REST API is disabled. To enable the REST API, edit the `~/.stafihub/config/app.toml` file, and set `enable` to `true` in the `[api]` section. 
+By default, the REST API is disabled. To enable the REST API, edit the `~/.stafihub/config/app.toml` file, and set `enable` to `true` in the `[api]` section.
 
 ```toml
 ###############################################################################
@@ -262,14 +260,14 @@ If you plan to start a new network from the exported state, export with the `--f
 stafihubd export --height [height] --for-zero-height > [filename].json
 ```
 
-## Verify Mainnet 
+## Verify Mainnet
 
 Help to prevent a catastrophe by running invariants on each block on your full
 node. In essence, by running invariants you ensure that the state of mainnet is
 the correct expected state. One vital invariant check is that no atoms are
 being created or destroyed outside of expected protocol, however there are many
-other invariant checks each unique to their respective module. Because invariant checks 
-are computationally expensive, they are not enabled by default. To run a node with 
+other invariant checks each unique to their respective module. Because invariant checks
+are computationally expensive, they are not enabled by default. To run a node with
 these checks start your node with the assert-invariants-blockly flag:
 
 ```bash
@@ -277,7 +275,7 @@ stafihubd start --assert-invariants-blockly
 ```
 
 If an invariant is broken on your node, your node will panic and prompt you to send
-a transaction which will halt mainnet. For example the provided message may look like: 
+a transaction which will halt mainnet. For example the provided message may look like:
 
 ```bash
 invariant broken:
@@ -290,4 +288,4 @@ invariant broken:
 ```
 
 When submitting a invariant-broken transaction, transaction fee tokens are not
-deducted as the blockchain will halt (invariant-broken transactions are free transactions). 
+deducted as the blockchain will halt (invariant-broken transactions are free transactions).

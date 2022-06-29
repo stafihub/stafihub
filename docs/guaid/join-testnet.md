@@ -1,4 +1,4 @@
-# Join the Public Testnet 
+# Join the Public Testnet
 
 ::: tip Current Testnet
 See the [testnet repo](https://github.com/stafihub/network/tree/main/testnets) for
@@ -10,6 +10,7 @@ information on the latest testnet, including details about the genesis file.
 :::
 
 ## Starting a New Node
+
 To start a new node, the mainnet instructions apply:
 
 - [Join the mainnet](./join-mainnet.md)

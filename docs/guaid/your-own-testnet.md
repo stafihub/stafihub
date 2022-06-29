@@ -91,7 +91,7 @@ make build-docker-stafihubdnode
 
 To start a 4 node testnet run:
 
-```
+```bash
 make localnet-start
 ```
 
@@ -107,7 +107,7 @@ The ports for each node are found in this table:
 
 To update the binary, just rebuild it and restart the nodes:
 
-```
+```bash
 make build-linux localnet-start
 ```
 
@@ -157,7 +157,7 @@ Each `./build/nodeN` directory is mounted to the `/stafihubd` directory in each 
 Logs are saved under each `./build/nodeN/stafihubd/stafihub.log`. You can also watch logs
 directly via Docker, for example:
 
-```
+```bash
 docker logs -f stafihubdnode0
 ```
 
@@ -181,7 +181,7 @@ funds!
 
 If you have multiple binaries with different names, you can specify which one to run with the BINARY environment variable. The path of the binary is relative to the attached volume. For example:
 
-```
+```bash
 # Run with custom binary
 BINARY=stafihubfoo make localnet-start
 ```
@@ -201,7 +201,7 @@ Automated deployments are done using [Terraform](https://www.terraform.io/) to c
 - Create an [AWS API token](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) with EC2 create capability.
 - Create SSH keys
 
-```
+```bash
 export AWS_ACCESS_KEY_ID="2345234jk2lh4234"
 export AWS_SECRET_ACCESS_KEY="234jhkg234h52kh4g5khg34"
 export TESTNET_NAME="remotenet"
@@ -214,25 +214,25 @@ These will be used by both `terraform` and `ansible`.
 
 ### Create a Remote Network
 
-```
+```bash
 SERVERS=1 REGION_LIMIT=1 make validators-start
 ```
 
 The testnet name is what's going to be used in --chain-id, while the cluster name is the administrative tag in AWS for the servers. The code will create SERVERS amount of servers in each availability zone up to the number of REGION_LIMITs, starting at us-east-2. (us-east-1 is excluded.) The below BaSH script does the same, but sometimes it's more comfortable for input.
 
-```
+```bash
 ./new-testnet.sh "$TESTNET_NAME" "$CLUSTER_NAME" 1 1
 ```
 
 ### Quickly see the /status Endpoint
 
-```
+```bash
 make validators-status
 ```
 
 ### Delete Servers
 
-```
+```bash
 make validators-stop
 ```
 
@@ -240,7 +240,7 @@ make validators-stop
 
 You can ship logs to Logz.io, an Elastic stack (Elastic search, Logstash and Kibana) service provider. You can set up your nodes to log there automatically. Create an account and get your API key from the notes on [this page](https://app.logz.io/#/dashboard/data-sources/Filebeat), then:
 
-```
+```bash
 yum install systemd-devel || echo "This will only work on RHEL-based systems."
 apt-get install libsystemd-dev || echo "This will only work on Debian-based systems."
 
@@ -252,6 +252,6 @@ ansible-playbook -i inventory/digital_ocean.py -l remotenet logzio.yml -e LOGZIO
 
 You can install the DataDog agent with:
 
-```
+```bash
 make datadog-install
 ```

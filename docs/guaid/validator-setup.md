@@ -22,8 +22,8 @@ stafihubd tendermint show-validator
 
 To create your validator, just use the following command:
 
-::: warning 
-Don't use more `ufis` than you have! 
+::: warning
+Don't use more `ufis` than you have!
 :::
 
 ```bash
@@ -66,14 +66,14 @@ Your `stafivalconspub` can be used to create a new validator by staking tokens. 
 stafihubd tendermint show-validator
 ```
 
-Next, craft your `stafihubd gentx` command. 
+Next, craft your `stafihubd gentx` command.
 
 ::: tip
 A `gentx` is a JSON file carrying a self-delegation. All genesis transactions are collected by a `genesis coordinator` and validated against an initial `genesis.json`.
 :::
 
 ::: warning Note
-Don't use more `ufis` than you have! 
+Don't use more `ufis` than you have!
 :::
 
 ```bash
@@ -90,7 +90,7 @@ stafihubd gentx \
 When specifying commission parameters, the `commission-max-change-rate` is used to measure % _point_ change over the `commission-rate`. E.g. 1% to 2% is a 100% rate increase, but only 1 percentage point.
 :::
 
-You can then submit your `gentx` on the [repository](https://github.com/stafihub/network). These `gentx` will be used to form the final genesis file. 
+You can then submit your `gentx` on the [repository](https://github.com/stafihub/network). These `gentx` will be used to form the final genesis file.
 
 ## Edit Validator Description
 
@@ -117,7 +117,7 @@ __Note__: The `commission-rate` value must adhere to the following invariants:
 
 - Must be between 0 and the validator's `commission-max-rate`
 - Must not exceed the validator's `commission-max-change-rate` which is maximum
-  % point change rate **per day**. In other words, a validator can only change
+  % point change rate __per day__. In other words, a validator can only change
   its commission once per day and within `commission-max-change-rate` bounds.
 
 ## View Validator Description
@@ -143,8 +143,8 @@ When a validator is "jailed" for downtime, you must submit an `Unjail` transacti
 
 ```bash
 stafihubd tx slashing unjail \
-	--from=<key_name> \
-	--chain-id=<chain_id>
+ --from=<key_name> \
+ --chain-id=<chain_id>
 ```
 
 ## Confirm Your Validator is Running
@@ -174,7 +174,7 @@ the block.
 
 ### Problem #1: My validator has `voting_power: 0`
 
-Your validator has become jailed. Validators get jailed, i.e. get removed from the active validator set, if they do not vote on `500` of the last `10000` blocks, or if they double sign. 
+Your validator has become jailed. Validators get jailed, i.e. get removed from the active validator set, if they do not vote on `500` of the last `10000` blocks, or if they double sign.
 
 If you got jailed for downtime, you can get your voting power back to your validator. First, if `stafihubd` is not running, start it up again:
 

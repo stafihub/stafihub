@@ -10,6 +10,7 @@ mainnet as either a [Full Node](./join-mainnet.md) or a
 Install `make` and `gcc`.
 
 On Ubuntu this can be done with the following:
+
 ```bash
 sudo apt-get update
 
@@ -40,4 +41,3 @@ correct [released version](https://github.com/stafihub/stafihub/releases).
 git clone -b <latest-release-tag> https://github.com/stafihub/stafihub
 cd stafihub && make install
 ```
-
