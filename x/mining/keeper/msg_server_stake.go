@@ -55,6 +55,7 @@ func (k msgServer) Stake(goCtx context.Context, msg *types.MsgStake) (*types.Msg
 			RewardPoolIndex:  rewardPool.Index,
 			RewardTokenDenom: rewardPool.RewardTokenDenom,
 			RewardDebt:       userStakePower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
+			ClaimedAmount:    sdk.ZeroInt(),
 		})
 	}
 	if !canStake {

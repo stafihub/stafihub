@@ -29,7 +29,7 @@ func updateStakePool(stakePool *types.StakePool, curBlockTime uint64) {
 	}
 }
 
-// will update {userStakeRecord.RewardInfos}
+// will update {userStakeRecord.RewardInfos[n].ClaimedAmount} {stakePool.RewardPools[n].TotalClaimedAmount}, call after updateStakePool()
 func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStakeRecord) sdk.Coins {
 	userRewardInfoMap := make(map[uint32]*types.UserRewardInfo)
 	for _, rewardInfo := range userStakeRecord.UserRewardInfos {
@@ -38,24 +38,20 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 
 	rewardCoins := sdk.NewCoins()
 	for _, rewardPool := range stakePool.RewardPools {
-		preRewardDebt := sdk.ZeroInt()
 		var willUseRewardInfo *types.UserRewardInfo
-
 		if rewardInfo, exist := userRewardInfoMap[rewardPool.Index]; exist {
-			preRewardDebt = rewardInfo.RewardDebt
-			rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
 			willUseRewardInfo = rewardInfo
 		} else {
 			willUseRewardInfo = &types.UserRewardInfo{
 				RewardPoolIndex:  rewardPool.Index,
 				RewardTokenDenom: rewardPool.RewardTokenDenom,
-				RewardDebt:       userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
+				RewardDebt:       sdk.ZeroInt(),
 				ClaimedAmount:    sdk.ZeroInt(),
 			}
 			userStakeRecord.UserRewardInfos = append(userStakeRecord.UserRewardInfos, willUseRewardInfo)
 		}
 
-		rewardAmount := userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor).Sub(preRewardDebt)
+		rewardAmount := userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor).Sub(willUseRewardInfo.RewardDebt)
 		if rewardAmount.IsPositive() {
 			rewardCoins = rewardCoins.Add(sdk.NewCoin(rewardPool.RewardTokenDenom, rewardAmount))
 			willUseRewardInfo.ClaimedAmount = willUseRewardInfo.ClaimedAmount.Add(rewardAmount)
@@ -63,6 +59,29 @@ func calRewardTokens(stakePool *types.StakePool, userStakeRecord *types.UserStak
 		}
 	}
 	return rewardCoins
+}
+
+// will update {userStakeRecord.RewardInfos[n].RewardDebt}, call after calRewardTokens()
+func setNewRewardDebt(stakePool *types.StakePool, userStakeRecord *types.UserStakeRecord) {
+	userRewardInfoMap := make(map[uint32]*types.UserRewardInfo)
+	for _, rewardInfo := range userStakeRecord.UserRewardInfos {
+		userRewardInfoMap[rewardInfo.RewardPoolIndex] = rewardInfo
+	}
+
+	for _, rewardPool := range stakePool.RewardPools {
+
+		if rewardInfo, exist := userRewardInfoMap[rewardPool.Index]; exist {
+			rewardInfo.RewardDebt = userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor)
+		} else {
+			newUserRewardInfo := &types.UserRewardInfo{
+				RewardPoolIndex:  rewardPool.Index,
+				RewardTokenDenom: rewardPool.RewardTokenDenom,
+				RewardDebt:       userStakeRecord.StakedPower.Mul(rewardPool.RewardPerPower).Quo(types.RewardFactor),
+				ClaimedAmount:    sdk.ZeroInt(),
+			}
+			userStakeRecord.UserRewardInfos = append(userStakeRecord.UserRewardInfos, newUserRewardInfo)
+		}
+	}
 }
 
 func getPoolReward(from, to uint64, rewardPerSecond, leftRewardAmount sdk.Int) sdk.Int {

@@ -31,6 +31,7 @@ func (k msgServer) ClaimReward(goCtx context.Context, msg *types.MsgClaimReward)
 	updateStakePool(stakePool, curBlockTime)
 
 	willClaimCoins := calRewardTokens(stakePool, userStakeRecord)
+	setNewRewardDebt(stakePool, userStakeRecord)
 
 	if willClaimCoins.IsAllPositive() {
 		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipientAddr, willClaimCoins); err != nil {
