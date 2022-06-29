@@ -20,7 +20,7 @@ func (k msgServer) SetShuffleSeconds(goCtx context.Context, msg *types.MsgSetShu
 
 	k.Keeper.SetShuffleSeconds(ctx, &types.ShuffleSeconds{
 		Denom:   msg.Denom,
-		Version: shuffleSeconds.Version,
+		Version: shuffleSeconds.Version + 1,
 		Seconds: msg.Seconds,
 	})
 
