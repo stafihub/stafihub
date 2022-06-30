@@ -275,8 +275,8 @@ func (k Keeper) GetUserMintCountList(ctx sdk.Context) []*types.UserMintCount {
 
 		// denomLen := int(key[2+accountLen])
 
-		denom := string(key[2+accountLen+1 : len(key)-4])
-		cycle := sdk.BigEndianToUint64(key[len(key)-4:])
+		denom := string(key[2+accountLen+1 : len(key)-8])
+		cycle := sdk.BigEndianToUint64(key[len(key)-8:])
 
 		count := sdk.BigEndianToUint64(iterator.Value())
 
