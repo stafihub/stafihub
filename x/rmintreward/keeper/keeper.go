@@ -267,13 +267,17 @@ func (k Keeper) GetUserMintCountList(ctx sdk.Context) []*types.UserMintCount {
 
 	userMintCountList := make([]*types.UserMintCount, 0)
 	for ; iterator.Valid(); iterator.Next() {
+		// prefix + accountLen + account + denomLen + denom + cycle
 		key := iterator.Key()
 
 		accountLen := int(key[1])
 		account := sdk.AccAddress(key[2 : 2+accountLen])
-		denomLen := int(key[2+accountLen])
-		denom := string(key[2+accountLen+1 : 2+accountLen+1+denomLen])
-		cycle := sdk.BigEndianToUint64(key[2+accountLen+1+denomLen:])
+
+		// denomLen := int(key[2+accountLen])
+
+		denom := string(key[2+accountLen+1 : len(key)-4])
+		cycle := sdk.BigEndianToUint64(key[len(key)-4:])
+
 		count := sdk.BigEndianToUint64(iterator.Value())
 
 		userMintCountList = append(userMintCountList, &types.UserMintCount{

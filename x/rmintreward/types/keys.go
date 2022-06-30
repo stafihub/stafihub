@@ -96,7 +96,7 @@ func UserMintCountStoreKey(account sdk.AccAddress, denom string, cycle uint64) [
 	copy(key, UserMintCountStoreKeyPrefix)
 	key[prefixLen] = byte(accountLen)
 	copy(key[prefixLen+1:], account)
-	key[prefixLen+1+accountLen] = byte(accountLen)
+	key[prefixLen+1+accountLen] = byte(denomLen)
 	copy(key[prefixLen+1+accountLen+1:], []byte(denom))
 	copy(key[prefixLen+1+accountLen+1+denomLen:], sdk.Uint64ToBigEndian(cycle))
 
