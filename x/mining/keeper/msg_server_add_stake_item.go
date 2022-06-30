@@ -37,6 +37,13 @@ func (k msgServer) AddStakeItem(goCtx context.Context, msg *types.MsgAddStakeIte
 		return nil, types.ErrStakeItemPowerRewardRateExceedLimit
 	}
 
+	// check reward second and lock second
+	for _, rewardPool := range stakePool.RewardPools {
+		if rewardPool.TotalRewardAmount.Quo(rewardPool.RewardPerSecond).LT(sdk.NewIntFromUint64(msg.LockSecond)) {
+			return nil, types.ErrRewardSecondsLessThanMaxLockSeconds
+		}
+	}
+
 	stakeItem := types.StakeItem{
 		Enable:          msg.Enable,
 		Index:           willUseIndex,
