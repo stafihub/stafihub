@@ -14,27 +14,57 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 	if err != nil {
 		return nil, err
 	}
+	// check provider
 	if k.GetMiningProviderSwitch(ctx) && !k.HasMiningProvider(ctx, user) {
 		return nil, types.ErrUserNotMiningProvider
 	}
 
+	// check stake token denom
 	if !k.rDexKeeper.IsRDexLpToken(ctx, msg.StakeTokenDenom) && !k.Keeper.HasStakeToken(ctx, msg.StakeTokenDenom) {
 		return nil, types.ErrStakeTokenPermissionDeny
 	}
 
+	// check rewrad pool number
 	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
 	if len(msg.RewardPoolInfoList) > int(maxRewardPoolNumber) {
 		return nil, types.ErrRewardPoolNumberReachLimit
 	}
+	// check stake item number
 	maxStakeItemNumber := k.Keeper.GetMaxStakeItemNumber(ctx)
 	if len(msg.StakeItemInfoList) > int(maxStakeItemNumber) {
 		return nil, types.ErrStakeItemNumberReachLimit
 	}
-	stakeItemLimit := k.Keeper.GetStakeItemLimit(ctx)
 
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 	willUseStakePoolIndex := k.Keeper.GetStakePoolNextIndex(ctx)
 
+	// check and store stake item
+	stakeItemLimit := k.Keeper.GetStakeItemLimit(ctx)
+	maxLockSecond := uint64(0)
+	for i, stakeItemInfo := range msg.StakeItemInfoList {
+		if stakeItemInfo.LockSecond > maxLockSecond {
+			maxLockSecond = stakeItemInfo.LockSecond
+		}
+
+		if stakeItemInfo.LockSecond > stakeItemLimit.MaxLockSecond {
+			return nil, types.ErrStakeItemEraSecondExceedLimit
+		}
+		if stakeItemInfo.PowerRewardRate.GT(stakeItemLimit.MaxPowerRewardRate) {
+			return nil, types.ErrStakeItemPowerRewardRateExceedLimit
+		}
+
+		stakeItem := types.StakeItem{
+			Index:           uint32(i),
+			StakePoolIndex:  willUseStakePoolIndex,
+			LockSecond:      stakeItemInfo.LockSecond,
+			PowerRewardRate: stakeItemInfo.PowerRewardRate,
+			Enable:          true,
+		}
+		k.Keeper.SetStakeItem(ctx, &stakeItem)
+	}
+	k.Keeper.SetStakeItemIndex(ctx, willUseStakePoolIndex, uint32(len(msg.StakeItemInfoList)-1))
+
+	// check and store reward pool
 	rewardPools := make([]*types.RewardPool, 0)
 	rewardTokens := sdk.NewCoins()
 	for i, rewardPool := range msg.RewardPoolInfoList {
@@ -47,6 +77,11 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		}
 		if rewardPool.RewardPerSecond.LT(rewardToken.MinRewardPerSecond) {
 			return nil, types.ErrRewardPerSecondLessThanLimit
+		}
+
+		// check reward second and max lock second
+		if rewardPool.TotalRewardAmount.Quo(rewardPool.RewardPerSecond).LT(sdk.NewIntFromUint64(maxLockSecond)) {
+			return nil, types.ErrRewardSecondsLessThanMaxLockSeconds
 		}
 
 		willUseLastRewardTimestamp := rewardPool.StartTimestamp
@@ -83,25 +118,6 @@ func (k msgServer) AddStakePool(goCtx context.Context, msg *types.MsgAddStakePoo
 		EmergencySwitch:   false,
 		Creator:           msg.Creator,
 	}
-
-	for i, stakeItemInfo := range msg.StakeItemInfoList {
-		if stakeItemInfo.LockSecond > stakeItemLimit.MaxLockSecond {
-			return nil, types.ErrStakeItemEraSecondExceedLimit
-		}
-		if stakeItemInfo.PowerRewardRate.GT(stakeItemLimit.MaxPowerRewardRate) {
-			return nil, types.ErrStakeItemPowerRewardRateExceedLimit
-		}
-
-		stakeItem := types.StakeItem{
-			Index:           uint32(i),
-			StakePoolIndex:  willUseStakePoolIndex,
-			LockSecond:      stakeItemInfo.LockSecond,
-			PowerRewardRate: stakeItemInfo.PowerRewardRate,
-			Enable:          true,
-		}
-		k.Keeper.SetStakeItem(ctx, &stakeItem)
-	}
-	k.Keeper.SetStakeItemIndex(ctx, willUseStakePoolIndex, uint32(len(msg.StakeItemInfoList)-1))
 
 	k.SetStakePool(ctx, &stakePool)
 	k.Keeper.SetStakePoolIndex(ctx, willUseStakePoolIndex)

@@ -38,6 +38,17 @@ func (k msgServer) UpdateRewardPool(goCtx context.Context, msg *types.MsgUpdateR
 		return nil, types.ErrRewardPerSecondLessThanLimit
 	}
 
+	// check reward second and max lock second
+	maxLockSecond := uint64(0)
+	for _, stakeItemInfo := range k.Keeper.GetStakeItemList(ctx, msg.StakePoolIndex) {
+		if stakeItemInfo.LockSecond > maxLockSecond {
+			maxLockSecond = stakeItemInfo.LockSecond
+		}
+	}
+	if willUseRewardPool.TotalRewardAmount.Quo(msg.RewardPerSecond).LT(sdk.NewIntFromUint64(maxLockSecond)) {
+		return nil, types.ErrRewardSecondsLessThanMaxLockSeconds
+	}
+
 	willUseRewardPool.RewardPerSecond = msg.RewardPerSecond
 
 	k.Keeper.SetStakePool(ctx, stakePool)

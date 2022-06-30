@@ -15,6 +15,7 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		return nil, err
 	}
 
+	// check stake pool
 	stakePool, found := k.Keeper.GetStakePool(ctx, msg.StakePoolIndex)
 	if !found {
 		return nil, types.ErrStakePoolNotExist
@@ -23,6 +24,7 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		return nil, types.ErrEmergencySwitchOpen
 	}
 
+	// check reward token denom
 	denomMap := make(map[string]bool)
 	for _, rewardPool := range stakePool.RewardPools {
 		if denomMap[rewardPool.RewardTokenDenom] {
@@ -34,11 +36,13 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		return nil, types.ErrRewardTokenDenomDuplicate
 	}
 
+	// check reward pool number
 	maxRewardPoolNumber := k.Keeper.GetMaxRewardPoolNumber(ctx)
 	if len(stakePool.RewardPools) >= int(maxRewardPoolNumber) {
 		return nil, types.ErrRewardPoolNumberReachLimit
 	}
 
+	// check reward token
 	rewardToken, found := k.Keeper.GetRewardToken(ctx, msg.RewardTokenDenom)
 	if !found {
 		return nil, types.ErrRewardTokenNotSupport
@@ -50,8 +54,20 @@ func (k msgServer) AddRewardPool(goCtx context.Context, msg *types.MsgAddRewardP
 		return nil, types.ErrRewardPerSecondLessThanLimit
 	}
 
+	// check reward second and max lock second
+	maxLockSecond := uint64(0)
+	for _, stakeItemInfo := range k.Keeper.GetStakeItemList(ctx, msg.StakePoolIndex) {
+		if stakeItemInfo.LockSecond > maxLockSecond {
+			maxLockSecond = stakeItemInfo.LockSecond
+		}
+	}
+	if msg.TotalRewardAmount.Quo(msg.RewardPerSecond).LT(sdk.NewIntFromUint64(maxLockSecond)) {
+		return nil, types.ErrRewardSecondsLessThanMaxLockSeconds
+	}
+
 	curBlockTime := uint64(ctx.BlockTime().Unix())
 
+	// store reward pool
 	willUseIndex := uint32(len(stakePool.RewardPools))
 	willUseLastRewardTimestamp := msg.StartTimestamp
 	if msg.StartTimestamp < curBlockTime {

@@ -37,4 +37,5 @@ var (
 	ErrUpdateRewardPoolPermissionDeny          = sdkerrors.Register(ModuleName, 1128, "update reward pool permisson deny")
 	ErrWithdrawRewardTokenPermissionDeny       = sdkerrors.Register(ModuleName, 1129, "withdraw reward token permisson deny")
 	ErrWithdrawRewardTokenAmountTooLarge       = sdkerrors.Register(ModuleName, 1130, "withdraw reward token amount too large")
+	ErrRewardSecondsLessThanMaxLockSeconds     = sdkerrors.Register(ModuleName, 1131, "reward second is less than max lock seconds")
 )
