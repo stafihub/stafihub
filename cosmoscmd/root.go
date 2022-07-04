@@ -22,7 +22,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
@@ -30,6 +29,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
@@ -129,7 +129,7 @@ func NewRootCmd(
 		WithTxConfig(encodingConfig.TxConfig).
 		WithLegacyAmino(encodingConfig.Amino).
 		WithInput(os.Stdin).
-		WithAccountRetriever(types.AccountRetriever{}).
+		WithAccountRetriever(authTypes.AccountRetriever{}).
 		WithBroadcastMode(flags.BroadcastBlock).
 		WithHomeDir(defaultNodeHome).
 		WithViper("")
@@ -211,7 +211,11 @@ func initRootCmd(
 		a.appExport,
 		func(cmd *cobra.Command) {
 			addModuleInitFlags(cmd)
-
+			nodeHome, err := cmd.Flags().GetString("home")
+			if err != nil {
+				fmt.Println(err)
+			}
+			viper.GetViper().Set("home", nodeHome)
 			if options.startCmdCustomizer != nil {
 				options.startCmdCustomizer(cmd)
 			}
