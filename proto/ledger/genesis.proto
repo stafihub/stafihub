@@ -33,6 +33,7 @@ message GenesisState {
     repeated BondRecord bondRecordList = 20;
     repeated RParams rparamsList = 21;
     repeated Signature signatureList = 22;
+    bool MigrateIsSealed = 23;
     // this line is used by starport scaffolding # genesis/proto/state
 }
 

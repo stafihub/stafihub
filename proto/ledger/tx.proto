@@ -28,6 +28,7 @@ service Msg {
   rpc MigrateInit(MsgMigrateInit) returns (MsgMigrateInitResponse);
   rpc MigrateUnbondings(MsgMigrateUnbondings) returns (MsgMigrateUnbondingsResponse);
   rpc ToggleUnbondSwitch(MsgToggleUnbondSwitch) returns (MsgToggleUnbondSwitchResponse);
+  rpc UnsealMigrateInit(MsgUnsealMigrateInit) returns (MsgUnsealMigrateInitResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -209,6 +210,13 @@ message MsgToggleUnbondSwitch {
 }
 
 message MsgToggleUnbondSwitchResponse {
+}
+
+message MsgUnsealMigrateInit {
+  string creator = 1;
+}
+
+message MsgUnsealMigrateInitResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

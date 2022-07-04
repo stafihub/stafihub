@@ -52,6 +52,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdMigrateInit())
 	cmd.AddCommand(CmdMigrateUnbondings())
 	cmd.AddCommand(CmdToggleUnbondSwitch())
+	cmd.AddCommand(CmdUnsealMigrateInit())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

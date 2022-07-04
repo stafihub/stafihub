@@ -288,3 +288,23 @@ func (k Keeper) GetUnbondSwitchList(ctx sdk.Context) []*types.UnbondSwitch {
 	}
 	return list
 }
+
+func (k Keeper) MigrateInitIsSealed(ctx sdk.Context) bool {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.MigrateInitSealedStatePrefix)
+	if bts == nil {
+		return false
+	}
+	return bytes.Equal(bts, types.SwitchStateClose)
+}
+
+func (k Keeper) SealMigrateInit(ctx sdk.Context) {
+	store := ctx.KVStore(k.storeKey)
+
+	store.Set(types.MigrateInitSealedStatePrefix, types.SwitchStateClose)
+}
+func (k Keeper) UnSealMigrateInit(ctx sdk.Context) {
+	store := ctx.KVStore(k.storeKey)
+
+	store.Set(types.MigrateInitSealedStatePrefix, types.SwitchStateOpen)
+}

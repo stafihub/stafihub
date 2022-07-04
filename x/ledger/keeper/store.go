@@ -532,6 +532,11 @@ func (k Keeper) GetPoolUnbonding(ctx sdk.Context, denom string, pool string, era
 	return &poolUnbond, true
 }
 
+func (k Keeper) DeletePoolUnbonding(ctx sdk.Context, denom string, pool string, era, seq uint32) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.PoolUnbondStoreKey(denom, pool, era, seq))
+}
+
 func (k Keeper) GetPoolUnbondingList(ctx sdk.Context) []*types.GenesisPoolUnbonding {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.PoolUnbondPrefix)
@@ -589,6 +594,16 @@ func (k Keeper) SetPoolUnbondSequence(ctx sdk.Context, denom string, pool string
 	seqBts := make([]byte, 4)
 	binary.LittleEndian.PutUint32(seqBts, seq)
 	store.Set(key, seqBts)
+}
+
+func (k Keeper) DeletePoolUnbondSequence(ctx sdk.Context, denom string, pool string, era uint32) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.PoolUnbondNextSequencePrefix)
+
+	bera := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, era)
+	key := append([]byte(denom+pool), bera...)
+
+	store.Delete(key)
 }
 
 func (k Keeper) SetUnbondRelayFee(ctx sdk.Context, denom string, value sdk.Coin) {

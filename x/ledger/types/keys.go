@@ -58,6 +58,7 @@ var (
 	RelayFeeReceiverPrefix        = []byte{0x1a}
 	UnbondSwitchPrefix            = []byte{0x1b}
 	PoolUnbondNextSequencePrefix  = []byte{0x1c}
+	MigrateInitSealedStatePrefix  = []byte{0x1d}
 )
 
 var (

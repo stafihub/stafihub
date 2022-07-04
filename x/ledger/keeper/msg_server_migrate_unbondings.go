@@ -37,6 +37,13 @@ func (k msgServer) MigrateUnbondings(goCtx context.Context, msg *types.MsgMigrat
 
 	if len(msg.Unbondings) > 0 {
 		k.SetPoolUnbondSequence(ctx, msg.Denom, msg.Pool, msg.Era, uint32(len(msg.Unbondings)-1))
+	} else {
+		//if unbondings is empty, will clear up old state
+		total := k.GetPoolUnbondNextSequence(ctx, msg.Denom, msg.Pool, msg.Era)
+		for i := uint32(0); i < total; i++ {
+			k.DeletePoolUnbonding(ctx, msg.Denom, msg.Pool, msg.Era, i)
+		}
+		k.DeletePoolUnbondSequence(ctx, msg.Denom, msg.Pool, msg.Era)
 	}
 
 	return &types.MsgMigrateUnbondingsResponse{}, nil

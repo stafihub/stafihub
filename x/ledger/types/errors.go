@@ -45,4 +45,5 @@ var (
 	ErrAccountUnbondReachLimit      = sdkerrors.Register(ModuleName, 37, "account unbond reach limit error")
 	ErrLiquidityBondAlreadyExecuted = sdkerrors.Register(ModuleName, 38, "liquidity bond already executed")
 	ErrLiquidityUnbondSwitchOff     = sdkerrors.Register(ModuleName, 39, "liquidity unbond switch off error")
+	ErrMigrateInitIsSealed          = sdkerrors.Register(ModuleName, 40, "migrate init is sealed")
 )

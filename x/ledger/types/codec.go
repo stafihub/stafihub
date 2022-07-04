@@ -34,6 +34,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgMigrateInit{}, "ledger/MigrateInit", nil)
 	cdc.RegisterConcrete(&MsgMigrateUnbondings{}, "ledger/MigrateUnbondings", nil)
 	cdc.RegisterConcrete(&MsgToggleUnbondSwitch{}, "ledger/ToggleUnbondSwitch", nil)
+	cdc.RegisterConcrete(&MsgUnsealMigrateInit{}, "ledger/UnsealMigrateInit", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -81,6 +82,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgToggleUnbondSwitch{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUnsealMigrateInit{},
 	)
 	// this line is used by starport scaffolding # 3
 

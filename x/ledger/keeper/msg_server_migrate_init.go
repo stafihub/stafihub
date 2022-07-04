@@ -20,6 +20,10 @@ func (k msgServer) MigrateInit(goCtx context.Context, msg *types.MsgMigrateInit)
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
+	if k.Keeper.MigrateInitIsSealed(ctx) {
+		return nil, types.ErrMigrateInitIsSealed
+	}
+
 	err := k.CheckAddress(ctx, msg.Denom, msg.GetPool())
 	if err != nil {
 		return nil, err
@@ -49,13 +53,20 @@ func (k msgServer) MigrateInit(goCtx context.Context, msg *types.MsgMigrateInit)
 	shouldMintCoins := sdk.NewCoins(sdk.NewCoin(msg.Denom, msg.TotalSupply))
 	moduleAddress := authTypes.NewModuleAddress(xBridgeTypes.ModuleName)
 	balance := k.bankKeeper.GetBalance(ctx, moduleAddress, msg.Denom)
-	if balance.Amount.GT(sdk.ZeroInt()) {
-		k.bankKeeper.BurnCoins(ctx, xBridgeTypes.ModuleName, sdk.NewCoins(balance))
+	if balance.Amount.IsPositive() {
+		if err := k.bankKeeper.BurnCoins(ctx, xBridgeTypes.ModuleName, sdk.NewCoins(balance)); err != nil {
+			return nil, err
+		}
 	}
-	k.bankKeeper.MintCoins(ctx, xBridgeTypes.ModuleName, shouldMintCoins)
+	if err := k.bankKeeper.MintCoins(ctx, xBridgeTypes.ModuleName, shouldMintCoins); err != nil {
+		return nil, err
+	}
 
 	// init total protocol fee
 	k.Keeper.SetTotalProtocolFee(ctx, msg.Denom, msg.TotalProtocolFee)
+
+	// seal
+	k.Keeper.SealMigrateInit(ctx)
 
 	return &types.MsgMigrateInitResponse{}, nil
 }
