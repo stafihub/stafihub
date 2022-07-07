@@ -48,7 +48,7 @@ var (
 	willMintCoins   = sdk.NewCoins(sdk.NewCoin(sample.TestDenom, sdk.NewInt(500e8)), sdk.NewCoin(sample.TestDenom1, sdk.NewInt(500e8)))
 )
 
-func SudoKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func SudoKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	sudoOnce.Do(func() {
 		stateStore.MountStoreWithDB(sudoStoreKey, sdk.StoreTypeIAVL, db)
 		stateStore.MountStoreWithDB(sudoMemStoreKey, sdk.StoreTypeMemory, nil)
