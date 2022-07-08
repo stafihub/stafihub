@@ -586,7 +586,9 @@ func New(
 		app.BankKeeper,
 	)
 
-	app.LedgerKeeper = *ledgerkeeper.NewKeeper(
+	// todo recheck scopedLedgerKeeper
+	scopedLedgerKeeper := app.CapabilityKeeper.ScopeToModule(ledgertypes.ModuleName)
+	app.LedgerKeeper = ledgerkeeper.NewKeeper(
 		appCodec,
 		keys[ledgertypes.StoreKey],
 		keys[ledgertypes.MemStoreKey],
@@ -595,6 +597,8 @@ func New(
 		app.RelayersKeeper,
 		app.RmintrewardKeeper,
 		app.RbankKeeper,
+		app.ICAControllerKeeper,
+		scopedLedgerKeeper,
 	)
 	ledgerIBCModule := ledger.NewIBCModule(app.LedgerKeeper)
 	// create ica controller ibcmodule

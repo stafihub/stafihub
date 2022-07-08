@@ -21287,6 +21287,56 @@ paths:
           type: string
       tags:
         - Query
+  '/stafihub/stafihub/ledger/ica_account_info/{owner}':
+    get:
+      summary: Queries a list of IcaAccountInfo items.
+      operationId: StafihubStafihubLedgerIcaAccountInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              icaAccount:
+                type: object
+                properties:
+                  owner:
+                    type: string
+                  address:
+                    type: string
+                  ctrlConnectionId:
+                    type: string
+                  ctrlPortId:
+                    type: string
+                  hostConnectionId:
+                    type: string
+                  hostPortId:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   '/stafihub/stafihub/ledger/pool_unbond_next_sequence/{denom}/{pool}/{unlockEra}':
     get:
       summary: Queries a list of PoolUnbondNextSequence items.
@@ -39277,6 +39327,21 @@ definitions:
         type: string
       value:
         type: string
+  stafihub.stafihub.ledger.IcaAccount:
+    type: object
+    properties:
+      owner:
+        type: string
+      address:
+        type: string
+      ctrlConnectionId:
+        type: string
+      ctrlPortId:
+        type: string
+      hostConnectionId:
+        type: string
+      hostPortId:
+        type: string
   stafihub.stafihub.ledger.LinkChunk:
     type: object
     properties:
@@ -39303,6 +39368,8 @@ definitions:
   stafihub.stafihub.ledger.MsgMigrateInitResponse:
     type: object
   stafihub.stafihub.ledger.MsgMigrateUnbondingsResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgRegisterIcaResponse:
     type: object
   stafihub.stafihub.ledger.MsgRmBondedPoolResponse:
     type: object
@@ -39636,6 +39703,24 @@ definitions:
               method
 
               signatures required by gogoproto.
+  stafihub.stafihub.ledger.QueryIcaAccountInfoResponse:
+    type: object
+    properties:
+      icaAccount:
+        type: object
+        properties:
+          owner:
+            type: string
+          address:
+            type: string
+          ctrlConnectionId:
+            type: string
+          ctrlPortId:
+            type: string
+          hostConnectionId:
+            type: string
+          hostPortId:
+            type: string
   stafihub.stafihub.ledger.QueryPoolUnbondNextSequenceResponse:
     type: object
     properties:

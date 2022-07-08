@@ -136,6 +136,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbondings/{denom}/{pool}/{unlockEra}";
 	}
 
+// Queries a list of IcaAccountInfo items.
+	rpc IcaAccountInfo(QueryIcaAccountInfoRequest) returns (QueryIcaAccountInfoResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_account_info/{owner}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -349,6 +354,14 @@ message QueryPoolUnbondingsRequest {
 
 message QueryPoolUnbondingsResponse {
   repeated Unbonding unbondings = 1;
+}
+
+message QueryIcaAccountInfoRequest {
+  string owner = 1;
+}
+
+message QueryIcaAccountInfoResponse {
+	IcaAccount icaAccount = 1;
 }
 
 // this line is used by starport scaffolding # 3

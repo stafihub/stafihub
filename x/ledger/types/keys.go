@@ -59,6 +59,7 @@ var (
 	UnbondSwitchPrefix            = []byte{0x1b}
 	PoolUnbondNextSequencePrefix  = []byte{0x1c}
 	MigrateInitSealedStatePrefix  = []byte{0x1d}
+	ICAAccountPrefix              = []byte{0x1e}
 )
 
 var (
@@ -139,4 +140,8 @@ func BondRecordStoreKey(denom, txHash string) []byte {
 	copy(key[2:], []byte(denom))
 	copy(key[2+denomLen:], []byte(txHash))
 	return key
+}
+
+func ICAStoreKey(owner string) []byte {
+	return append(ICAAccountPrefix, []byte(owner)...)
 }

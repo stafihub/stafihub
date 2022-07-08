@@ -1,12 +1,17 @@
 package ledger
 
 import (
+	"fmt"
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	ibcporttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v3/modules/core/exported"
 	"github.com/stafihub/stafihub/x/ledger/keeper"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var _ ibcporttypes.IBCModule = (*IBCModule)(nil)
@@ -24,9 +29,6 @@ func NewIBCModule(k keeper.Keeper) IBCModule {
 }
 
 // OnChanOpenInit implements the IBCModule interface
-
-// func(ctx, order, connectionHops []string, portID string, channelID string, chanCap, counterparty, version string) (string, error)
-// func(ctx , order , connectionHops []string, portID string, channelID string, channelCap , counterparty , version string) error)
 func (im IBCModule) OnChanOpenInit(
 	ctx sdk.Context,
 	order channeltypes.Order,
@@ -37,6 +39,9 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) error {
+	if err := im.keeper.ClaimCapability(ctx, channelCap, ibchost.ChannelCapabilityPath(portID, channelID)); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -48,6 +53,25 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyChannelID string,
 	counterpartyVersion string,
 ) error {
+	controllerConnectionId, err := im.keeper.GetConnectionId(ctx, portID)
+	if err != nil {
+		ctx.Logger().Error("Unable to get connection for port " + portID)
+	}
+	interchainAddress, found := im.keeper.ICAControllerKeeper.GetInterchainAccountAddress(ctx, controllerConnectionId, portID)
+	if !found {
+		ctx.Logger().Error(fmt.Sprintf("Expected to find an address for %s/%s", controllerConnectionId, portID))
+		return nil
+	}
+	_, owner, _ := strings.Cut(portID, "icacontroller-")
+	im.keeper.SetICAAccount(ctx, types.IcaAccount{
+		Owner:            owner,
+		Address:          interchainAddress,
+		CtrlConnectionId: controllerConnectionId,
+		CtrlPortId:       portID,
+		HostConnectionId: "",
+		HostPortId:       "",
+	})
+
 	return nil
 }
 

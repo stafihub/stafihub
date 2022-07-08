@@ -149,3 +149,13 @@ message RParams {
     uint32 bondingDuration = 5;
     string leastBond = 6;
 }
+
+
+message IcaAccount {
+    string owner = 1;
+    string address = 2;
+    string ctrlConnectionId = 3;
+    string ctrlPortId = 4;
+    string hostConnectionId = 5;
+    string hostPortId = 6;
+}

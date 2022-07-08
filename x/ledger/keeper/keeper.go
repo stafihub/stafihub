@@ -11,6 +11,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/controller/keeper"
 	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
@@ -26,6 +28,9 @@ type (
 		relayerKeeper    types.RelayerKeeper
 		mintrewardKeeper types.MintRewardKeeper
 		rbankKeeper      types.RBankKeeper
+
+		ICAControllerKeeper icacontrollerkeeper.Keeper
+		scopedKeeper        capabilitykeeper.ScopedKeeper
 	}
 )
 
@@ -39,8 +44,11 @@ func NewKeeper(
 	relayerKeeper types.RelayerKeeper,
 	mintrewardKeeper types.MintRewardKeeper,
 	rbankKeeepr types.RBankKeeper,
-) *Keeper {
-	return &Keeper{
+
+	icaControllerKeeper icacontrollerkeeper.Keeper,
+	scopedKeeper capabilitykeeper.ScopedKeeper,
+) Keeper {
+	return Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
@@ -50,6 +58,9 @@ func NewKeeper(
 		relayerKeeper:    relayerKeeper,
 		mintrewardKeeper: mintrewardKeeper,
 		rbankKeeper:      rbankKeeepr,
+
+		ICAControllerKeeper: icaControllerKeeper,
+		scopedKeeper:        scopedKeeper,
 	}
 }
 
