@@ -47,8 +47,8 @@ func NewKeeper(
 
 	icaControllerKeeper icacontrollerkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
-) Keeper {
-	return Keeper{
+) *Keeper {
+	return &Keeper{
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,

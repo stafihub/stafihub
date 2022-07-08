@@ -514,17 +514,26 @@ func New(
 
 	// Create ICAController keeper
 	app.ICAControllerKeeper = icacontrollerkeeper.NewKeeper(
-		appCodec, keys[icacontrollertypes.StoreKey], app.GetSubspace(icacontrollertypes.SubModuleName),
+		appCodec,
+		keys[icacontrollertypes.StoreKey],
+		app.GetSubspace(icacontrollertypes.SubModuleName),
 		app.IBCKeeper.ChannelKeeper, // may be replaced with middleware such as ics29 fee
-		app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
-		scopedICAControllerKeeper, app.MsgServiceRouter(),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedICAControllerKeeper,
+		app.MsgServiceRouter(),
 	)
 
 	// Create ICAController keeper
 	app.ICAHostKeeper = icahostkeeper.NewKeeper(
-		appCodec, keys[icahosttypes.StoreKey], app.GetSubspace(icahosttypes.SubModuleName),
-		app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
-		app.AccountKeeper, scopedICAHostKeeper, app.MsgServiceRouter(),
+		appCodec,
+		keys[icahosttypes.StoreKey],
+		app.GetSubspace(icahosttypes.SubModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		app.AccountKeeper,
+		scopedICAHostKeeper,
+		app.MsgServiceRouter(),
 	)
 	icaModule := ica.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper)
 	// create ica host ibcmodule
@@ -588,7 +597,7 @@ func New(
 
 	// todo recheck scopedLedgerKeeper
 	scopedLedgerKeeper := app.CapabilityKeeper.ScopeToModule(ledgertypes.ModuleName)
-	app.LedgerKeeper = ledgerkeeper.NewKeeper(
+	app.LedgerKeeper = *ledgerkeeper.NewKeeper(
 		appCodec,
 		keys[ledgertypes.StoreKey],
 		keys[ledgertypes.MemStoreKey],
@@ -1015,19 +1024,23 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(slashingtypes.ModuleName)
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
+
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
+	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
+	paramsKeeper.Subspace(icahosttypes.SubModuleName)
+
 	paramsKeeper.Subspace(sudotypes.ModuleName)
 	paramsKeeper.Subspace(relayerstypes.ModuleName)
 	paramsKeeper.Subspace(ledgertypes.ModuleName)
 	paramsKeeper.Subspace(rvotetypes.ModuleName)
-
 	paramsKeeper.Subspace(rstakingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(bridgemoduletypes.ModuleName)
 	paramsKeeper.Subspace(rmintrewardmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rbankmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rdexmoduletypes.ModuleName)
 	paramsKeeper.Subspace(miningmoduletypes.ModuleName)
+	paramsKeeper.Subspace(rvalidatormoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

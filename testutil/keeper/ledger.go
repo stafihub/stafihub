@@ -48,5 +48,5 @@ func LedgerKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
-	return ledgerKeeper, ctx
+	return *ledgerKeeper, ctx
 }
