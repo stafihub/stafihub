@@ -13,11 +13,12 @@ var _ = strconv.Itoa(0)
 
 func CmdIcaAccountInfo() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "ica-account-info [owner]",
+		Use:   "ica-account-info [owner] [ctrl-connection-id]",
 		Short: "Query ica account info",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqOwner := args[0]
+			reqCtrlConnectionId := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -27,8 +28,8 @@ func CmdIcaAccountInfo() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryIcaAccountInfoRequest{
-
-				Owner: reqOwner,
+				Owner:            reqOwner,
+				CtrlConnectionId: reqCtrlConnectionId,
 			}
 
 			res, err := queryClient.IcaAccountInfo(cmd.Context(), params)

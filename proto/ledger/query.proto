@@ -358,6 +358,7 @@ message QueryPoolUnbondingsResponse {
 
 message QueryIcaAccountInfoRequest {
   string owner = 1;
+  string ctrlConnectionId = 2;
 }
 
 message QueryIcaAccountInfoResponse {

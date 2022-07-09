@@ -130,6 +130,7 @@ func PoolUnbondStoreKey(denom string, pool string, era, seq uint32) []byte {
 	return key
 }
 
+// prefix + denomLen + denom + txHashLen + txHash
 func BondRecordStoreKey(denom, txHash string) []byte {
 	denomLen := len([]byte(denom))
 	txHashLen := len([]byte(txHash))
@@ -142,6 +143,16 @@ func BondRecordStoreKey(denom, txHash string) []byte {
 	return key
 }
 
-func ICAStoreKey(owner string) []byte {
-	return append(ICAAccountPrefix, []byte(owner)...)
+// prefix + ownerLen + owner + ctrlConnectionLen + ctrlConnection
+func ICAStoreKey(owner, ctrlConnectionId string) []byte {
+	ownerLen := len([]byte(owner))
+	ctrlConnectionIdLen := len([]byte(ctrlConnectionId))
+
+	key := make([]byte, 1+1+ownerLen+ctrlConnectionIdLen)
+	copy(key[0:], ICAAccountPrefix)
+	key[1] = byte(ownerLen)
+	copy(key[2:], []byte(owner))
+	copy(key[2+ownerLen:], []byte(ctrlConnectionId))
+
+	return key
 }

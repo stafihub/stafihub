@@ -5,7 +5,9 @@ import (
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	icatypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/types"
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 	ibcporttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
@@ -39,6 +41,7 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) error {
+	ctx.Logger().Info("OnChanOpenInit", "connectionHops", connectionHops, "portId", portID, "channelId", channelID, "conterparty", "channelCap", channelCap.String(), counterparty, "version", version)
 	if err := im.keeper.ClaimCapability(ctx, channelCap, ibchost.ChannelCapabilityPath(portID, channelID)); err != nil {
 		return err
 	}
@@ -53,23 +56,28 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyChannelID string,
 	counterpartyVersion string,
 ) error {
-	controllerConnectionId, err := im.keeper.GetConnectionId(ctx, portID)
-	if err != nil {
-		ctx.Logger().Error("Unable to get connection for port " + portID)
+	ctx.Logger().Info("OnChanOpenAck", "portId", portID, "channelId", channelID, "counterpartyChannelID", counterpartyChannelID, "counterpartyVersion", counterpartyVersion)
+	var metadata icatypes.Metadata
+	if err := icatypes.ModuleCdc.UnmarshalJSON([]byte(counterpartyVersion), &metadata); err != nil {
+		return sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal ICS-27 interchain accounts metadata")
 	}
+
+	controllerConnectionId := metadata.ControllerConnectionId
+	hostConnectionId := metadata.HostConnectionId
 	interchainAddress, found := im.keeper.ICAControllerKeeper.GetInterchainAccountAddress(ctx, controllerConnectionId, portID)
 	if !found {
 		ctx.Logger().Error(fmt.Sprintf("Expected to find an address for %s/%s", controllerConnectionId, portID))
 		return nil
 	}
-	_, owner, _ := strings.Cut(portID, "icacontroller-")
+
+	_, owner, _ := strings.Cut(portID, icatypes.PortPrefix)
 	im.keeper.SetICAAccount(ctx, types.IcaAccount{
 		Owner:            owner,
 		Address:          interchainAddress,
 		CtrlConnectionId: controllerConnectionId,
 		CtrlPortId:       portID,
-		HostConnectionId: "",
-		HostPortId:       "",
+		HostConnectionId: hostConnectionId,
+		HostPortId:       icatypes.PortID,
 	})
 
 	return nil
@@ -82,7 +90,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
-	return nil
+	return im.keeper.OnAcknowledgement(ctx, modulePacket, acknowledgement)
 }
 
 // OnTimeoutPacket implements the IBCModule interface

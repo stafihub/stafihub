@@ -16,7 +16,7 @@ func (k Keeper) IcaAccountInfo(goCtx context.Context, req *types.QueryIcaAccount
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	ica, found := k.GetICAAccount(ctx, req.Owner)
+	ica, found := k.GetICAAccount(ctx, req.Owner, req.CtrlConnectionId)
 	if !found {
 		return nil, status.Error(codes.NotFound, codes.NotFound.String())
 	}
