@@ -13,7 +13,6 @@ import (
 	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v3/modules/core/exported"
 	"github.com/stafihub/stafihub/x/ledger/keeper"
-	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var _ ibcporttypes.IBCModule = (*IBCModule)(nil)
@@ -70,16 +69,39 @@ func (im IBCModule) OnChanOpenAck(
 		return nil
 	}
 
-	_, owner, _ := strings.Cut(portID, icatypes.PortPrefix)
-	im.keeper.SetICAAccount(ctx, types.IcaAccount{
-		Owner:            owner,
-		Address:          interchainAddress,
-		CtrlConnectionId: controllerConnectionId,
-		CtrlPortId:       portID,
-		HostConnectionId: hostConnectionId,
-		HostPortId:       icatypes.PortID,
-	})
+	portIdSlice := strings.Split(portID, "-")
+	if len(portIdSlice) != 4 {
+		ctx.Logger().Error(fmt.Sprintf("portId format err %s/%s", controllerConnectionId, portID))
+		return nil
+	}
+	if portIdSlice[0] != icatypes.PortPrefix {
+		ctx.Logger().Error(fmt.Sprintf("portId prefix err %s/%s", controllerConnectionId, portID))
+		return nil
+	}
 
+	denom := portIdSlice[1]
+	sequence := portIdSlice[2]
+	isDelegationAddr := portIdSlice[3] == "delegation"
+
+	icaPoolDetail, found := im.keeper.GetIcaPoolDetail(ctx, denom, sequence)
+	if !found {
+		ctx.Logger().Error(fmt.Sprintf("ica pool detail not found %s/%s", controllerConnectionId, portID))
+		return nil
+	}
+	if isDelegationAddr {
+		icaPoolDetail.DelegationAccount.Address = interchainAddress
+		icaPoolDetail.DelegationAccount.CtrlPortId = portID
+		icaPoolDetail.DelegationAccount.HostConnectionId = hostConnectionId
+		icaPoolDetail.DelegationAccount.HostPortId = icatypes.PortID
+	} else {
+		icaPoolDetail.WithdrawAccount.Address = interchainAddress
+		icaPoolDetail.WithdrawAccount.CtrlPortId = portID
+		icaPoolDetail.WithdrawAccount.HostConnectionId = hostConnectionId
+		icaPoolDetail.WithdrawAccount.HostPortId = icatypes.PortID
+	}
+
+	im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
+	im.keeper.SetIcaPoolIndex(ctx, icaPoolDetail)
 	return nil
 }
 
@@ -110,17 +132,6 @@ func (im IBCModule) OnChanCloseConfirm(
 ) error {
 	return nil
 }
-
-// func (im IBCModule) NegotiateAppVersion(
-// 	ctx sdk.Context,
-// 	order channeltypes.Order,
-// 	connectionID string,
-// 	portID string,
-// 	counterparty channeltypes.Counterparty,
-// 	proposedVersion string,
-// ) (version string, err error) {
-// 	return proposedVersion, nil
-// }
 
 // ###################################################################################
 // 	Required functions to satisfy interface but not implemented for ICA auth modules

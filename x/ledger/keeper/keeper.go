@@ -314,6 +314,7 @@ func (k Keeper) SealMigrateInit(ctx sdk.Context) {
 
 	store.Set(types.MigrateInitSealedStatePrefix, types.SwitchStateClose)
 }
+
 func (k Keeper) UnSealMigrateInit(ctx sdk.Context) {
 	store := ctx.KVStore(k.storeKey)
 

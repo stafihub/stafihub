@@ -7,3 +7,4 @@ vue/
 metadata.json
 build/
 .vscode/
+coverage.txt

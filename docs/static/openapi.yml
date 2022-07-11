@@ -43715,6 +43715,8 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgMigrateUnbondingsResponse:
     type: object
+  stafihub.stafihub.ledger.MsgRegisterIcaPoolResponse:
+    type: object
   stafihub.stafihub.ledger.MsgRegisterIcaResponse:
     type: object
   stafihub.stafihub.ledger.MsgRmBondedPoolResponse:

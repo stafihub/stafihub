@@ -32,6 +32,7 @@ service Msg {
   rpc UnsealMigrateInit(MsgUnsealMigrateInit) returns (MsgUnsealMigrateInitResponse);
   rpc RegisterIca(MsgRegisterIca) returns (MsgRegisterIcaResponse);
   rpc SubmitTx(MsgSubmitTx) returns (MsgSubmitTxResponse);
+  rpc RegisterIcaPool(MsgRegisterIcaPool) returns (MsgRegisterIcaPoolResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -239,6 +240,15 @@ message MsgSubmitTx {
 }
 
 message MsgSubmitTxResponse {
+}
+
+message MsgRegisterIcaPool {
+  string creator = 1;
+  string denom = 2;
+  string connectionId = 3;
+}
+
+message MsgRegisterIcaPoolResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -159,3 +159,10 @@ message IcaAccount {
     string hostConnectionId = 5;
     string hostPortId = 6;
 }
+
+message IcaPoolDetail {
+    string denom = 1;
+    string sequence = 2;
+    IcaAccount DelegationAccount = 3;
+    IcaAccount WithdrawAccount = 4;
+}

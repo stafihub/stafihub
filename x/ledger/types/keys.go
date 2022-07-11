@@ -60,6 +60,9 @@ var (
 	PoolUnbondNextSequencePrefix  = []byte{0x1c}
 	MigrateInitSealedStatePrefix  = []byte{0x1d}
 	ICAAccountPrefix              = []byte{0x1e}
+	IcaPoolNextSequencePrefix     = []byte{0x1f}
+	IcaPoolDetailPrefix           = []byte{0x20}
+	IcaPoolIndexPrefix            = []byte{0x21}
 )
 
 var (
@@ -130,7 +133,7 @@ func PoolUnbondStoreKey(denom string, pool string, era, seq uint32) []byte {
 	return key
 }
 
-// prefix + denomLen + denom + txHashLen + txHash
+// prefix + denomLen + denom + txHash
 func BondRecordStoreKey(denom, txHash string) []byte {
 	denomLen := len([]byte(denom))
 	txHashLen := len([]byte(txHash))
@@ -143,7 +146,7 @@ func BondRecordStoreKey(denom, txHash string) []byte {
 	return key
 }
 
-// prefix + ownerLen + owner + ctrlConnectionLen + ctrlConnection
+// prefix + ownerLen + owner + ctrlConnection
 func ICAStoreKey(owner, ctrlConnectionId string) []byte {
 	ownerLen := len([]byte(owner))
 	ctrlConnectionIdLen := len([]byte(ctrlConnectionId))
@@ -153,6 +156,34 @@ func ICAStoreKey(owner, ctrlConnectionId string) []byte {
 	key[1] = byte(ownerLen)
 	copy(key[2:], []byte(owner))
 	copy(key[2+ownerLen:], []byte(ctrlConnectionId))
+
+	return key
+}
+
+// prefix + denomLen + denom + sequence
+func IcaPoolDetailStoreKey(denom, sequence string) []byte {
+	denomLen := len([]byte(denom))
+	sequenceLen := len([]byte(sequence))
+
+	key := make([]byte, 1+1+denomLen+sequenceLen)
+	copy(key[0:], IcaPoolDetailPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	copy(key[2+denomLen:], []byte(sequence))
+
+	return key
+}
+
+// prefix + denomLen + denom + delegationAddr
+func IcaPoolIndexStoreKey(denom, delegationAddr string) []byte {
+	denomLen := len([]byte(denom))
+	delegationAddrLen := len([]byte(delegationAddr))
+
+	key := make([]byte, 1+1+denomLen+delegationAddrLen)
+	copy(key[0:], IcaPoolIndexPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	copy(key[2+denomLen:], []byte(delegationAddr))
 
 	return key
 }
