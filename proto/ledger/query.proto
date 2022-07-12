@@ -141,6 +141,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_account_info/{owner}";
 	}
 
+// Queries a list of IcaPoolList items.
+	rpc IcaPoolList(QueryIcaPoolListRequest) returns (QueryIcaPoolListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_pool_list/{denom}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -362,7 +367,15 @@ message QueryIcaAccountInfoRequest {
 }
 
 message QueryIcaAccountInfoResponse {
-	IcaAccount icaAccount = 1;
+  IcaAccount icaAccount = 1;
+}
+
+message QueryIcaPoolListRequest {
+  string denom = 1;
+}
+
+message QueryIcaPoolListResponse {
+  repeated IcaPoolDetail icaPoolList = 1;
 }
 
 // this line is used by starport scaffolding # 3

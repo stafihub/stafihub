@@ -163,6 +163,16 @@ message IcaAccount {
 message IcaPoolDetail {
     string denom = 1;
     string sequence = 2;
-    IcaAccount DelegationAccount = 3;
-    IcaAccount WithdrawAccount = 4;
+    IcaPoolStatus status = 3;
+    IcaAccount DelegationAccount = 4;
+    IcaAccount WithdrawAccount = 5;
+}
+
+enum IcaPoolStatus {
+    option (gogoproto.goproto_enum_prefix) = false;
+  
+    ICA_POOL_STATUS_INIT = 0 [(gogoproto.enumvalue_customname) = "IcaPoolStatusInit"];
+    ICA_POOL_STATUS_DELEGATION_CREATE = 1 [(gogoproto.enumvalue_customname) = "IcaPoolStatusDelegationCreate"];
+    ICA_POOL_STATUS_WITHDRAW_CREATE = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusWithdrawCreate"];
+    ICA_POOL_STATUS_WITHDRAW_SET = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusWithdrawSet"];
 }

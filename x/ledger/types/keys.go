@@ -32,37 +32,37 @@ var (
 )
 
 var (
-	BondedPoolPrefix              = []byte{0x01}
-	EraUnbondLimitPrefix          = []byte{0x02}
-	ChainBondingDurationPrefix    = []byte{0x03}
-	PoolDetailPrefix              = []byte{0x04}
-	SnapshotPrefix                = []byte{0x06}
-	CurrentEraSnapshotPrefix      = []byte{0x07}
-	BondPipelinePrefix            = []byte{0x08}
-	ChainEraPrefix                = []byte{0x09}
-	EraSnapshotPrefix             = []byte{0x0a}
-	StakingRewardCommissionPrefix = []byte{0x0b}
-	ProtocolFeeReceiverPrefix     = []byte{0x0c}
-	TotalExpectedActivePrefix     = []byte{0x0d}
-	PoolUnbondPrefix              = []byte{0x0e}
-	ExchangeRateKeyPrefix         = []byte{0x0f}
-	EraExchangeRateKeyPrefix      = []byte{0x10}
-	UnbondFeePrefix               = []byte{0x11}
-	UnbondCommissionPrefix        = []byte{0x12}
-	BondRecordPrefix              = []byte{0x14}
-	SignaturePrefix               = []byte{0x15}
-	RParamsPrefix                 = []byte{0x16}
-	RValidatorIndicatorPrefix     = []byte{0x17}
-	RValidatorPrefix              = []byte{0x18}
-	TotalProtocolFeePrefix        = []byte{0x19}
-	RelayFeeReceiverPrefix        = []byte{0x1a}
-	UnbondSwitchPrefix            = []byte{0x1b}
-	PoolUnbondNextSequencePrefix  = []byte{0x1c}
-	MigrateInitSealedStatePrefix  = []byte{0x1d}
-	ICAAccountPrefix              = []byte{0x1e}
-	IcaPoolNextSequencePrefix     = []byte{0x1f}
-	IcaPoolDetailPrefix           = []byte{0x20}
-	IcaPoolIndexPrefix            = []byte{0x21}
+	BondedPoolPrefix                 = []byte{0x01}
+	EraUnbondLimitPrefix             = []byte{0x02}
+	ChainBondingDurationPrefix       = []byte{0x03}
+	PoolDetailPrefix                 = []byte{0x04}
+	SnapshotPrefix                   = []byte{0x06}
+	CurrentEraSnapshotPrefix         = []byte{0x07}
+	BondPipelinePrefix               = []byte{0x08}
+	ChainEraPrefix                   = []byte{0x09}
+	EraSnapshotPrefix                = []byte{0x0a}
+	StakingRewardCommissionPrefix    = []byte{0x0b}
+	ProtocolFeeReceiverPrefix        = []byte{0x0c}
+	TotalExpectedActivePrefix        = []byte{0x0d}
+	PoolUnbondPrefix                 = []byte{0x0e}
+	ExchangeRateKeyPrefix            = []byte{0x0f}
+	EraExchangeRateKeyPrefix         = []byte{0x10}
+	UnbondFeePrefix                  = []byte{0x11}
+	UnbondCommissionPrefix           = []byte{0x12}
+	BondRecordPrefix                 = []byte{0x14}
+	SignaturePrefix                  = []byte{0x15}
+	RParamsPrefix                    = []byte{0x16}
+	RValidatorIndicatorPrefix        = []byte{0x17}
+	RValidatorPrefix                 = []byte{0x18}
+	TotalProtocolFeePrefix           = []byte{0x19}
+	RelayFeeReceiverPrefix           = []byte{0x1a}
+	UnbondSwitchPrefix               = []byte{0x1b}
+	PoolUnbondNextSequencePrefix     = []byte{0x1c}
+	MigrateInitSealedStatePrefix     = []byte{0x1d}
+	ICAAccountPrefix                 = []byte{0x1e}
+	IcaPoolNextSequencePrefix        = []byte{0x1f}
+	IcaPoolDetailPrefix              = []byte{0x20}
+	IcaPoolDelegationAddrIndexPrefix = []byte{0x21}
 )
 
 var (
@@ -174,16 +174,13 @@ func IcaPoolDetailStoreKey(denom, sequence string) []byte {
 	return key
 }
 
-// prefix + denomLen + denom + delegationAddr
-func IcaPoolIndexStoreKey(denom, delegationAddr string) []byte {
-	denomLen := len([]byte(denom))
+// prefix + delegationAddr
+func IcaPoolDelegationAddrIndexStoreKey(delegationAddr string) []byte {
 	delegationAddrLen := len([]byte(delegationAddr))
 
-	key := make([]byte, 1+1+denomLen+delegationAddrLen)
-	copy(key[0:], IcaPoolIndexPrefix)
-	key[1] = byte(denomLen)
-	copy(key[2:], []byte(denom))
-	copy(key[2+denomLen:], []byte(delegationAddr))
+	key := make([]byte, 1+delegationAddrLen)
+	copy(key[0:], IcaPoolDelegationAddrIndexPrefix)
+	copy(key[1:], []byte(delegationAddr))
 
 	return key
 }

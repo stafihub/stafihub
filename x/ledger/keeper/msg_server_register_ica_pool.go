@@ -19,16 +19,19 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 	willUseSequence := k.GetIcapPoolNextSequence(ctx, msg.Denom)
 	delegationOwner := fmt.Sprintf("%s-%d-delegation", msg.Denom, willUseSequence)
 	withdrawOwner := fmt.Sprintf("%s-%d-withdraw", msg.Denom, willUseSequence)
-
+	ctx.Logger().Info("RegisterIcaPool", "start1", msg)
 	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner); err != nil {
 		return nil, err
 	}
+	ctx.Logger().Info("RegisterIcaPool", "start2", msg)
 	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawOwner); err != nil {
 		return nil, err
 	}
 
-	k.SetIcaPoolDetail(ctx, types.IcaPoolDetail{
+	ctx.Logger().Info("RegisterIcaPool", "start3", msg)
+	k.SetIcaPoolDetail(ctx, &types.IcaPoolDetail{
 		Denom:    msg.Denom,
+		Status:   types.IcaPoolStatusInit,
 		Sequence: fmt.Sprintf("%d", willUseSequence),
 		DelegationAccount: &types.IcaAccount{
 			Owner:            delegationOwner,
@@ -39,7 +42,8 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 			CtrlConnectionId: msg.ConnectionId,
 		},
 	})
+	ctx.Logger().Info("RegisterIcaPool", "start4", msg)
 	k.SetIcaPoolSequence(ctx, msg.Denom, willUseSequence)
-
+	ctx.Logger().Info("RegisterIcaPool", "start5", willUseSequence)
 	return &types.MsgRegisterIcaPoolResponse{}, nil
 }

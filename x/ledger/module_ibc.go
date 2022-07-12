@@ -40,7 +40,7 @@ func (im IBCModule) OnChanOpenInit(
 	counterparty channeltypes.Counterparty,
 	version string,
 ) error {
-	ctx.Logger().Info("OnChanOpenInit", "connectionHops", connectionHops, "portId", portID, "channelId", channelID, "conterparty", "channelCap", channelCap.String(), counterparty, "version", version)
+	ctx.Logger().Info("OnChanOpenInit", "connectionHops", connectionHops, "portId", portID, "channelId", channelID, "conterparty", counterparty, "channelCap", channelCap.String(), "version", version)
 	if err := im.keeper.ClaimCapability(ctx, channelCap, ibchost.ChannelCapabilityPath(portID, channelID)); err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (im IBCModule) OnChanOpenAck(
 		ctx.Logger().Error(fmt.Sprintf("portId format err %s/%s", controllerConnectionId, portID))
 		return nil
 	}
-	if portIdSlice[0] != icatypes.PortPrefix {
+	if fmt.Sprint(portIdSlice[0], "-") != icatypes.PortPrefix {
 		ctx.Logger().Error(fmt.Sprintf("portId prefix err %s/%s", controllerConnectionId, portID))
 		return nil
 	}
@@ -88,20 +88,27 @@ func (im IBCModule) OnChanOpenAck(
 		ctx.Logger().Error(fmt.Sprintf("ica pool detail not found %s/%s", controllerConnectionId, portID))
 		return nil
 	}
+
 	if isDelegationAddr {
+		icaPoolDetail.Status = icaPoolDetail.Status + 1
 		icaPoolDetail.DelegationAccount.Address = interchainAddress
 		icaPoolDetail.DelegationAccount.CtrlPortId = portID
 		icaPoolDetail.DelegationAccount.HostConnectionId = hostConnectionId
 		icaPoolDetail.DelegationAccount.HostPortId = icatypes.PortID
+
+		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
+		im.keeper.SetIcaPoolIndex(ctx, icaPoolDetail)
 	} else {
+		icaPoolDetail.Status = icaPoolDetail.Status + 1
 		icaPoolDetail.WithdrawAccount.Address = interchainAddress
 		icaPoolDetail.WithdrawAccount.CtrlPortId = portID
 		icaPoolDetail.WithdrawAccount.HostConnectionId = hostConnectionId
 		icaPoolDetail.WithdrawAccount.HostPortId = icatypes.PortID
+
+		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
 	}
 
-	im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
-	im.keeper.SetIcaPoolIndex(ctx, icaPoolDetail)
+	ctx.Logger().Error(fmt.Sprintf("OnChanOpenAck  end %s/%s", controllerConnectionId, portID))
 	return nil
 }
 
