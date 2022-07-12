@@ -66,44 +66,54 @@ func (im IBCModule) OnChanOpenAck(
 	interchainAddress, found := im.keeper.ICAControllerKeeper.GetInterchainAccountAddress(ctx, controllerConnectionId, portID)
 	if !found {
 		ctx.Logger().Error(fmt.Sprintf("Expected to find an address for %s/%s", controllerConnectionId, portID))
-		return nil
+		return fmt.Errorf("GetInterchainAccountAddress failed for %s/%s", controllerConnectionId, portID)
 	}
 
 	portIdSlice := strings.Split(portID, "-")
 	if len(portIdSlice) != 4 {
-		ctx.Logger().Error(fmt.Sprintf("portId format err %s/%s", controllerConnectionId, portID))
-		return nil
+		errStr := fmt.Sprintf("portId format err %s/%s", controllerConnectionId, portID)
+		ctx.Logger().Error(errStr)
+		return fmt.Errorf(errStr)
 	}
 	if fmt.Sprint(portIdSlice[0], "-") != icatypes.PortPrefix {
-		ctx.Logger().Error(fmt.Sprintf("portId prefix err %s/%s", controllerConnectionId, portID))
-		return nil
+		errStr := fmt.Sprintf("portId prefix err %s/%s", controllerConnectionId, portID)
+		ctx.Logger().Error(errStr)
+		return fmt.Errorf(errStr)
 	}
 
 	denom := portIdSlice[1]
-	sequence := portIdSlice[2]
+	index, err := sdk.ParseUint(portIdSlice[2])
+	if err != nil {
+		return err
+	}
 	isDelegationAddr := portIdSlice[3] == "delegation"
 
-	icaPoolDetail, found := im.keeper.GetIcaPoolDetail(ctx, denom, sequence)
+	icaPoolDetail, found := im.keeper.GetIcaPoolDetail(ctx, denom, uint32(index.Uint64()))
 	if !found {
-		ctx.Logger().Error(fmt.Sprintf("ica pool detail not found %s/%s", controllerConnectionId, portID))
-		return nil
+		errStr := fmt.Sprintf("ica pool detail not found %s/%s", controllerConnectionId, portID)
+		ctx.Logger().Error(errStr)
+		return fmt.Errorf(errStr)
 	}
 
 	if isDelegationAddr {
 		icaPoolDetail.Status = icaPoolDetail.Status + 1
 		icaPoolDetail.DelegationAccount.Address = interchainAddress
 		icaPoolDetail.DelegationAccount.CtrlPortId = portID
+		icaPoolDetail.DelegationAccount.CtrlChannelId = channelID
 		icaPoolDetail.DelegationAccount.HostConnectionId = hostConnectionId
 		icaPoolDetail.DelegationAccount.HostPortId = icatypes.PortID
+		icaPoolDetail.DelegationAccount.HostChannelId = counterpartyChannelID
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
-		im.keeper.SetIcaPoolIndex(ctx, icaPoolDetail)
+		im.keeper.SetIcaPoolDelegationAddrIndex(ctx, icaPoolDetail)
 	} else {
 		icaPoolDetail.Status = icaPoolDetail.Status + 1
 		icaPoolDetail.WithdrawAccount.Address = interchainAddress
 		icaPoolDetail.WithdrawAccount.CtrlPortId = portID
+		icaPoolDetail.WithdrawAccount.CtrlChannelId = channelID
 		icaPoolDetail.WithdrawAccount.HostConnectionId = hostConnectionId
 		icaPoolDetail.WithdrawAccount.HostPortId = icatypes.PortID
+		icaPoolDetail.WithdrawAccount.HostChannelId = counterpartyChannelID
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
 	}

@@ -5,17 +5,22 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
+	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
 func (k msgServer) SetWithdrawAddr(goCtx context.Context, msg *types.MsgSetWithdrawAddr) (*types.MsgSetWithdrawAddrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
+		return nil, sudotypes.ErrCreatorNotAdmin
+	}
 
 	icaPoolDetail, found := k.GetIcaPoolByDelegationAddr(ctx, msg.DelegationAddr)
 	if !found {
 		return nil, types.ErrIcaPoolNotFound
 	}
 
-	if icaPoolDetail.Status != types.IcaPoolStatusWithdrawCreate {
+	if icaPoolDetail.Status != types.IcaPoolStatusCreateTwo {
 		return nil, types.ErrIcaPoolStatusUnmatch
 	}
 

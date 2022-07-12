@@ -60,7 +60,7 @@ var (
 	PoolUnbondNextSequencePrefix     = []byte{0x1c}
 	MigrateInitSealedStatePrefix     = []byte{0x1d}
 	ICAAccountPrefix                 = []byte{0x1e}
-	IcaPoolNextSequencePrefix        = []byte{0x1f}
+	IcaPoolNextIndexPrefix           = []byte{0x1f}
 	IcaPoolDetailPrefix              = []byte{0x20}
 	IcaPoolDelegationAddrIndexPrefix = []byte{0x21}
 )
@@ -160,16 +160,15 @@ func ICAStoreKey(owner, ctrlConnectionId string) []byte {
 	return key
 }
 
-// prefix + denomLen + denom + sequence
-func IcaPoolDetailStoreKey(denom, sequence string) []byte {
+// prefix + denomLen + denom + 4
+func IcaPoolDetailStoreKey(denom string, index uint32) []byte {
 	denomLen := len([]byte(denom))
-	sequenceLen := len([]byte(sequence))
 
-	key := make([]byte, 1+1+denomLen+sequenceLen)
+	key := make([]byte, 1+1+denomLen+4)
 	copy(key[0:], IcaPoolDetailPrefix)
 	key[1] = byte(denomLen)
 	copy(key[2:], []byte(denom))
-	copy(key[2+denomLen:], []byte(sequence))
+	binary.LittleEndian.PutUint32(key[2+denomLen:], index)
 
 	return key
 }

@@ -24481,9 +24481,13 @@ paths:
                     type: string
                   ctrlPortId:
                     type: string
+                  ctrlChannelId:
+                    type: string
                   hostConnectionId:
                     type: string
                   hostPortId:
+                    type: string
+                  hostChannelId:
                     type: string
         default:
           description: An unexpected error response.
@@ -24698,15 +24702,16 @@ paths:
                   properties:
                     denom:
                       type: string
-                    sequence:
-                      type: string
+                    index:
+                      type: integer
+                      format: int64
                     status:
                       type: string
                       enum:
                         - ICA_POOL_STATUS_INIT
-                        - ICA_POOL_STATUS_DELEGATION_CREATE
-                        - ICA_POOL_STATUS_WITHDRAW_CREATE
-                        - ICA_POOL_STATUS_WITHDRAW_SET
+                        - ICA_POOL_STATUS_CREATE_ONE
+                        - ICA_POOL_STATUS_CREATE_TWO
+                        - ICA_POOL_STATUS_SET_WITHDRAW
                       default: ICA_POOL_STATUS_INIT
                     DelegationAccount:
                       type: object
@@ -24719,9 +24724,13 @@ paths:
                           type: string
                         ctrlPortId:
                           type: string
+                        ctrlChannelId:
+                          type: string
                         hostConnectionId:
                           type: string
                         hostPortId:
+                          type: string
+                        hostChannelId:
                           type: string
                     WithdrawAccount:
                       type: object
@@ -24734,9 +24743,13 @@ paths:
                           type: string
                         ctrlPortId:
                           type: string
+                        ctrlChannelId:
+                          type: string
                         hostConnectionId:
                           type: string
                         hostPortId:
+                          type: string
+                        hostChannelId:
                           type: string
         default:
           description: An unexpected error response.
@@ -43933,24 +43946,29 @@ definitions:
         type: string
       ctrlPortId:
         type: string
+      ctrlChannelId:
+        type: string
       hostConnectionId:
         type: string
       hostPortId:
+        type: string
+      hostChannelId:
         type: string
   stafihub.stafihub.ledger.IcaPoolDetail:
     type: object
     properties:
       denom:
         type: string
-      sequence:
-        type: string
+      index:
+        type: integer
+        format: int64
       status:
         type: string
         enum:
           - ICA_POOL_STATUS_INIT
-          - ICA_POOL_STATUS_DELEGATION_CREATE
-          - ICA_POOL_STATUS_WITHDRAW_CREATE
-          - ICA_POOL_STATUS_WITHDRAW_SET
+          - ICA_POOL_STATUS_CREATE_ONE
+          - ICA_POOL_STATUS_CREATE_TWO
+          - ICA_POOL_STATUS_SET_WITHDRAW
         default: ICA_POOL_STATUS_INIT
       DelegationAccount:
         type: object
@@ -43963,9 +43981,13 @@ definitions:
             type: string
           ctrlPortId:
             type: string
+          ctrlChannelId:
+            type: string
           hostConnectionId:
             type: string
           hostPortId:
+            type: string
+          hostChannelId:
             type: string
       WithdrawAccount:
         type: object
@@ -43978,17 +44000,21 @@ definitions:
             type: string
           ctrlPortId:
             type: string
+          ctrlChannelId:
+            type: string
           hostConnectionId:
             type: string
           hostPortId:
+            type: string
+          hostChannelId:
             type: string
   stafihub.stafihub.ledger.IcaPoolStatus:
     type: string
     enum:
       - ICA_POOL_STATUS_INIT
-      - ICA_POOL_STATUS_DELEGATION_CREATE
-      - ICA_POOL_STATUS_WITHDRAW_CREATE
-      - ICA_POOL_STATUS_WITHDRAW_SET
+      - ICA_POOL_STATUS_CREATE_ONE
+      - ICA_POOL_STATUS_CREATE_TWO
+      - ICA_POOL_STATUS_SET_WITHDRAW
     default: ICA_POOL_STATUS_INIT
   stafihub.stafihub.ledger.LinkChunk:
     type: object
@@ -44371,9 +44397,13 @@ definitions:
             type: string
           ctrlPortId:
             type: string
+          ctrlChannelId:
+            type: string
           hostConnectionId:
             type: string
           hostPortId:
+            type: string
+          hostChannelId:
             type: string
   stafihub.stafihub.ledger.QueryIcaPoolListResponse:
     type: object
@@ -44385,15 +44415,16 @@ definitions:
           properties:
             denom:
               type: string
-            sequence:
-              type: string
+            index:
+              type: integer
+              format: int64
             status:
               type: string
               enum:
                 - ICA_POOL_STATUS_INIT
-                - ICA_POOL_STATUS_DELEGATION_CREATE
-                - ICA_POOL_STATUS_WITHDRAW_CREATE
-                - ICA_POOL_STATUS_WITHDRAW_SET
+                - ICA_POOL_STATUS_CREATE_ONE
+                - ICA_POOL_STATUS_CREATE_TWO
+                - ICA_POOL_STATUS_SET_WITHDRAW
               default: ICA_POOL_STATUS_INIT
             DelegationAccount:
               type: object
@@ -44406,9 +44437,13 @@ definitions:
                   type: string
                 ctrlPortId:
                   type: string
+                ctrlChannelId:
+                  type: string
                 hostConnectionId:
                   type: string
                 hostPortId:
+                  type: string
+                hostChannelId:
                   type: string
             WithdrawAccount:
               type: object
@@ -44421,9 +44456,13 @@ definitions:
                   type: string
                 ctrlPortId:
                   type: string
+                ctrlChannelId:
+                  type: string
                 hostConnectionId:
                   type: string
                 hostPortId:
+                  type: string
+                hostChannelId:
                   type: string
   stafihub.stafihub.ledger.QueryPoolUnbondNextSequenceResponse:
     type: object

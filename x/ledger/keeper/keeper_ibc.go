@@ -32,22 +32,22 @@ func (k Keeper) GetICAAccount(ctx sdk.Context, owner, ctrlConnectionId string) (
 	return val, true
 }
 
-func (k Keeper) GetIcapPoolNextSequence(ctx sdk.Context, denom string) uint32 {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IcaPoolNextSequencePrefix)
+func (k Keeper) GetIcapPoolNextIndex(ctx sdk.Context, denom string) uint32 {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IcaPoolNextIndexPrefix)
 
 	key := []byte(denom)
 
-	seqBts := store.Get(key)
-	if seqBts == nil {
+	bts := store.Get(key)
+	if bts == nil {
 		return 0
 	}
 
-	seq := binary.LittleEndian.Uint32(seqBts)
+	seq := binary.LittleEndian.Uint32(bts)
 	return seq + 1
 }
 
-func (k Keeper) SetIcaPoolSequence(ctx sdk.Context, denom string, seq uint32) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IcaPoolNextSequencePrefix)
+func (k Keeper) SetIcaPoolIndex(ctx sdk.Context, denom string, seq uint32) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IcaPoolNextIndexPrefix)
 
 	key := []byte(denom)
 
@@ -60,12 +60,12 @@ func (k Keeper) SetIcaPoolDetail(ctx sdk.Context, ica *types.IcaPoolDetail) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(ica)
 
-	store.Set(types.IcaPoolDetailStoreKey(ica.Denom, ica.Sequence), b)
+	store.Set(types.IcaPoolDetailStoreKey(ica.Denom, ica.Index), b)
 }
 
-func (k Keeper) GetIcaPoolDetail(ctx sdk.Context, denom, sequence string) (val *types.IcaPoolDetail, found bool) {
+func (k Keeper) GetIcaPoolDetail(ctx sdk.Context, denom string, index uint32) (val *types.IcaPoolDetail, found bool) {
 	store := ctx.KVStore(k.storeKey)
-	b := store.Get(types.IcaPoolDetailStoreKey(denom, sequence))
+	b := store.Get(types.IcaPoolDetailStoreKey(denom, index))
 	if b == nil {
 		return val, false
 	}
@@ -94,15 +94,15 @@ func (k Keeper) GetIcaPoolDetailList(ctx sdk.Context, denom string) []*types.Ica
 	return list
 }
 
-func (k Keeper) SetIcaPoolIndex(ctx sdk.Context, ica *types.IcaPoolDetail) {
+func (k Keeper) SetIcaPoolDelegationAddrIndex(ctx sdk.Context, ica *types.IcaPoolDetail) {
 	store := ctx.KVStore(k.storeKey)
 	denomLen := len(ica.Denom)
-	value := make([]byte, 1+denomLen+len(ica.Sequence))
+	value := make([]byte, 1+denomLen+4)
 
-	//1+denomLen+sequenceLen
+	//1+denomLen+4
 	value[0] = byte(denomLen)
 	copy(value[1:], []byte(ica.Denom))
-	copy(value[1+denomLen:], []byte(ica.Sequence))
+	binary.LittleEndian.PutUint32(value[1+denomLen:], ica.Index)
 
 	store.Set(types.IcaPoolDelegationAddrIndexStoreKey(ica.DelegationAccount.Address), value)
 }
@@ -113,16 +113,15 @@ func (k Keeper) GetIcaPoolByDelegationAddr(ctx sdk.Context, delegationAddr strin
 	if bts == nil {
 		return nil, false
 	}
-
 	if len(bts) < 1 {
 		return nil, false
 	}
 	denomLen := int(bts[0])
-	if len(bts) < 1+denomLen {
+	if len(bts) != 1+denomLen+4 {
 		return nil, false
 	}
-	denom := bts[1 : 1+denomLen]
-	sequence := bts[1+denomLen:]
+	denomBts := bts[1 : 1+denomLen]
+	index := binary.LittleEndian.Uint32(bts[1+denomLen:])
 
-	return k.GetIcaPoolDetail(ctx, string(denom), string(sequence))
+	return k.GetIcaPoolDetail(ctx, string(denomBts), index)
 }

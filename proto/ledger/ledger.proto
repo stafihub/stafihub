@@ -156,13 +156,16 @@ message IcaAccount {
     string address = 2;
     string ctrlConnectionId = 3;
     string ctrlPortId = 4;
-    string hostConnectionId = 5;
-    string hostPortId = 6;
+    string ctrlChannelId = 5;
+    string hostConnectionId = 6;
+    string hostPortId = 7;
+    string hostChannelId = 8;
 }
+
 
 message IcaPoolDetail {
     string denom = 1;
-    string sequence = 2;
+    uint32 index = 2;
     IcaPoolStatus status = 3;
     IcaAccount DelegationAccount = 4;
     IcaAccount WithdrawAccount = 5;
@@ -172,7 +175,7 @@ enum IcaPoolStatus {
     option (gogoproto.goproto_enum_prefix) = false;
   
     ICA_POOL_STATUS_INIT = 0 [(gogoproto.enumvalue_customname) = "IcaPoolStatusInit"];
-    ICA_POOL_STATUS_DELEGATION_CREATE = 1 [(gogoproto.enumvalue_customname) = "IcaPoolStatusDelegationCreate"];
-    ICA_POOL_STATUS_WITHDRAW_CREATE = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusWithdrawCreate"];
-    ICA_POOL_STATUS_WITHDRAW_SET = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusWithdrawSet"];
+    ICA_POOL_STATUS_CREATE_ONE = 1 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateOne"];
+    ICA_POOL_STATUS_CREATE_TWO = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateTwo"];
+    ICA_POOL_STATUS_SET_WITHDRAW = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusSetWithdraw"];
 }
