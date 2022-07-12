@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/binary"
+	fmt "fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/utils"
@@ -182,4 +183,10 @@ func IcaPoolDelegationAddrIndexStoreKey(delegationAddr string) []byte {
 	copy(key[1:], []byte(delegationAddr))
 
 	return key
+}
+
+func GetOwners(denom string, index uint32) (string, string) {
+	delegationOwner := fmt.Sprintf("%s-%d-delegation", denom, index)
+	withdrawOwner := fmt.Sprintf("%s-%d-withdraw", denom, index)
+	return delegationOwner, withdrawOwner
 }

@@ -99,7 +99,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, ctrlConnectionId, delegationAddr, withdrawAddr string) error {
 	var msgs []sdk.Msg
 
-	k.Logger(ctx).Error(fmt.Sprintf("Setting withdrawal address on host.delegationAddrOwner: %s DelegatorAddress: %s WithdrawAddress: %s ctrlConnectionID: %s",
+	k.Logger(ctx).Info(fmt.Sprintf("Setting withdrawal address on host.delegationAddrOwner: %s DelegatorAddress: %s WithdrawAddress: %s ctrlConnectionID: %s",
 		delegationAddrOwner, delegationAddr, withdrawAddr, ctrlConnectionId))
 	// construct the msg
 	msgs = append(msgs, &distributiontypes.MsgSetWithdrawAddress{DelegatorAddress: delegationAddr, WithdrawAddress: withdrawAddr})

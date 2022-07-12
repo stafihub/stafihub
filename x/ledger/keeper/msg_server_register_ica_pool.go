@@ -2,8 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
@@ -16,23 +14,20 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 		return nil, sudotypes.ErrCreatorNotAdmin
 	}
 
-	willUseSequence := k.GetIcapPoolNextIndex(ctx, msg.Denom)
-	delegationOwner := fmt.Sprintf("%s-%d-delegation", msg.Denom, willUseSequence)
-	withdrawOwner := fmt.Sprintf("%s-%d-withdraw", msg.Denom, willUseSequence)
-	ctx.Logger().Info("RegisterIcaPool", "start1", msg)
+	willUseIndex := k.GetIcaPoolNextIndex(ctx, msg.Denom)
+	delegationOwner, withdrawOwner := types.GetOwners(msg.Denom, willUseIndex)
+
 	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner); err != nil {
 		return nil, err
 	}
-	ctx.Logger().Info("RegisterIcaPool", "start2", msg)
 	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawOwner); err != nil {
 		return nil, err
 	}
 
-	ctx.Logger().Info("RegisterIcaPool", "start3", msg)
 	k.SetIcaPoolDetail(ctx, &types.IcaPoolDetail{
 		Denom:  msg.Denom,
 		Status: types.IcaPoolStatusInit,
-		Index:  willUseSequence,
+		Index:  willUseIndex,
 		DelegationAccount: &types.IcaAccount{
 			Owner:            delegationOwner,
 			CtrlConnectionId: msg.ConnectionId,
@@ -42,8 +37,8 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 			CtrlConnectionId: msg.ConnectionId,
 		},
 	})
-	ctx.Logger().Info("RegisterIcaPool", "start4", msg)
-	k.SetIcaPoolIndex(ctx, msg.Denom, willUseSequence)
-	ctx.Logger().Info("RegisterIcaPool", "start5", willUseSequence)
+
+	k.SetIcaPoolIndex(ctx, msg.Denom, willUseIndex)
+
 	return &types.MsgRegisterIcaPoolResponse{}, nil
 }

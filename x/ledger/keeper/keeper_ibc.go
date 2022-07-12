@@ -32,7 +32,7 @@ func (k Keeper) GetICAAccount(ctx sdk.Context, owner, ctrlConnectionId string) (
 	return val, true
 }
 
-func (k Keeper) GetIcapPoolNextIndex(ctx sdk.Context, denom string) uint32 {
+func (k Keeper) GetIcaPoolNextIndex(ctx sdk.Context, denom string) uint32 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IcaPoolNextIndexPrefix)
 
 	key := []byte(denom)
