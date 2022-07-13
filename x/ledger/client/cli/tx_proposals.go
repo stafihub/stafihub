@@ -1,13 +1,17 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -210,9 +214,9 @@ func CmdExecuteBondProposal() *cobra.Command {
 
 func CmdInterchainTxProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "interchain-tx-proposal [denom] [shotId] [pool] [txhash] [amount] [state]",
+		Use:   "interchain-tx-proposal [denom] [shotId] [pool] [path_to_msg.json]",
 		Short: "Broadcast message interchain tx proposal",
-		Args:  cobra.ExactArgs(6),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argShotid := args[1]
@@ -222,10 +226,37 @@ func CmdInterchainTxProposal() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			// check for file path if JSON input is not provided
+			contents, err := ioutil.ReadFile(args[3])
+			if err != nil {
+				return errors.Wrap(err, "neither JSON input nor path to .json file for sdk msg were provided")
+			}
+			var msgs []interface{}
+
+			err = json.Unmarshal(contents, &msgs)
+			if err != nil {
+				return err
+			}
+			cdc := codec.NewProtoCodec(clientCtx.InterfaceRegistry)
+
+			txMsgs := make([]sdk.Msg, 0)
+
+			for _, msg := range msgs {
+				content, err := json.Marshal(msg)
+				if err != nil {
+					return err
+				}
+				var txMsg sdk.Msg
+				if err := cdc.UnmarshalInterfaceJSON(content, &txMsg); err != nil {
+					return errors.Wrap(err, "error unmarshalling sdk msg file")
+				}
+				txMsgs = append(txMsgs, txMsg)
+			}
+			fmt.Println(txMsgs)
 
 			from := clientCtx.GetFromAddress()
 
-			content, err := types.NewInterchainTxProposal(from, argDenom, argShotid, argPool, nil)
+			content, err := types.NewInterchainTxProposal(from, argDenom, argShotid, argPool, txMsgs)
 			if err != nil {
 				return err
 			}

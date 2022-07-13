@@ -17,7 +17,7 @@ import (
 
 // Implements core logic for OnAcknowledgementPacket
 func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Packet, acknowledgement []byte) error {
-	k.Logger(ctx).Info("OnAcknowledgement start --------------------------")
+	k.Logger(ctx).Info("OnAcknowledgement start 1--------------------------")
 	ack := channeltypes.Acknowledgement_Result{}
 
 	err := json.Unmarshal(acknowledgement, &ack)
@@ -31,7 +31,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		k.Logger(ctx).Error("Unable to unmarshal acknowledgement result", "error", err, "remote_err", ackErr, "data", acknowledgement)
 		return err
 	}
-	k.Logger(ctx).Info("OnAcknowledgement start --------------------------", "ack", ack)
+	k.Logger(ctx).Info("OnAcknowledgement start 2--------------------------", "ack", ack)
 	txMsgData := &sdk.TxMsgData{}
 	err = proto.Unmarshal(ack.Result, txMsgData)
 	if err != nil {
@@ -39,7 +39,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		return err
 	}
 
-	k.Logger(ctx).Info("OnAcknowledgement start --------------------------", "txMsgData", txMsgData.String())
+	k.Logger(ctx).Info("OnAcknowledgement start 3--------------------------", "txMsgData", txMsgData.String())
 
 	var packetData icatypes.InterchainAccountPacketData
 	err = icatypes.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packetData)
@@ -47,56 +47,40 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		k.Logger(ctx).Error("unable to unmarshal acknowledgement packet data", "error", err, "data", packetData)
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
-	msgs, err := icatypes.DeserializeCosmosTx(k.cdc, packetData.Data)
-	if err != nil {
-		k.Logger(ctx).Info("Error decoding messages", "err", err)
-		return err
-	}
-	for msgIndex, msgData := range txMsgData.Data {
-		src := msgs[msgIndex]
-		switch msgData.MsgType {
-		// staking to validators
-		case "/cosmos.staking.v1beta1.MsgDelegate":
-			k.Logger(ctx).Info("onAcknowledgement msg delegate--------------------------")
-		// unstake
-		case "/cosmos.staking.v1beta1.MsgUndelegate":
-		// withdrawing rewards ()
-		case "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward":
-		case "/cosmos.bank.v1beta1.MsgSend":
-		case "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress":
-			k.Logger(ctx).Info("onAcknowledgement MsgSetWithdrawAddress--------------------------")
-			response := distributiontypes.MsgSetWithdrawAddressResponse{}
-			err := proto.Unmarshal(msgData.Data, &response)
-			if err != nil {
-				k.Logger(ctx).Error("unable to unmarshal MsgSend response", "error", err)
-				return err
-			}
-			k.Logger(ctx).Info("WithdrawalAddress set", "response", response)
 
-			msgSetWithdrawAddr, ok := src.(*distributiontypes.MsgSetWithdrawAddress)
-			if !ok {
-				k.Logger(ctx).Error("unable to cast source message to MsgSetWithdrawAddress")
-				return fmt.Errorf("unable to cast source message to MsgSetWithdrawAddress")
-			}
-			k.Logger(ctx).Info("MsgSetWithdrawAddress", "delegator", msgSetWithdrawAddr.DelegatorAddress, "withdraw", msgSetWithdrawAddr.WithdrawAddress)
-
-			icaPool, found := k.GetIcaPoolByDelegationAddr(ctx, msgSetWithdrawAddr.DelegatorAddress)
-			if !found {
-				return types.ErrIcaPoolNotFound
-			}
-			icaPool.Status = types.IcaPoolStatusSetWithdraw
-
-			k.SetIcaPoolDetail(ctx, icaPool)
-			continue
-		default:
-			k.Logger(ctx).Error("Unhandled acknowledgement packet", "type", msgData.MsgType)
+	if len(txMsgData.Data) == 1 && txMsgData.Data[0].MsgType == "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" {
+		msgs, err := icatypes.DeserializeCosmosTx(k.cdc, packetData.Data)
+		if err != nil {
+			k.Logger(ctx).Info("Error decoding messages", "err", err)
+			return err
 		}
+		if len(msgs) == 0 {
+			return fmt.Errorf("msgs of packetData is empty")
+		}
+
+		msgSetWithdrawAddr, ok := msgs[0].(*distributiontypes.MsgSetWithdrawAddress)
+		if !ok {
+			errStr := "unable to cast source message to MsgSetWithdrawAddress"
+			k.Logger(ctx).Error(errStr)
+			return fmt.Errorf(errStr)
+		}
+
+		// update ica pool status
+		icaPool, found := k.GetIcaPoolByDelegationAddr(ctx, msgSetWithdrawAddr.DelegatorAddress)
+		if !found {
+			return types.ErrIcaPoolNotFound
+		}
+		icaPool.Status = types.IcaPoolStatusSetWithdraw
+
+		k.SetIcaPoolDetail(ctx, icaPool)
+	} else {
+		propId, found := k.GetInterchainTxPropIdBySeq(ctx, modulePacket.SourcePort, modulePacket.SourceChannel, modulePacket.Sequence)
+		if !found {
+			return types.ErrInterchainTxPropIdNotFound
+		}
+		k.SetInterchainTxProposalStatus(ctx, propId, types.InterchainTxStatusSuccess)
 	}
 
-	propId, found := k.GetInterchainTxPropIdBySeq(ctx, modulePacket.SourcePort, modulePacket.SourceChannel, modulePacket.Sequence)
-	if found {
-		k.SetInterchainTxProposalStatus(ctx, propId, 1)
-	}
 	k.Logger(ctx).Info("onAcknowledgement msg delegate end --------------------------")
 	return nil
 }

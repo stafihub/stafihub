@@ -146,6 +146,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_pool_list/{denom}";
 	}
 
+// Queries a list of InterchainTxStatus items.
+	rpc InterchainTxStatus(QueryInterchainTxStatusRequest) returns (QueryInterchainTxStatusResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/interchain_tx_status/{propId}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -376,6 +381,14 @@ message QueryIcaPoolListRequest {
 
 message QueryIcaPoolListResponse {
   repeated IcaPoolDetail icaPoolList = 1;
+}
+
+message QueryInterchainTxStatusRequest {
+  string propId = 1;
+}
+
+message QueryInterchainTxStatusResponse {
+	InterchainTxStatus interchainTxStatus = 1;
 }
 
 // this line is used by starport scaffolding # 3

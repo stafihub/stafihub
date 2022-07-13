@@ -59,6 +59,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdIcaPoolList())
 
+	cmd.AddCommand(CmdInterchainTxStatus())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd

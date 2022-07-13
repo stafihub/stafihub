@@ -126,19 +126,18 @@ func (k Keeper) GetIcaPoolByDelegationAddr(ctx sdk.Context, delegationAddr strin
 	return k.GetIcaPoolDetail(ctx, string(denomBts), index)
 }
 
-func (k Keeper) SetInterchainTxProposalStatus(ctx sdk.Context, propId string, status uint) {
+func (k Keeper) SetInterchainTxProposalStatus(ctx sdk.Context, propId string, status types.InterchainTxStatus) {
 	store := ctx.KVStore(k.storeKey)
-
 	store.Set(types.InterchainTxPropIdKey(propId), []byte{byte(status)})
 }
 
-func (k Keeper) GetInterchainTxProposalStatus(ctx sdk.Context, propId string) (status uint, found bool) {
+func (k Keeper) GetInterchainTxProposalStatus(ctx sdk.Context, propId string) (status types.InterchainTxStatus, found bool) {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.InterchainTxPropIdKey(propId))
 	if len(bts) == 0 {
-		return 0, false
+		return types.InterchainTxStatusInit, false
 	}
-	return uint(bts[0]), true
+	return types.InterchainTxStatus(bts[0]), true
 }
 
 func (k Keeper) SetInterchainTxProposalSequenceIndex(ctx sdk.Context, ctrPortId, ctrChannelId string, sequence uint64, propId string) {

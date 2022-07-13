@@ -11,13 +11,13 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdIcaPoolList() *cobra.Command {
+func CmdInterchainTxStatus() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "ica-pool-list [denom]",
-		Short: "Query ica pool list",
+		Use:   "interchain-tx-status [prop-id]",
+		Short: "Query interchain tx status",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqDenom := args[0]
+			reqPropId := args[0]
 
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -26,12 +26,12 @@ func CmdIcaPoolList() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryIcaPoolListRequest{
+			params := &types.QueryInterchainTxStatusRequest{
 
-				Denom: reqDenom,
+				PropId: reqPropId,
 			}
 
-			res, err := queryClient.IcaPoolList(cmd.Context(), params)
+			res, err := queryClient.InterchainTxStatus(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

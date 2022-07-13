@@ -179,3 +179,11 @@ enum IcaPoolStatus {
     ICA_POOL_STATUS_CREATE_TWO = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateTwo"];
     ICA_POOL_STATUS_SET_WITHDRAW = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusSetWithdraw"];
 }
+
+enum InterchainTxStatus {
+    option (gogoproto.goproto_enum_prefix) = false;
+  
+    INTERCHAIN_TX_STATUS_INIT = 0 [(gogoproto.enumvalue_customname) = "InterchainTxStatusInit"];
+    INTERCHAIN_TX_STATUS_SUCCESS = 1 [(gogoproto.enumvalue_customname) = "InterchainTxStatusSuccess"];
+    INTERCHAIN_TX_STATUS_FAILED = 2 [(gogoproto.enumvalue_customname) = "InterchainTxStatusFailed"];
+}

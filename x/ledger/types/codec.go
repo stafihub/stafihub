@@ -24,6 +24,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
 	cdc.RegisterConcrete(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal", nil)
+	cdc.RegisterConcrete(&InterchainTxProposal{}, "ledger/InterchainTxProposal", nil)
 
 	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
 	cdc.RegisterConcrete(&MsgSetRParams{}, "ledger/SetRParams", nil)
@@ -59,6 +60,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&ActiveReportProposal{},
 		&TransferReportProposal{},
 		&ExecuteBondProposal{},
+		&InterchainTxProposal{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSubmitSignature{},

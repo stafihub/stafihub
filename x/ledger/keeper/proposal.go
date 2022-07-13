@@ -324,13 +324,16 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 	if err != nil {
 		return err
 	}
+	if len(txMsg) == 0 {
+		return types.ErrInterchainTxMsgsEmpty
+	}
 
 	sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg)
 	if err != nil {
 		return err
 	}
 
-	k.SetInterchainTxProposalStatus(ctx, p.PropId, 0)
+	k.SetInterchainTxProposalStatus(ctx, p.PropId, types.InterchainTxStatusInit)
 	k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
 
 	return nil

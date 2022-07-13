@@ -48,4 +48,6 @@ var (
 	ErrMigrateInitIsSealed          = sdkerrors.Register(ModuleName, 40, "migrate init is sealed")
 	ErrIcaPoolNotFound              = sdkerrors.Register(ModuleName, 41, "ica pool not found")
 	ErrIcaPoolStatusUnmatch         = sdkerrors.Register(ModuleName, 42, "ica pool status unmatch")
+	ErrInterchainTxPropIdNotFound   = sdkerrors.Register(ModuleName, 43, "interchain tx prop id not found")
+	ErrInterchainTxMsgsEmpty        = sdkerrors.Register(ModuleName, 44, "interchain tx msgs empty")
 )
