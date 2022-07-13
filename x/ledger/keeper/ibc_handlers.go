@@ -92,6 +92,11 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 			k.Logger(ctx).Error("Unhandled acknowledgement packet", "type", msgData.MsgType)
 		}
 	}
+
+	propId, found := k.GetInterchainTxPropIdBySeq(ctx, modulePacket.SourcePort, modulePacket.SourceChannel, modulePacket.Sequence)
+	if found {
+		k.SetInterchainTxProposalStatus(ctx, propId, 1)
+	}
 	k.Logger(ctx).Info("onAcknowledgement msg delegate end --------------------------")
 	return nil
 }
@@ -104,7 +109,7 @@ func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, c
 	// construct the msg
 	msgs = append(msgs, &distributiontypes.MsgSetWithdrawAddress{DelegatorAddress: delegationAddr, WithdrawAddress: withdrawAddr})
 	// Send the transaction through SubmitTx
-	err := k.SubmitTxs(ctx, ctrlConnectionId, delegationAddrOwner, msgs)
+	_, err := k.SubmitTxs(ctx, ctrlConnectionId, delegationAddrOwner, msgs)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s", ctrlConnectionId, delegationAddrOwner, msgs)
 	}
@@ -112,25 +117,25 @@ func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, c
 }
 
 // SubmitTxs submits an ICA transaction containing multiple messages
-func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs []sdk.Msg) error {
+func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs []sdk.Msg) (uint64, error) {
 	portID, err := icatypes.NewControllerPortID(owner)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	channelID, found := k.ICAControllerKeeper.GetActiveChannelID(ctx, ctrlConnectionId, portID)
 	if !found {
-		return sdkerrors.Wrapf(icatypes.ErrActiveChannelNotFound, "failed to retrieve active channel for port %s", portID)
+		return 0, sdkerrors.Wrapf(icatypes.ErrActiveChannelNotFound, "failed to retrieve active channel for port %s", portID)
 	}
 
 	chanCap, found := k.scopedKeeper.GetCapability(ctx, ibchost.ChannelCapabilityPath(portID, channelID))
 	if !found {
-		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
+		return 0, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
 	data, err := icatypes.SerializeCosmosTx(k.cdc, msgs)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	packetData := icatypes.InterchainAccountPacketData{
@@ -142,10 +147,10 @@ func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs 
 	// it is the responsibility of the auth module developer to ensure an appropriate timeout timestamp
 	// todo Decide on timeout logic
 	timeoutTimestamp := ^uint64(0) >> 1
-	_, err = k.ICAControllerKeeper.SendTx(ctx, chanCap, ctrlConnectionId, portID, packetData, uint64(timeoutTimestamp))
+	sequence, err := k.ICAControllerKeeper.SendTx(ctx, chanCap, ctrlConnectionId, portID, packetData, uint64(timeoutTimestamp))
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	return sequence, nil
 }

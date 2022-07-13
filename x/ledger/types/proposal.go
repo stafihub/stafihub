@@ -2,7 +2,7 @@ package types
 
 import (
 	"encoding/hex"
-
+	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 	"github.com/tendermint/tendermint/crypto"
@@ -15,6 +15,7 @@ const (
 	ActiveReportProposalType        = "ActiveReportProposal"
 	TransferReportProposalType      = "TransferReportProposal"
 	ExecuteBondProposalType         = "ExecuteBondProposal"
+	InterchainTxProposalType        = "InterchainTxProposal"
 )
 
 func init() {
@@ -29,6 +30,8 @@ func init() {
 	rvotetypes.RegisterProposalTypeCodec(&TransferReportProposal{}, "ledger/TransferReportProposal")
 	rvotetypes.RegisterProposalType(ExecuteBondProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal")
+	rvotetypes.RegisterProposalType(InterchainTxProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&InterchainTxProposal{}, "ledger/InterchainTxProposal")
 }
 
 func NewSetChainEraProposal(proposer sdk.AccAddress, denom string, era uint32) *SetChainEraProposal {
@@ -243,4 +246,64 @@ func (p *ExecuteBondProposal) ValidateBasic() error {
 	}
 
 	return nil
+}
+
+func NewInterchainTxProposal(
+	proposer sdk.AccAddress, denom string, shotId string, pool string, msgs []sdk.Msg) (*InterchainTxProposal, error) {
+	any, err := PackTxMsgAny(msgs)
+	if err != nil {
+		return nil, err
+	}
+
+	p := &InterchainTxProposal{
+		Denom:       denom,
+		PoolAddress: pool,
+		ShotId:      shotId,
+		Msgs:        any,
+	}
+
+	p.setPropId()
+	p.Proposer = proposer.String()
+	return p, nil
+}
+
+func (p *InterchainTxProposal) setPropId() {
+	b, err := p.Marshal()
+	if err != nil {
+		panic(err)
+	}
+
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
+}
+
+func (p *InterchainTxProposal) ProposalRoute() string {
+	return ModuleName
+}
+
+func (p *InterchainTxProposal) ProposalType() string {
+	return TransferReportProposalType
+}
+
+func (p *InterchainTxProposal) ValidateBasic() error {
+	err := rvotetypes.ValidateAbstract(p)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetTxMsg fetches the cached any message
+func (msg *InterchainTxProposal) GetTxMsg(c codec.BinaryCodec) ([]sdk.Msg, error) {
+	msgs := make([]sdk.Msg, len(msg.Msgs))
+
+	for i, any := range msg.Msgs {
+		var msg sdk.Msg
+		err := c.UnpackAny(any, &msg)
+		if err != nil {
+			return nil, err
+		}
+		msgs[i] = msg
+	}
+
+	return msgs, nil
 }

@@ -64,6 +64,8 @@ var (
 	IcaPoolNextIndexPrefix           = []byte{0x1f}
 	IcaPoolDetailPrefix              = []byte{0x20}
 	IcaPoolDelegationAddrIndexPrefix = []byte{0x21}
+	InterchainTxPropIdPrefix         = []byte{0x22}
+	InterchainTxPropSeqIndexPrefix   = []byte{0x23}
 )
 
 var (
@@ -189,4 +191,25 @@ func GetOwners(denom string, index uint32) (string, string) {
 	delegationOwner := fmt.Sprintf("%s-%d-delegation", denom, index)
 	withdrawOwner := fmt.Sprintf("%s-%d-withdraw", denom, index)
 	return delegationOwner, withdrawOwner
+}
+
+func InterchainTxPropIdKey(proposalId string) []byte {
+	return append(InterchainTxPropIdPrefix, []byte(proposalId)...)
+}
+
+// prefix + 1 + portIdLen + 1 + channelIdLen + 8
+func InterchainTxPropSeqIndexStoreKey(ctrlPortId, ctrlChannelId string, sequence uint64) []byte {
+	ctrlPortIdLen := len(ctrlPortId)
+	ctrlChannelIdLen := len(ctrlChannelId)
+
+	key := make([]byte, 1+1+ctrlPortIdLen+1+ctrlChannelIdLen+8)
+	copy(key[0:], InterchainTxPropSeqIndexPrefix)
+	key[1] = byte(ctrlPortIdLen)
+	copy(key[2:], []byte(ctrlPortId))
+	key[2+ctrlPortIdLen] = byte(ctrlChannelIdLen)
+	copy(key[2+ctrlPortIdLen+1:], []byte(ctrlChannelId))
+
+	copy(key[2+ctrlPortIdLen+1+ctrlChannelIdLen:], sdk.Uint64ToBigEndian(sequence))
+
+	return key
 }

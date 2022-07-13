@@ -309,3 +309,29 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 
 	return nil
 }
+
+func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.InterchainTxProposal) error {
+	err := k.CheckAddress(ctx, p.Denom, p.PoolAddress)
+	if err != nil {
+		return err
+	}
+	icaPool, found := k.GetIcaPoolByDelegationAddr(ctx, p.PoolAddress)
+	if !found {
+		return types.ErrIcaPoolNotFound
+	}
+
+	txMsg, err := p.GetTxMsg(k.cdc)
+	if err != nil {
+		return err
+	}
+
+	sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg)
+	if err != nil {
+		return err
+	}
+
+	k.SetInterchainTxProposalStatus(ctx, p.PropId, 0)
+	k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
+
+	return nil
+}

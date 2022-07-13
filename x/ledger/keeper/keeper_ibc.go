@@ -125,3 +125,34 @@ func (k Keeper) GetIcaPoolByDelegationAddr(ctx sdk.Context, delegationAddr strin
 
 	return k.GetIcaPoolDetail(ctx, string(denomBts), index)
 }
+
+func (k Keeper) SetInterchainTxProposalStatus(ctx sdk.Context, propId string, status uint) {
+	store := ctx.KVStore(k.storeKey)
+
+	store.Set(types.InterchainTxPropIdKey(propId), []byte{byte(status)})
+}
+
+func (k Keeper) GetInterchainTxProposalStatus(ctx sdk.Context, propId string) (status uint, found bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.InterchainTxPropIdKey(propId))
+	if len(bts) == 0 {
+		return 0, false
+	}
+	return uint(bts[0]), true
+}
+
+func (k Keeper) SetInterchainTxProposalSequenceIndex(ctx sdk.Context, ctrPortId, ctrChannelId string, sequence uint64, propId string) {
+	store := ctx.KVStore(k.storeKey)
+
+	store.Set(types.InterchainTxPropSeqIndexStoreKey(ctrPortId, ctrChannelId, sequence), []byte(propId))
+}
+
+func (k Keeper) GetInterchainTxPropIdBySeq(ctx sdk.Context, ctrPortId, ctrChannelId string, sequence uint64) (propId string, found bool) {
+	store := ctx.KVStore(k.storeKey)
+
+	bts := store.Get(types.InterchainTxPropSeqIndexStoreKey(ctrPortId, ctrChannelId, sequence))
+	if len(bts) == 0 {
+		return "", false
+	}
+	return string(bts), true
+}

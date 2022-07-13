@@ -207,3 +207,42 @@ func CmdExecuteBondProposal() *cobra.Command {
 
 	return cmd
 }
+
+func CmdInterchainTxProposal() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "interchain-tx-proposal [denom] [shotId] [pool] [txhash] [amount] [state]",
+		Short: "Broadcast message interchain tx proposal",
+		Args:  cobra.ExactArgs(6),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argDenom := args[0]
+			argShotid := args[1]
+			argPool := args[2]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			from := clientCtx.GetFromAddress()
+
+			content, err := types.NewInterchainTxProposal(from, argDenom, argShotid, argPool, nil)
+			if err != nil {
+				return err
+			}
+
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
+			if err != nil {
+				return err
+			}
+
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
