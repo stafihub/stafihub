@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"encoding/json"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,7 +16,7 @@ import (
 
 // Implements core logic for OnAcknowledgementPacket
 func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Packet, acknowledgement []byte) error {
-	k.Logger(ctx).Info("OnAcknowledgement start--------------------------")
+	k.Logger(ctx).Info("OnAcknowledgement start--------------------------", "acknowledgement", string(acknowledgement))
 
 	// parse packet data
 	var packetData icatypes.InterchainAccountPacketData
@@ -28,18 +27,15 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 	}
 
 	// parse acknowledgement
-	ack := channeltypes.Acknowledgement_Result{}
-	err = json.Unmarshal(acknowledgement, &ack)
+	var ack channeltypes.Acknowledgement
+	err = icatypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack)
 	if err != nil {
-		ackErr := channeltypes.Acknowledgement_Error{}
-		err := json.Unmarshal(acknowledgement, &ackErr)
-		if err != nil {
-			k.Logger(ctx).Error("Unable to unmarshal acknowledgement error", "error", err, "data", acknowledgement)
-			return err
-		}
-
+		k.Logger(ctx).Error("Unable to unmarshal acknowledgement error", "error", err)
+		return err
+	}
+	if !ack.Success() {
 		// acknowledgement error
-		k.Logger(ctx).Error("acknowledgement error", "remote_err", ackErr, "data", acknowledgement)
+		k.Logger(ctx).Info("acknowledgement error", "ack_err", ack.GetError())
 		// update interchain tx status
 		propId, found := k.GetInterchainTxPropIdBySeq(ctx, modulePacket.SourcePort, modulePacket.SourceChannel, modulePacket.Sequence)
 		if found {
@@ -49,13 +45,13 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 	}
 
 	// acknowledgement result
-	k.Logger(ctx).Info("acknowledgement result --------------------------", "ack", ack)
+	k.Logger(ctx).Info("acknowledgement success --------------------------", "ack", ack)
 
 	// parse txMsgData
 	txMsgData := &sdk.TxMsgData{}
-	err = proto.Unmarshal(ack.Result, txMsgData)
+	err = proto.Unmarshal(ack.GetResult(), txMsgData)
 	if err != nil {
-		k.Logger(ctx).Error("Unable to unmarshal ack.Result", "error", err, "ack.Result", ack.Result)
+		k.Logger(ctx).Error("Unable to unmarshal ack.Result", "error", err, "ack.Result", ack.GetResult())
 		return err
 	}
 	k.Logger(ctx).Info("OnAcknowledgement --------------------------", "txMsgData", txMsgData.String())
@@ -94,7 +90,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		k.SetInterchainTxProposalStatus(ctx, propId, types.InterchainTxStatusSuccess)
 	}
 
-	k.Logger(ctx).Info("onAcknowledgement end --------------------------")
+	k.Logger(ctx).Info("OnAcknowledgement end --------------------------")
 	return nil
 }
 

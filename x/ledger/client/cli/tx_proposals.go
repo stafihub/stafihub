@@ -231,7 +231,7 @@ func CmdInterchainTxProposal() *cobra.Command {
 				return err
 			}
 			// check for file path if JSON input is not provided
-			contents, err := ioutil.ReadFile(args[3])
+			contents, err := ioutil.ReadFile(args[4])
 			if err != nil {
 				return errors.Wrap(err, "neither JSON input nor path to .json file for sdk msg were provided")
 			}
