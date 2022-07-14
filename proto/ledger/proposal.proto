@@ -56,5 +56,6 @@ message InterchainTxProposal {
     string poolAddress = 3;
     string shotId = 4;
     repeated google.protobuf.Any msgs = 5;
-    string propId = 6;
+    uint32 factor = 6;
+    string propId = 7;
 }

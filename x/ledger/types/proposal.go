@@ -249,7 +249,7 @@ func (p *ExecuteBondProposal) ValidateBasic() error {
 }
 
 func NewInterchainTxProposal(
-	proposer sdk.AccAddress, denom string, shotId string, pool string, msgs []sdk.Msg) (*InterchainTxProposal, error) {
+	proposer sdk.AccAddress, denom string, shotId string, pool string, msgs []sdk.Msg, factor uint32) (*InterchainTxProposal, error) {
 	any, err := PackTxMsgAny(msgs)
 	if err != nil {
 		return nil, err
@@ -260,6 +260,7 @@ func NewInterchainTxProposal(
 		PoolAddress: pool,
 		ShotId:      shotId,
 		Msgs:        any,
+		Factor:      factor,
 	}
 
 	p.setPropId()

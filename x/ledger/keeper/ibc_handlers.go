@@ -17,10 +17,19 @@ import (
 
 // Implements core logic for OnAcknowledgementPacket
 func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Packet, acknowledgement []byte) error {
-	k.Logger(ctx).Info("OnAcknowledgement start 1--------------------------")
-	ack := channeltypes.Acknowledgement_Result{}
+	k.Logger(ctx).Info("OnAcknowledgement start--------------------------")
 
-	err := json.Unmarshal(acknowledgement, &ack)
+	// parse packet data
+	var packetData icatypes.InterchainAccountPacketData
+	err := icatypes.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packetData)
+	if err != nil {
+		k.Logger(ctx).Error("unable to unmarshal acknowledgement packet data", "error", err, "data", packetData)
+		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+	}
+
+	// parse acknowledgement
+	ack := channeltypes.Acknowledgement_Result{}
+	err = json.Unmarshal(acknowledgement, &ack)
 	if err != nil {
 		ackErr := channeltypes.Acknowledgement_Error{}
 		err := json.Unmarshal(acknowledgement, &ackErr)
@@ -28,27 +37,30 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 			k.Logger(ctx).Error("Unable to unmarshal acknowledgement error", "error", err, "data", acknowledgement)
 			return err
 		}
-		k.Logger(ctx).Error("Unable to unmarshal acknowledgement result", "error", err, "remote_err", ackErr, "data", acknowledgement)
-		return err
+
+		// acknowledgement error
+		k.Logger(ctx).Error("acknowledgement error", "remote_err", ackErr, "data", acknowledgement)
+		// update interchain tx status
+		propId, found := k.GetInterchainTxPropIdBySeq(ctx, modulePacket.SourcePort, modulePacket.SourceChannel, modulePacket.Sequence)
+		if found {
+			k.SetInterchainTxProposalStatus(ctx, propId, types.InterchainTxStatusFailed)
+		}
+		return nil
 	}
-	k.Logger(ctx).Info("OnAcknowledgement start 2--------------------------", "ack", ack)
+
+	// acknowledgement result
+	k.Logger(ctx).Info("acknowledgement result --------------------------", "ack", ack)
+
+	// parse txMsgData
 	txMsgData := &sdk.TxMsgData{}
 	err = proto.Unmarshal(ack.Result, txMsgData)
 	if err != nil {
-		k.Logger(ctx).Error("Unable to unmarshal acknowledgement", "error", err, "ack", ack.Result)
+		k.Logger(ctx).Error("Unable to unmarshal ack.Result", "error", err, "ack.Result", ack.Result)
 		return err
 	}
+	k.Logger(ctx).Info("OnAcknowledgement --------------------------", "txMsgData", txMsgData.String())
 
-	k.Logger(ctx).Info("OnAcknowledgement start 3--------------------------", "txMsgData", txMsgData.String())
-
-	var packetData icatypes.InterchainAccountPacketData
-	err = icatypes.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packetData)
-	if err != nil {
-		k.Logger(ctx).Error("unable to unmarshal acknowledgement packet data", "error", err, "data", packetData)
-		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
-	}
-
-	if len(txMsgData.Data) == 1 && txMsgData.Data[0].MsgType == "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" {
+	if len(txMsgData.Data) != 0 && txMsgData.Data[0].MsgType == "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" {
 		msgs, err := icatypes.DeserializeCosmosTx(k.cdc, packetData.Data)
 		if err != nil {
 			k.Logger(ctx).Info("Error decoding messages", "err", err)
@@ -74,6 +86,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 
 		k.SetIcaPoolDetail(ctx, icaPool)
 	} else {
+		// update interchain tx status
 		propId, found := k.GetInterchainTxPropIdBySeq(ctx, modulePacket.SourcePort, modulePacket.SourceChannel, modulePacket.Sequence)
 		if !found {
 			return types.ErrInterchainTxPropIdNotFound
@@ -81,7 +94,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		k.SetInterchainTxProposalStatus(ctx, propId, types.InterchainTxStatusSuccess)
 	}
 
-	k.Logger(ctx).Info("onAcknowledgement msg delegate end --------------------------")
+	k.Logger(ctx).Info("onAcknowledgement end --------------------------")
 	return nil
 }
 
