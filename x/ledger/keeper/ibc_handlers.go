@@ -28,7 +28,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 
 	// parse acknowledgement
 	var ack channeltypes.Acknowledgement
-	err = icatypes.ModuleCdc.UnmarshalJSON(acknowledgement, &ack)
+	err = channeltypes.SubModuleCdc.UnmarshalJSON(acknowledgement, &ack)
 	if err != nil {
 		k.Logger(ctx).Error("Unable to unmarshal acknowledgement error", "error", err)
 		return err
@@ -44,7 +44,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		return nil
 	}
 
-	// acknowledgement result
+	// acknowledgement success
 	k.Logger(ctx).Info("acknowledgement success --------------------------", "ack", ack)
 
 	// parse txMsgData

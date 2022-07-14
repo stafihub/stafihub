@@ -136,11 +136,6 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbondings/{denom}/{pool}/{unlockEra}";
 	}
 
-// Queries a list of IcaAccountInfo items.
-	rpc IcaAccountInfo(QueryIcaAccountInfoRequest) returns (QueryIcaAccountInfoResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_account_info/{owner}";
-	}
-
 // Queries a list of IcaPoolList items.
 	rpc IcaPoolList(QueryIcaPoolListRequest) returns (QueryIcaPoolListResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_pool_list/{denom}";
@@ -364,15 +359,6 @@ message QueryPoolUnbondingsRequest {
 
 message QueryPoolUnbondingsResponse {
   repeated Unbonding unbondings = 1;
-}
-
-message QueryIcaAccountInfoRequest {
-  string owner = 1;
-  string ctrlConnectionId = 2;
-}
-
-message QueryIcaAccountInfoResponse {
-  IcaAccount icaAccount = 1;
 }
 
 message QueryIcaPoolListRequest {

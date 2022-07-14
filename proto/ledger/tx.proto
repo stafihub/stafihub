@@ -30,8 +30,6 @@ service Msg {
   rpc MigrateUnbondings(MsgMigrateUnbondings) returns (MsgMigrateUnbondingsResponse);
   rpc ToggleUnbondSwitch(MsgToggleUnbondSwitch) returns (MsgToggleUnbondSwitchResponse);
   rpc UnsealMigrateInit(MsgUnsealMigrateInit) returns (MsgUnsealMigrateInitResponse);
-  rpc RegisterIca(MsgRegisterIca) returns (MsgRegisterIcaResponse);
-  rpc SubmitTx(MsgSubmitTx) returns (MsgSubmitTxResponse);
   rpc RegisterIcaPool(MsgRegisterIcaPool) returns (MsgRegisterIcaPoolResponse);
   rpc SetWithdrawAddr(MsgSetWithdrawAddr) returns (MsgSetWithdrawAddrResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
@@ -222,25 +220,6 @@ message MsgUnsealMigrateInit {
 }
 
 message MsgUnsealMigrateInitResponse {
-}
-
-message MsgRegisterIca {
-  string creator = 1;
-  string owner = 2;
-  string connectionId = 3;
-}
-
-message MsgRegisterIcaResponse {
-}
-
-message MsgSubmitTx {
-  string creator = 1;
-  string owner = 2;
-  string connectionId = 3;
-  repeated google.protobuf.Any msgs = 4;
-}
-
-message MsgSubmitTxResponse {
 }
 
 message MsgRegisterIcaPool {

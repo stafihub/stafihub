@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/hex"
 	"github.com/cosmos/cosmos-sdk/codec"
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
 	"github.com/tendermint/tendermint/crypto"
@@ -307,4 +308,18 @@ func (msg *InterchainTxProposal) GetTxMsg(c codec.BinaryCodec) ([]sdk.Msg, error
 	}
 
 	return msgs, nil
+}
+
+// PackTxMsgAny marshals the sdk.Msg payload to a protobuf Any type
+func PackTxMsgAny(msgs []sdk.Msg) ([]*codectypes.Any, error) {
+
+	msgAnys := make([]*codectypes.Any, len(msgs))
+	var err error
+	for i, msg := range msgs {
+		msgAnys[i], err = codectypes.NewAnyWithValue(msg)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return msgAnys, nil
 }

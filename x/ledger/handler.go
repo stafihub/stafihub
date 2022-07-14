@@ -74,12 +74,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgUnsealMigrateInit:
 			res, err := msgServer.UnsealMigrateInit(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRegisterIca:
-			res, err := msgServer.RegisterIca(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSubmitTx:
-			res, err := msgServer.SubmitTx(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgRegisterIcaPool:
 			res, err := msgServer.RegisterIcaPool(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

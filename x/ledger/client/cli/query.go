@@ -55,8 +55,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdPoolUnbondings())
 
-	cmd.AddCommand(CmdIcaAccountInfo())
-
 	cmd.AddCommand(CmdIcaPoolList())
 
 	cmd.AddCommand(CmdInterchainTxStatus())

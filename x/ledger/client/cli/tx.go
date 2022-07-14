@@ -53,8 +53,6 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdMigrateUnbondings())
 	cmd.AddCommand(CmdToggleUnbondSwitch())
 	cmd.AddCommand(CmdUnsealMigrateInit())
-	cmd.AddCommand(CmdRegisterIca())
-	cmd.AddCommand(CmdSubmitTx())
 	cmd.AddCommand(CmdRegisterIcaPool())
 	cmd.AddCommand(CmdSetWithdrawAddr())
 	cmd.AddCommand(CmdInterchainTxProposal())
