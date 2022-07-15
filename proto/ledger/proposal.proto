@@ -54,8 +54,9 @@ message InterchainTxProposal {
     string proposer = 1;
     string denom = 2;
     string poolAddress = 3;
-    string shotId = 4;
-    repeated google.protobuf.Any msgs = 5;
+    uint32 era = 4;
+    OriginalTxType txType = 5;
     uint32 factor = 6;
-    string propId = 7;
+    repeated google.protobuf.Any msgs = 7;
+    string propId = 8;
 }

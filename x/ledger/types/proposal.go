@@ -250,7 +250,7 @@ func (p *ExecuteBondProposal) ValidateBasic() error {
 }
 
 func NewInterchainTxProposal(
-	proposer sdk.AccAddress, denom string, shotId string, pool string, msgs []sdk.Msg, factor uint32) (*InterchainTxProposal, error) {
+	proposer sdk.AccAddress, denom, pool string, era uint32, txType OriginalTxType, factor uint32, msgs []sdk.Msg) (*InterchainTxProposal, error) {
 	any, err := PackTxMsgAny(msgs)
 	if err != nil {
 		return nil, err
@@ -259,9 +259,10 @@ func NewInterchainTxProposal(
 	p := &InterchainTxProposal{
 		Denom:       denom,
 		PoolAddress: pool,
-		ShotId:      shotId,
-		Msgs:        any,
+		Era:         era,
+		TxType:      txType,
 		Factor:      factor,
+		Msgs:        any,
 	}
 
 	p.setPropId()
@@ -298,9 +299,9 @@ func (p *InterchainTxProposal) ValidateBasic() error {
 func (msg *InterchainTxProposal) GetTxMsg(c codec.BinaryCodec) ([]sdk.Msg, error) {
 	msgs := make([]sdk.Msg, len(msg.Msgs))
 
-	for i, any := range msg.Msgs {
+	for i, msgAny := range msg.Msgs {
 		var msg sdk.Msg
-		err := c.UnpackAny(any, &msg)
+		err := c.UnpackAny(msgAny, &msg)
 		if err != nil {
 			return nil, err
 		}

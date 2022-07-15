@@ -1709,7 +1709,7 @@ func (m *QueryGetSignatureRequest) GetTxType() OriginalTxType {
 	if m != nil {
 		return m.TxType
 	}
-	return TxTypeTransfer
+	return TxTypeDealEraUpdated
 }
 
 func (m *QueryGetSignatureRequest) GetPropId() string {

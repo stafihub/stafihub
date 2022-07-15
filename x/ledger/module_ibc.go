@@ -65,20 +65,15 @@ func (im IBCModule) OnChanOpenAck(
 	hostConnectionId := metadata.HostConnectionId
 	interchainAddress, found := im.keeper.ICAControllerKeeper.GetInterchainAccountAddress(ctx, controllerConnectionId, portID)
 	if !found {
-		ctx.Logger().Error(fmt.Sprintf("Expected to find an address for %s/%s", controllerConnectionId, portID))
 		return fmt.Errorf("GetInterchainAccountAddress failed for %s/%s", controllerConnectionId, portID)
 	}
 
 	portIdSlice := strings.Split(portID, "-")
 	if len(portIdSlice) != 4 {
-		errStr := fmt.Sprintf("portId format err %s/%s", controllerConnectionId, portID)
-		ctx.Logger().Error(errStr)
-		return fmt.Errorf(errStr)
+		return fmt.Errorf("portId format err %s/%s", controllerConnectionId, portID)
 	}
 	if fmt.Sprint(portIdSlice[0], "-") != icatypes.PortPrefix {
-		errStr := fmt.Sprintf("portId prefix err %s/%s", controllerConnectionId, portID)
-		ctx.Logger().Error(errStr)
-		return fmt.Errorf(errStr)
+		return fmt.Errorf("portId prefix err %s/%s", controllerConnectionId, portID)
 	}
 
 	denom := portIdSlice[1]
@@ -90,9 +85,7 @@ func (im IBCModule) OnChanOpenAck(
 
 	icaPoolDetail, found := im.keeper.GetIcaPoolDetail(ctx, denom, uint32(index.Uint64()))
 	if !found {
-		errStr := fmt.Sprintf("ica pool detail not found %s/%s", controllerConnectionId, portID)
-		ctx.Logger().Error(errStr)
-		return fmt.Errorf(errStr)
+		return fmt.Errorf("ica pool detail not found %s/%s", controllerConnectionId, portID)
 	}
 
 	if isDelegationAddr {
@@ -118,7 +111,7 @@ func (im IBCModule) OnChanOpenAck(
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
 	}
 
-	ctx.Logger().Error(fmt.Sprintf("OnChanOpenAck  end %s/%s", controllerConnectionId, portID))
+	ctx.Logger().Info(fmt.Sprintf("OnChanOpenAck  end %s/%s", controllerConnectionId, portID))
 	return nil
 }
 

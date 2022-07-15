@@ -73,7 +73,17 @@ stafihubd query ledger bonded-pools uratom
 stafihubd query ledger exchange-rate uratom
 
 stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
+# register ica pool
+stafihubd tx ledger register-ica-pool uratom connection-0 --keyring-backend file --from admin --chain-id local-stafihub --gas 410000
+
+stafihubd q ledger ica-pool-list uratom
+
+stafihubd tx ledger set-withdraw-addr cosmos1gsth46z50w256p4kq36xquh4q90mfjq0t4lm9scln6zucg64epyqudzqzm --keyring-backend file --from admin --chain-id local-stafihub --gas 410000
+
 ```
+
+
 
 ### bridge
 
@@ -193,6 +203,7 @@ stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgp
 
 stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
 ```
+
 
 ## Operate examples for user
 

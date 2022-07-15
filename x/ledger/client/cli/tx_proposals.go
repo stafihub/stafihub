@@ -214,14 +214,19 @@ func CmdExecuteBondProposal() *cobra.Command {
 
 func CmdInterchainTxProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "interchain-tx-proposal [denom] [shotId] [pool] [factor] [path_to_msg.json]",
+		Use:   "interchain-tx-proposal [denom] [pool] [era] [txType] [factor] [path_to_msg.json]",
 		Short: "Broadcast message interchain tx proposal",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argShotid := args[1]
-			argPool := args[2]
-			argFactor, err := sdk.ParseUint(args[3])
+			argPool := args[1]
+			argEra, err := sdk.ParseUint(args[2])
+			if err != nil {
+				return err
+			}
+
+			txType := types.OriginalTxType(types.OriginalTxType_value[args[3]])
+			argFactor, err := sdk.ParseUint(args[4])
 			if err != nil {
 				return err
 			}
@@ -260,7 +265,7 @@ func CmdInterchainTxProposal() *cobra.Command {
 
 			from := clientCtx.GetFromAddress()
 
-			content, err := types.NewInterchainTxProposal(from, argDenom, argShotid, argPool, txMsgs, uint32(argFactor.Uint64()))
+			content, err := types.NewInterchainTxProposal(from, argDenom, argPool, uint32(argEra.Uint64()), txType, uint32(argFactor.Uint64()), txMsgs)
 			if err != nil {
 				return err
 			}

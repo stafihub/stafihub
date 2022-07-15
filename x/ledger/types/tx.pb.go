@@ -951,7 +951,7 @@ func (m *MsgSubmitSignature) GetTxType() OriginalTxType {
 	if m != nil {
 		return m.TxType
 	}
-	return TxTypeTransfer
+	return TxTypeDealEraUpdated
 }
 
 func (m *MsgSubmitSignature) GetPropId() string {

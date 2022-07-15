@@ -315,6 +315,19 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 	if err != nil {
 		return err
 	}
+
+	if _, ok := k.GetBondedPool(ctx, p.Denom); !ok {
+		return types.ErrPoolNotBonded
+	}
+
+	ce, ok := k.GetChainEra(ctx, p.Denom)
+	if !ok {
+		return types.ErrChainEraNotFound
+	}
+	if p.Era > ce.Era {
+		return types.ErrInvalidEra
+	}
+
 	icaPool, found := k.GetIcaPoolByDelegationAddr(ctx, p.PoolAddress)
 	if !found {
 		return types.ErrIcaPoolNotFound

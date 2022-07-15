@@ -23162,12 +23162,12 @@ paths:
                   txType:
                     type: string
                     enum:
-                      - ORIGINAL_TX_TYPE_TRANSFER
-                      - ORIGINAL_TX_TYPE_BOND
-                      - ORIGINAL_TX_TYPE_UNBOND
-                      - ORIGINAL_TX_TYPE_WITHDRAW
-                      - ORIGINAL_TX_TYPE_CLAIM
-                    default: ORIGINAL_TX_TYPE_TRANSFER
+                      - ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
+                      - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
+                      - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
+                      - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
+                      - ORIGINAL_TX_TYPE_RESERVED
+                    default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
                     description: OriginalTxType enumerates the tx type of a signature.
                   propId:
                     type: string
@@ -23379,12 +23379,12 @@ paths:
           required: false
           type: string
           enum:
-            - ORIGINAL_TX_TYPE_TRANSFER
-            - ORIGINAL_TX_TYPE_BOND
-            - ORIGINAL_TX_TYPE_UNBOND
-            - ORIGINAL_TX_TYPE_WITHDRAW
-            - ORIGINAL_TX_TYPE_CLAIM
-          default: ORIGINAL_TX_TYPE_TRANSFER
+            - ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
+            - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
+            - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
+            - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
+            - ORIGINAL_TX_TYPE_RESERVED
+          default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
         - name: propId
           in: query
           required: false
@@ -44071,12 +44071,12 @@ definitions:
   stafihub.stafihub.ledger.OriginalTxType:
     type: string
     enum:
-      - ORIGINAL_TX_TYPE_TRANSFER
-      - ORIGINAL_TX_TYPE_BOND
-      - ORIGINAL_TX_TYPE_UNBOND
-      - ORIGINAL_TX_TYPE_WITHDRAW
-      - ORIGINAL_TX_TYPE_CLAIM
-    default: ORIGINAL_TX_TYPE_TRANSFER
+      - ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
+      - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
+      - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
+      - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
+      - ORIGINAL_TX_TYPE_RESERVED
+    default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
     description: OriginalTxType enumerates the tx type of a signature.
   stafihub.stafihub.ledger.PoolBondState:
     type: string
@@ -44288,12 +44288,12 @@ definitions:
           txType:
             type: string
             enum:
-              - ORIGINAL_TX_TYPE_TRANSFER
-              - ORIGINAL_TX_TYPE_BOND
-              - ORIGINAL_TX_TYPE_UNBOND
-              - ORIGINAL_TX_TYPE_WITHDRAW
-              - ORIGINAL_TX_TYPE_CLAIM
-            default: ORIGINAL_TX_TYPE_TRANSFER
+              - ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
+              - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
+              - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
+              - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
+              - ORIGINAL_TX_TYPE_RESERVED
+            default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
             description: OriginalTxType enumerates the tx type of a signature.
           propId:
             type: string
@@ -44512,12 +44512,12 @@ definitions:
       txType:
         type: string
         enum:
-          - ORIGINAL_TX_TYPE_TRANSFER
-          - ORIGINAL_TX_TYPE_BOND
-          - ORIGINAL_TX_TYPE_UNBOND
-          - ORIGINAL_TX_TYPE_WITHDRAW
-          - ORIGINAL_TX_TYPE_CLAIM
-        default: ORIGINAL_TX_TYPE_TRANSFER
+          - ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
+          - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
+          - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
+          - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
+          - ORIGINAL_TX_TYPE_RESERVED
+        default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
         description: OriginalTxType enumerates the tx type of a signature.
       propId:
         type: string
