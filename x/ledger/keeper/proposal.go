@@ -341,13 +341,22 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 		return types.ErrInterchainTxMsgsEmpty
 	}
 
-	sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg)
-	if err != nil {
-		return err
-	}
+	if p.TxType != types.TxTypeReserved {
+		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg)
+		if err != nil {
+			return err
+		}
 
+		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
+	} else {
+		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawAccount.CtrlConnectionId, icaPool.WithdrawAccount.Owner, txMsg)
+		if err != nil {
+			return err
+		}
+
+		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.WithdrawAccount.CtrlPortId, icaPool.WithdrawAccount.CtrlChannelId, sequence, p.PropId)
+	}
 	k.SetInterchainTxProposalStatus(ctx, p.PropId, types.InterchainTxStatusInit)
-	k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
 
 	return nil
 }
