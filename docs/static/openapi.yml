@@ -24483,11 +24483,12 @@ paths:
                     status:
                       type: string
                       enum:
+                        - ICA_POOL_STATUS_UNSPECIFIED
                         - ICA_POOL_STATUS_INIT
                         - ICA_POOL_STATUS_CREATE_ONE
                         - ICA_POOL_STATUS_CREATE_TWO
-                        - ICA_POOL_STATUS_SET_WITHDRAW
-                      default: ICA_POOL_STATUS_INIT
+                        - ICA_POOL_STATUS_SET_WITHDRAWAL
+                      default: ICA_POOL_STATUS_UNSPECIFIED
                     DelegationAccount:
                       type: object
                       properties:
@@ -24507,7 +24508,7 @@ paths:
                           type: string
                         hostChannelId:
                           type: string
-                    WithdrawAccount:
+                    WithdrawalAccount:
                       type: object
                       properties:
                         owner:
@@ -24731,10 +24732,11 @@ paths:
               interchainTxStatus:
                 type: string
                 enum:
+                  - INTERCHAIN_TX_STATUS_UNSPECIFIED
                   - INTERCHAIN_TX_STATUS_INIT
                   - INTERCHAIN_TX_STATUS_SUCCESS
                   - INTERCHAIN_TX_STATUS_FAILED
-                default: INTERCHAIN_TX_STATUS_INIT
+                default: INTERCHAIN_TX_STATUS_UNSPECIFIED
         default:
           description: An unexpected error response.
           schema:
@@ -43949,11 +43951,12 @@ definitions:
       status:
         type: string
         enum:
+          - ICA_POOL_STATUS_UNSPECIFIED
           - ICA_POOL_STATUS_INIT
           - ICA_POOL_STATUS_CREATE_ONE
           - ICA_POOL_STATUS_CREATE_TWO
-          - ICA_POOL_STATUS_SET_WITHDRAW
-        default: ICA_POOL_STATUS_INIT
+          - ICA_POOL_STATUS_SET_WITHDRAWAL
+        default: ICA_POOL_STATUS_UNSPECIFIED
       DelegationAccount:
         type: object
         properties:
@@ -43973,7 +43976,7 @@ definitions:
             type: string
           hostChannelId:
             type: string
-      WithdrawAccount:
+      WithdrawalAccount:
         type: object
         properties:
           owner:
@@ -43995,18 +43998,20 @@ definitions:
   stafihub.stafihub.ledger.IcaPoolStatus:
     type: string
     enum:
+      - ICA_POOL_STATUS_UNSPECIFIED
       - ICA_POOL_STATUS_INIT
       - ICA_POOL_STATUS_CREATE_ONE
       - ICA_POOL_STATUS_CREATE_TWO
-      - ICA_POOL_STATUS_SET_WITHDRAW
-    default: ICA_POOL_STATUS_INIT
+      - ICA_POOL_STATUS_SET_WITHDRAWAL
+    default: ICA_POOL_STATUS_UNSPECIFIED
   stafihub.stafihub.ledger.InterchainTxStatus:
     type: string
     enum:
+      - INTERCHAIN_TX_STATUS_UNSPECIFIED
       - INTERCHAIN_TX_STATUS_INIT
       - INTERCHAIN_TX_STATUS_SUCCESS
       - INTERCHAIN_TX_STATUS_FAILED
-    default: INTERCHAIN_TX_STATUS_INIT
+    default: INTERCHAIN_TX_STATUS_UNSPECIFIED
   stafihub.stafihub.ledger.LinkChunk:
     type: object
     properties:
@@ -44386,11 +44391,12 @@ definitions:
             status:
               type: string
               enum:
+                - ICA_POOL_STATUS_UNSPECIFIED
                 - ICA_POOL_STATUS_INIT
                 - ICA_POOL_STATUS_CREATE_ONE
                 - ICA_POOL_STATUS_CREATE_TWO
-                - ICA_POOL_STATUS_SET_WITHDRAW
-              default: ICA_POOL_STATUS_INIT
+                - ICA_POOL_STATUS_SET_WITHDRAWAL
+              default: ICA_POOL_STATUS_UNSPECIFIED
             DelegationAccount:
               type: object
               properties:
@@ -44410,7 +44416,7 @@ definitions:
                   type: string
                 hostChannelId:
                   type: string
-            WithdrawAccount:
+            WithdrawalAccount:
               type: object
               properties:
                 owner:
@@ -44435,10 +44441,11 @@ definitions:
       interchainTxStatus:
         type: string
         enum:
+          - INTERCHAIN_TX_STATUS_UNSPECIFIED
           - INTERCHAIN_TX_STATUS_INIT
           - INTERCHAIN_TX_STATUS_SUCCESS
           - INTERCHAIN_TX_STATUS_FAILED
-        default: INTERCHAIN_TX_STATUS_INIT
+        default: INTERCHAIN_TX_STATUS_UNSPECIFIED
   stafihub.stafihub.ledger.QueryPoolUnbondNextSequenceResponse:
     type: object
     properties:

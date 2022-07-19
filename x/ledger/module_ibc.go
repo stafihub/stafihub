@@ -101,12 +101,12 @@ func (im IBCModule) OnChanOpenAck(
 		im.keeper.SetIcaPoolDelegationAddrIndex(ctx, icaPoolDetail)
 	} else {
 		icaPoolDetail.Status = icaPoolDetail.Status + 1
-		icaPoolDetail.WithdrawAccount.Address = interchainAddress
-		icaPoolDetail.WithdrawAccount.CtrlPortId = portID
-		icaPoolDetail.WithdrawAccount.CtrlChannelId = channelID
-		icaPoolDetail.WithdrawAccount.HostConnectionId = hostConnectionId
-		icaPoolDetail.WithdrawAccount.HostPortId = icatypes.PortID
-		icaPoolDetail.WithdrawAccount.HostChannelId = counterpartyChannelID
+		icaPoolDetail.WithdrawalAccount.Address = interchainAddress
+		icaPoolDetail.WithdrawalAccount.CtrlPortId = portID
+		icaPoolDetail.WithdrawalAccount.CtrlChannelId = channelID
+		icaPoolDetail.WithdrawalAccount.HostConnectionId = hostConnectionId
+		icaPoolDetail.WithdrawalAccount.HostPortId = icatypes.PortID
+		icaPoolDetail.WithdrawalAccount.HostChannelId = counterpartyChannelID
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
 	}

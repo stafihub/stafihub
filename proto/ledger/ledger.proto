@@ -168,22 +168,24 @@ message IcaPoolDetail {
     uint32 index = 2;
     IcaPoolStatus status = 3;
     IcaAccount DelegationAccount = 4;
-    IcaAccount WithdrawAccount = 5;
+    IcaAccount WithdrawalAccount = 5;
 }
 
 enum IcaPoolStatus {
     option (gogoproto.goproto_enum_prefix) = false;
   
-    ICA_POOL_STATUS_INIT = 0 [(gogoproto.enumvalue_customname) = "IcaPoolStatusInit"];
-    ICA_POOL_STATUS_CREATE_ONE = 1 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateOne"];
-    ICA_POOL_STATUS_CREATE_TWO = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateTwo"];
-    ICA_POOL_STATUS_SET_WITHDRAW = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusSetWithdraw"];
+    ICA_POOL_STATUS_UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "IcaPoolStatusUnspecified"];
+    ICA_POOL_STATUS_INIT = 1 [(gogoproto.enumvalue_customname) = "IcaPoolStatusInit"];
+    ICA_POOL_STATUS_CREATE_ONE = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateOne"];
+    ICA_POOL_STATUS_CREATE_TWO = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateTwo"];
+    ICA_POOL_STATUS_SET_WITHDRAWAL = 4 [(gogoproto.enumvalue_customname) = "IcaPoolStatusSetWithdrawal"];
 }
 
 enum InterchainTxStatus {
     option (gogoproto.goproto_enum_prefix) = false;
   
-    INTERCHAIN_TX_STATUS_INIT = 0 [(gogoproto.enumvalue_customname) = "InterchainTxStatusInit"];
-    INTERCHAIN_TX_STATUS_SUCCESS = 1 [(gogoproto.enumvalue_customname) = "InterchainTxStatusSuccess"];
-    INTERCHAIN_TX_STATUS_FAILED = 2 [(gogoproto.enumvalue_customname) = "InterchainTxStatusFailed"];
+    INTERCHAIN_TX_STATUS_UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "InterchainTxStatusUnspecified"];
+    INTERCHAIN_TX_STATUS_INIT = 1 [(gogoproto.enumvalue_customname) = "InterchainTxStatusInit"];
+    INTERCHAIN_TX_STATUS_SUCCESS = 2 [(gogoproto.enumvalue_customname) = "InterchainTxStatusSuccess"];
+    INTERCHAIN_TX_STATUS_FAILED = 3 [(gogoproto.enumvalue_customname) = "InterchainTxStatusFailed"];
 }

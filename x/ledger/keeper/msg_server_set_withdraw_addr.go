@@ -29,7 +29,7 @@ func (k msgServer) SetWithdrawAddr(goCtx context.Context, msg *types.MsgSetWithd
 		icaPoolDetail.DelegationAccount.Owner,
 		icaPoolDetail.DelegationAccount.CtrlConnectionId,
 		icaPoolDetail.DelegationAccount.Address,
-		icaPoolDetail.WithdrawAccount.Address)
+		icaPoolDetail.WithdrawalAccount.Address)
 	if err != nil {
 		return nil, err
 	}

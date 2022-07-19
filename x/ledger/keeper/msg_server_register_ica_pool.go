@@ -7,6 +7,7 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
+// todo withdrawal
 func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegisterIcaPool) (*types.MsgRegisterIcaPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -15,12 +16,12 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 	}
 
 	willUseIndex := k.GetIcaPoolNextIndex(ctx, msg.Denom)
-	delegationOwner, withdrawOwner := types.GetOwners(msg.Denom, willUseIndex)
+	delegationOwner, withdrawalOwner := types.GetOwners(msg.Denom, willUseIndex)
 
 	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner); err != nil {
 		return nil, err
 	}
-	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawOwner); err != nil {
+	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawalOwner); err != nil {
 		return nil, err
 	}
 
@@ -32,8 +33,8 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 			Owner:            delegationOwner,
 			CtrlConnectionId: msg.ConnectionId,
 		},
-		WithdrawAccount: &types.IcaAccount{
-			Owner:            withdrawOwner,
+		WithdrawalAccount: &types.IcaAccount{
+			Owner:            withdrawalOwner,
 			CtrlConnectionId: msg.ConnectionId,
 		},
 	})

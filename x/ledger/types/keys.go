@@ -174,7 +174,7 @@ func IcaPoolDelegationAddrIndexStoreKey(delegationAddr string) []byte {
 
 func GetOwners(denom string, index uint32) (string, string) {
 	delegationOwner := fmt.Sprintf("%s-%d-delegation", denom, index)
-	withdrawOwner := fmt.Sprintf("%s-%d-withdraw", denom, index)
+	withdrawOwner := fmt.Sprintf("%s-%d-withdrawal", denom, index)
 	return delegationOwner, withdrawOwner
 }
 

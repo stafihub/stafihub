@@ -78,7 +78,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		if !found {
 			return types.ErrIcaPoolNotFound
 		}
-		icaPool.Status = types.IcaPoolStatusSetWithdraw
+		icaPool.Status = types.IcaPoolStatusSetWithdrawal
 
 		k.SetIcaPoolDetail(ctx, icaPool)
 	} else {

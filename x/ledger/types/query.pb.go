@@ -2488,7 +2488,7 @@ func (m *QueryInterchainTxStatusResponse) GetInterchainTxStatus() InterchainTxSt
 	if m != nil {
 		return m.InterchainTxStatus
 	}
-	return InterchainTxStatusInit
+	return InterchainTxStatusUnspecified
 }
 
 func init() {

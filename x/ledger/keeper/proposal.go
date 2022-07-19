@@ -349,12 +349,12 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 
 		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
 	} else {
-		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawAccount.CtrlConnectionId, icaPool.WithdrawAccount.Owner, txMsg)
+		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, txMsg)
 		if err != nil {
 			return err
 		}
 
-		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.WithdrawAccount.CtrlPortId, icaPool.WithdrawAccount.CtrlChannelId, sequence, p.PropId)
+		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.WithdrawalAccount.CtrlPortId, icaPool.WithdrawalAccount.CtrlChannelId, sequence, p.PropId)
 	}
 	k.SetInterchainTxProposalStatus(ctx, p.PropId, types.InterchainTxStatusInit)
 
