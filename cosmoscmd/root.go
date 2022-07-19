@@ -29,7 +29,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
+	// "github.com/spf13/viper"
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"github.com/tendermint/tendermint/libs/log"
 	dbm "github.com/tendermint/tm-db"
@@ -211,11 +211,12 @@ func initRootCmd(
 		a.appExport,
 		func(cmd *cobra.Command) {
 			addModuleInitFlags(cmd)
-			nodeHome, err := cmd.Flags().GetString("home")
-			if err != nil {
-				fmt.Println(err)
-			}
-			viper.GetViper().Set("home", nodeHome)
+			// todo fix home path
+			// nodeHome, err := cmd.Flags().GetString("home")
+			// if err != nil {
+			// 	fmt.Println(err)
+			// }
+			// viper.GetViper().Set("home", nodeHome)
 			if options.startCmdCustomizer != nil {
 				options.startCmdCustomizer(cmd)
 			}
