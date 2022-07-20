@@ -62,7 +62,7 @@ stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake --from admin
 stafihubd query ledger r-params uratom
 
 
-# no need set if pool ic ica account
+# no need set if pool is ica account
 stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd query ledger pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
@@ -199,7 +199,7 @@ stafihubd tx relayers set-threshold rvalidator uratom 1 --from admin --keyring-b
 
 stafihubd q relayers threshold rvalidator uratom
 
-# init rvalidator (should init before rtoken relay start)
+# init rvalidator (should init target validators of pool before rtoken relay start)
 stafihubd tx rvalidator init-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
 
 stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75

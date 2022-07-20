@@ -23,8 +23,12 @@ func (k msgServer) SetWithdrawalAddr(goCtx context.Context, msg *types.MsgSetWit
 	if icaPoolDetail.Status != types.IcaPoolStatusCreateTwo {
 		return nil, types.ErrIcaPoolStatusUnmatch
 	}
+	err := k.Keeper.CheckAddress(ctx, icaPoolDetail.Denom, msg.DelegationAddr)
+	if err != nil {
+		return nil, err
+	}
 
-	err := k.Keeper.SetWithdrawAddressOnHost(
+	err = k.Keeper.SetWithdrawAddressOnHost(
 		ctx,
 		icaPoolDetail.DelegationAccount.Owner,
 		icaPoolDetail.DelegationAccount.CtrlConnectionId,
