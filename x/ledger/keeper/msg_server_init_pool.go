@@ -21,7 +21,10 @@ func (k msgServer) InitPool(goCtx context.Context, msg *types.MsgInitPool) (*typ
 	}
 
 	if !k.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
-		k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
+		_, found := k.GetExchangeRate(ctx, msg.Denom)
+		if !found {
+			k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
+		}
 		k.AddBondedPool(ctx, msg.Denom, msg.Pool)
 		k.SetBondPipeline(ctx, types.NewBondPipeline(msg.Denom, msg.Pool))
 	}

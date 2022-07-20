@@ -70,7 +70,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) SetExchangeRate(ctx sdk.Context, denom string, total, rtotal sdk.Int) {
 	dec := utils.OneDec()
-	if total.Int64() != 0 && rtotal.Int64() != 0 {
+	if total.IsPositive() && rtotal.IsPositive() {
 		dec = dec.MulInt(total).QuoInt(rtotal)
 	}
 
