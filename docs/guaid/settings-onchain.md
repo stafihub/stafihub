@@ -2,7 +2,7 @@
 
 ## Setting examples for admin
 
-### global
+### set protocol fee receiver
 
 ```bash
 stafihubd tx ledger set-protocol-fee-receiver stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --from admin --chain-id local-stafihub --keyring-backend file
@@ -62,24 +62,30 @@ stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake --from admin
 stafihubd query ledger r-params uratom
 
 
-
-# this will init bonded pool, exchange rate, pipeline
+# no need set if pool ic ica account
 stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd query ledger pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
+# this will init bonded pool, exchange rate, pipeline
+stafihubd tx ledger init-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd query ledger bonded-pools uratom
 
 stafihubd query ledger exchange-rate uratom
 
 stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+```
 
-# register ica pool
+### register ica pool
+```
+# register ica pool (need set rtoken metadata before this)
 stafihubd tx ledger register-ica-pool uratom connection-0 --keyring-backend file --from admin --chain-id local-stafihub --gas 410000
 
 stafihubd q ledger ica-pool-list uratom
 
-stafihubd tx ledger set-withdraw-addr cosmos1gsth46z50w256p4kq36xquh4q90mfjq0t4lm9scln6zucg64epyqudzqzm --keyring-backend file --from admin --chain-id local-stafihub --gas 410000
+# set withdrawal address
+stafihubd tx ledger set-withdrawal-addr cosmos1gsth46z50w256p4kq36xquh4q90mfjq0t4lm9scln6zucg64epyqudzqzm --keyring-backend file --from admin --chain-id local-stafihub --gas 410000
 
 ```
 
@@ -193,7 +199,7 @@ stafihubd tx relayers set-threshold rvalidator uratom 1 --from admin --keyring-b
 
 stafihubd q relayers threshold rvalidator uratom
 
-# init rvalidator
+# init rvalidator (should init before rtoken relay start)
 stafihubd tx rvalidator init-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
 
 stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
@@ -216,7 +222,7 @@ gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 100
 ### recover (gaiad example)
 
 ```bash
-gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1stake --memo 2:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:9A80F3E6A007E1144BE34F4A0AC35B9288C19641BCAD3464277168000AF5FC66 --keyring-backend file --chain-id local-cosmos
+gaiad tx bank send userAccount cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 1stake --note 2:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc:9A80F3E6A007E1144BE34F4A0AC35B9288C19641BCAD3464277168000AF5FC66 --keyring-backend file --chain-id local-cosmos
 ```
 
 ### liquidity unbond

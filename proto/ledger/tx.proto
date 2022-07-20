@@ -31,7 +31,8 @@ service Msg {
   rpc ToggleUnbondSwitch(MsgToggleUnbondSwitch) returns (MsgToggleUnbondSwitchResponse);
   rpc UnsealMigrateInit(MsgUnsealMigrateInit) returns (MsgUnsealMigrateInitResponse);
   rpc RegisterIcaPool(MsgRegisterIcaPool) returns (MsgRegisterIcaPoolResponse);
-  rpc SetWithdrawAddr(MsgSetWithdrawAddr) returns (MsgSetWithdrawAddrResponse);
+  rpc SetWithdrawalAddr(MsgSetWithdrawalAddr) returns (MsgSetWithdrawalAddrResponse);
+  rpc InitPool(MsgInitPool) returns (MsgInitPoolResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -231,12 +232,21 @@ message MsgRegisterIcaPool {
 message MsgRegisterIcaPoolResponse {
 }
 
-message MsgSetWithdrawAddr {
+message MsgSetWithdrawalAddr {
   string creator = 1;
   string delegationAddr = 3;
 }
 
-message MsgSetWithdrawAddrResponse {
+message MsgSetWithdrawalAddrResponse {
+}
+
+message MsgInitPool {
+  string creator = 1;
+  string denom = 2;
+  string pool = 3;
+}
+
+message MsgInitPoolResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -8,7 +8,7 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-func (k msgServer) SetWithdrawAddr(goCtx context.Context, msg *types.MsgSetWithdrawAddr) (*types.MsgSetWithdrawAddrResponse, error) {
+func (k msgServer) SetWithdrawalAddr(goCtx context.Context, msg *types.MsgSetWithdrawalAddr) (*types.MsgSetWithdrawalAddrResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
@@ -34,5 +34,5 @@ func (k msgServer) SetWithdrawAddr(goCtx context.Context, msg *types.MsgSetWithd
 		return nil, err
 	}
 
-	return &types.MsgSetWithdrawAddrResponse{}, nil
+	return &types.MsgSetWithdrawalAddrResponse{}, nil
 }

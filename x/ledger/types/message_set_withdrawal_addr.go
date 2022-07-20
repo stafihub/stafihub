@@ -5,26 +5,26 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgSetWithdrawAddr = "set_withdraw_addr"
+const TypeMsgSetWithdrawalAddr = "set_withdrawal_addr"
 
-var _ sdk.Msg = &MsgSetWithdrawAddr{}
+var _ sdk.Msg = &MsgSetWithdrawalAddr{}
 
-func NewMsgSetWithdrawAddr(creator string, delegationAddr string) *MsgSetWithdrawAddr {
-	return &MsgSetWithdrawAddr{
+func NewMsgSetWithdrawalAddr(creator string, delegationAddr string) *MsgSetWithdrawalAddr {
+	return &MsgSetWithdrawalAddr{
 		Creator:        creator,
 		DelegationAddr: delegationAddr,
 	}
 }
 
-func (msg *MsgSetWithdrawAddr) Route() string {
+func (msg *MsgSetWithdrawalAddr) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSetWithdrawAddr) Type() string {
-	return TypeMsgSetWithdrawAddr
+func (msg *MsgSetWithdrawalAddr) Type() string {
+	return TypeMsgSetWithdrawalAddr
 }
 
-func (msg *MsgSetWithdrawAddr) GetSigners() []sdk.AccAddress {
+func (msg *MsgSetWithdrawalAddr) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgSetWithdrawAddr) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSetWithdrawAddr) GetSignBytes() []byte {
+func (msg *MsgSetWithdrawalAddr) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSetWithdrawAddr) ValidateBasic() error {
+func (msg *MsgSetWithdrawalAddr) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

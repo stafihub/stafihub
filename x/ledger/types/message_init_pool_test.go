@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgSetWithdrawAddr_ValidateBasic(t *testing.T) {
+func TestMsgInitPool_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSetWithdrawAddr
+		msg  MsgInitPool
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSetWithdrawAddr{
+			msg: MsgInitPool{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgSetWithdrawAddr{
+			msg: MsgInitPool{
 				Creator: sample.AccAddress(),
 			},
 		},

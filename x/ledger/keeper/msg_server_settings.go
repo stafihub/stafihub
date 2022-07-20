@@ -52,12 +52,6 @@ func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDet
 
 	k.Keeper.SetPoolDetail(ctx, msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold)
 
-	if !k.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {
-		k.SetExchangeRate(ctx, msg.Denom, sdk.NewInt(0), sdk.NewInt(0))
-		k.AddBondedPool(ctx, msg.Denom, msg.Pool)
-		k.SetBondPipeline(ctx, types.NewBondPipeline(msg.Denom, msg.Pool))
-	}
-
 	return &types.MsgSetPoolDetailResponse{}, nil
 }
 

@@ -12,10 +12,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdSetWithdrawAddr() *cobra.Command {
+func CmdSetWithdrawalAddr() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-withdraw-addr [delegation-addr]",
-		Short: "Set withdraw addresss for delegation address",
+		Use:   "set-withdrawal-addr [delegation-addr]",
+		Short: "Set withdrawal addresss for delegation address",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDelegationAddr := args[0]
@@ -25,7 +25,7 @@ func CmdSetWithdrawAddr() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgSetWithdrawAddr(
+			msg := types.NewMsgSetWithdrawalAddr(
 				clientCtx.GetFromAddress().String(),
 				argDelegationAddr,
 			)

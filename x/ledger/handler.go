@@ -77,8 +77,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgRegisterIcaPool:
 			res, err := msgServer.RegisterIcaPool(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgSetWithdrawAddr:
-			res, err := msgServer.SetWithdrawAddr(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgSetWithdrawalAddr:
+			res, err := msgServer.SetWithdrawalAddr(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgInitPool:
+			res, err := msgServer.InitPool(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
