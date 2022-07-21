@@ -272,3 +272,25 @@ func (k Keeper) GetAllShuffleSeconds(ctx sdk.Context) []*types.ShuffleSeconds {
 
 	return shuffleSecondsList
 }
+
+func (k Keeper) SetDealingRValidator(ctx sdk.Context, rValidator *types.DealingRValidator) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.DealingRValidatorStoreKey(rValidator.Denom, rValidator.PoolAddress), k.cdc.MustMarshal(rValidator))
+}
+
+func (k Keeper) RemoveDealingRValidator(ctx sdk.Context, denom, poolAddress string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.DealingRValidatorStoreKey(denom, poolAddress))
+}
+
+func (k Keeper) GetDealingRValidator(ctx sdk.Context, denom, poolAddress string) (*types.DealingRValidator, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.DealingRValidatorStoreKey(denom, poolAddress))
+	if bts == nil {
+		return nil, false
+	}
+	rvalidator := types.DealingRValidator{}
+	k.cdc.MustUnmarshal(bts, &rvalidator)
+
+	return &rvalidator, true
+}

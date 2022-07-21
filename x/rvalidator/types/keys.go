@@ -32,6 +32,7 @@ var (
 	CycleSecondsStoreKeyPrefix       = []byte{0x03}
 	ShuffleSecondsStoreKeyPrefix     = []byte{0x04}
 	LatestDealedCycleStoreKeyPrefix  = []byte{0x05}
+	DealingRValidatorStoreKeyPrefix  = []byte{0x06}
 )
 
 // prefix + denomLen + denom + poolAddressLen + poolAddress + rValidatorAddressLen + rValidatorAddress
@@ -87,4 +88,19 @@ func CycleSecondsStoreKey(denom string) []byte {
 
 func ShuffleSecondsStoreKey(denom string) []byte {
 	return append(ShuffleSecondsStoreKeyPrefix, []byte(denom)...)
+}
+
+// prefix + denomLen + denom + poolAddressLen + poolAddress
+func DealingRValidatorStoreKey(denom, poolAddress string) []byte {
+	denomLen := len([]byte(denom))
+	poolAddressLen := len([]byte(poolAddress))
+
+	key := make([]byte, 1+1+denomLen+1+poolAddressLen)
+	copy(key[0:], DealingRValidatorStoreKeyPrefix)
+	key[1] = byte(denomLen)
+	copy(key[2:], []byte(denom))
+	key[2+denomLen] = byte(poolAddressLen)
+	copy(key[2+denomLen+1:], []byte(poolAddress))
+
+	return key
 }
