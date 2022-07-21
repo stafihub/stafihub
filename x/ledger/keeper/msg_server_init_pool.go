@@ -8,6 +8,7 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
+// init multisig pool or ica pool
 func (k msgServer) InitPool(goCtx context.Context, msg *types.MsgInitPool) (*types.MsgInitPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -18,6 +19,10 @@ func (k msgServer) InitPool(goCtx context.Context, msg *types.MsgInitPool) (*typ
 	err := k.Keeper.CheckAddress(ctx, msg.Denom, msg.Pool)
 	if err != nil {
 		return nil, err
+	}
+	// must set withdrawal addres if it is ica pool
+	if icaPool, found := k.Keeper.GetIcaPoolByDelegationAddr(ctx, msg.Pool); found && icaPool.Status != types.IcaPoolStatusSetWithdrawal {
+		return nil, types.ErrIcaPoolStatusUnmatch
 	}
 
 	if !k.IsBondedPoolExist(ctx, msg.Denom, msg.Pool) {

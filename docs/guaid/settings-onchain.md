@@ -89,6 +89,30 @@ stafihubd tx ledger set-withdrawal-addr cosmos1gsth46z50w256p4kq36xquh4q90mfjq0t
 
 ```
 
+### rvalidator
+
+```bash
+# add relayers
+stafihubd tx relayers add-relayers rvalidator uratom stafi14z467aut40mcrt2ddyxf7e74fq99udul7kaf9g:stafi15lne70yk254s0pm2da6g59r82cjymzjqvvqxz7 --keyring-backend file --from admin --chain-id local-stafihub
+
+stafihubd q relayers relayers rvalidator uratom
+
+# set threshold
+stafihubd tx relayers set-threshold rvalidator uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd q relayers threshold rvalidator uratom
+
+# init rvalidator (should init target validators of pool before rtoken relay start)
+stafihubd tx rvalidator init-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
+
+stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
+# add rvalidator
+stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper1cad0efr25faywnjp8qp36l8zlqa2sgz0h686mv  --chain-id local-stafihub --keyring-backend file --from admin
+
+stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+```
+
 
 
 ### bridge
@@ -186,29 +210,6 @@ stafihubd tx mining add-reward 1 0 300 0 0 --from relay1 --chain-id local-stafih
 stafihubd tx mining withdraw 1 10ufis 0 --from test --chain-id local-stafihub --keyring-backend file
 ```
 
-### rvalidator
-
-```bash
-# add relayers
-stafihubd tx relayers add-relayers rvalidator uratom stafi14z467aut40mcrt2ddyxf7e74fq99udul7kaf9g:stafi15lne70yk254s0pm2da6g59r82cjymzjqvvqxz7 --keyring-backend file --from admin --chain-id local-stafihub
-
-stafihubd q relayers relayers rvalidator uratom
-
-# set threshold
-stafihubd tx relayers set-threshold rvalidator uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
-
-stafihubd q relayers threshold rvalidator uratom
-
-# init rvalidator (should init target validators of pool before rtoken relay start)
-stafihubd tx rvalidator init-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file  
-
-stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
-
-# add rvalidator
-stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper1cad0efr25faywnjp8qp36l8zlqa2sgz0h686mv  --chain-id local-stafihub --keyring-backend file --from admin
-
-stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
-```
 
 
 ## Operate examples for user

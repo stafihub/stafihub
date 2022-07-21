@@ -68,8 +68,10 @@ var (
 )
 
 var (
-	SwitchStateClose = []byte{0x00}
-	SwitchStateOpen  = []byte{0x01}
+	SwitchStateClose    = []byte{0x00}
+	SwitchStateOpen     = []byte{0x01}
+	DelegationOwnerTail = "delegation"
+	WithdrawalOwnerTail = "withdrawal"
 )
 
 func KeyPrefix(p string) []byte {
@@ -173,8 +175,8 @@ func IcaPoolDelegationAddrIndexStoreKey(delegationAddr string) []byte {
 }
 
 func GetOwners(denom string, index uint32) (string, string) {
-	delegationOwner := fmt.Sprintf("%s-%d-delegation", denom, index)
-	withdrawOwner := fmt.Sprintf("%s-%d-withdrawal", denom, index)
+	delegationOwner := fmt.Sprintf("%s-%d-%s", denom, index, DelegationOwnerTail)
+	withdrawOwner := fmt.Sprintf("%s-%d-%s", denom, index, WithdrawalOwnerTail)
 	return delegationOwner, withdrawOwner
 }
 

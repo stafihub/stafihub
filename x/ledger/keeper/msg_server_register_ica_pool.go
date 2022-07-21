@@ -7,7 +7,6 @@ import (
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-// todo withdrawal
 func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegisterIcaPool) (*types.MsgRegisterIcaPoolResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 

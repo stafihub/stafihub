@@ -13,6 +13,7 @@ import (
 	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v3/modules/core/exported"
 	"github.com/stafihub/stafihub/x/ledger/keeper"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var _ ibcporttypes.IBCModule = (*IBCModule)(nil)
@@ -81,14 +82,19 @@ func (im IBCModule) OnChanOpenAck(
 	if err != nil {
 		return err
 	}
-	isDelegationAddr := portIdSlice[3] == "delegation"
+	addressTail := portIdSlice[3]
 
 	icaPoolDetail, found := im.keeper.GetIcaPoolDetail(ctx, denom, uint32(index.Uint64()))
 	if !found {
 		return fmt.Errorf("ica pool detail not found %s/%s", controllerConnectionId, portID)
 	}
 
-	if isDelegationAddr {
+	err = im.keeper.CheckAddress(ctx, icaPoolDetail.Denom, interchainAddress)
+	if err != nil {
+		return fmt.Errorf("check interchainAddress failed, err: %s", err)
+	}
+	switch addressTail {
+	case types.DelegationOwnerTail:
 		icaPoolDetail.Status = icaPoolDetail.Status + 1
 		icaPoolDetail.DelegationAccount.Address = interchainAddress
 		icaPoolDetail.DelegationAccount.CtrlPortId = portID
@@ -99,7 +105,7 @@ func (im IBCModule) OnChanOpenAck(
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
 		im.keeper.SetIcaPoolDelegationAddrIndex(ctx, icaPoolDetail)
-	} else {
+	case types.WithdrawalOwnerTail:
 		icaPoolDetail.Status = icaPoolDetail.Status + 1
 		icaPoolDetail.WithdrawalAccount.Address = interchainAddress
 		icaPoolDetail.WithdrawalAccount.CtrlPortId = portID
@@ -109,6 +115,8 @@ func (im IBCModule) OnChanOpenAck(
 		icaPoolDetail.WithdrawalAccount.HostChannelId = counterpartyChannelID
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
+	default:
+		return fmt.Errorf("unknown address tail")
 	}
 
 	ctx.Logger().Info(fmt.Sprintf("OnChanOpenAck  end %s/%s", controllerConnectionId, portID))
