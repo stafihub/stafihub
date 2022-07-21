@@ -342,14 +342,14 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 	}
 
 	if p.TxType != types.TxTypeReserved {
-		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg)
+		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg, p.TxType.String())
 		if err != nil {
 			return err
 		}
 
 		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
 	} else {
-		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, txMsg)
+		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, txMsg, p.TxType.String())
 		if err != nil {
 			return err
 		}

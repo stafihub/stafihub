@@ -102,7 +102,7 @@ func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, c
 	// construct the msg
 	msgs = append(msgs, &distributiontypes.MsgSetWithdrawAddress{DelegatorAddress: delegationAddr, WithdrawAddress: withdrawAddr})
 	// Send the transaction through SubmitTx
-	_, err := k.SubmitTxs(ctx, ctrlConnectionId, delegationAddrOwner, msgs)
+	_, err := k.SubmitTxs(ctx, ctrlConnectionId, delegationAddrOwner, msgs, "MsgSetWithdrawAddress")
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s", ctrlConnectionId, delegationAddrOwner, msgs)
 	}
@@ -110,7 +110,7 @@ func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, c
 }
 
 // SubmitTxs submits an ICA transaction containing multiple messages
-func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs []sdk.Msg) (uint64, error) {
+func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs []sdk.Msg, memo string) (uint64, error) {
 	portID, err := icatypes.NewControllerPortID(owner)
 	if err != nil {
 		return 0, err
@@ -134,6 +134,7 @@ func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs 
 	packetData := icatypes.InterchainAccountPacketData{
 		Type: icatypes.EXECUTE_TX,
 		Data: data,
+		Memo: memo,
 	}
 
 	// timeoutTimestamp set to max value with the unsigned bit shifted to sastisfy hermes timestamp conversion
