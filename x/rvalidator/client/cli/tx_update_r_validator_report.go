@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -16,9 +17,9 @@ var _ = strconv.Itoa(0)
 
 func CmdUpdateRValidatorReport() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-r-validator-report [denom] [pool-address] [cycle-version] [cycle-number]",
+		Use:   "update-r-validator-report [denom] [pool-address] [cycle-version] [cycle-number] [status]",
 		Short: "Update rvalidator report",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argPoolAddress := args[1]
@@ -30,7 +31,10 @@ func CmdUpdateRValidatorReport() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
+			status, exist := types.UpdateRValidatorStatus_value[args[4]]
+			if !exist {
+				return fmt.Errorf("status not exist")
+			}
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -45,7 +49,7 @@ func CmdUpdateRValidatorReport() *cobra.Command {
 			content := types.NewUpdateRValidatorReportProposal(clientCtx.GetFromAddress().String(),
 				argDenom,
 				argPoolAddress,
-				&cycle)
+				&cycle, types.UpdateRValidatorStatus(status))
 			msg, err := rvotetypes.NewMsgSubmitProposal(clientCtx.GetFromAddress(), content)
 			if err != nil {
 				return err
