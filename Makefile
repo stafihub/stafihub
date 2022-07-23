@@ -103,7 +103,7 @@ go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
 	@go mod download
 
-go.sum: go.mod
+go.sum:
 	@echo "--> Ensure dependencies have not been modified"
 	@go mod verify
 
@@ -113,39 +113,24 @@ draw-deps:
 	@goviz -i ./cmd/iris -d 2 | dot -Tpng -o dependency-graph.png
 
 clean:
-	rm -rf snapcraft-local.yaml build/ tmp-swagger-gen/
+	rm -rf build/ tmp-swagger-gen/
 
-distclean: clean
-	rm -rf vendor/
-
-proto-all: proto-tools proto-gen proto-swagger-gen
-
-proto-gen:
-	@./scripts/protocgen.sh
-
-proto-swagger-gen:
-	@./scripts/protoc-swagger-gen.sh
 
 ########################################
 ### Testing
 
 
-test: test-unit test-build
+test: test-unit
 test-all: test-race test-cover
 
 test-unit:
-	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ${PACKAGES_UNITTEST}
+	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ./...
 
 test-race:
 	@VERSION=$(VERSION) go test -mod=readonly -race -tags='ledger test_ledger_mock' ./...
 
 test-cover:
 	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' ./...
-
-lint: golangci-lint
-	golangci-lint run
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./lite/statik/statik.go" -not -path "*.pb.go" | xargs gofmt -d -s
-	go mod verify
 
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./lite/statik/statik.go" -not -path "*.pb.go" | xargs gofmt -w -s

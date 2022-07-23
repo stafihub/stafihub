@@ -53,8 +53,12 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 		return types.ErrLedgerChainEraNotExist
 	}
 
-	k.RemoveSelectedRValidator(ctx, &oldVal)
-	k.AddSelectedRValidator(ctx, &newVal)
+	k.SetDealingRValidator(ctx, &types.DealingRValidator{
+		Denom:         p.Denom,
+		PoolAddress:   p.PoolAddress,
+		OldValAddress: p.OldAddress,
+		NewValAddress: p.NewAddress,
+	})
 	k.SetLatestVotedCycle(ctx, p.Cycle)
 
 	ctx.EventManager().EmitEvent(
@@ -79,7 +83,26 @@ func (k Keeper) ProcessUpdateRValidatorReportProposal(ctx sdk.Context, p *types.
 	if !(p.Cycle.Version == latestVotedCycle.Version && p.Cycle.Number == latestVotedCycle.Number) {
 		return types.ErrReportCycleNotMatchLatestVotedCycle
 	}
+	dealingRValidator, found := k.GetDealingRValidator(ctx, p.Denom, p.PoolAddress)
+	if !found {
+		return types.ErrDealingRvalidatorNotFound
+	}
 
+	// should update rvalidator when redelegate success
+	if p.Status == types.UpdateRValidatorStatusSuccess {
+		k.RemoveSelectedRValidator(ctx, &types.RValidator{
+			Denom:       dealingRValidator.Denom,
+			PoolAddress: dealingRValidator.PoolAddress,
+			ValAddress:  dealingRValidator.OldValAddress,
+		})
+		k.AddSelectedRValidator(ctx, &types.RValidator{
+			Denom:       dealingRValidator.Denom,
+			PoolAddress: dealingRValidator.PoolAddress,
+			ValAddress:  dealingRValidator.NewValAddress,
+		})
+	}
+
+	k.RemoveDealingRValidator(ctx, p.Denom, p.PoolAddress)
 	k.SetLatestDealedCycle(ctx, p.Cycle)
 	return nil
 }

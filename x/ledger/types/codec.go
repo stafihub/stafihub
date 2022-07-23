@@ -24,6 +24,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
 	cdc.RegisterConcrete(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal", nil)
+	cdc.RegisterConcrete(&InterchainTxProposal{}, "ledger/InterchainTxProposal", nil)
 
 	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
 	cdc.RegisterConcrete(&MsgSetRParams{}, "ledger/SetRParams", nil)
@@ -35,6 +36,9 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgMigrateUnbondings{}, "ledger/MigrateUnbondings", nil)
 	cdc.RegisterConcrete(&MsgToggleUnbondSwitch{}, "ledger/ToggleUnbondSwitch", nil)
 	cdc.RegisterConcrete(&MsgUnsealMigrateInit{}, "ledger/UnsealMigrateInit", nil)
+	cdc.RegisterConcrete(&MsgRegisterIcaPool{}, "ledger/RegisterIcaPool", nil)
+	cdc.RegisterConcrete(&MsgSetWithdrawalAddr{}, "ledger/SetWithdrawalAddr", nil)
+	cdc.RegisterConcrete(&MsgInitPool{}, "ledger/InitPool", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -55,6 +59,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&ActiveReportProposal{},
 		&TransferReportProposal{},
 		&ExecuteBondProposal{},
+		&InterchainTxProposal{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSubmitSignature{},
@@ -85,6 +90,15 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUnsealMigrateInit{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRegisterIcaPool{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetWithdrawalAddr{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgInitPool{},
 	)
 	// this line is used by starport scaffolding # 3
 

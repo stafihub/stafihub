@@ -3,6 +3,7 @@ package stafihub.stafihub.ledger;
 
 import "gogoproto/gogo.proto";
 import "ledger/ledger.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "github.com/stafihub/stafihub/x/ledger/types";
 
@@ -49,3 +50,13 @@ message ExecuteBondProposal {
 }
 
 
+message InterchainTxProposal {
+    string proposer = 1;
+    string denom = 2;
+    string poolAddress = 3;
+    uint32 era = 4;
+    OriginalTxType txType = 5;
+    uint32 factor = 6;
+    repeated google.protobuf.Any msgs = 7;
+    string propId = 8;
+}

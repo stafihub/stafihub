@@ -228,7 +228,7 @@ func TestKeeper_SetUnbondCommission(t *testing.T) {
 func TestKeeper_SetSignature(t *testing.T) {
 	k, ctx := testkeeper.LedgerKeeper(t)
 
-	sig1 := types.NewSignature(sample.TestDenom, uint32(100), sample.AccAddress(), types.TxTypeBond, "testPropId")
+	sig1 := types.NewSignature(sample.TestDenom, uint32(100), sample.AccAddress(), types.TxTypeDealEraUpdated, "testPropId")
 	_, found := k.GetSignature(ctx, sig1.Denom, sig1.Era, sig1.Pool, sig1.TxType, sig1.PropId)
 	require.False(t, found)
 

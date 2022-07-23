@@ -1,6 +1,7 @@
 syntax = "proto3";
 package stafihub.stafihub.ledger;
 
+import "google/protobuf/any.proto";
 import "gogoproto/gogo.proto";
 import "ledger/ledger.proto";
 import "cosmos/base/v1beta1/coin.proto";
@@ -29,6 +30,9 @@ service Msg {
   rpc MigrateUnbondings(MsgMigrateUnbondings) returns (MsgMigrateUnbondingsResponse);
   rpc ToggleUnbondSwitch(MsgToggleUnbondSwitch) returns (MsgToggleUnbondSwitchResponse);
   rpc UnsealMigrateInit(MsgUnsealMigrateInit) returns (MsgUnsealMigrateInitResponse);
+  rpc RegisterIcaPool(MsgRegisterIcaPool) returns (MsgRegisterIcaPoolResponse);
+  rpc SetWithdrawalAddr(MsgSetWithdrawalAddr) returns (MsgSetWithdrawalAddrResponse);
+  rpc InitPool(MsgInitPool) returns (MsgInitPoolResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -217,6 +221,32 @@ message MsgUnsealMigrateInit {
 }
 
 message MsgUnsealMigrateInitResponse {
+}
+
+message MsgRegisterIcaPool {
+  string creator = 1;
+  string denom = 2;
+  string connectionId = 3;
+}
+
+message MsgRegisterIcaPoolResponse {
+}
+
+message MsgSetWithdrawalAddr {
+  string creator = 1;
+  string delegationAddr = 3;
+}
+
+message MsgSetWithdrawalAddrResponse {
+}
+
+message MsgInitPool {
+  string creator = 1;
+  string denom = 2;
+  string pool = 3;
+}
+
+message MsgInitPoolResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

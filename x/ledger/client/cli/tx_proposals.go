@@ -1,13 +1,17 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -191,6 +195,81 @@ func CmdExecuteBondProposal() *cobra.Command {
 
 			from := clientCtx.GetFromAddress()
 			content := types.NewExecuteBondProposal(from, argDenom, argBonder, argPool, argTxHash, argAmount, types.LiquidityBondState(bondState))
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
+			if err != nil {
+				return err
+			}
+
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
+func CmdInterchainTxProposal() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "interchain-tx-proposal [denom] [pool] [era] [txType] [factor] [path_to_msg.json]",
+		Short: "Broadcast message interchain tx proposal",
+		Args:  cobra.ExactArgs(5),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			argDenom := args[0]
+			argPool := args[1]
+			argEra, err := sdk.ParseUint(args[2])
+			if err != nil {
+				return err
+			}
+
+			txType := types.OriginalTxType(types.OriginalTxType_value[args[3]])
+			argFactor, err := sdk.ParseUint(args[4])
+			if err != nil {
+				return err
+			}
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			// check for file path if JSON input is not provided
+			contents, err := ioutil.ReadFile(args[4])
+			if err != nil {
+				return errors.Wrap(err, "neither JSON input nor path to .json file for sdk msg were provided")
+			}
+			var msgs []interface{}
+
+			err = json.Unmarshal(contents, &msgs)
+			if err != nil {
+				return err
+			}
+			cdc := codec.NewProtoCodec(clientCtx.InterfaceRegistry)
+
+			txMsgs := make([]sdk.Msg, 0)
+
+			for _, msg := range msgs {
+				content, err := json.Marshal(msg)
+				if err != nil {
+					return err
+				}
+				var txMsg sdk.Msg
+				if err := cdc.UnmarshalInterfaceJSON(content, &txMsg); err != nil {
+					return errors.Wrap(err, "error unmarshalling sdk msg file")
+				}
+				txMsgs = append(txMsgs, txMsg)
+			}
+			fmt.Println(txMsgs)
+
+			from := clientCtx.GetFromAddress()
+
+			content, err := types.NewInterchainTxProposal(from, argDenom, argPool, uint32(argEra.Uint64()), txType, uint32(argFactor.Uint64()), txMsgs)
+			if err != nil {
+				return err
+			}
+
 			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
 			if err != nil {
 				return err

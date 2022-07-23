@@ -7,3 +7,6 @@ vue/
 metadata.json
 build/
 .vscode/
+coverage.txt
+tx_delegate.json
+tx_withdraw.json

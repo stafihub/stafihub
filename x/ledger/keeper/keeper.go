@@ -11,6 +11,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/controller/keeper"
 	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
@@ -26,6 +28,9 @@ type (
 		relayerKeeper    types.RelayerKeeper
 		mintrewardKeeper types.MintRewardKeeper
 		rbankKeeper      types.RBankKeeper
+
+		ICAControllerKeeper icacontrollerkeeper.Keeper
+		scopedKeeper        capabilitykeeper.ScopedKeeper
 	}
 )
 
@@ -39,6 +44,9 @@ func NewKeeper(
 	relayerKeeper types.RelayerKeeper,
 	mintrewardKeeper types.MintRewardKeeper,
 	rbankKeeepr types.RBankKeeper,
+
+	icaControllerKeeper icacontrollerkeeper.Keeper,
+	scopedKeeper capabilitykeeper.ScopedKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
@@ -50,6 +58,9 @@ func NewKeeper(
 		relayerKeeper:    relayerKeeper,
 		mintrewardKeeper: mintrewardKeeper,
 		rbankKeeper:      rbankKeeepr,
+
+		ICAControllerKeeper: icaControllerKeeper,
+		scopedKeeper:        scopedKeeper,
 	}
 }
 
@@ -59,7 +70,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 func (k Keeper) SetExchangeRate(ctx sdk.Context, denom string, total, rtotal sdk.Int) {
 	dec := utils.OneDec()
-	if total.Int64() != 0 && rtotal.Int64() != 0 {
+	if total.IsPositive() && rtotal.IsPositive() {
 		dec = dec.MulInt(total).QuoInt(rtotal)
 	}
 
@@ -303,6 +314,7 @@ func (k Keeper) SealMigrateInit(ctx sdk.Context) {
 
 	store.Set(types.MigrateInitSealedStatePrefix, types.SwitchStateClose)
 }
+
 func (k Keeper) UnSealMigrateInit(ctx sdk.Context) {
 	store := ctx.KVStore(k.storeKey)
 

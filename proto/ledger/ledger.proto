@@ -134,11 +134,11 @@ message Signature {
 enum OriginalTxType {
   option (gogoproto.goproto_enum_prefix) = false;
 
-  ORIGINAL_TX_TYPE_TRANSFER = 0 [(gogoproto.enumvalue_customname) = "TxTypeTransfer"];
-  ORIGINAL_TX_TYPE_BOND = 1 [(gogoproto.enumvalue_customname) = "TxTypeBond"];
-  ORIGINAL_TX_TYPE_UNBOND = 2 [(gogoproto.enumvalue_customname) = "TxTypeUnbond"];
-  ORIGINAL_TX_TYPE_WITHDRAW = 3 [(gogoproto.enumvalue_customname) = "TxTypeWithdraw"];
-  ORIGINAL_TX_TYPE_CLAIM = 4 [(gogoproto.enumvalue_customname) = "TxTypeClaim"];
+  ORIGINAL_TX_TYPE_DEAL_ERAUPDATED = 0 [(gogoproto.enumvalue_customname) = "TxTypeDealEraUpdated"];
+  ORIGINAL_TX_TYPE_DEAL_BONDREPORTED = 1 [(gogoproto.enumvalue_customname) = "TxTypeDealBondReported"];
+  ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED = 2 [(gogoproto.enumvalue_customname) = "TxTypeDealActiveReported"];
+  ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED = 3 [(gogoproto.enumvalue_customname) = "TxTypeDealValidatorUpdated"];
+  ORIGINAL_TX_TYPE_RESERVED = 4 [(gogoproto.enumvalue_customname) = "TxTypeReserved"];
 }
 
 message RParams {
@@ -148,4 +148,44 @@ message RParams {
     int32 offset = 4;
     uint32 bondingDuration = 5;
     string leastBond = 6;
+}
+
+
+message IcaAccount {
+    string owner = 1;
+    string address = 2;
+    string ctrlConnectionId = 3;
+    string ctrlPortId = 4;
+    string ctrlChannelId = 5;
+    string hostConnectionId = 6;
+    string hostPortId = 7;
+    string hostChannelId = 8;
+}
+
+
+message IcaPoolDetail {
+    string denom = 1;
+    uint32 index = 2;
+    IcaPoolStatus status = 3;
+    IcaAccount DelegationAccount = 4;
+    IcaAccount WithdrawalAccount = 5;
+}
+
+enum IcaPoolStatus {
+    option (gogoproto.goproto_enum_prefix) = false;
+  
+    ICA_POOL_STATUS_UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "IcaPoolStatusUnspecified"];
+    ICA_POOL_STATUS_INIT = 1 [(gogoproto.enumvalue_customname) = "IcaPoolStatusInit"];
+    ICA_POOL_STATUS_CREATE_ONE = 2 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateOne"];
+    ICA_POOL_STATUS_CREATE_TWO = 3 [(gogoproto.enumvalue_customname) = "IcaPoolStatusCreateTwo"];
+    ICA_POOL_STATUS_SET_WITHDRAWAL = 4 [(gogoproto.enumvalue_customname) = "IcaPoolStatusSetWithdrawal"];
+}
+
+enum InterchainTxStatus {
+    option (gogoproto.goproto_enum_prefix) = false;
+  
+    INTERCHAIN_TX_STATUS_UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "InterchainTxStatusUnspecified"];
+    INTERCHAIN_TX_STATUS_INIT = 1 [(gogoproto.enumvalue_customname) = "InterchainTxStatusInit"];
+    INTERCHAIN_TX_STATUS_SUCCESS = 2 [(gogoproto.enumvalue_customname) = "InterchainTxStatusSuccess"];
+    INTERCHAIN_TX_STATUS_FAILED = 3 [(gogoproto.enumvalue_customname) = "InterchainTxStatusFailed"];
 }

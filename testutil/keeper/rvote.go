@@ -33,7 +33,7 @@ func RvoteKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 
 	rvoteRouter := types.NewRouter()
-	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledgermodule.NewProposalHandler(*ledgerKeeper))
+	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledgermodule.NewProposalHandler(ledgerKeeper))
 	rvoteKeeper := keeper.NewKeeper(
 		cdc,
 		rvoteStoreKey,

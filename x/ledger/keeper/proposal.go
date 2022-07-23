@@ -309,3 +309,54 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 
 	return nil
 }
+
+func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.InterchainTxProposal) error {
+	err := k.CheckAddress(ctx, p.Denom, p.PoolAddress)
+	if err != nil {
+		return err
+	}
+
+	if _, ok := k.GetBondedPool(ctx, p.Denom); !ok {
+		return types.ErrPoolNotBonded
+	}
+
+	ce, ok := k.GetChainEra(ctx, p.Denom)
+	if !ok {
+		return types.ErrChainEraNotFound
+	}
+	if p.Era > ce.Era {
+		return types.ErrInvalidEra
+	}
+
+	icaPool, found := k.GetIcaPoolByDelegationAddr(ctx, p.PoolAddress)
+	if !found {
+		return types.ErrIcaPoolNotFound
+	}
+
+	txMsg, err := p.GetTxMsg(k.cdc)
+	if err != nil {
+		return err
+	}
+	if len(txMsg) == 0 {
+		return types.ErrInterchainTxMsgsEmpty
+	}
+
+	if p.TxType != types.TxTypeReserved {
+		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg, p.TxType.String())
+		if err != nil {
+			return err
+		}
+
+		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
+	} else {
+		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, txMsg, p.TxType.String())
+		if err != nil {
+			return err
+		}
+
+		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.WithdrawalAccount.CtrlPortId, icaPool.WithdrawalAccount.CtrlChannelId, sequence, p.PropId)
+	}
+	k.SetInterchainTxProposalStatus(ctx, p.PropId, types.InterchainTxStatusInit)
+
+	return nil
+}

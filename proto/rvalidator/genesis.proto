@@ -25,6 +25,15 @@ message RValidator {
   string valAddress = 3;
 }
 
+message DealingRValidator {
+  string denom  = 1;
+  string poolAddress = 2;
+  string oldValAddress = 3;
+  string newValAddress = 4;
+}
+
+
+
 message Cycle {
   string denom = 1;
   string poolAddress = 2;

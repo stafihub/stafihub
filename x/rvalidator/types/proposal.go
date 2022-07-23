@@ -85,11 +85,12 @@ func (msg *UpdateRValidatorProposal) ValidateBasic() error {
 	return nil
 }
 
-func NewUpdateRValidatorReportProposal(creator string, denom string, poolAddress string, cycle *Cycle) *UpdateRValidatorReportProposal {
+func NewUpdateRValidatorReportProposal(creator string, denom string, poolAddress string, cycle *Cycle, status UpdateRValidatorStatus) *UpdateRValidatorReportProposal {
 	msg := UpdateRValidatorReportProposal{
 		Denom:       denom,
 		PoolAddress: poolAddress,
 		Cycle:       cycle,
+		Status:      status,
 	}
 	msg.setPropId()
 
