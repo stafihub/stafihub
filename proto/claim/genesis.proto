@@ -1,0 +1,14 @@
+syntax = "proto3";
+package stafihub.stafihub.claim;
+
+import "gogoproto/gogo.proto";
+import "claim/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/stafihub/stafihub/x/claim/types";
+
+// GenesisState defines the claim module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

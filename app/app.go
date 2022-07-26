@@ -105,6 +105,9 @@ import (
 	bridgemodule "github.com/stafihub/stafihub/x/bridge"
 	bridgemodulekeeper "github.com/stafihub/stafihub/x/bridge/keeper"
 	bridgemoduletypes "github.com/stafihub/stafihub/x/bridge/types"
+	"github.com/stafihub/stafihub/x/claim"
+	claimmodulekeeper "github.com/stafihub/stafihub/x/claim/keeper"
+	claimmoduletypes "github.com/stafihub/stafihub/x/claim/types"
 	"github.com/stafihub/stafihub/x/ledger"
 	ledgerkeeper "github.com/stafihub/stafihub/x/ledger/keeper"
 	ledgertypes "github.com/stafihub/stafihub/x/ledger/types"
@@ -205,6 +208,7 @@ var (
 		rdexmodule.AppModuleBasic{},
 		miningmodule.AppModuleBasic{},
 		rvalidator.AppModuleBasic{},
+		claim.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -307,6 +311,8 @@ type App struct {
 	MiningKeeper miningmodulekeeper.Keeper
 
 	RValidatorKeeper rvalidatormodulekeeper.Keeper
+
+	ClaimKeeper claimmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -363,6 +369,7 @@ func New(
 		rdexmoduletypes.StoreKey,
 		miningmoduletypes.StoreKey,
 		rvalidatormoduletypes.StoreKey,
+		claimmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -624,6 +631,14 @@ func New(
 	)
 	rvalidatorModule := rvalidator.NewAppModule(appCodec, app.RValidatorKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.ClaimKeeper = *claimmodulekeeper.NewKeeper(
+		appCodec,
+		keys[claimmoduletypes.StoreKey],
+		keys[claimmoduletypes.MemStoreKey],
+		app.GetSubspace(claimmoduletypes.ModuleName),
+	)
+	claimModule := claim.NewAppModule(appCodec, app.ClaimKeeper, app.AccountKeeper, app.BankKeeper)
+
 	rvoteRouter := rvotetypes.NewRouter()
 	rvoteRouter.AddRoute(ledgertypes.RouterKey, ledger.NewProposalHandler(app.LedgerKeeper))
 	rvoteRouter.AddRoute(rvalidatormoduletypes.RouterKey, rvalidator.NewProposalHandler(app.RValidatorKeeper))
@@ -719,6 +734,7 @@ func New(
 		relayers.NewAppModule(appCodec, app.RelayersKeeper),
 		ledger.NewAppModule(appCodec, app.LedgerKeeper),
 		rvalidatorModule,
+		claimModule,
 		rvote.NewAppModule(appCodec, app.RvoteKeeper),
 
 		rstakingModule,
@@ -765,6 +781,7 @@ func New(
 		rdexmoduletypes.ModuleName,
 		miningmoduletypes.ModuleName,
 		rvalidatormoduletypes.ModuleName,
+		claimmoduletypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -797,6 +814,7 @@ func New(
 		rdexmoduletypes.ModuleName,
 		miningmoduletypes.ModuleName,
 		rvalidatormoduletypes.ModuleName,
+		claimmoduletypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -836,6 +854,7 @@ func New(
 		rdexmoduletypes.ModuleName,
 		miningmoduletypes.ModuleName,
 		rvalidatormoduletypes.ModuleName,
+		claimmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -1041,6 +1060,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(rdexmoduletypes.ModuleName)
 	paramsKeeper.Subspace(miningmoduletypes.ModuleName)
 	paramsKeeper.Subspace(rvalidatormoduletypes.ModuleName)
+	paramsKeeper.Subspace(claimmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
