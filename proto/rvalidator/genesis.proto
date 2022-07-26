@@ -15,6 +15,7 @@ message GenesisState {
   repeated Cycle latestDealedCycleList = 4;
   repeated CycleSeconds cycleSecondsList = 5;
   repeated ShuffleSeconds shuffleSecondsList = 6;
+  repeated DealingRValidator dealingRValidatorList = 7;
   // this line is used by starport scaffolding # genesis/proto/state
 }
 

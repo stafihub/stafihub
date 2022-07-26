@@ -34,6 +34,8 @@ message GenesisState {
     repeated RParams rparamsList = 21;
     repeated Signature signatureList = 22;
     bool MigrateIsSealed = 23;
+    repeated IcaPoolDetail icaPoolDetailList = 24;
+    repeated GenesisInterchainTxProposalInfo interchainTxProposalInfoList = 25;
     // this line is used by starport scaffolding # genesis/proto/state
 }
 
@@ -84,4 +86,12 @@ message GenesisPoolUnbonding {
 message GenesisSnapshot {
     string shotId = 1;
     BondSnapshot snapshot = 2;
+}
+
+message GenesisInterchainTxProposalInfo {
+    string ctrlPortId = 1;
+    string ctrlChannelId = 2;
+    uint64 sequence = 3;
+    string proposalId = 4;
+    InterchainTxStatus status = 5;
 }

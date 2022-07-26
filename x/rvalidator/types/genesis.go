@@ -16,6 +16,7 @@ func DefaultGenesis() *GenesisState {
 		LatestDealedCycleList:  []*Cycle{},
 		CycleSecondsList:       []*CycleSeconds{},
 		ShuffleSecondsList:     []*ShuffleSeconds{},
+		DealingRValidatorList:  []*DealingRValidator{},
 	}
 }
 

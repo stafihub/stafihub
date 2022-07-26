@@ -34,6 +34,19 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, shuffleSeconds := range genState.ShuffleSecondsList {
 		k.SetShuffleSeconds(ctx, shuffleSeconds)
 	}
+
+	for _, dealingRValidator := range genState.DealingRValidatorList {
+		if err := k.RBankKeeper.CheckValAddress(ctx, dealingRValidator.Denom, dealingRValidator.NewValAddress); err != nil {
+			panic(err)
+		}
+		if err := k.RBankKeeper.CheckValAddress(ctx, dealingRValidator.Denom, dealingRValidator.OldValAddress); err != nil {
+			panic(err)
+		}
+		if err := k.RBankKeeper.CheckAccAddress(ctx, dealingRValidator.Denom, dealingRValidator.PoolAddress); err != nil {
+			panic(err)
+		}
+		k.SetDealingRValidator(ctx, dealingRValidator)
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -45,7 +58,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.LatestVotedCycleList = k.GetAllLatestVotedCycle(ctx)
 	genesis.SelectedRValidatorList = k.GetSelectedRValidatorList(ctx)
 	genesis.ShuffleSecondsList = k.GetAllShuffleSeconds(ctx)
-
+	genesis.DealingRValidatorList = k.GetAllDealingRvalidators(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

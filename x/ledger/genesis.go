@@ -115,6 +115,18 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	} else {
 		k.UnSealMigrateInit(ctx)
 	}
+
+	for i, icaPool := range k.GetAllIcaPoolDetailList(ctx) {
+		k.SetIcaPoolDetail(ctx, icaPool)
+		k.SetIcaPoolIndex(ctx, icaPool.Denom, uint32(i))
+		k.SetIcaPoolDelegationAddrIndex(ctx, icaPool)
+	}
+
+	for _, interchainTxProposal := range k.GetInterchainTxProposalInfoList(ctx) {
+		k.SetInterchainTxProposalStatus(ctx, interchainTxProposal.ProposalId, interchainTxProposal.Status)
+		k.SetInterchainTxProposalSequenceIndex(ctx, interchainTxProposal.CtrlPortId, interchainTxProposal.CtrlChannelId,
+			interchainTxProposal.Sequence, interchainTxProposal.ProposalId)
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -147,6 +159,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.RparamsList = k.GetRParamsList(ctx)
 	genesis.SignatureList = k.GetSignatureList(ctx)
 	genesis.MigrateIsSealed = k.MigrateInitIsSealed(ctx)
+	genesis.IcaPoolDetailList = k.GetAllIcaPoolDetailList(ctx)
+	genesis.InterchainTxProposalInfoList = k.GetInterchainTxProposalInfoList(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

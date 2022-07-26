@@ -76,6 +76,23 @@ func (k Keeper) GetIcaPoolDetailList(ctx sdk.Context, denom string) []*types.Ica
 	return list
 }
 
+// prefix + denomLen + denom + 4
+func (k Keeper) GetAllIcaPoolDetailList(ctx sdk.Context) []*types.IcaPoolDetail {
+
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.IcaPoolDetailPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.IcaPoolDetail, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		detail := types.IcaPoolDetail{}
+		k.cdc.MustUnmarshal(iterator.Value(), &detail)
+		list = append(list, &detail)
+	}
+	return list
+}
+
+// need set in genesis
 func (k Keeper) SetIcaPoolDelegationAddrIndex(ctx sdk.Context, ica *types.IcaPoolDetail) {
 	store := ctx.KVStore(k.storeKey)
 	denomLen := len(ica.Denom)
@@ -136,4 +153,41 @@ func (k Keeper) GetInterchainTxPropIdBySeq(ctx sdk.Context, ctrPortId, ctrChanne
 		return "", false
 	}
 	return string(bts), true
+}
+
+func (k Keeper) GetInterchainTxProposalInfoList(ctx sdk.Context) []*types.GenesisInterchainTxProposalInfo {
+	store := ctx.KVStore(k.storeKey)
+
+	iterator := sdk.KVStorePrefixIterator(store, types.InterchainTxPropSeqIndexPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.GenesisInterchainTxProposalInfo, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		// prefix + 1 + portIdLen + 1 + channelIdLen + 8
+		key := iterator.Key()
+		portIdLen := key[1]
+		portId := string(key[2 : 2+portIdLen])
+		channelIdLen := key[2+portIdLen]
+		channelId := string(key[2+portIdLen+1 : 2+portIdLen+1+channelIdLen])
+
+		sequenceBts := key[2+portIdLen+1+channelIdLen:]
+		sequence := sdk.BigEndianToUint64(sequenceBts)
+
+		propId := string(iterator.Value())
+
+		status, found := k.GetInterchainTxProposalStatus(ctx, propId)
+		if !found {
+			panic("interchain tx proposal status not found")
+		}
+
+		propInfo := types.GenesisInterchainTxProposalInfo{
+			CtrlPortId:    portId,
+			CtrlChannelId: channelId,
+			Sequence:      sequence,
+			ProposalId:    propId,
+			Status:        status,
+		}
+		list = append(list, &propInfo)
+	}
+	return list
 }

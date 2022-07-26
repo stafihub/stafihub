@@ -294,3 +294,17 @@ func (k Keeper) GetDealingRValidator(ctx sdk.Context, denom, poolAddress string)
 
 	return &rvalidator, true
 }
+
+func (k Keeper) GetAllDealingRvalidators(ctx sdk.Context) []*types.DealingRValidator {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.DealingRValidatorStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.DealingRValidator, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		dealingRvalidator := types.DealingRValidator{}
+		k.cdc.MustUnmarshal(iterator.Value(), &dealingRvalidator)
+		list = append(list, &dealingRvalidator)
+	}
+	return list
+}

@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
@@ -12,6 +13,12 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 
 	if !k.sudoKeeper.IsAdmin(ctx, msg.Creator) {
 		return nil, sudotypes.ErrCreatorNotAdmin
+	}
+
+	// ensure checkAddress work well
+	_, ok := k.bankKeeper.GetDenomMetaData(ctx, msg.Denom)
+	if !ok {
+		return nil, banktypes.ErrDenomMetadataNotFound
 	}
 
 	willUseIndex := k.GetIcaPoolNextIndex(ctx, msg.Denom)

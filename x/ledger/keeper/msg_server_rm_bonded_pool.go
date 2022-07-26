@@ -23,7 +23,8 @@ func (k msgServer) RmBondedPool(goCtx context.Context, msg *types.MsgRmBondedPoo
 		return nil, types.ErrBondPipelineNotFound
 	}
 
-	if !bondPipeLine.Chunk.Active.Equal(sdk.ZeroInt()) ||
+	// pass: active <= 10000 && bond == 0 && unbond == 0
+	if bondPipeLine.Chunk.Active.GT(sdk.NewInt(1e4)) ||
 		!bondPipeLine.Chunk.Bond.Equal(sdk.ZeroInt()) ||
 		!bondPipeLine.Chunk.Unbond.Equal(sdk.ZeroInt()) {
 		return nil, types.ErrBondPipelineAlreadyWork
