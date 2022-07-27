@@ -8,5 +8,5 @@ import (
 
 // x/claim module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrMerkleRootFormat = sdkerrors.Register(ModuleName, 1100, "merkle root format err")
 )

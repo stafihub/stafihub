@@ -43873,6 +43873,8 @@ definitions:
         type: array
         items:
           type: string
+  stafihub.stafihub.claim.MsgSetMerkleRootResponse:
+    type: object
   stafihub.stafihub.claim.Params:
     type: object
     description: Params defines the parameters for the module.

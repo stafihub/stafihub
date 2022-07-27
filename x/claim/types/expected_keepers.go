@@ -16,3 +16,8 @@ type BankKeeper interface {
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
 }
+
+type SudoKeeper interface {
+	IsAdmin(ctx sdk.Context, address string) bool
+	GetAdmin(ctx sdk.Context) sdk.AccAddress
+}

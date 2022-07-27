@@ -7,7 +7,16 @@ option go_package = "github.com/stafihub/stafihub/x/claim/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc SetMerkleRoot(MsgSetMerkleRoot) returns (MsgSetMerkleRootResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSetMerkleRoot {
+  string creator = 1;
+  string merkleRoot = 2;
+}
+
+message MsgSetMerkleRootResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

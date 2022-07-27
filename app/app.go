@@ -636,6 +636,7 @@ func New(
 		keys[claimmoduletypes.StoreKey],
 		keys[claimmoduletypes.MemStoreKey],
 		app.GetSubspace(claimmoduletypes.ModuleName),
+		app.SudoKeeper,
 	)
 	claimModule := claim.NewAppModule(appCodec, app.ClaimKeeper, app.AccountKeeper, app.BankKeeper)
 
