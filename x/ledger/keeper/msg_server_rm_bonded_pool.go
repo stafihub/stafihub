@@ -31,5 +31,13 @@ func (k msgServer) RmBondedPool(goCtx context.Context, msg *types.MsgRmBondedPoo
 	}
 
 	k.Keeper.RemoveBondedPool(ctx, msg.Denom, msg.Address)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRemovePool,
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyPool, msg.Address),
+		),
+	)
 	return &types.MsgRmBondedPoolResponse{}, nil
 }

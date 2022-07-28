@@ -15,4 +15,5 @@ var (
 	ErrAmountFormatNotMatch     = sdkerrors.Register(ModuleName, 1104, "amount format not match")
 	ErrMerkleRootNotExist       = sdkerrors.Register(ModuleName, 1105, "merkle root not exist")
 	ErrMerkleProofNotMatch      = sdkerrors.Register(ModuleName, 1106, "merkle proof not match")
+	ErrClaimSwitchClosed        = sdkerrors.Register(ModuleName, 1107, "claim switch closed")
 )

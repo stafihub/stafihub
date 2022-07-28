@@ -20369,6 +20369,44 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/stafihub/stafihub/claim/claim_switch/{round}':
+    get:
+      summary: Queries a list of ClaimSwitch items.
+      operationId: StafihubStafihubClaimClaimSwitch
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              isOpen:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: round
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   '/stafihub/stafihub/claim/is_claimed/{round}/{index}':
     get:
       summary: Queries a list of IsClaimed items.
@@ -43918,11 +43956,20 @@ definitions:
           type: string
   stafihub.stafihub.claim.MsgClaimResponse:
     type: object
+  stafihub.stafihub.claim.MsgProvideTokenResponse:
+    type: object
   stafihub.stafihub.claim.MsgSetMerkleRootResponse:
+    type: object
+  stafihub.stafihub.claim.MsgToggleClaimSwitchResponse:
     type: object
   stafihub.stafihub.claim.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.claim.QueryClaimSwitchResponse:
+    type: object
+    properties:
+      isOpen:
+        type: boolean
   stafihub.stafihub.claim.QueryIsClaimedResponse:
     type: object
     properties:

@@ -27,6 +27,12 @@ var (
 	MerkleRootStoreKeyPrefix  = []byte{0x01}
 	ClaimRoundStoreKey        = []byte{0x02}
 	ClaimBitMapStoreKeyPrefix = []byte{0x03}
+	ClaimSwitchStoreKeyPrefix = []byte{0x04}
+)
+
+var (
+	SwitchStateClose = []byte{0x00}
+	SwitchStateOpen  = []byte{0x01}
 )
 
 func MerkleRootStoreKey(round uint64) []byte {
@@ -46,5 +52,12 @@ func ClaimBitMapStoreKey(round, wordIndex uint64) []byte {
 	copy(key[1:], sdk.Uint64ToBigEndian(round))
 	copy(key[9:], sdk.Uint64ToBigEndian(wordIndex))
 
+	return key
+}
+
+func ClaimSwitchStoreKey(round uint64) []byte {
+	key := make([]byte, 9)
+	key[0] = ClaimSwitchStoreKeyPrefix[0]
+	copy(key[1:], sdk.Uint64ToBigEndian(round))
 	return key
 }

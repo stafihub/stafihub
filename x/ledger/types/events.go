@@ -14,6 +14,8 @@ const (
 	EventTypeSignatureEnough    = "signature_enough"
 	EventTypeSignatureSubmitted = "signature_submitted"
 	EventTypeRParamsChanged     = "rparams_changed"
+	EventTypeInitPool           = "init_pool"
+	EventTypeRemovePool         = "remove_pool"
 
 	AttributeKeyDenom          = "denom"
 	AttributeKeyPool           = "pool"

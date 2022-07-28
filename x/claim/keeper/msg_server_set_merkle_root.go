@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/hex"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/claim/types"
@@ -28,6 +29,14 @@ func (k msgServer) SetMerkleRoot(goCtx context.Context, msg *types.MsgSetMerkleR
 	willUseRound := k.GetClaimRound(ctx) + 1
 	k.Keeper.SetMerkleRoot(ctx, willUseRound, root)
 	k.Keeper.SetClaimRound(ctx, willUseRound)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeSetMerkleRoot,
+			sdk.NewAttribute(types.AttributeKeyClaimRound, fmt.Sprint(willUseRound)),
+			sdk.NewAttribute(types.AttributeKeyMerkleRoot, msg.MerkleRoot),
+		),
+	)
 
 	return &types.MsgSetMerkleRootResponse{}, nil
 }

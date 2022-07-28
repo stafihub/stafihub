@@ -34,5 +34,13 @@ func (k msgServer) InitPool(goCtx context.Context, msg *types.MsgInitPool) (*typ
 		k.SetBondPipeline(ctx, types.NewBondPipeline(msg.Denom, msg.Pool))
 	}
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeInitPool,
+			sdk.NewAttribute(types.AttributeKeyDenom, msg.Denom),
+			sdk.NewAttribute(types.AttributeKeyPool, msg.Pool),
+		),
+	)
+
 	return &types.MsgInitPoolResponse{}, nil
 }

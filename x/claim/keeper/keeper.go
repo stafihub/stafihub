@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -120,4 +121,26 @@ func (k Keeper) SetIndexClaimed(ctx sdk.Context, claimRound, index uint64) {
 	newBitIndex := existBitIndex | (1 << claimedBitIndex)
 
 	k.setClaimBitMap(ctx, claimRound, claimedWordIndex, newBitIndex)
+}
+
+func (k Keeper) ToggleClaimSwitch(ctx sdk.Context, round uint64) {
+	k.SetClaimSwitch(ctx, round, !k.GetClaimSwitch(ctx, round))
+}
+
+func (k Keeper) SetClaimSwitch(ctx sdk.Context, round uint64, isOpen bool) {
+	store := ctx.KVStore(k.storeKey)
+	state := types.SwitchStateClose
+	if isOpen {
+		state = types.SwitchStateOpen
+	}
+	store.Set(types.ClaimSwitchStoreKey(round), state)
+}
+
+func (k Keeper) GetClaimSwitch(ctx sdk.Context, round uint64) bool {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.ClaimSwitchStoreKey(round))
+	if bts == nil {
+		return true
+	}
+	return bytes.Equal(bts, types.SwitchStateOpen)
 }

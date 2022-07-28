@@ -1,6 +1,6 @@
 # Stafihub
 
-**stafihub** is a blockchain built using [Cosmos SDK](https://github.com/cosmos/cosmos-sdk) and Tendermint and created with [Starport](https://github.com/tendermint/starport).
+**stafihub** is a blockchain built using [Cosmos SDK](https://github.com/cosmos/cosmos-sdk) and Tendermint and created with [Ignite CLI](https://ignite.com).
 
 |  |  |  |  |
 | --- | --- | --- | --- |

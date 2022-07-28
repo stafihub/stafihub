@@ -20,6 +20,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/claim/is_claimed/{round}/{index}";
 	}
 
+// Queries a list of ClaimSwitch items.
+	rpc ClaimSwitch(QueryClaimSwitchRequest) returns (QueryClaimSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/claim/claim_switch/{round}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +44,14 @@ message QueryIsClaimedRequest {
 
 message QueryIsClaimedResponse {
   bool isClaimed = 1;
+}
+
+message QueryClaimSwitchRequest {
+  uint64 round = 1;
+}
+
+message QueryClaimSwitchResponse {
+  bool isOpen = 1;
 }
 
 // this line is used by starport scaffolding # 3
