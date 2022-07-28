@@ -20369,6 +20369,49 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/stafihub/stafihub/claim/is_claimed/{round}/{index}':
+    get:
+      summary: Queries a list of IsClaimed items.
+      operationId: StafihubStafihubClaimIsClaimed
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              isClaimed:
+                type: boolean
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: round
+          in: path
+          required: true
+          type: string
+          format: uint64
+        - name: index
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /stafihub/stafihub/claim/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -43873,11 +43916,18 @@ definitions:
         type: array
         items:
           type: string
+  stafihub.stafihub.claim.MsgClaimResponse:
+    type: object
   stafihub.stafihub.claim.MsgSetMerkleRootResponse:
     type: object
   stafihub.stafihub.claim.Params:
     type: object
     description: Params defines the parameters for the module.
+  stafihub.stafihub.claim.QueryIsClaimedResponse:
+    type: object
+    properties:
+      isClaimed:
+        type: boolean
   stafihub.stafihub.claim.QueryParamsResponse:
     type: object
     properties:

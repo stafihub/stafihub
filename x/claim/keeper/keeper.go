@@ -19,6 +19,7 @@ type (
 		paramstore paramtypes.Subspace
 
 		sudoKeeper types.SudoKeeper
+		bankKeeper types.BankKeeper
 	}
 )
 
@@ -28,6 +29,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 	sudoKeeper types.SudoKeeper,
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -41,6 +43,7 @@ func NewKeeper(
 		memKey:     memKey,
 		paramstore: ps,
 		sudoKeeper: sudoKeeper,
+		bankKeeper: bankKeeper,
 	}
 }
 
@@ -48,22 +51,19 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-func (k Keeper) SetMerkleRoot(ctx sdk.Context, round uint64, root [32]byte) {
+func (k Keeper) SetMerkleRoot(ctx sdk.Context, round uint64, root NodeHash) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.MerkleRootStoreKey(round), root[:])
 }
 
-func (k Keeper) GetMerkleRoot(ctx sdk.Context, round uint64) ([32]byte, bool) {
+func (k Keeper) GetMerkleRoot(ctx sdk.Context, round uint64) (NodeHash, bool) {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.MerkleRootStoreKey(round))
 	if bts == nil {
-		return [32]byte{}, false
+		return nil, false
 	}
 
-	var root [32]byte
-	copy(root[:], bts)
-
-	return root, true
+	return bts, true
 }
 
 func (k Keeper) SetClaimRound(ctx sdk.Context, round uint64) {
@@ -102,7 +102,7 @@ func (k Keeper) getClaimBitMap(ctx sdk.Context, claimRound, wordIndex uint64) ui
 	return sdk.BigEndianToUint64(bts)
 }
 
-func (k Keeper) IsClaimed(ctx sdk.Context, claimRound, index uint64) bool {
+func (k Keeper) IsIndexClaimed(ctx sdk.Context, claimRound, index uint64) bool {
 	claimedWordIndex := index / 64
 	claimedBitIndex := index % 64
 
@@ -112,7 +112,7 @@ func (k Keeper) IsClaimed(ctx sdk.Context, claimRound, index uint64) bool {
 	return (existBitIndex & mask) == mask
 }
 
-func (k Keeper) SetClaimed(ctx sdk.Context, claimRound, index uint64) {
+func (k Keeper) SetIndexClaimed(ctx sdk.Context, claimRound, index uint64) {
 	claimedWordIndex := index / 64
 	claimedBitIndex := index % 64
 

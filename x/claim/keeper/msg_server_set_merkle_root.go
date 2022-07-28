@@ -17,16 +17,13 @@ func (k msgServer) SetMerkleRoot(goCtx context.Context, msg *types.MsgSetMerkleR
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	bts, err := hex.DecodeString(msg.MerkleRoot)
+	root, err := hex.DecodeString(msg.MerkleRoot)
 	if err != nil {
-		return nil, types.ErrMerkleRootFormat
+		return nil, types.ErrMerkleRootFormatNotMatch
 	}
-	if len(bts) != 32 {
-		return nil, types.ErrMerkleRootFormat
+	if len(root) != 32 {
+		return nil, types.ErrMerkleRootFormatNotMatch
 	}
-
-	var root [32]byte
-	copy(root[:], bts)
 
 	willUseRound := k.GetClaimRound(ctx) + 1
 	k.Keeper.SetMerkleRoot(ctx, willUseRound, root)

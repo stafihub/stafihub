@@ -228,6 +228,7 @@ var (
 		rdexmoduletypes.ModuleName:        {authtypes.Burner, authtypes.Minter},
 		miningmoduletypes.ModuleName:      nil,
 		icatypes.ModuleName:               nil,
+		claimmoduletypes.ModuleName:       nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -637,6 +638,7 @@ func New(
 		keys[claimmoduletypes.MemStoreKey],
 		app.GetSubspace(claimmoduletypes.ModuleName),
 		app.SudoKeeper,
+		app.BankKeeper,
 	)
 	claimModule := claim.NewAppModule(appCodec, app.ClaimKeeper, app.AccountKeeper, app.BankKeeper)
 

@@ -15,7 +15,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/stafihub/stafihub/claim/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of IsClaimed items.
+	rpc IsClaimed(QueryIsClaimedRequest) returns (QueryIsClaimedResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/claim/is_claimed/{round}/{index}";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +30,15 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryIsClaimedRequest {
+  uint64 round = 1;
+  uint64 index = 2;
+}
+
+message QueryIsClaimedResponse {
+  bool isClaimed = 1;
 }
 
 // this line is used by starport scaffolding # 3

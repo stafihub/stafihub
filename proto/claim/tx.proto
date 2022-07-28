@@ -1,13 +1,17 @@
 syntax = "proto3";
 package stafihub.stafihub.claim;
 
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafihub/stafihub/x/claim/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc SetMerkleRoot(MsgSetMerkleRoot) returns (MsgSetMerkleRootResponse);
+  rpc SetMerkleRoot(MsgSetMerkleRoot) returns (MsgSetMerkleRootResponse);
+  rpc Claim(MsgClaim) returns (MsgClaimResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -17,6 +21,18 @@ message MsgSetMerkleRoot {
 }
 
 message MsgSetMerkleRootResponse {
+}
+
+message MsgClaim {
+  string creator = 1;
+  uint64 round = 2;
+  uint64 index = 3;
+  string account = 4;
+  cosmos.base.v1beta1.Coin coin = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+  repeated string proof = 6;
+}
+
+message MsgClaimResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

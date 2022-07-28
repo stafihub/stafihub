@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetMerkleRoot{}, "claim/SetMerkleRoot", nil)
+	cdc.RegisterConcrete(&MsgClaim{}, "claim/Claim", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetMerkleRoot{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgClaim{},
 	)
 	// this line is used by starport scaffolding # 3
 

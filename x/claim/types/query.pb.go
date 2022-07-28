@@ -113,34 +113,139 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+type QueryIsClaimedRequest struct {
+	Round uint64 `protobuf:"varint,1,opt,name=round,proto3" json:"round,omitempty"`
+	Index uint64 `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryIsClaimedRequest) Reset()         { *m = QueryIsClaimedRequest{} }
+func (m *QueryIsClaimedRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryIsClaimedRequest) ProtoMessage()    {}
+func (*QueryIsClaimedRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f8c6eefbad679c0d, []int{2}
+}
+func (m *QueryIsClaimedRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryIsClaimedRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryIsClaimedRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryIsClaimedRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryIsClaimedRequest.Merge(m, src)
+}
+func (m *QueryIsClaimedRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryIsClaimedRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryIsClaimedRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryIsClaimedRequest proto.InternalMessageInfo
+
+func (m *QueryIsClaimedRequest) GetRound() uint64 {
+	if m != nil {
+		return m.Round
+	}
+	return 0
+}
+
+func (m *QueryIsClaimedRequest) GetIndex() uint64 {
+	if m != nil {
+		return m.Index
+	}
+	return 0
+}
+
+type QueryIsClaimedResponse struct {
+	IsClaimed bool `protobuf:"varint,1,opt,name=isClaimed,proto3" json:"isClaimed,omitempty"`
+}
+
+func (m *QueryIsClaimedResponse) Reset()         { *m = QueryIsClaimedResponse{} }
+func (m *QueryIsClaimedResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryIsClaimedResponse) ProtoMessage()    {}
+func (*QueryIsClaimedResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f8c6eefbad679c0d, []int{3}
+}
+func (m *QueryIsClaimedResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryIsClaimedResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryIsClaimedResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryIsClaimedResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryIsClaimedResponse.Merge(m, src)
+}
+func (m *QueryIsClaimedResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryIsClaimedResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryIsClaimedResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryIsClaimedResponse proto.InternalMessageInfo
+
+func (m *QueryIsClaimedResponse) GetIsClaimed() bool {
+	if m != nil {
+		return m.IsClaimed
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "stafihub.stafihub.claim.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "stafihub.stafihub.claim.QueryParamsResponse")
+	proto.RegisterType((*QueryIsClaimedRequest)(nil), "stafihub.stafihub.claim.QueryIsClaimedRequest")
+	proto.RegisterType((*QueryIsClaimedResponse)(nil), "stafihub.stafihub.claim.QueryIsClaimedResponse")
 }
 
 func init() { proto.RegisterFile("claim/query.proto", fileDescriptor_f8c6eefbad679c0d) }
 
 var fileDescriptor_f8c6eefbad679c0d = []byte{
-	// 295 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4c, 0xce, 0x49, 0xcc,
-	0xcc, 0xd5, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x2f,
-	0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2, 0x83, 0x33, 0xc0, 0x8a, 0xa4, 0x44, 0xd2, 0xf3,
-	0xd3, 0xf3, 0xc1, 0x6a, 0xf4, 0x41, 0x2c, 0x88, 0x72, 0x29, 0x99, 0xf4, 0xfc, 0xfc, 0xf4, 0x9c,
-	0x54, 0xfd, 0xc4, 0x82, 0x4c, 0xfd, 0xc4, 0xbc, 0xbc, 0xfc, 0x92, 0xc4, 0x92, 0xcc, 0xfc, 0xbc,
-	0x62, 0xa8, 0xac, 0x56, 0x72, 0x7e, 0x71, 0x6e, 0x7e, 0xb1, 0x7e, 0x52, 0x62, 0x71, 0x2a, 0xc4,
-	0x16, 0xfd, 0x32, 0xc3, 0xa4, 0xd4, 0x92, 0x44, 0x43, 0xfd, 0x82, 0xc4, 0xf4, 0xcc, 0x3c, 0xb0,
-	0x62, 0xa8, 0x5a, 0x21, 0x88, 0x5b, 0x0a, 0x12, 0x8b, 0x12, 0x73, 0xa1, 0xfa, 0x95, 0x44, 0xb8,
-	0x84, 0x02, 0x41, 0xba, 0x02, 0xc0, 0x82, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x4a, 0x21,
-	0x5c, 0xc2, 0x28, 0xa2, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x42, 0xb6, 0x5c, 0x6c, 0x10, 0xcd,
-	0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0xdc, 0x46, 0xf2, 0x7a, 0x38, 0xbc, 0xa2, 0x07, 0xd1, 0xe8, 0xc4,
-	0x72, 0xe2, 0x9e, 0x3c, 0x43, 0x10, 0x54, 0x93, 0xd1, 0x34, 0x46, 0x2e, 0x56, 0xb0, 0xb1, 0x42,
-	0x3d, 0x8c, 0x5c, 0x6c, 0x10, 0x25, 0x42, 0xda, 0x38, 0xcd, 0xc0, 0x74, 0x97, 0x94, 0x0e, 0x71,
-	0x8a, 0x21, 0xce, 0x55, 0x52, 0x6f, 0xba, 0xfc, 0x64, 0x32, 0x93, 0xa2, 0x90, 0xbc, 0x3e, 0x4c,
-	0x31, 0x82, 0x81, 0x1c, 0x14, 0x4e, 0x2e, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8,
-	0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7,
-	0x10, 0xa5, 0x95, 0x9e, 0x59, 0x02, 0xb6, 0x24, 0x3f, 0x17, 0x8b, 0x21, 0x15, 0x50, 0x63, 0x4a,
-	0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x21, 0x6a, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x34,
-	0xe5, 0xc3, 0x7f, 0xf3, 0x01, 0x00, 0x00,
+	// 404 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0x31, 0x6f, 0xda, 0x40,
+	0x14, 0xb6, 0x11, 0xa0, 0x72, 0x9d, 0x7a, 0xa5, 0x2d, 0xb2, 0x90, 0x69, 0xbd, 0xb4, 0xa2, 0x95,
+	0x4f, 0x80, 0xda, 0xa5, 0xea, 0x02, 0x5d, 0xba, 0x35, 0x56, 0xa6, 0x2c, 0xd1, 0x19, 0x2e, 0xce,
+	0x49, 0xd8, 0x67, 0x7c, 0xe7, 0x08, 0x84, 0x58, 0x32, 0x67, 0x88, 0x94, 0x5f, 0x91, 0xbf, 0x91,
+	0x89, 0x11, 0x29, 0x4b, 0xa6, 0x28, 0x82, 0xfc, 0x90, 0xc8, 0x77, 0x07, 0x24, 0x24, 0x44, 0x6c,
+	0xef, 0x3e, 0x7f, 0xdf, 0xf7, 0xbe, 0xf7, 0x9e, 0xc1, 0xbb, 0x6e, 0x1f, 0xd3, 0x10, 0x0d, 0x52,
+	0x92, 0x8c, 0xdc, 0x38, 0x61, 0x82, 0xc1, 0x4f, 0x5c, 0xe0, 0x23, 0x7a, 0x9c, 0xfa, 0xee, 0xaa,
+	0x90, 0x24, 0xab, 0x1c, 0xb0, 0x80, 0x49, 0x0e, 0xca, 0x2a, 0x45, 0xb7, 0xaa, 0x01, 0x63, 0x41,
+	0x9f, 0x20, 0x1c, 0x53, 0x84, 0xa3, 0x88, 0x09, 0x2c, 0x28, 0x8b, 0xb8, 0xfe, 0x5a, 0xef, 0x32,
+	0x1e, 0x32, 0x8e, 0x7c, 0xcc, 0x89, 0xea, 0x82, 0x4e, 0x1a, 0x3e, 0x11, 0xb8, 0x81, 0x62, 0x1c,
+	0xd0, 0x48, 0x92, 0x35, 0x17, 0xaa, 0x2c, 0x31, 0x4e, 0x70, 0xa8, 0xf5, 0x4e, 0x19, 0xc0, 0xbd,
+	0x4c, 0xf5, 0x5f, 0x82, 0x1e, 0x19, 0xa4, 0x84, 0x0b, 0x67, 0x1f, 0xbc, 0x7f, 0x82, 0xf2, 0x98,
+	0x45, 0x9c, 0xc0, 0x3f, 0xa0, 0xa8, 0xc4, 0x15, 0xf3, 0xb3, 0xf9, 0xed, 0x6d, 0xb3, 0xe6, 0x6e,
+	0x19, 0xc5, 0x55, 0xc2, 0x76, 0x7e, 0x7a, 0x5b, 0x33, 0x3c, 0x2d, 0x72, 0x3a, 0xe0, 0x83, 0x74,
+	0xfd, 0xc7, 0x3b, 0x19, 0x89, 0xf4, 0x74, 0x3b, 0x58, 0x06, 0x85, 0x84, 0xa5, 0x51, 0x4f, 0xda,
+	0xe6, 0x3d, 0xf5, 0xc8, 0x50, 0x1a, 0xf5, 0xc8, 0xb0, 0x92, 0x53, 0xa8, 0x7c, 0x38, 0xbf, 0xc0,
+	0xc7, 0x4d, 0x13, 0x9d, 0xae, 0x0a, 0x4a, 0x74, 0x09, 0x4a, 0xa7, 0x37, 0xde, 0x1a, 0x68, 0x5e,
+	0xe5, 0x40, 0x41, 0x0a, 0xe1, 0x99, 0x09, 0x8a, 0x2a, 0x1f, 0xfc, 0xbe, 0x75, 0x80, 0xe7, 0x4b,
+	0xb1, 0x7e, 0xec, 0x46, 0x56, 0x69, 0x9c, 0xaf, 0xa7, 0xd7, 0xf7, 0x17, 0xb9, 0x2f, 0xb0, 0x86,
+	0x96, 0xe4, 0x75, 0xf1, 0xf8, 0x0e, 0xf0, 0xd2, 0x04, 0xa5, 0xd5, 0x30, 0xd0, 0x7d, 0xbd, 0xc9,
+	0xe6, 0xea, 0x2c, 0xb4, 0x33, 0x5f, 0xe7, 0xfa, 0x2d, 0x73, 0xfd, 0x84, 0xad, 0xad, 0xb9, 0x28,
+	0x3f, 0xec, 0x2a, 0x11, 0x1a, 0xcb, 0x4b, 0x4c, 0xd0, 0x58, 0xee, 0x7e, 0xd2, 0xfe, 0x3b, 0x9d,
+	0xdb, 0xe6, 0x6c, 0x6e, 0x9b, 0x77, 0x73, 0xdb, 0x3c, 0x5f, 0xd8, 0xc6, 0x6c, 0x61, 0x1b, 0x37,
+	0x0b, 0xdb, 0x38, 0xa8, 0x07, 0x54, 0xc8, 0xde, 0x2c, 0x7c, 0xc1, 0x78, 0xa8, 0xad, 0xc5, 0x28,
+	0x26, 0xdc, 0x2f, 0xca, 0x5f, 0xaf, 0xf5, 0x10, 0x00, 0x00, 0xff, 0xff, 0x4a, 0x80, 0xec, 0xec,
+	0x1c, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -157,6 +262,8 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// Queries a list of IsClaimed items.
+	IsClaimed(ctx context.Context, in *QueryIsClaimedRequest, opts ...grpc.CallOption) (*QueryIsClaimedResponse, error)
 }
 
 type queryClient struct {
@@ -176,10 +283,21 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) IsClaimed(ctx context.Context, in *QueryIsClaimedRequest, opts ...grpc.CallOption) (*QueryIsClaimedResponse, error) {
+	out := new(QueryIsClaimedResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.claim.Query/IsClaimed", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// Queries a list of IsClaimed items.
+	IsClaimed(context.Context, *QueryIsClaimedRequest) (*QueryIsClaimedResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -188,6 +306,9 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (*UnimplementedQueryServer) IsClaimed(ctx context.Context, req *QueryIsClaimedRequest) (*QueryIsClaimedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsClaimed not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -212,6 +333,24 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_IsClaimed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryIsClaimedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).IsClaimed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.claim.Query/IsClaimed",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).IsClaimed(ctx, req.(*QueryIsClaimedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "stafihub.stafihub.claim.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -219,6 +358,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "IsClaimed",
+			Handler:    _Query_IsClaimed_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -281,6 +424,72 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryIsClaimedRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryIsClaimedRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryIsClaimedRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Index != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Index))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Round != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.Round))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryIsClaimedResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryIsClaimedResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryIsClaimedResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.IsClaimed {
+		i--
+		if m.IsClaimed {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -309,6 +518,33 @@ func (m *QueryParamsResponse) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryIsClaimedRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Round != 0 {
+		n += 1 + sovQuery(uint64(m.Round))
+	}
+	if m.Index != 0 {
+		n += 1 + sovQuery(uint64(m.Index))
+	}
+	return n
+}
+
+func (m *QueryIsClaimedResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.IsClaimed {
+		n += 2
+	}
 	return n
 }
 
@@ -430,6 +666,164 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryIsClaimedRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryIsClaimedRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryIsClaimedRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Round", wireType)
+			}
+			m.Round = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Round |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			m.Index = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Index |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryIsClaimedResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryIsClaimedResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryIsClaimedResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsClaimed", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsClaimed = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipQuery(dAtA[iNdEx:])
