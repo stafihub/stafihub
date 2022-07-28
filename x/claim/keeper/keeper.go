@@ -83,3 +83,41 @@ func (k Keeper) GetClaimRound(ctx sdk.Context) uint64 {
 
 	return sdk.BigEndianToUint64(bts)
 }
+
+func (k Keeper) setClaimBitMap(ctx sdk.Context, claimRound, wordIndex, bitIndex uint64) {
+	store := ctx.KVStore(k.storeKey)
+
+	bts := sdk.Uint64ToBigEndian(bitIndex)
+
+	store.Set(types.ClaimBitMapStoreKey(claimRound, wordIndex), bts)
+}
+
+func (k Keeper) getClaimBitMap(ctx sdk.Context, claimRound, wordIndex uint64) uint64 {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.ClaimBitMapStoreKey(claimRound, wordIndex))
+	if bts == nil {
+		return 0
+	}
+
+	return sdk.BigEndianToUint64(bts)
+}
+
+func (k Keeper) IsClaimed(ctx sdk.Context, claimRound, index uint64) bool {
+	claimedWordIndex := index / 64
+	claimedBitIndex := index % 64
+
+	mask := uint64(1 << claimedBitIndex)
+	existBitIndex := k.getClaimBitMap(ctx, claimRound, claimedWordIndex)
+
+	return (existBitIndex & mask) == mask
+}
+
+func (k Keeper) SetClaimed(ctx sdk.Context, claimRound, index uint64) {
+	claimedWordIndex := index / 64
+	claimedBitIndex := index % 64
+
+	existBitIndex := k.getClaimBitMap(ctx, claimRound, claimedWordIndex)
+	newBitIndex := existBitIndex | (1 << claimedBitIndex)
+
+	k.setClaimBitMap(ctx, claimRound, claimedWordIndex, newBitIndex)
+}

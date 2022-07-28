@@ -24,8 +24,9 @@ func KeyPrefix(p string) []byte {
 }
 
 var (
-	MerkleRootStoreKeyPrefix = []byte{0x01}
-	ClaimRoundStoreKey       = []byte{0x02}
+	MerkleRootStoreKeyPrefix  = []byte{0x01}
+	ClaimRoundStoreKey        = []byte{0x02}
+	ClaimBitMapStoreKeyPrefix = []byte{0x03}
 )
 
 func MerkleRootStoreKey(round uint64) []byte {
@@ -33,6 +34,17 @@ func MerkleRootStoreKey(round uint64) []byte {
 
 	key[0] = MerkleRootStoreKeyPrefix[0]
 	copy(key[1:], sdk.Uint64ToBigEndian(round))
+
+	return key
+}
+
+// prefix + round + wordIndex
+func ClaimBitMapStoreKey(round, wordIndex uint64) []byte {
+	key := make([]byte, 17)
+
+	key[0] = ClaimBitMapStoreKeyPrefix[0]
+	copy(key[1:], sdk.Uint64ToBigEndian(round))
+	copy(key[9:], sdk.Uint64ToBigEndian(wordIndex))
 
 	return key
 }
