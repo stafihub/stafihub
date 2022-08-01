@@ -14,12 +14,14 @@ service Msg {
   rpc Claim(MsgClaim) returns (MsgClaimResponse);
   rpc ToggleClaimSwitch(MsgToggleClaimSwitch) returns (MsgToggleClaimSwitchResponse);
   rpc ProvideToken(MsgProvideToken) returns (MsgProvideTokenResponse);
+  rpc WithdrawToken(MsgWithdrawToken) returns (MsgWithdrawTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgSetMerkleRoot {
   string creator = 1;
-  string merkleRoot = 2;
+  uint64 round = 2;
+  string merkleRoot = 3;
 }
 
 message MsgSetMerkleRootResponse {
@@ -51,6 +53,14 @@ message MsgProvideToken {
 }
 
 message MsgProvideTokenResponse {
+}
+
+message MsgWithdrawToken {
+  string creator = 1;
+  cosmos.base.v1beta1.Coin token = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgWithdrawTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

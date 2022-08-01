@@ -9,9 +9,10 @@ const TypeMsgSetMerkleRoot = "set_merkle_root"
 
 var _ sdk.Msg = &MsgSetMerkleRoot{}
 
-func NewMsgSetMerkleRoot(creator string, merkleRoot string) *MsgSetMerkleRoot {
+func NewMsgSetMerkleRoot(creator string, round uint64, merkleRoot string) *MsgSetMerkleRoot {
 	return &MsgSetMerkleRoot{
 		Creator:    creator,
+		Round:      round,
 		MerkleRoot: merkleRoot,
 	}
 }

@@ -43962,6 +43962,8 @@ definitions:
     type: object
   stafihub.stafihub.claim.MsgToggleClaimSwitchResponse:
     type: object
+  stafihub.stafihub.claim.MsgWithdrawTokenResponse:
+    type: object
   stafihub.stafihub.claim.Params:
     type: object
     description: Params defines the parameters for the module.

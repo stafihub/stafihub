@@ -13,27 +13,25 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdSetMerkleRoot() *cobra.Command {
+func CmdWithdrawToken() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-merkle-root [round] [merkle-root]",
-		Short: "Set merkle root ",
-		Args:  cobra.ExactArgs(2),
+		Use:   "withdraw-token [token]",
+		Short: "Withdraw token from claim module",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argMerkleRound, err := sdk.ParseUint(args[0])
+			argToken, err := sdk.ParseCoinNormalized(args[0])
 			if err != nil {
 				return err
 			}
-			argMerkleRoot := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgSetMerkleRoot(
+			msg := types.NewMsgWithdrawToken(
 				clientCtx.GetFromAddress().String(),
-				argMerkleRound.Uint64(),
-				argMerkleRoot,
+				argToken,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

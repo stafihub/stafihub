@@ -26,14 +26,12 @@ func (k msgServer) SetMerkleRoot(goCtx context.Context, msg *types.MsgSetMerkleR
 		return nil, types.ErrMerkleRootFormatNotMatch
 	}
 
-	willUseRound := k.GetClaimRound(ctx) + 1
-	k.Keeper.SetMerkleRoot(ctx, willUseRound, root)
-	k.Keeper.SetClaimRound(ctx, willUseRound)
+	k.Keeper.SetMerkleRoot(ctx, msg.Round, root)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeSetMerkleRoot,
-			sdk.NewAttribute(types.AttributeKeyClaimRound, fmt.Sprint(willUseRound)),
+			sdk.NewAttribute(types.AttributeKeyClaimRound, fmt.Sprint(msg.Round)),
 			sdk.NewAttribute(types.AttributeKeyMerkleRoot, msg.MerkleRoot),
 		),
 	)

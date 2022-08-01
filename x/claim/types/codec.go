@@ -12,6 +12,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgClaim{}, "claim/Claim", nil)
 	cdc.RegisterConcrete(&MsgToggleClaimSwitch{}, "claim/ToggleClaimSwitch", nil)
 	cdc.RegisterConcrete(&MsgProvideToken{}, "claim/ProvideToken", nil)
+	cdc.RegisterConcrete(&MsgWithdrawToken{}, "claim/WithdrawToken", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -27,6 +28,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgProvideToken{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgWithdrawToken{},
 	)
 	// this line is used by starport scaffolding # 3
 

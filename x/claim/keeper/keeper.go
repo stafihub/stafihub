@@ -67,24 +67,6 @@ func (k Keeper) GetMerkleRoot(ctx sdk.Context, round uint64) (NodeHash, bool) {
 	return bts, true
 }
 
-func (k Keeper) SetClaimRound(ctx sdk.Context, round uint64) {
-	store := ctx.KVStore(k.storeKey)
-
-	bts := sdk.Uint64ToBigEndian(round)
-
-	store.Set(types.ClaimRoundStoreKey, bts)
-}
-
-func (k Keeper) GetClaimRound(ctx sdk.Context) uint64 {
-	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.ClaimRoundStoreKey)
-	if bts == nil {
-		return 0
-	}
-
-	return sdk.BigEndianToUint64(bts)
-}
-
 func (k Keeper) setClaimBitMap(ctx sdk.Context, claimRound, wordIndex, bitIndex uint64) {
 	store := ctx.KVStore(k.storeKey)
 

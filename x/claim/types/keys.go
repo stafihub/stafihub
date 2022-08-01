@@ -25,7 +25,6 @@ func KeyPrefix(p string) []byte {
 
 var (
 	MerkleRootStoreKeyPrefix  = []byte{0x01}
-	ClaimRoundStoreKey        = []byte{0x02}
 	ClaimBitMapStoreKeyPrefix = []byte{0x03}
 	ClaimSwitchStoreKeyPrefix = []byte{0x04}
 )
