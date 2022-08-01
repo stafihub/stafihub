@@ -16,12 +16,12 @@ func (k msgServer) WithdrawToken(goCtx context.Context, msg *types.MsgWithdrawTo
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	user, err := sdk.AccAddressFromBech32(msg.Creator)
+	recipient, err := sdk.AccAddressFromBech32(msg.Recipient)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := k.Keeper.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, user, sdk.NewCoins(msg.Token)); err != nil {
+	if err := k.Keeper.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipient, sdk.NewCoins(msg.Token)); err != nil {
 		return nil, err
 	}
 

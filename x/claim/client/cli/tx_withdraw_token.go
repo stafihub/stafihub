@@ -15,11 +15,12 @@ var _ = strconv.Itoa(0)
 
 func CmdWithdrawToken() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "withdraw-token [token]",
+		Use:   "withdraw-token [recipient] [token]",
 		Short: "Withdraw token from claim module",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argToken, err := sdk.ParseCoinNormalized(args[0])
+			argRecipient := args[0]
+			argToken, err := sdk.ParseCoinNormalized(args[1])
 			if err != nil {
 				return err
 			}
@@ -31,6 +32,7 @@ func CmdWithdrawToken() *cobra.Command {
 
 			msg := types.NewMsgWithdrawToken(
 				clientCtx.GetFromAddress().String(),
+				argRecipient,
 				argToken,
 			)
 			if err := msg.ValidateBasic(); err != nil {

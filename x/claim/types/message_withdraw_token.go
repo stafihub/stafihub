@@ -9,10 +9,11 @@ const TypeMsgWithdrawToken = "withdraw_token"
 
 var _ sdk.Msg = &MsgWithdrawToken{}
 
-func NewMsgWithdrawToken(creator string, token sdk.Coin) *MsgWithdrawToken {
+func NewMsgWithdrawToken(creator, recipient string, token sdk.Coin) *MsgWithdrawToken {
 	return &MsgWithdrawToken{
-		Creator: creator,
-		Token:   token,
+		Creator:   creator,
+		Recipient: recipient,
+		Token:     token,
 	}
 }
 
