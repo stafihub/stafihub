@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"bytes"
+	"encoding/hex"
 	"fmt"
 
 	"github.com/tendermint/tendermint/libs/log"
@@ -67,15 +68,35 @@ func (k Keeper) GetMerkleRoot(ctx sdk.Context, round uint64) (NodeHash, bool) {
 	return bts, true
 }
 
-func (k Keeper) setClaimBitMap(ctx sdk.Context, claimRound, wordIndex, bitIndex uint64) {
+func (k Keeper) GetMerkleRootList(ctx sdk.Context) []*types.MerkleRoot {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.MerkleRootStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.MerkleRoot, 0)
+	for ; iterator.Valid(); iterator.Next() {
+
+		key := iterator.Key()
+		round := sdk.BigEndianToUint64(key[1:])
+		merkleRoot := types.MerkleRoot{
+			Round:    round,
+			RootHash: hex.EncodeToString(iterator.Value()),
+		}
+
+		list = append(list, &merkleRoot)
+	}
+	return list
+}
+
+func (k Keeper) SetClaimBitMap(ctx sdk.Context, claimRound, wordIndex, bits uint64) {
 	store := ctx.KVStore(k.storeKey)
 
-	bts := sdk.Uint64ToBigEndian(bitIndex)
+	bts := sdk.Uint64ToBigEndian(bits)
 
 	store.Set(types.ClaimBitMapStoreKey(claimRound, wordIndex), bts)
 }
 
-func (k Keeper) getClaimBitMap(ctx sdk.Context, claimRound, wordIndex uint64) uint64 {
+func (k Keeper) GetClaimBitMap(ctx sdk.Context, claimRound, wordIndex uint64) uint64 {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.ClaimBitMapStoreKey(claimRound, wordIndex))
 	if bts == nil {
@@ -85,24 +106,47 @@ func (k Keeper) getClaimBitMap(ctx sdk.Context, claimRound, wordIndex uint64) ui
 	return sdk.BigEndianToUint64(bts)
 }
 
+func (k Keeper) GetClaimBitMapList(ctx sdk.Context) []*types.ClaimBitMap {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ClaimBitMapStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.ClaimBitMap, 0)
+	for ; iterator.Valid(); iterator.Next() {
+
+		key := iterator.Key()
+		round := sdk.BigEndianToUint64(key[1:9])
+		wordIndex := sdk.BigEndianToUint64(key[9:])
+		bits := sdk.BigEndianToUint64(iterator.Value())
+
+		claimBitMap := types.ClaimBitMap{
+			Round:     round,
+			WordIndex: wordIndex,
+			Bits:      bits,
+		}
+		list = append(list, &claimBitMap)
+	}
+	return list
+}
+
 func (k Keeper) IsIndexClaimed(ctx sdk.Context, claimRound, index uint64) bool {
 	claimedWordIndex := index / 64
 	claimedBitIndex := index % 64
 
 	mask := uint64(1 << claimedBitIndex)
-	existBitIndex := k.getClaimBitMap(ctx, claimRound, claimedWordIndex)
+	bits := k.GetClaimBitMap(ctx, claimRound, claimedWordIndex)
 
-	return (existBitIndex & mask) == mask
+	return (bits & mask) == mask
 }
 
 func (k Keeper) SetIndexClaimed(ctx sdk.Context, claimRound, index uint64) {
 	claimedWordIndex := index / 64
 	claimedBitIndex := index % 64
 
-	existBitIndex := k.getClaimBitMap(ctx, claimRound, claimedWordIndex)
-	newBitIndex := existBitIndex | (1 << claimedBitIndex)
+	bits := k.GetClaimBitMap(ctx, claimRound, claimedWordIndex)
+	newBits := bits | (1 << claimedBitIndex)
 
-	k.setClaimBitMap(ctx, claimRound, claimedWordIndex, newBitIndex)
+	k.SetClaimBitMap(ctx, claimRound, claimedWordIndex, newBits)
 }
 
 func (k Keeper) ToggleClaimSwitch(ctx sdk.Context, round uint64) {
@@ -125,4 +169,26 @@ func (k Keeper) GetClaimSwitch(ctx sdk.Context, round uint64) bool {
 		return true
 	}
 	return bytes.Equal(bts, types.SwitchStateOpen)
+}
+
+func (k Keeper) GetClaimSwitchList(ctx sdk.Context) []*types.ClaimSwitch {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.ClaimSwitchStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.ClaimSwitch, 0)
+	for ; iterator.Valid(); iterator.Next() {
+
+		key := iterator.Key()
+		round := sdk.BigEndianToUint64(key[1:9])
+
+		isOpen := bytes.Equal(types.SwitchStateOpen, iterator.Value())
+
+		claimSwitch := types.ClaimSwitch{
+			Round:  round,
+			IsOpen: isOpen,
+		}
+		list = append(list, &claimSwitch)
+	}
+	return list
 }

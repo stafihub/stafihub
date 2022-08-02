@@ -25,7 +25,10 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the claim module's genesis state.
 type GenesisState struct {
-	Params Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	Params          Params         `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	MerkleRootList  []*MerkleRoot  `protobuf:"bytes,2,rep,name=merkleRootList,proto3" json:"merkleRootList,omitempty"`
+	ClaimBitMapList []*ClaimBitMap `protobuf:"bytes,3,rep,name=claimBitMapList,proto3" json:"claimBitMapList,omitempty"`
+	ClaimSwitchList []*ClaimSwitch `protobuf:"bytes,4,rep,name=claimSwitchList,proto3" json:"claimSwitchList,omitempty"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -68,26 +71,225 @@ func (m *GenesisState) GetParams() Params {
 	return Params{}
 }
 
+func (m *GenesisState) GetMerkleRootList() []*MerkleRoot {
+	if m != nil {
+		return m.MerkleRootList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetClaimBitMapList() []*ClaimBitMap {
+	if m != nil {
+		return m.ClaimBitMapList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetClaimSwitchList() []*ClaimSwitch {
+	if m != nil {
+		return m.ClaimSwitchList
+	}
+	return nil
+}
+
+type MerkleRoot struct {
+	Round    uint64 `protobuf:"varint,1,opt,name=round,proto3" json:"round,omitempty"`
+	RootHash string `protobuf:"bytes,2,opt,name=rootHash,proto3" json:"rootHash,omitempty"`
+}
+
+func (m *MerkleRoot) Reset()         { *m = MerkleRoot{} }
+func (m *MerkleRoot) String() string { return proto.CompactTextString(m) }
+func (*MerkleRoot) ProtoMessage()    {}
+func (*MerkleRoot) Descriptor() ([]byte, []int) {
+	return fileDescriptor_53acb741836a34f8, []int{1}
+}
+func (m *MerkleRoot) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MerkleRoot) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MerkleRoot.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MerkleRoot) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MerkleRoot.Merge(m, src)
+}
+func (m *MerkleRoot) XXX_Size() int {
+	return m.Size()
+}
+func (m *MerkleRoot) XXX_DiscardUnknown() {
+	xxx_messageInfo_MerkleRoot.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MerkleRoot proto.InternalMessageInfo
+
+func (m *MerkleRoot) GetRound() uint64 {
+	if m != nil {
+		return m.Round
+	}
+	return 0
+}
+
+func (m *MerkleRoot) GetRootHash() string {
+	if m != nil {
+		return m.RootHash
+	}
+	return ""
+}
+
+type ClaimBitMap struct {
+	Round     uint64 `protobuf:"varint,1,opt,name=round,proto3" json:"round,omitempty"`
+	WordIndex uint64 `protobuf:"varint,2,opt,name=wordIndex,proto3" json:"wordIndex,omitempty"`
+	Bits      uint64 `protobuf:"varint,3,opt,name=bits,proto3" json:"bits,omitempty"`
+}
+
+func (m *ClaimBitMap) Reset()         { *m = ClaimBitMap{} }
+func (m *ClaimBitMap) String() string { return proto.CompactTextString(m) }
+func (*ClaimBitMap) ProtoMessage()    {}
+func (*ClaimBitMap) Descriptor() ([]byte, []int) {
+	return fileDescriptor_53acb741836a34f8, []int{2}
+}
+func (m *ClaimBitMap) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ClaimBitMap) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ClaimBitMap.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ClaimBitMap) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ClaimBitMap.Merge(m, src)
+}
+func (m *ClaimBitMap) XXX_Size() int {
+	return m.Size()
+}
+func (m *ClaimBitMap) XXX_DiscardUnknown() {
+	xxx_messageInfo_ClaimBitMap.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ClaimBitMap proto.InternalMessageInfo
+
+func (m *ClaimBitMap) GetRound() uint64 {
+	if m != nil {
+		return m.Round
+	}
+	return 0
+}
+
+func (m *ClaimBitMap) GetWordIndex() uint64 {
+	if m != nil {
+		return m.WordIndex
+	}
+	return 0
+}
+
+func (m *ClaimBitMap) GetBits() uint64 {
+	if m != nil {
+		return m.Bits
+	}
+	return 0
+}
+
+type ClaimSwitch struct {
+	Round  uint64 `protobuf:"varint,1,opt,name=round,proto3" json:"round,omitempty"`
+	IsOpen bool   `protobuf:"varint,2,opt,name=isOpen,proto3" json:"isOpen,omitempty"`
+}
+
+func (m *ClaimSwitch) Reset()         { *m = ClaimSwitch{} }
+func (m *ClaimSwitch) String() string { return proto.CompactTextString(m) }
+func (*ClaimSwitch) ProtoMessage()    {}
+func (*ClaimSwitch) Descriptor() ([]byte, []int) {
+	return fileDescriptor_53acb741836a34f8, []int{3}
+}
+func (m *ClaimSwitch) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ClaimSwitch) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ClaimSwitch.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ClaimSwitch) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ClaimSwitch.Merge(m, src)
+}
+func (m *ClaimSwitch) XXX_Size() int {
+	return m.Size()
+}
+func (m *ClaimSwitch) XXX_DiscardUnknown() {
+	xxx_messageInfo_ClaimSwitch.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ClaimSwitch proto.InternalMessageInfo
+
+func (m *ClaimSwitch) GetRound() uint64 {
+	if m != nil {
+		return m.Round
+	}
+	return 0
+}
+
+func (m *ClaimSwitch) GetIsOpen() bool {
+	if m != nil {
+		return m.IsOpen
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "stafihub.stafihub.claim.GenesisState")
+	proto.RegisterType((*MerkleRoot)(nil), "stafihub.stafihub.claim.MerkleRoot")
+	proto.RegisterType((*ClaimBitMap)(nil), "stafihub.stafihub.claim.ClaimBitMap")
+	proto.RegisterType((*ClaimSwitch)(nil), "stafihub.stafihub.claim.ClaimSwitch")
 }
 
 func init() { proto.RegisterFile("claim/genesis.proto", fileDescriptor_53acb741836a34f8) }
 
 var fileDescriptor_53acb741836a34f8 = []byte{
-	// 182 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4e, 0xce, 0x49, 0xcc,
-	0xcc, 0xd5, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
-	0x12, 0x2f, 0x2e, 0x49, 0x4c, 0xcb, 0xcc, 0x28, 0x4d, 0xd2, 0x83, 0x33, 0xc0, 0xca, 0xa4, 0x44,
-	0xd2, 0xf3, 0xd3, 0xf3, 0xc1, 0x6a, 0xf4, 0x41, 0x2c, 0x88, 0x72, 0x29, 0x21, 0x88, 0x19, 0x05,
-	0x89, 0x45, 0x89, 0xb9, 0x50, 0x23, 0x94, 0x7c, 0xb9, 0x78, 0xdc, 0x21, 0x66, 0x06, 0x97, 0x24,
-	0x96, 0xa4, 0x0a, 0xd9, 0x72, 0xb1, 0x41, 0xe4, 0x25, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0xe4,
-	0xf5, 0x70, 0xd8, 0xa1, 0x17, 0x00, 0x56, 0xe6, 0xc4, 0x72, 0xe2, 0x9e, 0x3c, 0x43, 0x10, 0x54,
-	0x93, 0x93, 0xcb, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38,
-	0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x69, 0xa5, 0x67,
-	0x96, 0x80, 0x35, 0xe7, 0xe7, 0xea, 0xc3, 0x4c, 0x42, 0x30, 0x2a, 0xf4, 0x21, 0x6e, 0x2b, 0xa9,
-	0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0xbb, 0xcd, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0xa5, 0x6c,
-	0x8d, 0x7b, 0xf5, 0x00, 0x00, 0x00,
+	// 362 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xc1, 0x4a, 0xc3, 0x40,
+	0x10, 0x86, 0x93, 0x36, 0x96, 0x76, 0x2b, 0x0a, 0x6b, 0xd1, 0x50, 0x24, 0x2d, 0xd1, 0x43, 0xf1,
+	0x90, 0x40, 0x3d, 0x8a, 0x1e, 0xaa, 0xa0, 0xa2, 0x55, 0xd9, 0xe2, 0xc5, 0x5b, 0xda, 0xae, 0xe9,
+	0x62, 0x93, 0x0d, 0xd9, 0x2d, 0xad, 0x6f, 0xe1, 0xf3, 0xf8, 0x04, 0x3d, 0xf6, 0xe8, 0x49, 0xa4,
+	0x7d, 0x11, 0x71, 0x36, 0x26, 0x52, 0x08, 0x78, 0x9b, 0x49, 0xbe, 0xff, 0xdb, 0x61, 0x18, 0xb4,
+	0x33, 0x18, 0x7b, 0x2c, 0x70, 0x7d, 0x1a, 0x52, 0xc1, 0x84, 0x13, 0xc5, 0x5c, 0x72, 0xbc, 0x27,
+	0xa4, 0xf7, 0xcc, 0x46, 0x93, 0xbe, 0x93, 0x16, 0x80, 0xd5, 0x6b, 0x3e, 0xf7, 0x39, 0x30, 0xee,
+	0x4f, 0xa5, 0xf0, 0x3a, 0x56, 0x8e, 0xc8, 0x8b, 0xbd, 0x20, 0x51, 0xd8, 0xef, 0x05, 0xb4, 0x79,
+	0xa9, 0xa4, 0x3d, 0xe9, 0x49, 0x8a, 0x4f, 0x51, 0x49, 0x01, 0xa6, 0xde, 0xd4, 0x5b, 0xd5, 0x76,
+	0xc3, 0xc9, 0x79, 0xc4, 0x79, 0x00, 0xac, 0x63, 0xcc, 0x3f, 0x1b, 0x1a, 0x49, 0x42, 0xf8, 0x06,
+	0x6d, 0x05, 0x34, 0x7e, 0x19, 0x53, 0xc2, 0xb9, 0xbc, 0x65, 0x42, 0x9a, 0x85, 0x66, 0xb1, 0x55,
+	0x6d, 0x1f, 0xe4, 0x6a, 0xba, 0x29, 0x4e, 0xd6, 0xa2, 0xf8, 0x0e, 0x6d, 0x03, 0xd3, 0x61, 0xb2,
+	0xeb, 0x45, 0x60, 0x2b, 0x82, 0xed, 0x30, 0xd7, 0x76, 0x9e, 0xf1, 0x64, 0x3d, 0x9c, 0xfa, 0x7a,
+	0x53, 0x26, 0x07, 0x23, 0xf0, 0x19, 0xff, 0xf1, 0x29, 0x9e, 0xac, 0x87, 0xed, 0x33, 0x84, 0xb2,
+	0xe9, 0x71, 0x0d, 0x6d, 0xc4, 0x7c, 0x12, 0x0e, 0x61, 0x71, 0x06, 0x51, 0x0d, 0xae, 0xa3, 0x72,
+	0xcc, 0xb9, 0xbc, 0xf2, 0xc4, 0xc8, 0x2c, 0x34, 0xf5, 0x56, 0x85, 0xa4, 0xbd, 0xfd, 0x88, 0xaa,
+	0x7f, 0xe6, 0xcd, 0x11, 0xec, 0xa3, 0xca, 0x94, 0xc7, 0xc3, 0xeb, 0x70, 0x48, 0x67, 0x60, 0x30,
+	0x48, 0xf6, 0x01, 0x63, 0x64, 0xf4, 0x99, 0x14, 0x66, 0x11, 0x7e, 0x40, 0x6d, 0x9f, 0x24, 0x5a,
+	0x35, 0x69, 0x8e, 0x76, 0x17, 0x95, 0x98, 0xb8, 0x8f, 0x68, 0x08, 0xce, 0x32, 0x49, 0xba, 0xce,
+	0xc5, 0x7c, 0x69, 0xe9, 0x8b, 0xa5, 0xa5, 0x7f, 0x2d, 0x2d, 0xfd, 0x6d, 0x65, 0x69, 0x8b, 0x95,
+	0xa5, 0x7d, 0xac, 0x2c, 0xed, 0xe9, 0xc8, 0x67, 0x12, 0x16, 0xc3, 0x03, 0xf7, 0x77, 0x4b, 0x59,
+	0x31, 0x73, 0xd5, 0x75, 0xc9, 0xd7, 0x88, 0x8a, 0x7e, 0x09, 0xae, 0xeb, 0xf8, 0x3b, 0x00, 0x00,
+	0xff, 0xff, 0x4a, 0xf9, 0x54, 0x2d, 0xb7, 0x02, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -110,6 +312,48 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.ClaimSwitchList) > 0 {
+		for iNdEx := len(m.ClaimSwitchList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ClaimSwitchList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.ClaimBitMapList) > 0 {
+		for iNdEx := len(m.ClaimBitMapList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ClaimBitMapList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.MerkleRootList) > 0 {
+		for iNdEx := len(m.MerkleRootList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MerkleRootList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	{
 		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -120,6 +364,117 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	i--
 	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *MerkleRoot) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MerkleRoot) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MerkleRoot) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.RootHash) > 0 {
+		i -= len(m.RootHash)
+		copy(dAtA[i:], m.RootHash)
+		i = encodeVarintGenesis(dAtA, i, uint64(len(m.RootHash)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Round != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Round))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ClaimBitMap) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ClaimBitMap) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ClaimBitMap) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Bits != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Bits))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.WordIndex != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.WordIndex))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Round != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Round))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ClaimSwitch) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ClaimSwitch) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ClaimSwitch) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.IsOpen {
+		i--
+		if m.IsOpen {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Round != 0 {
+		i = encodeVarintGenesis(dAtA, i, uint64(m.Round))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -142,6 +497,73 @@ func (m *GenesisState) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovGenesis(uint64(l))
+	if len(m.MerkleRootList) > 0 {
+		for _, e := range m.MerkleRootList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.ClaimBitMapList) > 0 {
+		for _, e := range m.ClaimBitMapList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.ClaimSwitchList) > 0 {
+		for _, e := range m.ClaimSwitchList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MerkleRoot) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Round != 0 {
+		n += 1 + sovGenesis(uint64(m.Round))
+	}
+	l = len(m.RootHash)
+	if l > 0 {
+		n += 1 + l + sovGenesis(uint64(l))
+	}
+	return n
+}
+
+func (m *ClaimBitMap) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Round != 0 {
+		n += 1 + sovGenesis(uint64(m.Round))
+	}
+	if m.WordIndex != 0 {
+		n += 1 + sovGenesis(uint64(m.WordIndex))
+	}
+	if m.Bits != 0 {
+		n += 1 + sovGenesis(uint64(m.Bits))
+	}
+	return n
+}
+
+func (m *ClaimSwitch) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Round != 0 {
+		n += 1 + sovGenesis(uint64(m.Round))
+	}
+	if m.IsOpen {
+		n += 2
+	}
 	return n
 }
 
@@ -213,6 +635,405 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MerkleRootList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MerkleRootList = append(m.MerkleRootList, &MerkleRoot{})
+			if err := m.MerkleRootList[len(m.MerkleRootList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClaimBitMapList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ClaimBitMapList = append(m.ClaimBitMapList, &ClaimBitMap{})
+			if err := m.ClaimBitMapList[len(m.ClaimBitMapList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClaimSwitchList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ClaimSwitchList = append(m.ClaimSwitchList, &ClaimSwitch{})
+			if err := m.ClaimSwitchList[len(m.ClaimSwitchList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MerkleRoot) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MerkleRoot: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MerkleRoot: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Round", wireType)
+			}
+			m.Round = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Round |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RootHash", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RootHash = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ClaimBitMap) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ClaimBitMap: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ClaimBitMap: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Round", wireType)
+			}
+			m.Round = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Round |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WordIndex", wireType)
+			}
+			m.WordIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.WordIndex |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Bits", wireType)
+			}
+			m.Bits = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Bits |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenesis(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ClaimSwitch) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenesis
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ClaimSwitch: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ClaimSwitch: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Round", wireType)
+			}
+			m.Round = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Round |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsOpen", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsOpen = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGenesis(dAtA[iNdEx:])
