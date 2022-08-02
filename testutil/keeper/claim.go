@@ -36,11 +36,14 @@ func ClaimKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		memStoreKey,
 		"ClaimParams",
 	)
+	sudoKeeper, _ := SudoKeeper(t)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
+		sudoKeeper,
+		BankKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
