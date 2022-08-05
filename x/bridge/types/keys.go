@@ -29,6 +29,7 @@ var (
 	ResourceIdTypeStoreKeyPrefix    = []byte{0x05}
 	RelayFeeReceiverStoreKey        = []byte{0x06}
 	RelayFeeStoreKeyPrefix          = []byte{0x07}
+	BannedDenomStoreKeyPrefix       = []byte{0x08}
 )
 
 type ResourceIdType [1]byte
@@ -70,4 +71,12 @@ func ProposalStoreKey(chainId uint8, depositNonce uint64, resourceId, hash [32]b
 
 func RelayFeeStoreKey(chainId uint8) []byte {
 	return append(RelayFeeStoreKeyPrefix, chainId)
+}
+
+func BannedDenomStoreKey(chainId uint8, denom string) []byte {
+	key := make([]byte, 2+len(denom))
+	key[0] = BannedDenomStoreKeyPrefix[0]
+	key[1] = chainId
+	copy(key[2:], denom)
+	return key
 }

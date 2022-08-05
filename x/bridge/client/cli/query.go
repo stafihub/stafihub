@@ -38,6 +38,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdRelayFee())
 
+	cmd.AddCommand(CmdBannedDenomList())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd

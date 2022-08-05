@@ -20079,6 +20079,46 @@ paths:
           format: uint64
       tags:
         - Query
+  /stafihub/stafihub/bridge/banned_denom_list:
+    get:
+      summary: Queries a list of BannedDenomList items.
+      operationId: StafihubStafihubBridgeBannedDenomList
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              list:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    chainId:
+                      type: integer
+                      format: int64
+                    denom:
+                      type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /stafihub/stafihub/bridge/chaind_ids:
     get:
       summary: Queries a list of ChaindIds items.
@@ -20092,7 +20132,8 @@ paths:
               chainId:
                 type: array
                 items:
-                  type: string
+                  type: integer
+                  format: int64
         default:
           description: An unexpected error response.
           schema:
@@ -43845,9 +43886,21 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  stafihub.stafihub.bridge.BannedDenom:
+    type: object
+    properties:
+      chainId:
+        type: integer
+        format: int64
+      denom:
+        type: string
+  stafihub.stafihub.bridge.MsgAddBannedDenomResponse:
+    type: object
   stafihub.stafihub.bridge.MsgAddChainIdResponse:
     type: object
   stafihub.stafihub.bridge.MsgDepositResponse:
+    type: object
+  stafihub.stafihub.bridge.MsgRmBannedDenomResponse:
     type: object
   stafihub.stafihub.bridge.MsgRmChainIdResponse:
     type: object
@@ -43887,13 +43940,27 @@ definitions:
         type: string
       receiver:
         type: string
+  stafihub.stafihub.bridge.QueryBannedDenomListResponse:
+    type: object
+    properties:
+      list:
+        type: array
+        items:
+          type: object
+          properties:
+            chainId:
+              type: integer
+              format: int64
+            denom:
+              type: string
   stafihub.stafihub.bridge.QueryChaindIdsResponse:
     type: object
     properties:
       chainId:
         type: array
         items:
-          type: string
+          type: integer
+          format: int64
   stafihub.stafihub.bridge.QueryDenomTypesResponse:
     type: object
     properties:

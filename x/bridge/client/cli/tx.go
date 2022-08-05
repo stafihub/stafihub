@@ -38,6 +38,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdRmChainId())
 	cmd.AddCommand(CmdSetRelayFeeReceiver())
 	cmd.AddCommand(CmdSetRelayFee())
+	cmd.AddCommand(CmdAddBannedDenom())
+	cmd.AddCommand(CmdRmBannedDenom())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

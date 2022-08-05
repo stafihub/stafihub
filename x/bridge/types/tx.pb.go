@@ -793,6 +793,198 @@ func (m *MsgSetRelayFeeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSetRelayFeeResponse proto.InternalMessageInfo
 
+type MsgAddBannedDenom struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ChainId uint32 `protobuf:"varint,2,opt,name=chainId,proto3" json:"chainId,omitempty"`
+	Denom   string `protobuf:"bytes,3,opt,name=denom,proto3" json:"denom,omitempty"`
+}
+
+func (m *MsgAddBannedDenom) Reset()         { *m = MsgAddBannedDenom{} }
+func (m *MsgAddBannedDenom) String() string { return proto.CompactTextString(m) }
+func (*MsgAddBannedDenom) ProtoMessage()    {}
+func (*MsgAddBannedDenom) Descriptor() ([]byte, []int) {
+	return fileDescriptor_41dc2e30e6049cae, []int{16}
+}
+func (m *MsgAddBannedDenom) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgAddBannedDenom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgAddBannedDenom.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgAddBannedDenom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddBannedDenom.Merge(m, src)
+}
+func (m *MsgAddBannedDenom) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgAddBannedDenom) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddBannedDenom.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgAddBannedDenom proto.InternalMessageInfo
+
+func (m *MsgAddBannedDenom) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgAddBannedDenom) GetChainId() uint32 {
+	if m != nil {
+		return m.ChainId
+	}
+	return 0
+}
+
+func (m *MsgAddBannedDenom) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+type MsgAddBannedDenomResponse struct {
+}
+
+func (m *MsgAddBannedDenomResponse) Reset()         { *m = MsgAddBannedDenomResponse{} }
+func (m *MsgAddBannedDenomResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgAddBannedDenomResponse) ProtoMessage()    {}
+func (*MsgAddBannedDenomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_41dc2e30e6049cae, []int{17}
+}
+func (m *MsgAddBannedDenomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgAddBannedDenomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgAddBannedDenomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgAddBannedDenomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAddBannedDenomResponse.Merge(m, src)
+}
+func (m *MsgAddBannedDenomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgAddBannedDenomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAddBannedDenomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgAddBannedDenomResponse proto.InternalMessageInfo
+
+type MsgRmBannedDenom struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ChainId uint32 `protobuf:"varint,2,opt,name=chainId,proto3" json:"chainId,omitempty"`
+	Denom   string `protobuf:"bytes,3,opt,name=denom,proto3" json:"denom,omitempty"`
+}
+
+func (m *MsgRmBannedDenom) Reset()         { *m = MsgRmBannedDenom{} }
+func (m *MsgRmBannedDenom) String() string { return proto.CompactTextString(m) }
+func (*MsgRmBannedDenom) ProtoMessage()    {}
+func (*MsgRmBannedDenom) Descriptor() ([]byte, []int) {
+	return fileDescriptor_41dc2e30e6049cae, []int{18}
+}
+func (m *MsgRmBannedDenom) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRmBannedDenom) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRmBannedDenom.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRmBannedDenom) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRmBannedDenom.Merge(m, src)
+}
+func (m *MsgRmBannedDenom) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRmBannedDenom) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRmBannedDenom.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRmBannedDenom proto.InternalMessageInfo
+
+func (m *MsgRmBannedDenom) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRmBannedDenom) GetChainId() uint32 {
+	if m != nil {
+		return m.ChainId
+	}
+	return 0
+}
+
+func (m *MsgRmBannedDenom) GetDenom() string {
+	if m != nil {
+		return m.Denom
+	}
+	return ""
+}
+
+type MsgRmBannedDenomResponse struct {
+}
+
+func (m *MsgRmBannedDenomResponse) Reset()         { *m = MsgRmBannedDenomResponse{} }
+func (m *MsgRmBannedDenomResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRmBannedDenomResponse) ProtoMessage()    {}
+func (*MsgRmBannedDenomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_41dc2e30e6049cae, []int{19}
+}
+func (m *MsgRmBannedDenomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRmBannedDenomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRmBannedDenomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRmBannedDenomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRmBannedDenomResponse.Merge(m, src)
+}
+func (m *MsgRmBannedDenomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRmBannedDenomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRmBannedDenomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRmBannedDenomResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgSetResourceidToDenom)(nil), "stafihub.stafihub.bridge.MsgSetResourceidToDenom")
 	proto.RegisterType((*MsgSetResourceidToDenomResponse)(nil), "stafihub.stafihub.bridge.MsgSetResourceidToDenomResponse")
@@ -810,57 +1002,65 @@ func init() {
 	proto.RegisterType((*MsgSetRelayFeeReceiverResponse)(nil), "stafihub.stafihub.bridge.MsgSetRelayFeeReceiverResponse")
 	proto.RegisterType((*MsgSetRelayFee)(nil), "stafihub.stafihub.bridge.MsgSetRelayFee")
 	proto.RegisterType((*MsgSetRelayFeeResponse)(nil), "stafihub.stafihub.bridge.MsgSetRelayFeeResponse")
+	proto.RegisterType((*MsgAddBannedDenom)(nil), "stafihub.stafihub.bridge.MsgAddBannedDenom")
+	proto.RegisterType((*MsgAddBannedDenomResponse)(nil), "stafihub.stafihub.bridge.MsgAddBannedDenomResponse")
+	proto.RegisterType((*MsgRmBannedDenom)(nil), "stafihub.stafihub.bridge.MsgRmBannedDenom")
+	proto.RegisterType((*MsgRmBannedDenomResponse)(nil), "stafihub.stafihub.bridge.MsgRmBannedDenomResponse")
 }
 
 func init() { proto.RegisterFile("bridge/tx.proto", fileDescriptor_41dc2e30e6049cae) }
 
 var fileDescriptor_41dc2e30e6049cae = []byte{
-	// 706 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0x41, 0x4f, 0xd4, 0x4e,
-	0x14, 0xdf, 0x02, 0xbb, 0xfc, 0x79, 0xc0, 0x9f, 0xa4, 0xae, 0x50, 0x7a, 0x28, 0xd8, 0x18, 0xc0,
-	0xa8, 0xad, 0x8b, 0x17, 0x3d, 0xba, 0x20, 0x09, 0x89, 0x6b, 0x4c, 0x25, 0x26, 0x9a, 0x98, 0xd8,
-	0xed, 0x0c, 0x65, 0xe2, 0x6e, 0x67, 0xd3, 0x99, 0x25, 0x70, 0x34, 0xfa, 0x01, 0xfc, 0x14, 0x7e,
-	0x10, 0x4f, 0x1c, 0x39, 0x1a, 0x0f, 0xc4, 0xc0, 0xd9, 0xef, 0x60, 0xda, 0x69, 0x67, 0x5b, 0xd8,
-	0x2d, 0x5d, 0xf4, 0xb4, 0x7d, 0x33, 0xbf, 0xf7, 0x7b, 0xef, 0xfd, 0xde, 0xbc, 0x97, 0x85, 0x85,
-	0x76, 0x48, 0x90, 0x8f, 0x6d, 0x7e, 0x64, 0xf5, 0x42, 0xca, 0xa9, 0xaa, 0x31, 0xee, 0xee, 0x93,
-	0x83, 0x7e, 0xdb, 0x92, 0x1f, 0x02, 0xa2, 0xd7, 0x7d, 0xea, 0xd3, 0x18, 0x64, 0x47, 0x5f, 0x02,
-	0xaf, 0x1b, 0x1e, 0x65, 0x5d, 0xca, 0xec, 0xb6, 0xcb, 0xb0, 0x7d, 0xd8, 0x68, 0x63, 0xee, 0x36,
-	0x6c, 0x8f, 0x92, 0x40, 0xdc, 0x9b, 0x04, 0x96, 0x5a, 0xcc, 0x7f, 0x8d, 0xb9, 0x83, 0x19, 0xed,
-	0x87, 0x1e, 0x26, 0x68, 0x8f, 0x6e, 0xe3, 0x80, 0x76, 0x55, 0x0d, 0xa6, 0xbd, 0x10, 0xbb, 0x9c,
-	0x86, 0x9a, 0xb2, 0xaa, 0x6c, 0xcc, 0x38, 0xa9, 0xa9, 0x1a, 0x00, 0x61, 0x02, 0xdf, 0x45, 0xda,
-	0x44, 0x7c, 0x99, 0x39, 0x51, 0xeb, 0x50, 0x45, 0x11, 0x85, 0x36, 0x19, 0x5f, 0x09, 0xc3, 0xbc,
-	0x03, 0x2b, 0x23, 0x42, 0x39, 0x98, 0xf5, 0x68, 0xc0, 0xb0, 0xf9, 0x5d, 0x01, 0x68, 0x31, 0x7f,
-	0x1b, 0xf7, 0x28, 0x23, 0xbc, 0x20, 0x83, 0x55, 0x98, 0x45, 0x98, 0xf1, 0xad, 0x03, 0x97, 0x04,
-	0x49, 0x0a, 0xf3, 0x4e, 0xf6, 0x68, 0x78, 0x0e, 0xea, 0x0e, 0xd4, 0xdc, 0x2e, 0xed, 0x07, 0x5c,
-	0x9b, 0x8a, 0x8e, 0x9b, 0xd6, 0xc9, 0xd9, 0x4a, 0xe5, 0xe7, 0xd9, 0xca, 0x9a, 0x4f, 0x78, 0xa4,
-	0xa5, 0x47, 0xbb, 0x76, 0xa2, 0x98, 0xf8, 0x79, 0xc8, 0xd0, 0x47, 0x9b, 0x1f, 0xf7, 0x30, 0xb3,
-	0x76, 0x03, 0xee, 0x24, 0xde, 0xaa, 0x0e, 0xff, 0x85, 0xd8, 0xc3, 0xe4, 0x10, 0x87, 0x5a, 0x35,
-	0x0e, 0x20, 0x6d, 0xb3, 0x0e, 0xea, 0xa0, 0x06, 0x59, 0xda, 0x16, 0xcc, 0xb7, 0x98, 0xff, 0x0c,
-	0xa1, 0x34, 0xc1, 0xd1, 0xc5, 0x45, 0x37, 0xb9, 0xc2, 0x52, 0xd3, 0x5c, 0x82, 0xdb, 0x39, 0x12,
-	0xc9, 0xfe, 0x16, 0x16, 0x84, 0xb6, 0xb1, 0x9e, 0x7b, 0xc7, 0x3d, 0x5c, 0xc0, 0x2f, 0xa5, 0x99,
-	0xc8, 0x4a, 0xb3, 0x08, 0x35, 0x82, 0x22, 0xcf, 0x44, 0xb1, 0xc4, 0x32, 0x97, 0xd3, 0x17, 0x22,
-	0xa9, 0x65, 0xd4, 0xdf, 0x4a, 0x1c, 0xf6, 0x0d, 0xe5, 0xf8, 0x55, 0x48, 0x7b, 0x94, 0xb9, 0x9d,
-	0x9b, 0x94, 0xa5, 0x9a, 0x30, 0x87, 0x84, 0x5c, 0x2f, 0x69, 0xe0, 0x89, 0x04, 0xa6, 0x9c, 0xdc,
-	0xd9, 0xa5, 0x37, 0x37, 0x75, 0xe5, 0xcd, 0x0d, 0x3a, 0x5b, 0xfd, 0x67, 0x9d, 0xad, 0x5d, 0xea,
-	0xac, 0x90, 0x22, 0x5b, 0xae, 0x94, 0xa2, 0x09, 0x73, 0x2d, 0xe6, 0x3b, 0xdd, 0xbf, 0xe9, 0xee,
-	0x22, 0xd4, 0xb3, 0x1c, 0x92, 0xfb, 0x05, 0x2c, 0xa6, 0x83, 0xd3, 0x71, 0x8f, 0x77, 0x30, 0x76,
-	0x92, 0x84, 0x8a, 0xa3, 0xb8, 0x08, 0x85, 0x98, 0xb1, 0xa4, 0xcb, 0xa9, 0x69, 0xae, 0x82, 0x31,
-	0x9c, 0x4d, 0xc6, 0xfb, 0xa6, 0xc0, 0xff, 0x79, 0xc8, 0x8d, 0xba, 0xfa, 0x01, 0xaa, 0x87, 0x6e,
-	0xa7, 0x2f, 0xda, 0x39, 0xbb, 0xb9, 0x6c, 0x09, 0xdd, 0xad, 0x68, 0x15, 0x59, 0xc9, 0x2a, 0xb2,
-	0xb6, 0x28, 0x09, 0x9a, 0x76, 0xd2, 0xab, 0xf5, 0x12, 0xbd, 0x8a, 0x1c, 0x1c, 0x41, 0x6c, 0x6a,
-	0x57, 0x85, 0x11, 0x25, 0x6c, 0x7e, 0x9e, 0x86, 0xc9, 0x16, 0xf3, 0xd5, 0x2f, 0x0a, 0xd4, 0x87,
-	0x2e, 0xb7, 0x86, 0x35, 0x6a, 0x91, 0x5a, 0x23, 0x96, 0x94, 0xfe, 0x74, 0x6c, 0x97, 0x34, 0x1d,
-	0xf5, 0x3d, 0x4c, 0xa7, 0x3b, 0xed, 0x6e, 0x21, 0x4b, 0x82, 0xd2, 0x1f, 0x94, 0x41, 0x49, 0xfa,
-	0x7d, 0x80, 0xcc, 0x62, 0x59, 0x2f, 0xf4, 0x1d, 0x00, 0x75, 0xbb, 0x24, 0x50, 0xc6, 0xe9, 0xc0,
-	0x5c, 0x6e, 0xc5, 0xdc, 0xbb, 0x4e, 0x11, 0x09, 0xd5, 0x1b, 0xa5, 0xa1, 0xd9, 0x68, 0xb9, 0xcd,
-	0x52, 0x1c, 0x2d, 0x0b, 0xbd, 0x26, 0xda, 0xb0, 0x01, 0x56, 0x3d, 0x98, 0x19, 0x4c, 0xef, 0x5a,
-	0xa1, 0xbf, 0xc4, 0xe9, 0x56, 0x39, 0x9c, 0x0c, 0xf2, 0x49, 0x81, 0x5b, 0xc3, 0xe6, 0xf8, 0xd1,
-	0xf5, 0x4f, 0x2b, 0xef, 0xa1, 0x3f, 0x19, 0xd7, 0x43, 0xe6, 0x40, 0x60, 0x36, 0x3b, 0xd9, 0x1b,
-	0x65, 0x89, 0xf4, 0x31, 0x92, 0x14, 0xa1, 0x9a, 0xcf, 0x4f, 0xce, 0x0d, 0xe5, 0xf4, 0xdc, 0x50,
-	0x7e, 0x9d, 0x1b, 0xca, 0xd7, 0x0b, 0xa3, 0x72, 0x7a, 0x61, 0x54, 0x7e, 0x5c, 0x18, 0x95, 0x77,
-	0xf7, 0x33, 0x93, 0x9e, 0x92, 0x0d, 0x3e, 0x8e, 0xec, 0xf4, 0x6f, 0x4f, 0x34, 0xf2, 0xed, 0x5a,
-	0xfc, 0x57, 0xe5, 0xf1, 0x9f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x6a, 0xdb, 0xcc, 0xe2, 0x0d, 0x09,
-	0x00, 0x00,
+	// 774 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0x5d, 0x4f, 0xd3, 0x50,
+	0x18, 0x5e, 0x81, 0x0d, 0x78, 0xf9, 0xd2, 0x3a, 0xa1, 0xd4, 0xa4, 0x60, 0x63, 0x00, 0x45, 0x5b,
+	0x07, 0x37, 0x7a, 0xe9, 0x40, 0x12, 0x12, 0x67, 0x4c, 0x25, 0x26, 0x1a, 0x49, 0xec, 0xda, 0x43,
+	0x69, 0xdc, 0x7a, 0x96, 0x9e, 0x8e, 0xc0, 0xa5, 0x89, 0x3f, 0xc0, 0x5f, 0xe1, 0x0f, 0xf1, 0x8a,
+	0x4b, 0x2e, 0x8d, 0x17, 0xc4, 0xc0, 0x8d, 0x37, 0xfe, 0x07, 0xd3, 0x9e, 0xd3, 0xb3, 0x76, 0x6c,
+	0x5d, 0x87, 0x7a, 0xb5, 0x9e, 0x73, 0x9e, 0xf7, 0x79, 0xde, 0x8f, 0xd3, 0x67, 0x85, 0xb9, 0xba,
+	0xef, 0xda, 0x0e, 0xd2, 0x83, 0x63, 0xad, 0xe5, 0xe3, 0x00, 0x8b, 0x12, 0x09, 0xcc, 0x03, 0xf7,
+	0xb0, 0x5d, 0xd7, 0xf8, 0x03, 0x85, 0xc8, 0x65, 0x07, 0x3b, 0x38, 0x02, 0xe9, 0xe1, 0x13, 0xc5,
+	0xcb, 0x8a, 0x85, 0x49, 0x13, 0x13, 0xbd, 0x6e, 0x12, 0xa4, 0x1f, 0x55, 0xea, 0x28, 0x30, 0x2b,
+	0xba, 0x85, 0x5d, 0x8f, 0x9e, 0xab, 0x2e, 0x2c, 0xd4, 0x88, 0xf3, 0x1a, 0x05, 0x06, 0x22, 0xb8,
+	0xed, 0x5b, 0xc8, 0xb5, 0xf7, 0xf0, 0x36, 0xf2, 0x70, 0x53, 0x94, 0x60, 0xdc, 0xf2, 0x91, 0x19,
+	0x60, 0x5f, 0x12, 0x96, 0x85, 0xb5, 0x49, 0x23, 0x5e, 0x8a, 0x0a, 0x80, 0xcf, 0xe0, 0xbb, 0xb6,
+	0x34, 0x12, 0x1d, 0x26, 0x76, 0xc4, 0x32, 0x14, 0xed, 0x90, 0x42, 0x1a, 0x8d, 0x8e, 0xe8, 0x42,
+	0xbd, 0x0b, 0x4b, 0x7d, 0xa4, 0x0c, 0x44, 0x5a, 0xd8, 0x23, 0x48, 0xfd, 0x26, 0x00, 0xd4, 0x88,
+	0xb3, 0x8d, 0x5a, 0x98, 0xb8, 0x41, 0x46, 0x06, 0xcb, 0x30, 0x65, 0x23, 0x12, 0x6c, 0x1d, 0x9a,
+	0xae, 0xc7, 0x52, 0x98, 0x31, 0x92, 0x5b, 0xbd, 0x73, 0x10, 0x77, 0xa0, 0x64, 0x36, 0x71, 0xdb,
+	0x0b, 0xa4, 0xb1, 0x70, 0xbb, 0xaa, 0x9d, 0x9e, 0x2f, 0x15, 0x7e, 0x9c, 0x2f, 0xad, 0x38, 0x6e,
+	0x10, 0xf6, 0xd2, 0xc2, 0x4d, 0x9d, 0x75, 0x8c, 0xfe, 0x3c, 0x22, 0xf6, 0x47, 0x3d, 0x38, 0x69,
+	0x21, 0xa2, 0xed, 0x7a, 0x81, 0xc1, 0xa2, 0x45, 0x19, 0x26, 0x7c, 0x64, 0x21, 0xf7, 0x08, 0xf9,
+	0x52, 0x31, 0x12, 0xe0, 0x6b, 0xb5, 0x0c, 0x62, 0xa7, 0x06, 0x5e, 0xda, 0x16, 0xcc, 0xd4, 0x88,
+	0xf3, 0xcc, 0xb6, 0xe3, 0x04, 0xfb, 0x17, 0x17, 0x9e, 0xa4, 0x0a, 0x8b, 0x97, 0xea, 0x02, 0xdc,
+	0x4e, 0x91, 0x70, 0xf6, 0xb7, 0x30, 0x47, 0x7b, 0x1b, 0xf5, 0x73, 0xef, 0xa4, 0x85, 0x32, 0xf8,
+	0x79, 0x6b, 0x46, 0x92, 0xad, 0x99, 0x87, 0x92, 0x6b, 0x87, 0x91, 0xac, 0x63, 0x6c, 0xa5, 0x2e,
+	0xc6, 0x37, 0x84, 0x53, 0x73, 0xd5, 0xdf, 0x42, 0x24, 0xfb, 0x06, 0x07, 0xe8, 0x95, 0x8f, 0x5b,
+	0x98, 0x98, 0x8d, 0xeb, 0x94, 0x25, 0xaa, 0x30, 0x6d, 0xd3, 0x76, 0xbd, 0xc4, 0x9e, 0x45, 0x13,
+	0x18, 0x33, 0x52, 0x7b, 0x5d, 0x77, 0x6e, 0xec, 0xca, 0x9d, 0xeb, 0x4c, 0xb6, 0xf8, 0xcf, 0x26,
+	0x5b, 0xea, 0x9a, 0x2c, 0x6d, 0x45, 0xb2, 0x5c, 0xde, 0x8a, 0x2a, 0x4c, 0xd7, 0x88, 0x63, 0x34,
+	0xff, 0x66, 0xba, 0xf3, 0x50, 0x4e, 0x72, 0x70, 0xee, 0x17, 0x30, 0x1f, 0xbf, 0x38, 0x0d, 0xf3,
+	0x64, 0x07, 0x21, 0x83, 0x25, 0x94, 0xad, 0x62, 0xda, 0xb6, 0x8f, 0x08, 0x61, 0x53, 0x8e, 0x97,
+	0xea, 0x32, 0x28, 0xbd, 0xd9, 0xb8, 0xde, 0x57, 0x01, 0x66, 0xd3, 0x90, 0x6b, 0x4d, 0xf5, 0x03,
+	0x14, 0x8f, 0xcc, 0x46, 0x9b, 0x8e, 0x73, 0x6a, 0x63, 0x51, 0xa3, 0x7d, 0xd7, 0x42, 0x2b, 0xd2,
+	0x98, 0x15, 0x69, 0x5b, 0xd8, 0xf5, 0xaa, 0x3a, 0x9b, 0xd5, 0x6a, 0x8e, 0x59, 0x85, 0x01, 0x06,
+	0x25, 0x56, 0xa5, 0xab, 0x8d, 0x61, 0x25, 0xec, 0xc3, 0x4d, 0xfa, 0xa2, 0x54, 0x4d, 0xcf, 0x43,
+	0xf6, 0x20, 0x43, 0xeb, 0x5f, 0x44, 0x6f, 0x2b, 0xbb, 0x03, 0x8b, 0x57, 0xe8, 0xb9, 0xf6, 0x7b,
+	0xb8, 0x11, 0x8d, 0xf1, 0xff, 0x48, 0xcb, 0x20, 0x75, 0xb3, 0xc7, 0xca, 0x1b, 0xbf, 0x26, 0x60,
+	0xb4, 0x46, 0x1c, 0xf1, 0xb3, 0x00, 0xe5, 0x9e, 0x96, 0x5e, 0xd1, 0xfa, 0xfd, 0x7d, 0x68, 0x7d,
+	0xac, 0x59, 0x7e, 0x3a, 0x74, 0x48, 0x9c, 0x8e, 0xb8, 0x0f, 0xe3, 0xb1, 0x93, 0xdf, 0xcb, 0x64,
+	0x61, 0x28, 0xf9, 0x61, 0x1e, 0x14, 0xa7, 0x3f, 0x00, 0x48, 0xd8, 0xe9, 0x6a, 0x66, 0x6c, 0x07,
+	0x28, 0xeb, 0x39, 0x81, 0x5c, 0xa7, 0x01, 0xd3, 0x29, 0x63, 0xbd, 0x3f, 0xa8, 0x23, 0x1c, 0x2a,
+	0x57, 0x72, 0x43, 0x93, 0x6a, 0x29, 0x3f, 0xcd, 0x56, 0x4b, 0x42, 0x07, 0xa8, 0xf5, 0xb2, 0x2d,
+	0xd1, 0x82, 0xc9, 0x8e, 0x67, 0xad, 0x64, 0xc6, 0x73, 0x9c, 0xac, 0xe5, 0xc3, 0x71, 0x91, 0x4f,
+	0x02, 0xdc, 0xea, 0xe5, 0x5e, 0x8f, 0x07, 0x5f, 0xad, 0x74, 0x84, 0xfc, 0x64, 0xd8, 0x08, 0x9e,
+	0x83, 0x0b, 0x53, 0x49, 0x3f, 0x5b, 0xcb, 0x4b, 0x24, 0x0f, 0x91, 0x24, 0x93, 0xf2, 0x61, 0xb6,
+	0xcb, 0x78, 0xd6, 0x07, 0x5d, 0xb9, 0x04, 0x58, 0xde, 0x1c, 0x02, 0xcc, 0x35, 0x31, 0xcc, 0xa4,
+	0x0d, 0xe7, 0xc1, 0x80, 0x19, 0x25, 0x15, 0x37, 0xf2, 0x63, 0x63, 0xc1, 0xea, 0xf3, 0xd3, 0x0b,
+	0x45, 0x38, 0xbb, 0x50, 0x84, 0x9f, 0x17, 0x8a, 0xf0, 0xe5, 0x52, 0x29, 0x9c, 0x5d, 0x2a, 0x85,
+	0xef, 0x97, 0x4a, 0xe1, 0xdd, 0x7a, 0xc2, 0xc4, 0x63, 0xba, 0xce, 0xc3, 0xb1, 0x1e, 0x7f, 0xd1,
+	0x86, 0x6e, 0x5e, 0x2f, 0x45, 0x5f, 0xa1, 0x9b, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0x16, 0x36,
+	0xda, 0xd0, 0xe8, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -883,6 +1083,8 @@ type MsgClient interface {
 	RmChainId(ctx context.Context, in *MsgRmChainId, opts ...grpc.CallOption) (*MsgRmChainIdResponse, error)
 	SetRelayFeeReceiver(ctx context.Context, in *MsgSetRelayFeeReceiver, opts ...grpc.CallOption) (*MsgSetRelayFeeReceiverResponse, error)
 	SetRelayFee(ctx context.Context, in *MsgSetRelayFee, opts ...grpc.CallOption) (*MsgSetRelayFeeResponse, error)
+	AddBannedDenom(ctx context.Context, in *MsgAddBannedDenom, opts ...grpc.CallOption) (*MsgAddBannedDenomResponse, error)
+	RmBannedDenom(ctx context.Context, in *MsgRmBannedDenom, opts ...grpc.CallOption) (*MsgRmBannedDenomResponse, error)
 }
 
 type msgClient struct {
@@ -965,6 +1167,24 @@ func (c *msgClient) SetRelayFee(ctx context.Context, in *MsgSetRelayFee, opts ..
 	return out, nil
 }
 
+func (c *msgClient) AddBannedDenom(ctx context.Context, in *MsgAddBannedDenom, opts ...grpc.CallOption) (*MsgAddBannedDenomResponse, error) {
+	out := new(MsgAddBannedDenomResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.bridge.Msg/AddBannedDenom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RmBannedDenom(ctx context.Context, in *MsgRmBannedDenom, opts ...grpc.CallOption) (*MsgRmBannedDenomResponse, error) {
+	out := new(MsgRmBannedDenomResponse)
+	err := c.cc.Invoke(ctx, "/stafihub.stafihub.bridge.Msg/RmBannedDenom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	SetResourceidToDenom(context.Context, *MsgSetResourceidToDenom) (*MsgSetResourceidToDenomResponse, error)
@@ -975,6 +1195,8 @@ type MsgServer interface {
 	RmChainId(context.Context, *MsgRmChainId) (*MsgRmChainIdResponse, error)
 	SetRelayFeeReceiver(context.Context, *MsgSetRelayFeeReceiver) (*MsgSetRelayFeeReceiverResponse, error)
 	SetRelayFee(context.Context, *MsgSetRelayFee) (*MsgSetRelayFeeResponse, error)
+	AddBannedDenom(context.Context, *MsgAddBannedDenom) (*MsgAddBannedDenomResponse, error)
+	RmBannedDenom(context.Context, *MsgRmBannedDenom) (*MsgRmBannedDenomResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -1004,6 +1226,12 @@ func (*UnimplementedMsgServer) SetRelayFeeReceiver(ctx context.Context, req *Msg
 }
 func (*UnimplementedMsgServer) SetRelayFee(ctx context.Context, req *MsgSetRelayFee) (*MsgSetRelayFeeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetRelayFee not implemented")
+}
+func (*UnimplementedMsgServer) AddBannedDenom(ctx context.Context, req *MsgAddBannedDenom) (*MsgAddBannedDenomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddBannedDenom not implemented")
+}
+func (*UnimplementedMsgServer) RmBannedDenom(ctx context.Context, req *MsgRmBannedDenom) (*MsgRmBannedDenomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RmBannedDenom not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -1154,6 +1382,42 @@ func _Msg_SetRelayFee_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_AddBannedDenom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddBannedDenom)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).AddBannedDenom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.bridge.Msg/AddBannedDenom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).AddBannedDenom(ctx, req.(*MsgAddBannedDenom))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_RmBannedDenom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRmBannedDenom)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RmBannedDenom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stafihub.stafihub.bridge.Msg/RmBannedDenom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RmBannedDenom(ctx, req.(*MsgRmBannedDenom))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "stafihub.stafihub.bridge.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -1189,6 +1453,14 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetRelayFee",
 			Handler:    _Msg_SetRelayFee_Handler,
+		},
+		{
+			MethodName: "AddBannedDenom",
+			Handler:    _Msg_AddBannedDenom_Handler,
+		},
+		{
+			MethodName: "RmBannedDenom",
+			Handler:    _Msg_RmBannedDenom_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1742,6 +2014,136 @@ func (m *MsgSetRelayFeeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgAddBannedDenom) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgAddBannedDenom) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgAddBannedDenom) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.ChainId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ChainId))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgAddBannedDenomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgAddBannedDenomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgAddBannedDenomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRmBannedDenom) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRmBannedDenom) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRmBannedDenom) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Denom) > 0 {
+		i -= len(m.Denom)
+		copy(dAtA[i:], m.Denom)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Denom)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.ChainId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ChainId))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRmBannedDenomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRmBannedDenomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRmBannedDenomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1981,6 +2383,64 @@ func (m *MsgSetRelayFee) Size() (n int) {
 }
 
 func (m *MsgSetRelayFeeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgAddBannedDenom) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.ChainId != 0 {
+		n += 1 + sovTx(uint64(m.ChainId))
+	}
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgAddBannedDenomResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgRmBannedDenom) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.ChainId != 0 {
+		n += 1 + sovTx(uint64(m.ChainId))
+	}
+	l = len(m.Denom)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgRmBannedDenomResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3531,6 +3991,372 @@ func (m *MsgSetRelayFeeResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgSetRelayFeeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgAddBannedDenom) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgAddBannedDenom: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgAddBannedDenom: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			m.ChainId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainId |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgAddBannedDenomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgAddBannedDenomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgAddBannedDenomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRmBannedDenom) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRmBannedDenom: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRmBannedDenom: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainId", wireType)
+			}
+			m.ChainId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainId |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Denom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Denom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRmBannedDenomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRmBannedDenomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRmBannedDenomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

@@ -8,7 +8,7 @@ import (
 	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
-func (k msgServer) AddChainId(goCtx context.Context, msg *types.MsgAddChainId) (*types.MsgAddChainIdResponse, error) {
+func (k msgServer) AddBannedDenom(goCtx context.Context, msg *types.MsgAddBannedDenom) (*types.MsgAddBannedDenomResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	isAdmin := k.sudoKeeper.IsAdmin(ctx, msg.Creator)
@@ -16,6 +16,7 @@ func (k msgServer) AddChainId(goCtx context.Context, msg *types.MsgAddChainId) (
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 
-	k.Keeper.AddChainId(ctx, uint8(msg.ChainId))
-	return &types.MsgAddChainIdResponse{}, nil
+	k.Keeper.AddBannedDenom(ctx, uint8(msg.ChainId), msg.Denom)
+
+	return &types.MsgAddBannedDenomResponse{}, nil
 }

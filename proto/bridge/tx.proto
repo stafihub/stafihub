@@ -18,6 +18,8 @@ service Msg {
   rpc RmChainId(MsgRmChainId) returns (MsgRmChainIdResponse);
   rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
   rpc SetRelayFee(MsgSetRelayFee) returns (MsgSetRelayFeeResponse);
+  rpc AddBannedDenom(MsgAddBannedDenom) returns (MsgAddBannedDenomResponse);
+  rpc RmBannedDenom(MsgRmBannedDenom) returns (MsgRmBannedDenomResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -94,6 +96,24 @@ message MsgSetRelayFee {
 }
 
 message MsgSetRelayFeeResponse {
+}
+
+message MsgAddBannedDenom {
+  string creator = 1;
+  uint32 chainId = 2;
+  string denom = 3;
+}
+
+message MsgAddBannedDenomResponse {
+}
+
+message MsgRmBannedDenom {
+  string creator = 1;
+  uint32 chainId = 2;
+  string denom = 3;
+}
+
+message MsgRmBannedDenomResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

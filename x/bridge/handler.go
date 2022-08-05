@@ -41,6 +41,12 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetRelayFee:
 			res, err := msgServer.SetRelayFee(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgAddBannedDenom:
+			res, err := msgServer.AddBannedDenom(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgRmBannedDenom:
+			res, err := msgServer.RmBannedDenom(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)

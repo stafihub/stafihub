@@ -23,6 +23,9 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	if !k.Keeper.HasChainId(ctx, chainId) {
 		return nil, types.ErrChainIdNotSupport
 	}
+	if k.Keeper.HasBannedDenom(ctx, chainId, msg.Denom) {
+		return nil, types.ErrBannedDenom
+	}
 
 	resourceId, found := k.Keeper.GetResourceIdByDenom(ctx, msg.Denom)
 	if !found {

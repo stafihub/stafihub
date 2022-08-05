@@ -22,4 +22,5 @@ var (
 	ErrResourceIdFormatNotRight = sdkerrors.Register(ModuleName, 1111, "resource id format not right")
 	ErrDepositAmountZero        = sdkerrors.Register(ModuleName, 1112, "deposit amount zero")
 	ErrVoteProposalAmountZero   = sdkerrors.Register(ModuleName, 1113, "vote proposal amount zero")
+	ErrBannedDenom              = sdkerrors.Register(ModuleName, 1114, "banned denom")
 )

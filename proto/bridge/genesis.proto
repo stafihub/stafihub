@@ -19,6 +19,7 @@ message GenesisState {
   string relayFeeReceiver = 6;
   repeated string resourceIdToDenom = 7;
   repeated string resourceIdToDenomType = 8;
+  repeated BannedDenom bannedDenomList = 9;
   // this line is used by starport scaffolding # genesis/proto/state
 }
 
@@ -37,4 +38,9 @@ message GenesisProposal {
 message RelayFee {
   uint32 chainId = 1;
   cosmos.base.v1beta1.Coin value = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message BannedDenom {
+  uint32 chainId = 1;
+  string denom = 2;
 }

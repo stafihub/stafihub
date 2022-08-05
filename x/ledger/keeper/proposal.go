@@ -270,6 +270,7 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 		return nil
 	}
 
+	//todo check bonded pool
 	pipe, ok := k.GetBondPipeline(ctx, p.Denom, p.Pool)
 	if !ok {
 		return types.ErrPoolNotBonded

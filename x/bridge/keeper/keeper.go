@@ -72,21 +72,6 @@ func (k Keeper) RmChainId(ctx sdk.Context, chainId uint8) {
 	store.Delete(types.ChainIdStoreKey(chainId))
 }
 
-func (k Keeper) GetAllChainId(ctx sdk.Context) []string {
-	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, types.ChainIdStoreKeyPrefix)
-	defer iterator.Close()
-
-	chainIdList := make([]string, 0)
-	for ; iterator.Valid(); iterator.Next() {
-		if len(iterator.Key()) != 2 {
-			continue
-		}
-		chainIdList = append(chainIdList, fmt.Sprintf("%d", iterator.Key()[1]))
-	}
-	return chainIdList
-}
-
 func (k Keeper) GetChainIdList(ctx sdk.Context) []uint32 {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.ChainIdStoreKeyPrefix)
@@ -97,6 +82,40 @@ func (k Keeper) GetChainIdList(ctx sdk.Context) []uint32 {
 		chainIdList = append(chainIdList, uint32(iterator.Key()[1]))
 	}
 	return chainIdList
+}
+
+func (k Keeper) AddBannedDenom(ctx sdk.Context, chainId uint8, denom string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.BannedDenomStoreKey(chainId, denom), []byte{})
+}
+
+func (k Keeper) HasBannedDenom(ctx sdk.Context, chainId uint8, denom string) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has(types.BannedDenomStoreKey(chainId, denom))
+}
+
+func (k Keeper) RmBannedDenom(ctx sdk.Context, chainId uint8, denom string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.BannedDenomStoreKey(chainId, denom))
+}
+
+func (k Keeper) GetBannedDenomList(ctx sdk.Context) []*types.BannedDenom {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.BannedDenomStoreKeyPrefix)
+	defer iterator.Close()
+
+	list := make([]*types.BannedDenom, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+		chainId := uint32(key[1])
+		denom := string(key[2:])
+
+		list = append(list, &types.BannedDenom{
+			ChainId: chainId,
+			Denom:   denom,
+		})
+	}
+	return list
 }
 
 func (k Keeper) SetRelayFeeReceiver(ctx sdk.Context, address sdk.AccAddress) {

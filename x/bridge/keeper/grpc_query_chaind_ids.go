@@ -17,6 +17,6 @@ func (k Keeper) ChaindIds(goCtx context.Context, req *types.QueryChaindIdsReques
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryChaindIdsResponse{
-		ChainId: k.GetAllChainId(ctx),
+		ChainId: k.GetChainIdList(ctx),
 	}, nil
 }
