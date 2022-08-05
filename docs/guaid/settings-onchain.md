@@ -136,7 +136,7 @@ stafihubd query relayers threshold bridge 1
 
 
 
-stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 uratom --from admin --keyring-backend file --chain-id local-stafihub
+stafihubd tx bridge set-resourceid-to-denom  000000000000000000000000000000a9e0095b8965c01e6a09c97938f3860901 uratom NATIVE --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query bridge resourceid-to-denoms
 

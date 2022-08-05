@@ -280,49 +280,6 @@ func (k Keeper) GetProposalList(ctx sdk.Context) []*types.GenesisProposal {
 	return list
 }
 
-// func (k Keeper) SetResourceIdType(ctx sdk.Context, resourceId [32]byte, denomType types.DenomType) {
-// 	store := ctx.KVStore(k.storeKey)
-// 	store.Set(types.ResourceIdTypeStoreKey(resourceId), []byte(denomType.String()))
-// }
-
-// func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.DenomType {
-// 	store := ctx.KVStore(k.storeKey)
-// 	bts := store.Get(types.ResourceIdTypeStoreKey(resourceId))
-// 	if len(bts) == 0 {
-// 		return types.EXTERNAL
-// 	}
-// 	var idType types.ResourceIdType
-// 	copy(idType[:], bts)
-// 	return idType
-// }
-
-// func (k Keeper) GetAllResourceIdDenomTypes(ctx sdk.Context) []string {
-// 	store := ctx.KVStore(k.storeKey)
-// 	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdTypeStoreKeyPrefix)
-// 	defer iterator.Close()
-
-// 	chainIdList := make([]string, 0)
-// 	for ; iterator.Valid(); iterator.Next() {
-// 		if len(iterator.Key()) < 1 {
-// 			continue
-// 		}
-// 		value := iterator.Value()
-// 		if len(value) == 0 {
-// 			value = types.ResourceIdTypeForeign[:]
-// 		}
-
-// 		resourceId := [32]byte{}
-// 		copy(resourceId[:], iterator.Key()[1:])
-// 		denom, found := k.GetDenomByResourceId(ctx, resourceId)
-// 		if !found {
-// 			continue
-// 		}
-
-// 		chainIdList = append(chainIdList, denom+":"+fmt.Sprintf("%d", value[0]))
-// 	}
-// 	return chainIdList
-// }
-
 func (k Keeper) SetRelayFee(ctx sdk.Context, chainId uint8, value sdk.Coin) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&value)
