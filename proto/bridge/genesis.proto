@@ -17,9 +17,8 @@ message GenesisState {
   repeated RelayFee relayFeeList = 4;
   repeated uint32 chainIdList = 5;
   string relayFeeReceiver = 6;
-  repeated string resourceIdToDenom = 7;
-  repeated string resourceIdToDenomType = 8;
-  repeated BannedDenom bannedDenomList = 9;
+  repeated ResourceIdToDenom resourceIdToDenomList = 7;
+  repeated BannedDenom bannedDenomList = 8;
   // this line is used by starport scaffolding # genesis/proto/state
 }
 
@@ -44,3 +43,18 @@ message BannedDenom {
   uint32 chainId = 1;
   string denom = 2;
 }
+
+message ResourceIdToDenom {
+  string resourceId = 1;
+  string denom = 2;
+  DenomType denomType = 3;
+}
+
+enum DenomType {
+  option (gogoproto.goproto_enum_prefix) = false;
+
+  UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "Unspecified"];
+  NATIVE = 1 [(gogoproto.enumvalue_customname) = "Native"];
+  EXTERNAL = 2 [(gogoproto.enumvalue_customname) = "External"];
+}
+

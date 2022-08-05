@@ -26,17 +26,9 @@ var (
 	DepositCountStoreKeyPrefix      = []byte{0x02}
 	ProposalStoreKeyPrefix          = []byte{0x03}
 	ChainIdStoreKeyPrefix           = []byte{0x04}
-	ResourceIdTypeStoreKeyPrefix    = []byte{0x05}
 	RelayFeeReceiverStoreKey        = []byte{0x06}
 	RelayFeeStoreKeyPrefix          = []byte{0x07}
 	BannedDenomStoreKeyPrefix       = []byte{0x08}
-)
-
-type ResourceIdType [1]byte
-
-var (
-	ResourceIdTypeForeign = ResourceIdType([1]byte{0x00})
-	ResourceIdTypeNative  = ResourceIdType([1]byte{0x01})
 )
 
 func KeyPrefix(p string) []byte {
@@ -47,16 +39,12 @@ func ChainIdStoreKey(chaindId uint8) []byte {
 	return append(ChainIdStoreKeyPrefix, chaindId)
 }
 
-func ResourceIdToDenomStoreKey(resourceId [32]byte) []byte {
-	return append(ResourceIdToDenomStoreKeyPrefix, resourceId[:]...)
+func ResourceIdToDenomStoreKey(resourceId string) []byte {
+	return append(ResourceIdToDenomStoreKeyPrefix, []byte(resourceId)...)
 }
 
 func DepositCountStoreKey(chainId uint8) []byte {
 	return append(DepositCountStoreKeyPrefix, chainId)
-}
-
-func ResourceIdTypeStoreKey(resourceId [32]byte) []byte {
-	return append(ResourceIdTypeStoreKeyPrefix, resourceId[:]...)
 }
 
 func ProposalStoreKey(chainId uint8, depositNonce uint64, resourceId, hash [32]byte) []byte {

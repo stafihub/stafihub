@@ -23,4 +23,5 @@ var (
 	ErrDepositAmountZero        = sdkerrors.Register(ModuleName, 1112, "deposit amount zero")
 	ErrVoteProposalAmountZero   = sdkerrors.Register(ModuleName, 1113, "vote proposal amount zero")
 	ErrBannedDenom              = sdkerrors.Register(ModuleName, 1114, "banned denom")
+	ErrDenomTypeUnmatch         = sdkerrors.Register(ModuleName, 1115, "denom type unmatch")
 )

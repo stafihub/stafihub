@@ -3,6 +3,7 @@ package stafihub.stafihub.bridge;
 
 import "gogoproto/gogo.proto";
 import "cosmos/base/v1beta1/coin.proto";
+import "bridge/genesis.proto";
 
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -13,7 +14,6 @@ service Msg {
   rpc SetResourceidToDenom(MsgSetResourceidToDenom) returns (MsgSetResourceidToDenomResponse);
   rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
   rpc AddChainId(MsgAddChainId) returns (MsgAddChainIdResponse);
-  rpc SetDenomType(MsgSetDenomType) returns (MsgSetDenomTypeResponse);
   rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
   rpc RmChainId(MsgRmChainId) returns (MsgRmChainIdResponse);
   rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
@@ -28,6 +28,7 @@ message MsgSetResourceidToDenom {
   string creator = 1;
   string resourceId = 2;
   string denom = 3;
+  DenomType denomType = 4;
 }
 
 message MsgSetResourceidToDenomResponse {
@@ -52,14 +53,6 @@ message MsgAddChainId {
 message MsgAddChainIdResponse {
 }
 
-message MsgSetDenomType {
-  string creator = 1;
-  string denom = 2;
-  string idType = 3;
-}
-
-message MsgSetDenomTypeResponse {
-}
 
 message MsgVoteProposal {
   string creator = 1;

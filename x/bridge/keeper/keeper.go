@@ -132,52 +132,61 @@ func (k Keeper) GetRelayFeeReceiver(ctx sdk.Context) (sdk.AccAddress, bool) {
 	return bts, true
 }
 
-func (k Keeper) SetResourceIdToDenom(ctx sdk.Context, resourceId [32]byte, denom string) {
+func (k Keeper) SetResourceIdToDenom(ctx sdk.Context, rs *types.ResourceIdToDenom) {
 	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ResourceIdToDenomStoreKey(resourceId), []byte(denom))
+	store.Set(types.ResourceIdToDenomStoreKey(rs.ResourceId), k.cdc.MustMarshal(rs))
 }
 
-func (k Keeper) GetDenomByResourceId(ctx sdk.Context, resourceId [32]byte) (string, bool) {
+func (k Keeper) GetResourceIdToDenomByResourceId(ctx sdk.Context, resourceId string) (*types.ResourceIdToDenom, bool) {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.ResourceIdToDenomStoreKey(resourceId))
 	if bts == nil {
-		return "", false
+		return nil, false
 	}
-	return string(bts), true
+	rs := types.ResourceIdToDenom{}
+	k.cdc.MustUnmarshal(bts, &rs)
+
+	return &rs, true
 }
 
-func (k Keeper) GetResourceIdByDenom(ctx sdk.Context, denom string) ([32]byte, bool) {
+func (k Keeper) GetResourceIdToDenomByDenom(ctx sdk.Context, denom string) (*types.ResourceIdToDenom, bool) {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdToDenomStoreKeyPrefix)
 	defer iterator.Close()
 
-	resourceId := [32]byte{}
 	for ; iterator.Valid(); iterator.Next() {
-		if len(iterator.Key()) != 33 {
+		value := iterator.Value()
+		if value == nil {
 			continue
 		}
-		if string(iterator.Value()) == denom {
-			copy(resourceId[:], iterator.Key()[1:33])
-			return resourceId, true
+
+		rs := types.ResourceIdToDenom{}
+		k.cdc.MustUnmarshal(value, &rs)
+
+		if rs.Denom == denom {
+			return &rs, true
 		}
 	}
-	return resourceId, false
+	return nil, false
 }
 
-func (k Keeper) GetAllResourceIdToDenom(ctx sdk.Context) []string {
+func (k Keeper) GetResourceIdToDenomList(ctx sdk.Context) []*types.ResourceIdToDenom {
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdToDenomStoreKeyPrefix)
 	defer iterator.Close()
 
-	chainIdList := make([]string, 0)
+	list := make([]*types.ResourceIdToDenom, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		if len(iterator.Key()) < 1 {
+		value := iterator.Value()
+		if value == nil {
 			continue
 		}
 
-		chainIdList = append(chainIdList, hex.EncodeToString(iterator.Key()[1:33])+":"+string(iterator.Value()))
+		rs := types.ResourceIdToDenom{}
+		k.cdc.MustUnmarshal(value, &rs)
+		list = append(list, &rs)
 	}
-	return chainIdList
+	return list
 }
 
 func (k Keeper) SetDepositCount(ctx sdk.Context, chainId uint8, count uint64) {
@@ -271,48 +280,48 @@ func (k Keeper) GetProposalList(ctx sdk.Context) []*types.GenesisProposal {
 	return list
 }
 
-func (k Keeper) SetResourceIdType(ctx sdk.Context, resourceId [32]byte, idType types.ResourceIdType) {
-	store := ctx.KVStore(k.storeKey)
-	store.Set(types.ResourceIdTypeStoreKey(resourceId), idType[:])
-}
+// func (k Keeper) SetResourceIdType(ctx sdk.Context, resourceId [32]byte, denomType types.DenomType) {
+// 	store := ctx.KVStore(k.storeKey)
+// 	store.Set(types.ResourceIdTypeStoreKey(resourceId), []byte(denomType.String()))
+// }
 
-func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.ResourceIdType {
-	store := ctx.KVStore(k.storeKey)
-	bts := store.Get(types.ResourceIdTypeStoreKey(resourceId))
-	if len(bts) == 0 {
-		return types.ResourceIdTypeForeign
-	}
-	var idType types.ResourceIdType
-	copy(idType[:], bts)
-	return idType
-}
+// func (k Keeper) GetResourceIdType(ctx sdk.Context, resourceId [32]byte) types.DenomType {
+// 	store := ctx.KVStore(k.storeKey)
+// 	bts := store.Get(types.ResourceIdTypeStoreKey(resourceId))
+// 	if len(bts) == 0 {
+// 		return types.EXTERNAL
+// 	}
+// 	var idType types.ResourceIdType
+// 	copy(idType[:], bts)
+// 	return idType
+// }
 
-func (k Keeper) GetAllResourceIdDenomTypes(ctx sdk.Context) []string {
-	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdTypeStoreKeyPrefix)
-	defer iterator.Close()
+// func (k Keeper) GetAllResourceIdDenomTypes(ctx sdk.Context) []string {
+// 	store := ctx.KVStore(k.storeKey)
+// 	iterator := sdk.KVStorePrefixIterator(store, types.ResourceIdTypeStoreKeyPrefix)
+// 	defer iterator.Close()
 
-	chainIdList := make([]string, 0)
-	for ; iterator.Valid(); iterator.Next() {
-		if len(iterator.Key()) < 1 {
-			continue
-		}
-		value := iterator.Value()
-		if len(value) == 0 {
-			value = types.ResourceIdTypeForeign[:]
-		}
+// 	chainIdList := make([]string, 0)
+// 	for ; iterator.Valid(); iterator.Next() {
+// 		if len(iterator.Key()) < 1 {
+// 			continue
+// 		}
+// 		value := iterator.Value()
+// 		if len(value) == 0 {
+// 			value = types.ResourceIdTypeForeign[:]
+// 		}
 
-		resourceId := [32]byte{}
-		copy(resourceId[:], iterator.Key()[1:])
-		denom, found := k.GetDenomByResourceId(ctx, resourceId)
-		if !found {
-			continue
-		}
+// 		resourceId := [32]byte{}
+// 		copy(resourceId[:], iterator.Key()[1:])
+// 		denom, found := k.GetDenomByResourceId(ctx, resourceId)
+// 		if !found {
+// 			continue
+// 		}
 
-		chainIdList = append(chainIdList, denom+":"+fmt.Sprintf("%d", value[0]))
-	}
-	return chainIdList
-}
+// 		chainIdList = append(chainIdList, denom+":"+fmt.Sprintf("%d", value[0]))
+// 	}
+// 	return chainIdList
+// }
 
 func (k Keeper) SetRelayFee(ctx sdk.Context, chainId uint8, value sdk.Coin) {
 	store := ctx.KVStore(k.storeKey)

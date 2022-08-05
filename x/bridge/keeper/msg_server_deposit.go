@@ -27,7 +27,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, types.ErrBannedDenom
 	}
 
-	resourceId, found := k.Keeper.GetResourceIdByDenom(ctx, msg.Denom)
+	resourceIdToDenom, found := k.Keeper.GetResourceIdToDenomByDenom(ctx, msg.Denom)
 	if !found {
 		return nil, types.ErrResourceIdNotFound
 	}
@@ -61,8 +61,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, err
 	}
 
-	resourceIdType := k.Keeper.GetResourceIdType(ctx, resourceId)
-	if resourceIdType == types.ResourceIdTypeForeign {
+	if resourceIdToDenom.DenomType == types.External {
 		err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, shouldBurnedOrLockedCoins)
 		if err != nil {
 			return nil, err
@@ -77,7 +76,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		sdk.NewEvent(
 			types.EventTypeDeposit,
 			sdk.NewAttribute(types.AttributeKeyDestChainId, fmt.Sprintf("%d", chainId)),
-			sdk.NewAttribute(types.AttributeKeyResourceId, hex.EncodeToString(resourceId[:])),
+			sdk.NewAttribute(types.AttributeKeyResourceId, resourceIdToDenom.ResourceId),
 			sdk.NewAttribute(types.AttributeKeyDepositNonce, fmt.Sprintf("%d", count)),
 			sdk.NewAttribute(types.AttributeKeyAmount, msg.Amount.String()),
 			sdk.NewAttribute(types.AttributeKeyReceiver, msg.Receiver),

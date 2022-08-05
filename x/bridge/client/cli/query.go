@@ -28,8 +28,6 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdChaindIds())
 
-	cmd.AddCommand(CmdDenomTypes())
-
 	cmd.AddCommand(CmdProposalDetail())
 
 	cmd.AddCommand(CmdResourceidToDenoms())

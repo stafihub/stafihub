@@ -17,6 +17,6 @@ func (k Keeper) ResourceidToDenoms(goCtx context.Context, req *types.QueryResour
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	return &types.QueryResourceidToDenomsResponse{
-		ResourceidToDenoms: k.GetAllResourceIdToDenom(ctx),
+		ResourceidToDenoms: k.GetResourceIdToDenomList(ctx),
 	}, nil
 }

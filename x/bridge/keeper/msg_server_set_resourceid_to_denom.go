@@ -17,12 +17,20 @@ func (k msgServer) SetResourceidToDenom(goCtx context.Context, msg *types.MsgSet
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
 	resourceIdBts, err := hex.DecodeString(msg.ResourceId)
-	if err != nil {
+	if err != nil || len(resourceIdBts) != 32 {
 		return nil, types.ErrResourceIdFormatNotRight
 	}
-	var resourceId [32]byte
-	copy(resourceId[:], resourceIdBts)
 
-	k.Keeper.SetResourceIdToDenom(ctx, resourceId, msg.Denom)
+	if msg.DenomType != types.External && msg.DenomType != types.Native {
+		return nil, types.ErrDenomTypeUnmatch
+	}
+
+	rs := types.ResourceIdToDenom{
+		ResourceId: msg.ResourceId,
+		Denom:      msg.Denom,
+		DenomType:  msg.DenomType,
+	}
+
+	k.Keeper.SetResourceIdToDenom(ctx, &rs)
 	return &types.MsgSetResourceidToDenomResponse{}, nil
 }

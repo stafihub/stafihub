@@ -2,8 +2,6 @@ package bridge
 
 import (
 	"encoding/hex"
-	"strings"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/x/bridge/keeper"
 	"github.com/stafihub/stafihub/x/bridge/types"
@@ -46,37 +44,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetRelayFeeReceiver(ctx, addr)
 	}
 
-	for _, resourceIdToDenom := range genState.ResourceIdToDenom {
-		strs := strings.Split(resourceIdToDenom, ":")
-		if len(strs) != 2 {
-			panic("not valid resourceIdToDenom")
-		}
-
-		resourceBts, err := hex.DecodeString(strs[0])
-		if err != nil {
-			panic(err)
-		}
-		var resourceId [32]byte
-		copy(resourceId[:], resourceBts)
-		k.SetResourceIdToDenom(ctx, resourceId, strs[1])
-	}
-
-	for _, resourceIdToDenomType := range genState.ResourceIdToDenomType {
-		strs := strings.Split(resourceIdToDenomType, ":")
-		if len(strs) != 2 {
-			panic("not valid resourceIdToDenomType")
-		}
-		resourceBts, err := hex.DecodeString(strs[0])
-		if err != nil {
-			panic(err)
-		}
-		var resourceId [32]byte
-		copy(resourceId[:], resourceBts)
-		denomType := types.ResourceIdTypeForeign
-		if strs[1] == "1" {
-			denomType = types.ResourceIdTypeNative
-		}
-		k.SetResourceIdType(ctx, resourceId, denomType)
+	for _, resourceIdToDenom := range genState.ResourceIdToDenomList {
+		k.SetResourceIdToDenom(ctx, resourceIdToDenom)
 	}
 
 	for _, l := range genState.BannedDenomList {
@@ -98,8 +67,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 		genesis.RelayFeeReceiver = relayFeeReceiver.String()
 	}
 
-	genesis.ResourceIdToDenom = k.GetAllResourceIdToDenom(ctx)
-	genesis.ResourceIdToDenomType = k.GetAllResourceIdDenomTypes(ctx)
+	genesis.ResourceIdToDenomList = k.GetResourceIdToDenomList(ctx)
 	genesis.BannedDenomList = k.GetBannedDenomList(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 

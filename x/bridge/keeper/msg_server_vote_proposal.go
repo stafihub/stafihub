@@ -11,14 +11,15 @@ import (
 
 func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposal) (*types.MsgVoteProposalResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	resourceIdSlice, err := hex.DecodeString(msg.ResourceId)
-	if err != nil {
+	resourceIdBts, err := hex.DecodeString(msg.ResourceId)
+	if err != nil || len(resourceIdBts) != 32 {
 		return nil, types.ErrResourceIdFormatNotRight
 	}
-	var resourceId [32]byte
-	copy(resourceId[:], resourceIdSlice)
 
-	denom, found := k.Keeper.GetDenomByResourceId(ctx, resourceId)
+	var resourceId [32]byte
+	copy(resourceId[:], resourceIdBts)
+
+	resourceIdToDenom, found := k.Keeper.GetResourceIdToDenomByResourceId(ctx, msg.ResourceId)
 	if !found {
 		return nil, types.ErrResourceIdNotFound
 	}
@@ -31,7 +32,7 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 		return nil, types.ErrVoteProposalAmountZero
 	}
 
-	shouldMintOrUnlockCoins := sdk.NewCoins(sdk.NewCoin(denom, msg.Amount))
+	shouldMintOrUnlockCoins := sdk.NewCoins(sdk.NewCoin(resourceIdToDenom.Denom, msg.Amount))
 
 	content := types.ProposalContent{
 		Amount:   msg.Amount,
@@ -70,8 +71,7 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 		return nil, types.ErrThresholdNotSet
 	}
 	if len(proposal.Voters) >= int(threshold.Value) {
-		idType := k.Keeper.GetResourceIdType(ctx, resourceId)
-		if idType == types.ResourceIdTypeForeign {
+		if resourceIdToDenom.DenomType == types.External {
 			err := k.bankKeeper.MintCoins(ctx, types.ModuleName, shouldMintOrUnlockCoins)
 			if err != nil {
 				return nil, err

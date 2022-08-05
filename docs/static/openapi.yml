@@ -20154,40 +20154,6 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /stafihub/stafihub/bridge/denom_types:
-    get:
-      summary: Queries a list of DenomTypes items.
-      operationId: StafihubStafihubBridgeDenomTypes
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              denomTypes:
-                type: array
-                items:
-                  type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
   /stafihub/stafihub/bridge/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -20389,7 +20355,19 @@ paths:
               resourceidToDenoms:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  properties:
+                    resourceId:
+                      type: string
+                    denom:
+                      type: string
+                    denomType:
+                      type: string
+                      enum:
+                        - UNSPECIFIED
+                        - NATIVE
+                        - EXTERNAL
+                      default: UNSPECIFIED
         default:
           description: An unexpected error response.
           schema:
@@ -43894,6 +43872,13 @@ definitions:
         format: int64
       denom:
         type: string
+  stafihub.stafihub.bridge.DenomType:
+    type: string
+    enum:
+      - UNSPECIFIED
+      - NATIVE
+      - EXTERNAL
+    default: UNSPECIFIED
   stafihub.stafihub.bridge.MsgAddBannedDenomResponse:
     type: object
   stafihub.stafihub.bridge.MsgAddChainIdResponse:
@@ -43903,8 +43888,6 @@ definitions:
   stafihub.stafihub.bridge.MsgRmBannedDenomResponse:
     type: object
   stafihub.stafihub.bridge.MsgRmChainIdResponse:
-    type: object
-  stafihub.stafihub.bridge.MsgSetDenomTypeResponse:
     type: object
   stafihub.stafihub.bridge.MsgSetRelayFeeReceiverResponse:
     type: object
@@ -43961,13 +43944,6 @@ definitions:
         items:
           type: integer
           format: int64
-  stafihub.stafihub.bridge.QueryDenomTypesResponse:
-    type: object
-    properties:
-      denomTypes:
-        type: array
-        items:
-          type: string
   stafihub.stafihub.bridge.QueryParamsResponse:
     type: object
     properties:
@@ -44020,7 +43996,33 @@ definitions:
       resourceidToDenoms:
         type: array
         items:
-          type: string
+          type: object
+          properties:
+            resourceId:
+              type: string
+            denom:
+              type: string
+            denomType:
+              type: string
+              enum:
+                - UNSPECIFIED
+                - NATIVE
+                - EXTERNAL
+              default: UNSPECIFIED
+  stafihub.stafihub.bridge.ResourceIdToDenom:
+    type: object
+    properties:
+      resourceId:
+        type: string
+      denom:
+        type: string
+      denomType:
+        type: string
+        enum:
+          - UNSPECIFIED
+          - NATIVE
+          - EXTERNAL
+        default: UNSPECIFIED
   stafihub.stafihub.claim.MsgClaimResponse:
     type: object
   stafihub.stafihub.claim.MsgProvideTokenResponse:

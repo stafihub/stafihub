@@ -9,11 +9,12 @@ const TypeMsgSetResourceidToDenom = "set_resourceid_to_denom"
 
 var _ sdk.Msg = &MsgSetResourceidToDenom{}
 
-func NewMsgSetResourceidToDenom(creator string, resourceId string, denom string) *MsgSetResourceidToDenom {
+func NewMsgSetResourceidToDenom(creator string, resourceId string, denom string, denomType DenomType) *MsgSetResourceidToDenom {
 	return &MsgSetResourceidToDenom{
 		Creator:    creator,
 		ResourceId: resourceId,
 		Denom:      denom,
+		DenomType:  denomType,
 	}
 }
 

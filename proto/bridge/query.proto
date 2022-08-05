@@ -24,11 +24,6 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/chaind_ids";
 	}
 
-// Queries a list of DenomTypes items.
-	rpc DenomTypes(QueryDenomTypesRequest) returns (QueryDenomTypesResponse) {
-		option (google.api.http).get = "/stafihub/stafihub/bridge/denom_types";
-	}
-
 // Queries a list of ProposalDetail items.
 	rpc ProposalDetail(QueryProposalDetailRequest) returns (QueryProposalDetailResponse) {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/proposal_detail/{chainId}/{depositNonce}/{resourceId}/{amount}/{receiver}";
@@ -74,13 +69,6 @@ message QueryChaindIdsResponse {
   repeated uint32 chainId = 1;
 }
 
-message QueryDenomTypesRequest {
-}
-
-message QueryDenomTypesResponse {
-  repeated string denomTypes = 1;
-}
-
 message QueryProposalDetailRequest {
   uint32 chainId = 1;
   uint64 depositNonce = 2;
@@ -97,7 +85,7 @@ message QueryResourceidToDenomsRequest {
 }
 
 message QueryResourceidToDenomsResponse {
-	repeated string resourceidToDenoms = 1;
+	repeated ResourceIdToDenom resourceidToDenoms = 1;
 }
 
 message QueryRelayFeeReceiverRequest {
