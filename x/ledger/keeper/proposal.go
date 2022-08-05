@@ -251,6 +251,20 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 		return err
 	}
 
+	// check bonded pool
+	if !k.IsBondedPoolExist(ctx, p.Denom, p.Pool) {
+		return types.ErrPoolNotBonded
+	}
+
+	// check pool status
+	poolDetail, found := k.GetPoolDetail(ctx, p.Denom, p.Pool)
+	if !found {
+		return types.ErrPoolDetailNotFound
+	}
+	if poolDetail.Status != types.Active {
+		return types.ErrPoolStatusUnmatch
+	}
+
 	var bonder sdk.AccAddress
 	if p.State == types.LiquidityBondStateVerifyOk {
 		bonder, err = sdk.AccAddressFromBech32(p.Bonder)
@@ -270,7 +284,6 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 		return nil
 	}
 
-	//todo check bonded pool
 	pipe, ok := k.GetBondPipeline(ctx, p.Denom, p.Pool)
 	if !ok {
 		return types.ErrPoolNotBonded

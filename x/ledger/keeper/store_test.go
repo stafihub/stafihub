@@ -74,11 +74,12 @@ func TestKeeper_SetPoolDetail(t *testing.T) {
 	sa2 := sample.AccAddress()
 	subAccounts := []string{sa1, sa2}
 	threshold := uint32(2)
-	k.SetPoolDetail(ctx, sample.TestDenom, pool, subAccounts, threshold)
+	cbd := types.NewPoolDetail(sample.TestDenom, pool, subAccounts, threshold, types.Active)
+	k.SetPoolDetail(ctx, &cbd)
 
 	pd, found := k.GetPoolDetail(ctx, sample.TestDenom, pool)
 	require.True(t, found)
-	require.Equal(t, types.NewPoolDetail(sample.TestDenom, pool, subAccounts, threshold), pd)
+	require.Equal(t, types.NewPoolDetail(sample.TestDenom, pool, subAccounts, threshold, types.Active), pd)
 }
 
 func TestKeeper_CurrentEraSnapshots(t *testing.T) {

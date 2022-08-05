@@ -8,35 +8,36 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
-	"github.com/stafihub/stafihub/x/bridge/types"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 var _ = strconv.Itoa(0)
 
-func CmdSetResourceidToDenom() *cobra.Command {
+func CmdSetPoolStatus() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "set-resourceid-to-denom [resource-id] [denom] [denom-type](support 'NATIVE','EXTERNAL')",
-		Short: "Broadcast message set resourceid to denom and denom type",
+		Use:   "set-pool-status [denom] [pool] [status](support 'ACTIVE' 'NOT_ACTIVE')",
+		Short: "set pool status",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argResourceId := args[0]
-			argDenom := args[1]
-			argDenomType := args[2]
-			if _, exist := types.DenomType_value[argDenomType]; !exist {
-				return fmt.Errorf("denom type not exist")
+			argDenom := args[0]
+			argPool := args[1]
+			argStatus := args[2]
+
+			if _, exist := types.PoolStatus_value[argStatus]; !exist {
+				return fmt.Errorf("status not exist")
 			}
-			denomType := types.DenomType(types.DenomType_value[argDenomType])
+			status := types.PoolStatus_value[argStatus]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgSetResourceidToDenom(
+			msg := types.NewMsgSetPoolStatus(
 				clientCtx.GetFromAddress().String(),
-				argResourceId,
 				argDenom,
-				denomType,
+				argPool,
+				types.PoolStatus(status),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

@@ -33,6 +33,7 @@ service Msg {
   rpc RegisterIcaPool(MsgRegisterIcaPool) returns (MsgRegisterIcaPoolResponse);
   rpc SetWithdrawalAddr(MsgSetWithdrawalAddr) returns (MsgSetWithdrawalAddrResponse);
   rpc InitPool(MsgInitPool) returns (MsgInitPoolResponse);
+  rpc SetPoolStatus(MsgSetPoolStatus) returns (MsgSetPoolStatusResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -247,6 +248,16 @@ message MsgInitPool {
 }
 
 message MsgInitPoolResponse {
+}
+
+message MsgSetPoolStatus {
+  string creator = 1;
+  string denom = 2;
+  string pool = 3;
+  PoolStatus status = 4;
+}
+
+message MsgSetPoolStatusResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -49,8 +49,8 @@ func (k msgServer) SetPoolDetail(goCtx context.Context, msg *types.MsgSetPoolDet
 			return nil, err
 		}
 	}
-
-	k.Keeper.SetPoolDetail(ctx, msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold)
+	poolDetail := types.NewPoolDetail(msg.Denom, msg.Pool, msg.SubAccounts, msg.Threshold, types.Active)
+	k.Keeper.SetPoolDetail(ctx, &poolDetail)
 
 	return &types.MsgSetPoolDetailResponse{}, nil
 }

@@ -159,11 +159,9 @@ func (k Keeper) GetEraUnbondLimitList(ctx sdk.Context) []*types.EraUnbondLimit {
 	return list
 }
 
-func (k Keeper) SetPoolDetail(ctx sdk.Context, denom string, pool string, subAccounts []string, threshold uint32) {
+func (k Keeper) SetPoolDetail(ctx sdk.Context, poolDetail *types.PoolDetail) {
 	store := ctx.KVStore(k.storeKey)
-	cbd := types.NewPoolDetail(denom, pool, subAccounts, threshold)
-	b := k.cdc.MustMarshal(&cbd)
-	store.Set(types.PoolDetailStoreKey(denom, pool), b)
+	store.Set(types.PoolDetailStoreKey(poolDetail.Denom, poolDetail.Pool), k.cdc.MustMarshal(poolDetail))
 }
 
 func (k Keeper) GetPoolDetail(ctx sdk.Context, denom string, pool string) (val types.PoolDetail, found bool) {
@@ -183,14 +181,13 @@ func (k Keeper) GetPoolDetailList(ctx sdk.Context) []*types.PoolDetail {
 
 	list := make([]*types.PoolDetail, 0)
 	for ; iterator.Valid(); iterator.Next() {
-		key := iterator.Key()
-		denomLen := int(key[1])
-		denom := string(key[2 : 2+denomLen])
-		pool := string(key[2+denomLen:])
-		poolDetail, found := k.GetPoolDetail(ctx, denom, pool)
-		if !found {
+		value := iterator.Value()
+		if value == nil {
 			continue
 		}
+		poolDetail := types.PoolDetail{}
+		k.cdc.MustUnmarshal(value, &poolDetail)
+
 		list = append(list, &poolDetail)
 	}
 	return list

@@ -39,7 +39,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 
 	for _, poolDetail := range genState.PoolDetailList {
-		k.SetPoolDetail(ctx, poolDetail.Denom, poolDetail.Pool, poolDetail.SubAccounts, poolDetail.Threshold)
+		k.SetPoolDetail(ctx, poolDetail)
 	}
 
 	for _, currentEraSnapshot := range genState.CurrentEraSnapshotList {

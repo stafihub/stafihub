@@ -22859,6 +22859,13 @@ paths:
                   threshold:
                     type: integer
                     format: int64
+                  status:
+                    type: string
+                    enum:
+                      - ACTIVE
+                      - NOT_ACTIVE
+                      - RESERVED
+                    default: ACTIVE
         default:
           description: An unexpected error response.
           schema:
@@ -44269,6 +44276,8 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetPoolDetailResponse:
     type: object
+  stafihub.stafihub.ledger.MsgSetPoolStatusResponse:
+    type: object
   stafihub.stafihub.ledger.MsgSetProtocolFeeReceiverResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetRParamsResponse:
@@ -44324,6 +44333,20 @@ definitions:
       threshold:
         type: integer
         format: int64
+      status:
+        type: string
+        enum:
+          - ACTIVE
+          - NOT_ACTIVE
+          - RESERVED
+        default: ACTIVE
+  stafihub.stafihub.ledger.PoolStatus:
+    type: string
+    enum:
+      - ACTIVE
+      - NOT_ACTIVE
+      - RESERVED
+    default: ACTIVE
   stafihub.stafihub.ledger.QueryBondedPoolsByDenomResponse:
     type: object
     properties:
@@ -44469,6 +44492,13 @@ definitions:
           threshold:
             type: integer
             format: int64
+          status:
+            type: string
+            enum:
+              - ACTIVE
+              - NOT_ACTIVE
+              - RESERVED
+            default: ACTIVE
   stafihub.stafihub.ledger.QueryGetProtocolFeeReceiverResponse:
     type: object
     properties:

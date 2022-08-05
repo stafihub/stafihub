@@ -37,6 +37,15 @@ message PoolDetail {
     string pool = 2;
     repeated string subAccounts = 3;
     uint32 threshold = 4;
+    PoolStatus status = 5;
+}
+
+enum PoolStatus {
+    option (gogoproto.goproto_enum_prefix) = false;
+
+    ACTIVE = 0 [(gogoproto.enumvalue_customname) = "Active"];
+    NOT_ACTIVE = 1 [(gogoproto.enumvalue_customname) = "NotActive"];
+    RESERVED = 2 [(gogoproto.enumvalue_customname) = "Reserved"];
 }
 
 message LinkChunk {
@@ -72,6 +81,8 @@ enum BondAction {
     EITHER_BOND_UNBOND = 3 [(gogoproto.enumvalue_customname) = "EitherBondUnbond"];
     INTER_DEDUCT = 4 [(gogoproto.enumvalue_customname) = "InterDeduct"];
 }
+
+
 
 message ExchangeRate {
     string denom = 1;

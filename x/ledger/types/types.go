@@ -4,12 +4,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func NewPoolDetail(denom, pool string, subAccounts []string, threshold uint32) PoolDetail {
+func NewPoolDetail(denom, pool string, subAccounts []string, threshold uint32, poolStatus PoolStatus) PoolDetail {
 	return PoolDetail{
 		Denom:       denom,
 		Pool:        pool,
 		SubAccounts: subAccounts,
 		Threshold:   threshold,
+		Status:      poolStatus,
 	}
 }
 
