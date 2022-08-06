@@ -467,7 +467,10 @@ func (k Keeper) SetTotalExpectedActive(ctx sdk.Context, denom string, era uint32
 	binary.LittleEndian.PutUint32(bera, era)
 	key := append([]byte(denom), bera...)
 
-	b, _ := active.Marshal()
+	b, err := active.Marshal()
+	if err != nil {
+		panic(err)
+	}
 	store.Set(key, b)
 }
 
@@ -510,6 +513,37 @@ func (k Keeper) TotalExpectedActiveList(ctx sdk.Context) []*types.TotalExpectedA
 		})
 	}
 	return list
+}
+
+func (k Keeper) SetTotalExpectedFee(ctx sdk.Context, denom string, era uint32, fee sdk.Int) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalExpectedFeePrefix)
+
+	bera := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, era)
+	key := append([]byte(denom), bera...)
+
+	b, err := fee.Marshal()
+	if err != nil {
+		panic(err)
+	}
+	store.Set(key, b)
+}
+
+func (k Keeper) TotalExpectedFee(ctx sdk.Context, denom string, era uint32) (val sdk.Int) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.TotalExpectedFeePrefix)
+	bera := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bera, era)
+	key := append([]byte(denom), bera...)
+	b := store.Get(key)
+	if b == nil {
+		return sdk.NewInt(0)
+	}
+
+	if err := val.Unmarshal(b); err != nil {
+		panic(err)
+	}
+
+	return val
 }
 
 func (k Keeper) SetPoolUnbonding(ctx sdk.Context, denom string, pool string, era, seq uint32, pu *types.Unbonding) {

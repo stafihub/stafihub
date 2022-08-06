@@ -142,23 +142,15 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		return types.ErrActiveAlreadySet
 	}
 
-	active := sdk.NewInt(p.Staked.Int64()).Add(p.Unstaked)
+	active := p.Staked.Add(p.Unstaked)
 	diff := active.Sub(shot.Chunk.Active)
-	if diff.GT(sdk.ZeroInt()) {
+
+	totalExpectedFee := k.TotalExpectedFee(ctx, shot.Denom, shot.Era)
+	// add commission to totalExpectedFee
+	if diff.IsPositive() {
 		commission := k.GetStakingRewardCommission(ctx, shot.Denom)
 		fee := commission.MulInt(diff).TruncateInt()
-		rfee := k.TokenToRtoken(ctx, shot.Denom, fee)
-
-		if rfee.GT(sdk.ZeroInt()) {
-			coin := sdk.NewCoin(shot.Denom, rfee)
-			if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
-				return err
-			}
-			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, protocolFeeReceiver, sdk.Coins{coin}); err != nil {
-				return err
-			}
-			k.IncreaseTotalProtocolFee(ctx, coin.Denom, coin.Amount)
-		}
+		totalExpectedFee = totalExpectedFee.Add(fee)
 	}
 
 	pipe, found := k.GetBondPipeline(ctx, shot.Denom, shot.Pool)
@@ -176,9 +168,32 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 		}
 	}
 
+	// all pool have reported
 	if len(shotIds) == 0 {
-		rtotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
-		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, rtotal.Amount)
+		// cal and mint rfee
+		oldRTotal := k.bankKeeper.GetSupply(ctx, shot.Denom)
+
+		rfee := sdk.ZeroInt()
+		subResult := totalExpectedActive.Sub(totalExpectedFee)
+		if subResult.IsPositive() {
+			rfee = totalExpectedFee.Mul(oldRTotal.Amount).Quo(subResult)
+		}
+
+		if rfee.IsPositive() {
+			coin := sdk.NewCoin(shot.Denom, rfee)
+			if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, sdk.Coins{coin}); err != nil {
+				return err
+			}
+			if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, protocolFeeReceiver, sdk.Coins{coin}); err != nil {
+				return err
+			}
+			k.IncreaseTotalProtocolFee(ctx, coin.Denom, coin.Amount)
+		}
+
+		// update exchange rate
+		newRTotalAmount := oldRTotal.Amount.Add(rfee)
+
+		k.SetExchangeRate(ctx, shot.Denom, totalExpectedActive, newRTotalAmount)
 		newRate, _ := k.GetExchangeRate(ctx, shot.Denom)
 		k.SetEraExchangeRate(ctx, shot.Denom, shot.Era, newRate.Value)
 	}
@@ -186,9 +201,12 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	k.SetEraSnapshot(ctx, shot.Era, types.EraSnapshot{Denom: shot.Denom, ShotIds: shotIds})
 	k.SetBondPipeline(ctx, pipe)
 	k.SetTotalExpectedActive(ctx, shot.Denom, shot.Era, totalExpectedActive)
+	k.SetTotalExpectedFee(ctx, shot.Denom, shot.Era, totalExpectedFee)
 
-	nextSeq := k.GetPoolUnbondNextSequence(ctx, shot.Denom, shot.Pool, shot.Era)
-	if nextSeq > 0 {
+	// if unbondCount > 0: 1 emit event 2 update shot to activeReported 3 not update current era snapshots
+	// else: 1 update shot to transfer skipped 2 update current era snapshots
+	unbondCount := k.GetPoolUnbondNextSequence(ctx, shot.Denom, shot.Pool, shot.Era)
+	if unbondCount > 0 {
 		shot.UpdateState(types.ActiveReported)
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(

@@ -65,6 +65,7 @@ var (
 	IcaPoolDelegationAddrIndexPrefix = []byte{0x21}
 	InterchainTxPropIdPrefix         = []byte{0x22}
 	InterchainTxPropSeqIndexPrefix   = []byte{0x23}
+	TotalExpectedFeePrefix           = []byte{0x24}
 )
 
 var (
