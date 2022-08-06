@@ -127,6 +127,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetInterchainTxProposalSequenceIndex(ctx, interchainTxProposal.CtrlPortId, interchainTxProposal.CtrlChannelId,
 			interchainTxProposal.Sequence, interchainTxProposal.ProposalId)
 	}
+
+	for _, totalExpectedFee := range genState.TotalExpectedFeeList {
+		k.SetTotalExpectedFee(ctx, totalExpectedFee.Denom, totalExpectedFee.Era, totalExpectedFee.Value)
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -161,6 +165,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.MigrateIsSealed = k.MigrateInitIsSealed(ctx)
 	genesis.IcaPoolDetailList = k.GetAllIcaPoolDetailList(ctx)
 	genesis.InterchainTxProposalInfoList = k.GetInterchainTxProposalInfoList(ctx)
+	genesis.TotalExpectedFeeList = k.TotalExpectedFeeList(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

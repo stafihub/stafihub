@@ -36,6 +36,7 @@ message GenesisState {
     bool MigrateIsSealed = 23;
     repeated IcaPoolDetail icaPoolDetailList = 24;
     repeated GenesisInterchainTxProposalInfo interchainTxProposalInfoList = 25;
+    repeated TotalExpectedFee totalExpectedFeeList = 26;
     // this line is used by starport scaffolding # genesis/proto/state
 }
 
@@ -69,6 +70,12 @@ message RelayFeeReceiver {
 
 
 message TotalExpectedActive {
+    string denom = 1;
+    uint32 era = 2;
+    string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message TotalExpectedFee {
     string denom = 1;
     uint32 era = 2;
     string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];

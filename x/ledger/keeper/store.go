@@ -546,6 +546,30 @@ func (k Keeper) TotalExpectedFee(ctx sdk.Context, denom string, era uint32) (val
 	return val
 }
 
+func (k Keeper) TotalExpectedFeeList(ctx sdk.Context) []*types.TotalExpectedFee {
+	store := ctx.KVStore(k.storeKey)
+	iterator := sdk.KVStorePrefixIterator(store, types.TotalExpectedFeePrefix)
+	defer iterator.Close()
+
+	list := make([]*types.TotalExpectedFee, 0)
+	for ; iterator.Valid(); iterator.Next() {
+		key := iterator.Key()
+
+		eraBts := key[len(key)-4:]
+		era := binary.LittleEndian.Uint32(eraBts)
+
+		denom := string(key[1 : len(key)-4])
+		expectedFee := k.TotalExpectedActive(ctx, denom, era)
+
+		list = append(list, &types.TotalExpectedFee{
+			Denom: denom,
+			Era:   era,
+			Value: expectedFee,
+		})
+	}
+	return list
+}
+
 func (k Keeper) SetPoolUnbonding(ctx sdk.Context, denom string, pool string, era, seq uint32, pu *types.Unbonding) {
 	store := ctx.KVStore(k.storeKey)
 	store.Set(types.PoolUnbondStoreKey(denom, pool, era, seq), k.cdc.MustMarshal(pu))
