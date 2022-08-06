@@ -16,6 +16,7 @@ service Msg {
   rpc Withdraw(MsgWithdraw) returns (MsgWithdrawResponse);
   rpc AddDelegatorToWhitelist(MsgAddDelegatorToWhitelist) returns (MsgAddDelegatorToWhitelistResponse);
   rpc ToggleDelegatorWhitelistSwitch(MsgToggleDelegatorWhitelistSwitch) returns (MsgToggleDelegatorWhitelistSwitchResponse);
+  rpc ProvideToken(MsgProvideToken) returns (MsgProvideTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -64,6 +65,14 @@ message MsgToggleDelegatorWhitelistSwitch {
 }
 
 message MsgToggleDelegatorWhitelistSwitchResponse {
+}
+
+message MsgProvideToken {
+  string creator = 1;
+  cosmos.base.v1beta1.Coin token = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgProvideTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

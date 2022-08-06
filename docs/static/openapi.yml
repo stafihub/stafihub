@@ -45873,6 +45873,8 @@ definitions:
     type: object
   stafihub.stafihub.rstaking.MsgAddValToWhitelistResponse:
     type: object
+  stafihub.stafihub.rstaking.MsgProvideTokenResponse:
+    type: object
   stafihub.stafihub.rstaking.MsgSetInflationBaseResponse:
     type: object
   stafihub.stafihub.rstaking.MsgToggleDelegatorWhitelistSwitchResponse:

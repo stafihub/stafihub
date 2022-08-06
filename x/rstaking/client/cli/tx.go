@@ -36,6 +36,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdWithdraw())
 	cmd.AddCommand(CmdAddDelegatorToWhitelist())
 	cmd.AddCommand(CmdToggleDelegatorWhitelistSwitch())
+	cmd.AddCommand(CmdProvideToken())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
