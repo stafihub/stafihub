@@ -72,7 +72,7 @@ func (p *Proposal) HasVoted(proposer string) bool {
 }
 
 func (p *Proposal) IsExpired(block int64) bool {
-	return p.ExpireBlock != p.StartBlock && block > p.ExpireBlock
+	return p.ExpireBlock != 0 && block > p.ExpireBlock
 }
 
 // String implements stringer interface

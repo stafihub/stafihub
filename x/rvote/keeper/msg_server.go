@@ -105,7 +105,13 @@ func (k msgServer) PreSubmitProposal(ctx sdk.Context, content types.Content, pro
 			StartBlock: ctx.BlockHeight(),
 			Voted:      []string{proposer},
 		}
-		prop.ExpireBlock = prop.StartBlock + k.ProposalLife(ctx)
+
+		proposalLife := k.ProposalLife(ctx)
+		if proposalLife == 0 {
+			prop.ExpireBlock = 0
+		} else {
+			prop.ExpireBlock = prop.StartBlock + proposalLife
+		}
 		if err := prop.SetContent(content); err != nil {
 			return nil, err
 		}
