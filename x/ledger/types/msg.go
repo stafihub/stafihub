@@ -87,9 +87,7 @@ func (msg *MsgSetPoolDetail) ValidateBasic() error {
 	if _, err := sdk.AccAddressFromBech32(msg.Creator); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
-	if msg.Threshold <= 0 {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid threshold")
-	}
+
 	if int(msg.Threshold) > len(msg.SubAccounts) {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "threshold should be less than or equal to sub accounts length")
 	}
