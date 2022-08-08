@@ -1,5 +1,5 @@
 {
-    "description": "The derivative of staking IRIS",
+    "description": "A liquid staking representation of staked IRISs",
     "denom_units": [
         {
             "denom": "uriris",

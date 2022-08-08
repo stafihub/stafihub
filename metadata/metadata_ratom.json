@@ -1,5 +1,5 @@
 {
-    "description": "The derivative of staking ATOM",
+    "description": "A liquid staking representation of staked ATOMs",
     "denom_units": [
         {
             "denom": "uratom",
