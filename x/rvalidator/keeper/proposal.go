@@ -22,9 +22,10 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 	if !k.HasSelectedRValidator(ctx, &oldVal) {
 		return types.ErrRValidatorNotExist
 	}
-	if k.HasSelectedRValidator(ctx, &newVal) {
-		return types.ErrRValidatorAlreadyExist
+	if oldVal.ValAddress == newVal.ValAddress {
+		return types.ErrOldEqualNewRValidator
 	}
+
 	if err := k.RBankKeeper.CheckValAddress(ctx, p.Denom, p.NewAddress); err != nil {
 		return err
 	}

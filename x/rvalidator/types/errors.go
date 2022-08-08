@@ -17,4 +17,5 @@ var (
 	ErrReportCycleNotMatchLatestVotedCycle = sdkerrors.Register(ModuleName, 1107, "report cycle not match latest voted cycle")
 	ErrLedgerChainEraNotExist              = sdkerrors.Register(ModuleName, 1108, "ledger chain era not exist")
 	ErrDealingRvalidatorNotFound           = sdkerrors.Register(ModuleName, 1109, "dealing rvalidator not found")
+	ErrOldEqualNewRValidator               = sdkerrors.Register(ModuleName, 1110, "old euqal new rValidator")
 )
