@@ -59,7 +59,10 @@ func CmdSetPoolDetail() *cobra.Command {
 			argDenom := args[0]
 			argPool := args[1]
 
-			argSubAccounts := strings.Split(args[2], ":")
+			argSubAccounts := []string{}
+			if len(args[2]) != 0 {
+				argSubAccounts = strings.Split(args[2], ":")
+			}
 			argThreshold, err := strconv.ParseUint(args[3], 10, 32)
 			if err != nil {
 				return err
