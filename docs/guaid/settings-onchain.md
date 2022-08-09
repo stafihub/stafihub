@@ -20,28 +20,26 @@ stafihubd query bank denom-metadata
 
 stafihubd query rbank address-prefix uratom
 
-
 # set relay fee receiver
 stafihubd tx ledger set-relay-fee-receiver uratom stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd query ledger relay-fee-receiver uratom
 
+# set pool detail for multisig/ica pool
+stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd query ledger pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
+# this will init bonded pool, exchange rate, pipeline
+stafihubd tx ledger init-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd query ledger bonded-pools uratom
+
+stafihubd query ledger exchange-rate uratom
+
+stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
 
 
-# default 0.1
-stafihubd tx ledger set-staking-reward-commission uratom 0.15 --from admin --chain-id local-stafihub --keyring-backend file
-
-stafihubd q ledger staking-reward-commission uratom
-
-# default 0.002
-stafihubd tx ledger set-unbond-commission uratom 0.0025 --from admin --chain-id local-stafihub --keyring-backend file
-
-stafihubd q ledger unbond-commission uratom
-
-# default 1000000ufis
-stafihubd tx ledger set-unbond-relay-fee uratom 1000005ufis --from admin --chain-id local-stafihub --keyring-backend file
-
-stafihubd q ledger unbond-relay-fee uratom
 
 
 # add relayers
@@ -62,19 +60,22 @@ stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake --from admin
 stafihubd query ledger r-params uratom
 
 
-# no need set if pool is ica account
-stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd query ledger pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+# default 0.1
+stafihubd tx ledger set-staking-reward-commission uratom 0.15 --from admin --chain-id local-stafihub --keyring-backend file
 
-# this will init bonded pool, exchange rate, pipeline
-stafihubd tx ledger init-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
+stafihubd q ledger staking-reward-commission uratom
 
-stafihubd query ledger bonded-pools uratom
+# default 0.002
+stafihubd tx ledger set-unbond-commission uratom 0.0025 --from admin --chain-id local-stafihub --keyring-backend file
 
-stafihubd query ledger exchange-rate uratom
+stafihubd q ledger unbond-commission uratom
 
-stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+# default 1000000ufis
+stafihubd tx ledger set-unbond-relay-fee uratom 1000005ufis --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd q ledger unbond-relay-fee uratom
+
 ```
 
 ### register ica pool
@@ -151,6 +152,11 @@ stafihubd query bridge relay-fee-receiver
 stafihubd tx bridge set-relay-fee 1 1000000ufis --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query bridge  relay-fee 1
+
+
+stafihubd tx bridge add-banned-denom 1 uratom --from admin --keyring-backend file --chain-id local-stafihub
+
+stafihubd q bridge banned-denom-list
 ```
 
 ### migrate rtoken (after adding new rtoken step)
