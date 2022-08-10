@@ -11,6 +11,7 @@ service Msg {
   rpc SetCycleSeconds(MsgSetCycleSeconds) returns (MsgSetCycleSecondsResponse);
   rpc SetShuffleSeconds(MsgSetShuffleSeconds) returns (MsgSetShuffleSecondsResponse);
   rpc AddRValidator(MsgAddRValidator) returns (MsgAddRValidatorResponse);
+  rpc RmRValidator(MsgRmRValidator) returns (MsgRmRValidatorResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -51,6 +52,17 @@ message MsgAddRValidator {
 }
 
 message MsgAddRValidatorResponse {
+}
+
+message MsgRmRValidator {
+  string creator = 1;
+  string denom = 2;
+  string poolAddress = 3;
+  string oldAddress = 4;
+  string newAddress = 5;
+}
+
+message MsgRmRValidatorResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

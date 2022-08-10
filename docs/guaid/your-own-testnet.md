@@ -1,4 +1,4 @@
-# Deploy Your Own stafihub Testnet
+# Deploy Your Own StaFiHub Testnet
 
 This document describes 3 ways to setup a network of `stafihubd` nodes, each serving a different usecase:
 

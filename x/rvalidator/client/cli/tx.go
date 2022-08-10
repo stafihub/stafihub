@@ -35,6 +35,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdSetShuffleSeconds())
 	cmd.AddCommand(CmdUpdateRValidatorReport())
 	cmd.AddCommand(CmdAddRValidator())
+	cmd.AddCommand(CmdRmRValidator())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

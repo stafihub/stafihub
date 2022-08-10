@@ -1,4 +1,4 @@
-# Join the Stafihub Mainnet
+# Join the StaFiHub Mainnet
 
 ## Quickstart
 
@@ -15,7 +15,7 @@ git clone -b vx.x.x https://github.com/stafihub/stafihub
 cd stafihub
 make install
 stafihubd init chooseanicehandle
-wget https://github.com/stafihub/network/blob/main/mainnets/stafihub-mainnet-1/genesis.json
+wget https://github.com/stafihub/network/blob/main/mainnets/stafihub-1/genesis.json
 mv genesis.json ~/.stafihub/config/genesis.json
 ```
 
@@ -64,7 +64,7 @@ For optimized node performance, edit the `~/.stafihub/config/app.toml` file to e
 # transaction. A transaction's fees must meet the minimum of any denomination
 # specified in this config (for example, 10ufis).
 
-minimum-gas-prices = "0.0025ufis"
+minimum-gas-prices = "0.01ufis"
 ```
 
 Your full node has been initialized!
@@ -77,7 +77,7 @@ Fetch the mainnet's `genesis.json` file into `stafihubd`'s config directory.
 
 ```bash
 mkdir -p $HOME/.stafihub/config
-wget https://github.com/stafihub/network/blob/main/mainnets/stafihub-mainnet-1/genesis.json
+wget https://github.com/stafihub/network/blob/main/mainnets/stafihub-1/genesis.json
 mv genesis.json $HOME/.stafihub/config
 ```
 
@@ -93,13 +93,13 @@ stafihubd start
 
 Your node needs to know how to find peers. You'll need to add healthy seed nodes to `$HOME/.stafihub/config/config.toml`. The [`mainnets`](https://github.com/stafihub/network/tree/main/mainnets) repo contains links to some seed nodes.
 
-If those seeds aren't working, you can find more seeds and persistent peers on a Stafihub explorer (a list can be found on the [mainnets](https://github.com/stafihub/network/tree/main/mainnets)).
+If those seeds aren't working, you can find more seeds and persistent peers on a StaFiHub explorer (a list can be found on the [mainnets](https://github.com/stafihub/network/tree/main/mainnets)).
 
 ## A Note on Gas and Fees
 
-On Stafihub mainnet, the accepted denom is `ufis`, where `1fis = 1.000.000ufis`
+On StaFiHub mainnet, the accepted denom is `ufis`, where `1fis = 1.000.000ufis`
 
-Transactions on the Stafihub network need to include a transaction fee in order to be processed. This fee pays for the gas required to run the transaction. The formula is the following:
+Transactions on the StaFiHub network need to include a transaction fee in order to be processed. This fee pays for the gas required to run the transaction. The formula is the following:
 
 ```
 fees = ceil(gas * gasPrices)
@@ -149,7 +149,7 @@ Check that everything is running smoothly:
 stafihubd status
 ```
 
-View the status of the network with the [stafihub Explorer](https://stafihub.io).
+View the status of the network with the [StaFiHub Explorer](https://stafihub.io).
 
 ## Enable the REST API
 

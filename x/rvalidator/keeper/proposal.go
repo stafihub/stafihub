@@ -7,6 +7,8 @@ import (
 	"github.com/stafihub/stafihub/x/rvalidator/types"
 )
 
+// old val must exist && new val may exist or not exist in selectedRValidator
+// pool will redelegate all delegation from old to new val
 func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.UpdateRValidatorProposal) error {
 
 	oldVal := types.RValidator{
@@ -26,6 +28,9 @@ func (k Keeper) ProcessUpdateRValidatorProposal(ctx sdk.Context, p *types.Update
 		return types.ErrOldEqualNewRValidator
 	}
 
+	if err := k.RBankKeeper.CheckValAddress(ctx, p.Denom, p.OldAddress); err != nil {
+		return err
+	}
 	if err := k.RBankKeeper.CheckValAddress(ctx, p.Denom, p.NewAddress); err != nil {
 		return err
 	}

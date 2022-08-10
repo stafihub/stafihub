@@ -23,13 +23,18 @@ Install `go` by following the [official docs](https://golang.org/doc/install).
 Remember to set your `$PATH` environment variable, for example:
 
 ```bash
-mkdir -p $HOME/go/bin
-echo "export PATH=$PATH:$(go env GOPATH)/bin" >> ~/.bash_profile
-source ~/.bash_profile
+cd $HOME
+wget -O go1.18.2.linux-amd64.tar.gz https://go.dev/dl/go1.18.2.linux-amd64.tar.gz
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz && rm go1.18.2.linux-amd64.tar.gz
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bashrc
+echo 'export GOPATH=$HOME/go' >> $HOME/.bashrc
+echo 'export GO111MODULE=on' >> $HOME/.bashrc
+echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc && . $HOME/.bashrc
+go version
 ```
 
 ::: tip
-**Go 1.17+** or later is required for the Cosmos SDK.
+**Go 1.18+** or later is required for the Cosmos SDK.
 :::
 
 ## Install the binaries
