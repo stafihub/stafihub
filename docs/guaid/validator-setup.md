@@ -37,7 +37,7 @@ stafihubd tx staking create-validator \
   --commission-max-change-rate="0.01" \
   --min-self-delegation="1000000" \
   --gas="auto" \
-  --gas-prices="0.0025ufis" \
+  --gas-prices="0.025ufis" \
   --from=<key_name>
 ```
 
@@ -46,7 +46,7 @@ When specifying commission parameters, the `commission-max-change-rate` is used 
 :::
 
 ::: tip
-`Min-self-delegation` is a stritly positive integer that represents the minimum amount of self-delegated voting power your validator must always have. A `min-self-delegation` of `1000000` means your validator will never have a self-delegation lower than `1fis`
+`Min-self-delegation` is a stritly positive integer that represents the minimum amount of self-delegated voting power your validator must always have. A `min-self-delegation` of `1000000` means your validator will never have a self-delegation lower than `1FIS`
 :::
 
 You can confirm that you are in the validator set by using a third party explorer.
@@ -94,7 +94,7 @@ You can then submit your `gentx` on the [repository](https://github.com/stafihub
 
 ## Edit Validator Description
 
-You can edit your validator's public description. This info is to identify your validator, and will be relied on by delegators to decide which validators to stake to. Make sure to provide input for every flag below. If a flag is not included in the command the field will default to empty (`--moniker` defaults to the machine name) if the field has never been set or remain the same if it has been set in the past.
+You can edit your validator's public description. This info is to identify your validator, and will be relied on by delegators to decide which validators to stake to. Make sure to provide input for every flag below. If a flag is not included in the command the field will default to empty if the field has never been set or remain the same if it has been set in the past.
 
 The <key_name> specifies which validator you are editing. If you choose to not include certain flags, remember that the --from flag must be included to identify the validator to update.
 
@@ -102,13 +102,12 @@ The `--identity` can be used as to verify identity with systems like Keybase or 
 
 ```bash
 stafihubd tx staking edit-validator
-  --moniker="choose a moniker" \
-  --website="https://stafihub.network" \
-  --identity=6A0D65E29A4CBC8E \
+  --new-moniker="choose a moniker" \
+  --website="https://stafihub.io" \
   --details="To infinity and beyond!" \
   --chain-id=<chain_id> \
   --gas="auto" \
-  --gas-prices="0.0025ufis" \
+  --gas-prices="0.025ufis" \
   --from=<key_name> \
   --commission-rate="0.10"
 ```
@@ -155,7 +154,7 @@ Your validator is active if the following command returns anything:
 stafihubd query tendermint-validator-set | grep "$(stafihubd tendermint show-address)"
 ```
 
-You should now see your validator in one of the Stafihub explorers. You are looking for the `bech32` encoded `address` in the `~/.gaia/config/priv_validator.json` file.
+You should now see your validator in one of the Stafihub explorers. You are looking for the `bech32` encoded `address` in the `~/.stafihub/config/priv_validator.json` file.
 
 ::: warning Note
 To be in the validator set, you need to have more total voting power than the 100th validator.

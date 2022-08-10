@@ -8,11 +8,11 @@ This is work in progress. Mechanisms and values are susceptible to change.
 
 ### What is a validator?
 
-The stafihub is based on [Tendermint](https://tendermint.com/docs/introduction/what-is-tendermint.html), which relies on a set of validators to secure the network. The role of validators is to run a full-node and participate in consensus by broadcasting votes which contain cryptographic signatures signed by their private key. Validators commit new blocks in the blockchain and receive revenue in exchange for their work. They must also participate in governance by voting on proposals. Validators are weighted according to their total stake.
+The StaFiHub is based on [Tendermint](https://tendermint.com/docs/introduction/what-is-tendermint.html), which relies on a set of validators to secure the network. The role of validators is to run a full-node and participate in consensus by broadcasting votes which contain cryptographic signatures signed by their private key. Validators commit new blocks in the blockchain and receive revenue in exchange for their work. They must also participate in governance by voting on proposals. Validators are weighted according to their total stake.
 
 ### What is 'staking'?
 
-The Stafihub is a public Proof-Of-Stake (PoS) blockchain, meaning that the weight of validators is determined by the amount of staking tokens (Fiss) bonded as collateral. These Fiss can be self-delegated directly by the validator or delegated to them by other Fis holders.
+The StaFiHub is a Proof-Of-Stake (PoS) blockchain, meaning that the weight of validators is determined by the amount of staking tokens (FIS) bonded as collateral. These FIS can be self-delegated directly by the validator or delegated to them by other FIS holders.
 
 Any user in the system can declare their intention to become a validator by sending a `create-validator` transaction. From there, they become validator candidates.
 
@@ -26,7 +26,7 @@ Of course, it is possible and encouraged for users to run full-nodes even if the
 
 ### What is a delegator?
 
-Delegators are Fis holders who cannot, or do not want to run a validator themselves. Fis holders can delegate Fiss to a validator and obtain a part of their revenue in exchange (for more detail on how revenue is distributed, see [**What is the incentive to stake?**](#what-is-the-incentive-to-stake?) and [**What are validators commission?**](#what-are-validators-commission?) sections below).
+Delegators are FIS holders who cannot, or do not want to run a validator themselves. FIS holders can delegate FIS to a validator and obtain a part of their revenue in exchange (for more detail on how revenue is distributed, see [**What is the incentive to stake?**](#what-is-the-incentive-to-stake?) and [**What are validators commission?**](#what-are-validators-commission?) sections below).
 
 Because they share revenue with their validators, delegators also share risks. Should a validator misbehave, each of their delegators will be partially slashed in proportion to their delegated stake. This is why delegators should perform due diligence on validators before delegating, as well as spreading their stake over multiple validators.
 
@@ -46,9 +46,9 @@ Any participant in the network can signal that they want to become a validator b
 - **Initial commission rate**: The commission rate on block rewards and fees charged to delegators.
 - **Maximum commission:** The maximum commission rate which this validator can charge. This parameter cannot be changed after `create-validator` is processed.
 - **Commission max change rate:** The maximum daily increase of the validator commission. This parameter cannot be changed after `create-validator` is processed.
-- **Minimum self-delegation:** Minimum amount of Fiss the validator needs to have bonded at all time. If the validator's self-delegated stake falls below this limit, their entire staking pool will unbond.
+- **Minimum self-delegation:** Minimum amount of FIS the validator needs to have bonded at all time. If the validator's self-delegated stake falls below this limit, their entire staking pool will unbond.
 
-Once a validator is created, Fis holders can delegate Fiss to them, effectively adding stake to their pool. The total stake of an address is the combination of Fiss bonded by delegators and Fiss self-bonded by the entity which designated themselves.
+Once a validator is created, FIS holders can delegate FIS to them, effectively adding stake to their pool. The total stake of an address is the combination of FIS bonded by delegators and FIS self-bonded by the entity which designated themselves.
 
 Out of all validator candidates that signaled themselves, the 125 with the most total stake are the ones who are designated as validators. They become **validators** If a validator's total stake falls below the top 125 then that validator loses their validator privileges: they don't participate in consensus and generate rewards any more. Over time, the maximum number of validators may be increased via on-chain governance proposal.
 
@@ -65,9 +65,9 @@ We view testnet participation as a great way to signal to the community that you
 In short, there are two types of keys:
 
 - **Tendermint Key**: This is a unique key used to sign consensus votes.
-  - It is associated with a public key `stafivalconspub` (Get this value with `gaiad tendermint show-validator`)
-  - It is generated when the node is created with gaiad init.
-- **Application key**: This key is created from `gaiad` and used to sign transactions. Application keys are associated with a public key prefixed by `stafipub` and an address prefixed by `stafi`. Both are derived from account keys generated by `gaiad keys add`.
+  - It is associated with a public key `stafivalconspub` (Get this value with `stafihubd tendermint show-validator`)
+  - It is generated when the node is created with stafihubd init.
+- **Application key**: This key is created from `stafihubd` and used to sign transactions. Application keys are associated with a public key prefixed by `stafipub` and an address prefixed by `stafi`. Both are derived from account keys generated by `stafihubd keys add`.
 
 Note: A validator's operator key is directly tied to an application key, but
 uses reserved prefixes solely for this purpose: `stafivaloper` and `stafivaloperpub`
@@ -78,22 +78,22 @@ After a validator is created with a `create-validator` transaction, they can be 
 
 - `in validator set`: Validator is in the active set and participates in consensus. Validator is earning rewards and can be slashed for misbehaviour.
 - `jailed`: Validator misbehaved and is in jail, i.e. outisde of the validator set. If the jailing is due to being offline for too long, the validator can send an `unjail` transaction in order to re-enter the validator set. If the jailing is due to double signing, the validator cannot unjail.
-- `unbonded`: Validator is not in the active set, and therefore not signing blocs. Validator cannot be slashed, and does not earn any reward. It is still possible to delegate Fiss to this validator. Un-delegating from an `unbonded` validator is immediate.
+- `unbonded`: Validator is not in the active set, and therefore not signing blocs. Validator cannot be slashed, and does not earn any reward. It is still possible to delegate FIS to this validator. Un-delegating from an `unbonded` validator is immediate.
 
 ### What is 'self-delegation'? How can I increase my 'self-delegation'?
 
 Self-delegation is delegation from a validator to themselves. This amount can be increases by sending a `delegate` transaction from your validator's `application` application key.
 
-### Is there a minimum amount of Fiss that must be delegated to be an active (=bonded) validator?
+### Is there a minimum amount of FIS that must be delegated to be an active (=bonded) validator?
 
-The minimum is `1 Fis`.
+The minimum is `1 FIS`.
 
 ### How will delegators choose their validators?
 
 Delegators are free to choose validators according to their own subjective criteria. This said, criteria anticipated to be important include:
 
-- **Amount of self-delegated Fiss:** Number of Fiss a validator self-delegated to themselves. A validator with a higher amount of self-delegated Fiss has more skin in the game, making them more liable for their actions.
-- **Amount of delegated Fiss:** Total number of Fiss delegated to a validator. A high voting power shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Bigger validators also decrease the decentralisation of the network.
+- **Amount of self-delegated FIS:** Number of FIS a validator self-delegated to themselves. A validator with a higher amount of self-delegated FIS has more skin in the game, making them more liable for their actions.
+- **Amount of delegated FIS:** Total number of FIS delegated to a validator. A high voting power shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Bigger validators also decrease the decentralisation of the network.
 - **Commission rate:** Commission applied on revenue by validators before it is distributed to their delegators.
 - **Track record:** Delegators will likely look at the track record of the validators they plan to delegate to. This includes seniority, past votes on proposals, historical average uptime and how often the node was compromised.
 
@@ -116,29 +116,29 @@ Additionally, validators are expected to be active members of the community. The
 
 ### What does 'participate in governance' entail?
 
-Validators and delegators on the Stafihub can vote on proposals to change operational parameters (such as the block gas limit), coordinate upgrades, or make a decision on any given matter.
+Validators and delegators on the StaFiHub can vote on proposals to change operational parameters (such as the block gas limit), coordinate upgrades, or make a decision on any given matter.
 
 Validators play a special role in the governance system. Being the pillars of the system, they are required to vote on every proposal. It is especially important since delegators who do not vote will inherit the vote of their validator.
 
 ### What does staking imply?
 
-Staking Fiss can be thought of as a safety deposit on validation activities. When a validator or a delegator wants to retrieve part or all of their deposit, they send an `unbonding` transaction. Then, Fiss undergo a **3 weeks unbonding period** during which they are liable to being slashed for potential misbehaviors committed by the validator before the unbonding process started.
+Staking FIS can be thought of as a safety deposit on validation activities. When a validator or a delegator wants to retrieve part or all of their deposit, they send an `unbonding` transaction. Then, FIS undergo a **3 weeks unbonding period** during which they are liable to being slashed for potential misbehaviors committed by the validator before the unbonding process started.
 
-Validators, and by association delegators, receive block rewards, fees, and have the right to participate in governance. If a validator misbehaves, a certain portion of their total stake is slashed. This means that every delegator that bonded Fiss to this validator gets penalized in proportion to their bonded stake. Delegators are therefore incentivized to delegate to validators that they anticipate will function safely.
+Validators, and by association delegators, receive block rewards, fees, and have the right to participate in governance. If a validator misbehaves, a certain portion of their total stake is slashed. This means that every delegator that bonded FIS to this validator gets penalized in proportion to their bonded stake. Delegators are therefore incentivized to delegate to validators that they anticipate will function safely.
 
-### Can a validator run away with their delegators' Fiss?
+### Can a validator run away with their delegators' FIS?
 
-By delegating to a validator, a user delegates voting power. The more voting power a validator have, the more weight they have in the consensus and governance processes. This does not mean that the validator has custody of their delegators' Fiss. **By no means can a validator run away with its delegator's funds**.
+By delegating to a validator, a user delegates voting power. The more voting power a validator have, the more weight they have in the consensus and governance processes. This does not mean that the validator has custody of their delegators' FIS. **By no means can a validator run away with its delegator's funds**.
 
 Even though delegated funds cannot be stolen by their validators, delegators are still liable if their validators misbehave.
 
-### How often will a validator be chosen to propose the next block? Does it go up with the quantity of bonded Fiss?
+### How often will a validator be chosen to propose the next block? Does it go up with the quantity of bonded FIS?
 
-The validator that is selected to propose the next block is called proposer. Each proposer is selected deterministically, and the frequency of being chosen is proportional to the voting power (i.e. amount of bonded Fiss) of the validator. For example, if the total bonded stake across all validators is 100 Fiss and a validator's total stake is 10 Fiss, then this validator will proposer ~10% of the blocks.
+The validator that is selected to propose the next block is called proposer. Each proposer is selected deterministically, and the frequency of being chosen is proportional to the voting power (i.e. amount of bonded FIS) of the validator. For example, if the total bonded stake across all validators is 100 FIS and a validator's total stake is 10 FIS, then this validator will proposer ~10% of the blocks.
 
-### Will validators of the Stafihub ever be required to validate other zones in the Cosmos ecosystem?
+### Will validators of the StaFiHub ever be required to validate other zones in the Cosmos ecosystem?
 
-Yes, they will. If governance decides so, validators of the Stafihub may be required to validate additional zones in the Cosmos ecosystem.
+Yes, they will. If governance decides so, validators of the StaFiHub may be required to validate additional zones in the Cosmos ecosystem.
 
 ## Incentives
 
@@ -146,8 +146,8 @@ Yes, they will. If governance decides so, validators of the Stafihub may be requ
 
 Each member of a validator's staking pool earns different types of revenue:
 
-- **Block rewards:** Native tokens of applications run by validators (e.g. Fiss on the Stafihub) are inflated to produce block provisions. These provisions exist to incentivize Fis holders to bond their stake, as non-bonded Fis will be diluted over time.
-- **Transaction fees:** The Stafihub maintains a whitelist of token that are accepted as fee payment. The initial fee token is the `Fis`.
+- **Block rewards:** Native tokens of applications run by validators (e.g. FIS on the StaFiHub) are inflated to produce block provisions. These provisions exist to incentivize FIS holders to bond their stake, as non-bonded FIS will be diluted over time.
+- **Transaction fees:** The StaFiHub maintains a whitelist of token that are accepted as fee payment. The initial fee token is the `FIS`.
 
 This total revenue is divided among validators' staking pools according to each validator's weight. Then, within each validator's staking pool the revenue is divided among delegators in proportion to each delegator's stake. A commission on delegators' revenue is applied by the validator before it is distributed.
 
@@ -159,19 +159,19 @@ Validators also play a major role in governance. If a delegator does not vote, t
 
 ### What are validators commission?
 
-Revenue received by a validator's pool is split between the validator and their delegators. The validator can apply a commission on the part of the revenue that goes to their delegators. This commission is set as a percentage. Each validator is free to set their initial commission, maximum daily commission change rate and maximum commission. The Stafihub enforces the parameter that each validator sets. Only the commission rate can change after the validator is created.
+Revenue received by a validator's pool is split between the validator and their delegators. The validator can apply a commission on the part of the revenue that goes to their delegators. This commission is set as a percentage. Each validator is free to set their initial commission, maximum daily commission change rate and maximum commission. The StaFiHub enforces the parameter that each validator sets. Only the commission rate can change after the validator is created.
 
 ### How are block rewards distributed?
 
-Block rewards are distributed proportionally to all validators relative to their voting power. This means that even though each validator gains Fiss with each reward, all validators will maintain equal weight over time.
+Block rewards are distributed proportionally to all validators relative to their voting power. This means that even though each validator gains FIS with each reward, all validators will maintain equal weight over time.
 
-Let us take an example where we have 10 validators with equal voting power and a commission rate of 1%. Let us also assume that the reward for a block is 1000 Fiss and that each validator has 20% of self-bonded Fiss. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator's pool has 100 Fiss. These 100 Fiss will be distributed according to each participant's stake:
+Let us take an example where we have 10 validators with equal voting power and a commission rate of 1%. Let us also assume that the reward for a block is 1000 FIS and that each validator has 20% of self-bonded FIS. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator's pool has 100 FIS. These 100 FIS will be distributed according to each participant's stake:
 
-- Commission: `100*80%*1% = 0.8 Fiss`
-- Validator gets: `100\*20% + Commission = 20.8 Fiss`
-- All delegators get: `100\*80% - Commission = 79.2 Fiss`
+- Commission: `100*80%*1% = 0.8 FIS`
+- Validator gets: `100\*20% + Commission = 20.8 FIS`
+- All delegators get: `100\*80% - Commission = 79.2 FIS`
 
-Then, each delegator can claim their part of the 79.2 Fiss in proportion to their stake in the validator's staking pool.
+Then, each delegator can claim their part of the 79.2 FIS in proportion to their stake in the validator's staking pool.
 
 ### How are fees distributed?
 
@@ -179,28 +179,28 @@ Fees are similarly distributed with the exception that the block proposer can ge
 
 When a validator is selected to propose the next block, they must include at least 2/3 precommits of the previous block. However, there is an incentive to include more than 2/3 precommits in the form of a bonus. The bonus is linear: it ranges from 1% if the proposer includes 2/3rd precommits (minimum for the block to be valid) to 5% if the proposer includes 100% precommits. Of course the proposer should not wait too long or other validators may timeout and move on to the next proposer. As such, validators have to find a balance between wait-time to get the most signatures and risk of losing out on proposing the next block. This mechanism aims to incentivize non-empty block proposals, better networking between validators as well as to mitigate censorship.
 
-Let's take a concrete example to illustrate the aforementioned concept. In this example, there are 10 validators with equal stake. Each of them applies a 1% commission rate and has 20% of self-delegated Fiss. Now comes a successful block that collects a total of 1025.51020408 Fiss in fees.
+Let's take a concrete example to illustrate the aforementioned concept. In this example, there are 10 validators with equal stake. Each of them applies a 1% commission rate and has 20% of self-delegated FIS. Now comes a successful block that collects a total of 1025.51020408 FIS in fees.
 
-First, a 2% tax is applied. The corresponding Fiss go to the reserve pool. Reserve pool's funds can be allocated through governance to fund bounties and upgrades.
+First, a 2% tax is applied. The corresponding FIS go to the reserve pool. Reserve pool's funds can be allocated through governance to fund bounties and upgrades.
 
-- `2% * 1025.51020408 = 20.51020408` Fiss go to the reserve pool.
+- `2% * 1025.51020408 = 20.51020408` FIS go to the reserve pool.
 
-1005 Fiss now remain. Let's assume that the proposer included 100% of the signatures in its block. It thus obtains the full bonus of 5%.
+1005 FIS now remain. Let's assume that the proposer included 100% of the signatures in its block. It thus obtains the full bonus of 5%.
 
 We have to solve this simple equation to find the reward R for each validator:
 
 `9*R + R + R*5% = 1005 ⇔ R = 1005/10.05 = 100`
 
 - For the proposer validator:
-  - The pool obtains `R + R * 5%`: 105 Fiss
-  - Commission: `105 * 80% * 1%` = 0.84 Fiss
-  - Validator's reward: `105 * 20% + Commission` = 21.84 Fiss
-  - Delegators' rewards: `105 * 80% - Commission` = 83.16 Fiss (each delegator will be able to claim its portion of these rewards in proportion to their stake)
+  - The pool obtains `R + R * 5%`: 105 FIS
+  - Commission: `105 * 80% * 1%` = 0.84 FIS
+  - Validator's reward: `105 * 20% + Commission` = 21.84 FIS
+  - Delegators' rewards: `105 * 80% - Commission` = 83.16 FIS (each delegator will be able to claim its portion of these rewards in proportion to their stake)
 - For each non-proposer validator:
-  - The pool obtains R: 100 Fiss
-  - Commission: `100 * 80% * 1%` = 0.8 Fiss
-  - Validator's reward: `100 * 20% + Commission` = 20.8 Fiss
-  - Delegators' rewards: `100 * 80% - Commission` = 79.2 Fiss (each delegator will be able to claim their portion of these rewards in proportion to their stake)
+  - The pool obtains R: 100 FIS
+  - Commission: `100 * 80% * 1%` = 0.8 FIS
+  - Validator's reward: `100 * 20% + Commission` = 20.8 FIS
+  - Delegators' rewards: `100 * 80% - Commission` = 79.2 FIS (each delegator will be able to claim their portion of these rewards in proportion to their stake)
 
 ### What are the slashing conditions?
 
@@ -209,15 +209,15 @@ If a validator misbehaves, their delegated stake will be partially slashed. Ther
 - **Double signing:** If someone reports on chain A that a validator signed two blocks at the same height on chain A and chain B, and if chain A and chain B share a common ancestor, then this validator will get slashed by 5% on chain A.
 - **Downtime:** If a validator misses more than 95% of the last 10.000 blocks, they will get slashed by 0.01%.
 
-### Do validators need to self-delegate Fiss?
+### Do validators need to self-delegate FIS?
 
-Yes, they do need to self-delegate at least `1 Fis`. Even though there is no obligation for validators to self-delegate more than `1 Fis`, delegators should want their validator to have more self-delegated Fiss in their staking pool. In other words, validators should have skin in the game.
+Yes, they do need to self-delegate at least `1 FIS`. Even though there is no obligation for validators to self-delegate more than `1 FIS`, delegators should want their validator to have more self-delegated FIS in their staking pool. In other words, validators should have skin in the game.
 
-In order for delegators to have some guarantee about how much skin-in-the-game their validator has, the latter can signal a minimum amount of self-delegated Fiss. If a validator's self-delegation goes below the limit that it predefined, this validator and all of its delegators will unbond.
+In order for delegators to have some guarantee about how much skin-in-the-game their validator has, the latter can signal a minimum amount of self-delegated FIS. If a validator's self-delegation goes below the limit that it predefined, this validator and all of its delegators will unbond.
 
 ### How to prevent concentration of stake in the hands of a few top validators?
 
-For now the community is expected to behave in a smart and self-preserving way. When a mining pool in Bitcoin gets too much mining power the community usually stops contributing to that pool. The Stafihub will rely on the same effect initially. Other mechanisms are in place to smoothen this process as much as possible:
+For now the community is expected to behave in a smart and self-preserving way. When a mining pool in Bitcoin gets too much mining power the community usually stops contributing to that pool. The StaFiHub will rely on the same effect initially. Other mechanisms are in place to smoothen this process as much as possible:
 
 - **Penalty-free re-delegation:** This is to allow delegators to easily switch from one validator to another, in order to reduce validator stickiness.
 - **UI warning:** Wallets can implement warnings that will be displayed to users if they want to delegate to a validator that already has a significant amount of staking power.
@@ -232,7 +232,7 @@ We expect that a modest level of hardware specifications will be needed initiall
 
 ### What are software requirements?
 
-In addition to running a Stafihub node, validators should develop monitoring, alerting and management solutions.
+In addition to running a StaFiHub node, validators should develop monitoring, alerting and management solutions.
 
 ### What are bandwidth requirements?
 
