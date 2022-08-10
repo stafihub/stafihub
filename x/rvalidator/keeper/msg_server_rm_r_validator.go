@@ -15,6 +15,14 @@ func (k msgServer) RmRValidator(goCtx context.Context, msg *types.MsgRmRValidato
 	if !isAdmin {
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
+	newVal := types.RValidator{
+		Denom:       msg.Denom,
+		PoolAddress: msg.PoolAddress,
+		ValAddress:  msg.NewAddress,
+	}
+	if !k.Keeper.HasSelectedRValidator(ctx, &newVal) {
+		return nil, types.ErrRValidatorNotExist
+	}
 
 	latestVotedCycle := k.GetLatestVotedCycle(ctx, msg.Denom, msg.PoolAddress)
 	willUseCycle := types.Cycle{
