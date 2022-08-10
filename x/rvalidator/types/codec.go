@@ -15,6 +15,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetCycleSeconds{}, "rvalidator/SetCycleSeconds", nil)
 	cdc.RegisterConcrete(&MsgSetShuffleSeconds{}, "rvalidator/SetShuffleSeconds", nil)
 	cdc.RegisterConcrete(&MsgAddRValidator{}, "rvalidator/AddRValidator", nil)
+	cdc.RegisterConcrete(&MsgRmRValidator{}, "rvalidator/RmRValidator", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -41,6 +42,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgAddRValidator{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmRValidator{},
 	)
 	// this line is used by starport scaffolding # 3
 
