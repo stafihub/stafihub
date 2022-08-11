@@ -18,4 +18,5 @@ var (
 	ErrLedgerChainEraNotExist              = sdkerrors.Register(ModuleName, 1108, "ledger chain era not exist")
 	ErrDealingRvalidatorNotFound           = sdkerrors.Register(ModuleName, 1109, "dealing rvalidator not found")
 	ErrOldEqualNewRValidator               = sdkerrors.Register(ModuleName, 1110, "old euqal new rValidator")
+	ErrRValidatorAlreadyInit               = sdkerrors.Register(ModuleName, 1111, "rValidator already init")
 )

@@ -8,6 +8,7 @@ import (
 	sudoTypes "github.com/stafihub/stafihub/x/sudo/types"
 )
 
+// init rvalidator and can only init once
 func (k msgServer) InitRValidator(goCtx context.Context, msg *types.MsgInitRValidator) (*types.MsgInitRValidatorResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -15,6 +16,12 @@ func (k msgServer) InitRValidator(goCtx context.Context, msg *types.MsgInitRVali
 	if !isAdmin {
 		return nil, sudoTypes.ErrCreatorNotAdmin
 	}
+
+	rvalidatorList := k.Keeper.GetSelectedRValidatorListByDenomPoolAddress(ctx, msg.Denom, msg.PoolAddress)
+	if len(rvalidatorList) > 0 {
+		return nil, types.ErrRValidatorAlreadyInit
+	}
+
 	if err := k.RBankKeeper.CheckAccAddress(ctx, msg.Denom, msg.PoolAddress); err != nil {
 		return nil, err
 	}
