@@ -46,7 +46,8 @@ func CmdUpdateRValidatorReport() *cobra.Command {
 				Version:     argCycleVersion.Uint64(),
 				Number:      argCycleNumber.Uint64(),
 			}
-			content := types.NewUpdateRValidatorReportProposal(clientCtx.GetFromAddress().String(),
+			content := types.NewUpdateRValidatorReportProposal(
+				clientCtx.GetFromAddress().String(),
 				argDenom,
 				argPoolAddress,
 				&cycle, types.UpdateRValidatorStatus(status))

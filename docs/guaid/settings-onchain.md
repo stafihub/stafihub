@@ -14,7 +14,7 @@ stafihubd query ledger protocol-fee-receiver
 
 ```bash
 # set rtoken metadata
-stafihubd tx rbank add-denom cosmos cosmosvaloper ./metadata_example.json --chain-id local-stafihub --from admin --keyring-backend file
+stafihubd tx rbank add-denom cosmos cosmosvaloper ./metadata/metadata_ratom.json --chain-id local-stafihub --from admin --keyring-backend file
 
 stafihubd query bank denom-metadata
 
@@ -24,11 +24,6 @@ stafihubd query rbank address-prefix uratom
 stafihubd tx ledger set-relay-fee-receiver uratom stafi1mgjkpyfm00mxk0nmhvfvwhlr65067d538l6cxa --from admin --chain-id local-stafihub --keyring-backend file
 
 stafihubd query ledger relay-fee-receiver uratom
-
-# set pool detail for multisig/ica pool
-stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
-
-stafihubd query ledger pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
 
 # this will init bonded pool, exchange rate, pipeline
 stafihubd tx ledger init-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
@@ -41,23 +36,25 @@ stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwp
 
 
 
-
 # add relayers
 stafihubd tx relayers add-relayers ledger uratom stafi1ychj8z22pw0ruc65mx8nvdn7ca9qylpkauetvx:stafi1ukq4mtq604prn5yxul7syh5ysvj0w5jrclvrvc --keyring-backend file --from admin --chain-id local-stafihub
 
 stafihubd query relayers relayers ledger uratom
-
 
 # set threshold
 stafihubd tx relayers set-threshold ledger uratom 1 --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query relayers threshold ledger uratom
 
-
 # set params used by relay
 stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query ledger r-params uratom
+
+# set pool detail for multisig/ica pool
+stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd query ledger pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
 
 
 
@@ -112,6 +109,9 @@ stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgp
 stafihubd tx rvalidator add-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper1cad0efr25faywnjp8qp36l8zlqa2sgz0h686mv  --chain-id local-stafihub --keyring-backend file --from admin
 
 stafihubd q rvalidator r-validator-list uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
+# rm rvalidator
+stafihubd tx rvalidator rm-r-validator uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmosvaloper1cad0efr25faywnjp8qp36l8zlqa2sgz0h686mv cosmosvaloper129kf5egy80e8me93lg3h5lk54kp0tle7w9npre --from admin --chain-id local-stafihub --keyring-backend file
 ```
 
 

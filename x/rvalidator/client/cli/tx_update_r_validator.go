@@ -43,7 +43,8 @@ func CmdUpdateRValidator() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			content := types.NewUpdateRValidatorProposal(clientCtx.GetFromAddress().String(),
+			content := types.NewUpdateRValidatorProposal(
+				clientCtx.GetFromAddress().String(),
 				argDenom,
 				argPoolAddress,
 				argOldAddress,
