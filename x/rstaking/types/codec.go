@@ -15,6 +15,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgAddDelegatorToWhitelist{}, "rstaking/AddDelegatorToWhitelist", nil)
 	cdc.RegisterConcrete(&MsgToggleDelegatorWhitelistSwitch{}, "rstaking/ToggleDelegatorWhitelistSwitch", nil)
 	cdc.RegisterConcrete(&MsgProvideToken{}, "rstaking/ProvideToken", nil)
+	cdc.RegisterConcrete(&MsgRmDelegatorFromWhitelist{}, "rstaking/RmDelegatorFromWhitelist", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -39,6 +40,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgProvideToken{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRmDelegatorFromWhitelist{},
 	)
 	// this line is used by starport scaffolding # 3
 

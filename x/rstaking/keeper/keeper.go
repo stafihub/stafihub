@@ -162,6 +162,11 @@ func (k Keeper) AddDelegatorAddressToWhitelist(ctx sdk.Context, delegatorAddress
 	store.Set(types.DelegatorAddressStoreKey(delegatorAddress), []byte{})
 }
 
+func (k Keeper) RemoveDelegatorAddressToWhitelist(ctx sdk.Context, delegatorAddress sdk.AccAddress) {
+	store := ctx.KVStore(k.storeKey)
+	store.Delete(types.DelegatorAddressStoreKey(delegatorAddress))
+}
+
 func (k Keeper) HasDelegatorAddressInWhitelist(ctx sdk.Context, delegatorAddress sdk.AccAddress) bool {
 	store := ctx.KVStore(k.storeKey)
 	return store.Has(types.DelegatorAddressStoreKey(delegatorAddress))
@@ -179,7 +184,7 @@ func (k Keeper) GetDelegatorAddressWhitelist(ctx sdk.Context) []string {
 			continue
 		}
 
-		valList = append(valList, sdk.ValAddress(key[1:]).String())
+		valList = append(valList, sdk.AccAddress(key[1:]).String())
 	}
 	return valList
 }

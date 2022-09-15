@@ -12,4 +12,5 @@ var (
 	ErrInsufficientFunds           = sdkerrors.Register(ModuleName, 1101, "insufficient funds error")
 	ErrDelegatorAlreadyInWhitelist = sdkerrors.Register(ModuleName, 1102, "delegator already in whitelist error")
 	ErrDenomUnmatch                = sdkerrors.Register(ModuleName, 1103, "denom unmatch")
+	ErrDelegatorNotInWhitelist     = sdkerrors.Register(ModuleName, 1104, "delegator not in whitelist error")
 )
