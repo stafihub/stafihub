@@ -24,7 +24,7 @@ func (k msgServer) RmDelegatorFromWhitelist(goCtx context.Context, msg *types.Ms
 		return nil, types.ErrDelegatorNotInWhitelist
 	}
 
-	k.Keeper.RemoveDelegatorAddressToWhitelist(ctx, delAddress)
+	k.Keeper.RemoveDelegatorAddressFromWhitelist(ctx, delAddress)
 
 	return &types.MsgRmDelegatorFromWhitelistResponse{}, nil
 }
