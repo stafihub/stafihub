@@ -247,5 +247,5 @@ stafihubd tx bridge deposit 1 uratom 800 dccf954570063847d73746afa0b0878f2c779d4
 ### rbank multi-send
 
 ```bash
-stafihubd tx rbank multi-send ./multi_send_example.txt --from admin --keyring-backend file --from admin --chain-id local-stafihub --gas 3000000
+stafihubd tx rbank multi-send ./multi_send_example.txt --from admin --keyring-backend file --chain-id local-stafihub --gas auto
 ```
