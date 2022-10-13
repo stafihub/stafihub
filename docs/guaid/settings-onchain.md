@@ -243,3 +243,9 @@ stafihubd tx ledger liquidity-unbond cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y
 ```bash
 stafihubd tx bridge deposit 1 uratom 800 dccf954570063847d73746afa0b0878f2c779d42089c5d9a107f2aca176e985f --from my-account --chain-id local-stafihub --keyring-backend file
 ```
+
+### rbank multi-send
+
+```bash
+stafihubd tx rbank multi-send ./multi_send_example.txt --from admin --keyring-backend file --from admin --chain-id local-stafihub --gas 3000000
+```
