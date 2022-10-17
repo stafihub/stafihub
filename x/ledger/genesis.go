@@ -116,13 +116,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.UnSealMigrateInit(ctx)
 	}
 
-	for i, icaPool := range k.GetAllIcaPoolDetailList(ctx) {
+	for i, icaPool := range genState.IcaPoolDetailList {
 		k.SetIcaPoolDetail(ctx, icaPool)
 		k.SetIcaPoolIndex(ctx, icaPool.Denom, uint32(i))
 		k.SetIcaPoolDelegationAddrIndex(ctx, icaPool)
 	}
 
-	for _, interchainTxProposal := range k.GetInterchainTxProposalInfoList(ctx) {
+	for _, interchainTxProposal := range genState.InterchainTxProposalInfoList {
 		k.SetInterchainTxProposalStatus(ctx, interchainTxProposal.ProposalId, interchainTxProposal.Status)
 		k.SetInterchainTxProposalSequenceIndex(ctx, interchainTxProposal.CtrlPortId, interchainTxProposal.CtrlChannelId,
 			interchainTxProposal.Sequence, interchainTxProposal.ProposalId)
