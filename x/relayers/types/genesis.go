@@ -25,8 +25,10 @@ func (gs GenesisState) Validate() error {
 	relayerDenomMap := make(map[string]struct{})
 
 	for _, elem := range gs.Relayers {
-		if sdk.ValidateDenom(elem.Denom) != nil {
-			return fmt.Errorf("invalid denom %s", elem.Denom)
+		if elem.Arena != "bridge" {
+			if sdk.ValidateDenom(elem.Denom) != nil {
+				return fmt.Errorf("invalid denom %s", elem.Denom)
+			}
 		}
 
 		relayerDenomMap[elem.Denom] = struct{}{}
@@ -35,8 +37,10 @@ func (gs GenesisState) Validate() error {
 	thresholdDenomMap := make(map[string]struct{})
 
 	for _, elem := range gs.Thresholds {
-		if sdk.ValidateDenom(elem.Denom) != nil {
-			return fmt.Errorf("invalid denom %s", elem.Denom)
+		if elem.Arena != "bridge" {
+			if sdk.ValidateDenom(elem.Denom) != nil {
+				return fmt.Errorf("invalid denom %s", elem.Denom)
+			}
 		}
 
 		if _, ok := thresholdDenomMap[elem.Denom]; ok {
