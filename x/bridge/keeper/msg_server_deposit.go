@@ -69,7 +69,7 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 	}
 
 	//update deposit count
-	count := k.Keeper.GetDepositCount(ctx, chainId)
+	count := k.Keeper.GetDepositCountById(ctx, chainId)
 	k.Keeper.SetDepositCount(ctx, chainId, count+1)
 
 	ctx.EventManager().EmitEvent(

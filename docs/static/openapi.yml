@@ -20154,6 +20154,45 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  '/stafihub/stafihub/bridge/get_deposit_count/{chainId}':
+    get:
+      summary: Queries a list of GetDepositCount items.
+      operationId: StafihubStafihubBridgeGetDepositCount
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: chainId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Query
   /stafihub/stafihub/bridge/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -20165,8 +20204,8 @@ paths:
             type: object
             properties:
               params:
-                description: params holds all the parameters of this module.
                 type: object
+                description: Params defines the parameters for the module.
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -43951,12 +43990,18 @@ definitions:
         items:
           type: integer
           format: int64
+  stafihub.stafihub.bridge.QueryGetDepositCountResponse:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int64
   stafihub.stafihub.bridge.QueryParamsResponse:
     type: object
     properties:
       params:
-        description: params holds all the parameters of this module.
         type: object
+        description: Params defines the parameters for the module.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   stafihub.stafihub.bridge.QueryProposalDetailResponse:
     type: object

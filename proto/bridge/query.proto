@@ -49,6 +49,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/bridge/banned_denom_list";
 	}
 
+// Queries a list of GetDepositCount items.
+	rpc GetDepositCount(QueryGetDepositCountRequest) returns (QueryGetDepositCountResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/get_deposit_count/{chainId}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -108,6 +113,14 @@ message QueryBannedDenomListRequest {
 
 message QueryBannedDenomListResponse {
   repeated BannedDenom list = 1;
+}
+
+message QueryGetDepositCountRequest {
+  uint32 chainId = 1;
+}
+
+message QueryGetDepositCountResponse {
+  uint32 count = 1;
 }
 
 // this line is used by starport scaffolding # 3
