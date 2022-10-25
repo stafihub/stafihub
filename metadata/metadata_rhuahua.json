@@ -1,0 +1,20 @@
+{
+    "description": "A liquid staking representation of staked HUAHUAs",
+    "denom_units": [
+        {
+            "denom": "urhuahua",
+            "exponent": 0,
+            "aliases": [
+                "microrhuahua"
+            ]
+        },
+        {
+            "denom": "rhuahua",
+            "exponent": 6
+        }
+    ],
+    "base": "urhuahua",
+    "display": "rhuahua",
+    "name": "rHUAHUA",
+    "symbol": "rHUAHUA"
+}

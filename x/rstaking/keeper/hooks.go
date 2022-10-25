@@ -34,6 +34,9 @@ func (h Hooks) BeforeDelegationCreated(ctx sdk.Context, delAddr sdk.AccAddress, 
 
 // withdraw delegation rewards (which also increments period)
 func (h Hooks) BeforeDelegationSharesModified(ctx sdk.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress) {
+	if h.k.GetDelegatorWhitelistSwitch(ctx) && !h.k.HasDelegatorAddressInWhitelist(ctx, delAddr) {
+		panic("delegator not in whitelist")
+	}
 }
 
 // create new delegation period record

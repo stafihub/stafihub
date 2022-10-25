@@ -559,7 +559,7 @@ func (k Keeper) TotalExpectedFeeList(ctx sdk.Context) []*types.TotalExpectedFee 
 		era := binary.LittleEndian.Uint32(eraBts)
 
 		denom := string(key[1 : len(key)-4])
-		expectedFee := k.TotalExpectedActive(ctx, denom, era)
+		expectedFee := k.TotalExpectedFee(ctx, denom, era)
 
 		list = append(list, &types.TotalExpectedFee{
 			Denom: denom,

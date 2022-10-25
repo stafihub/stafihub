@@ -195,7 +195,7 @@ func (k Keeper) SetDepositCount(ctx sdk.Context, chainId uint8, count uint64) {
 	store.Set(types.DepositCountStoreKey(chainId), bts)
 }
 
-func (k Keeper) GetDepositCount(ctx sdk.Context, chainId uint8) uint64 {
+func (k Keeper) GetDepositCountById(ctx sdk.Context, chainId uint8) uint64 {
 	store := ctx.KVStore(k.storeKey)
 	bts := store.Get(types.DepositCountStoreKey(chainId))
 	if bts == nil {

@@ -17,6 +17,7 @@ service Msg {
   rpc AddDelegatorToWhitelist(MsgAddDelegatorToWhitelist) returns (MsgAddDelegatorToWhitelistResponse);
   rpc ToggleDelegatorWhitelistSwitch(MsgToggleDelegatorWhitelistSwitch) returns (MsgToggleDelegatorWhitelistSwitchResponse);
   rpc ProvideToken(MsgProvideToken) returns (MsgProvideTokenResponse);
+  rpc RmDelegatorFromWhitelist(MsgRmDelegatorFromWhitelist) returns (MsgRmDelegatorFromWhitelistResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -73,6 +74,14 @@ message MsgProvideToken {
 }
 
 message MsgProvideTokenResponse {
+}
+
+message MsgRmDelegatorFromWhitelist {
+  string creator = 1;
+  string delAddress = 2;
+}
+
+message MsgRmDelegatorFromWhitelistResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
