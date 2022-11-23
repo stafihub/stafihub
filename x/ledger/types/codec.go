@@ -3,6 +3,7 @@ package types
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
+	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -51,6 +52,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgClearCurrentEraSnapShots{},
 		&MsgSetStakingRewardCommission{},
 		&MsgSetProtocolFeeReceiver{},
+		&MsgSetUnbondRelayFee{},
+		&MsgLiquidityUnbond{},
+		&MsgSetUnbondCommission{},
 	)
 
 	registry.RegisterImplementations(
@@ -110,6 +114,12 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 }
 
 var (
-	amino     = codec.NewLegacyAmino()
-	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
+	Amino     = codec.NewLegacyAmino()
+	ModuleCdc = codec.NewAminoCodec(Amino)
 )
+
+func init() {
+	RegisterCodec(Amino)
+	cryptocodec.RegisterCrypto(Amino)
+	sdk.RegisterLegacyAminoCodec(Amino)
+}
