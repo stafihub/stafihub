@@ -63,4 +63,5 @@ func init() {
 	RegisterCodec(Amino)
 	cryptocodec.RegisterCrypto(Amino)
 	sdk.RegisterLegacyAminoCodec(Amino)
+	Amino.Seal()
 }

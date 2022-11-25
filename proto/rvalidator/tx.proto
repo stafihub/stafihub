@@ -1,6 +1,6 @@
 syntax = "proto3";
 package stafihub.stafihub.rvalidator;
-
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafihub/stafihub/x/rvalidator/types";
@@ -28,7 +28,7 @@ message MsgInitRValidatorResponse {
 message MsgSetCycleSeconds {
   string creator = 1;
   string denom = 2;
-  uint64 seconds = 3;
+  uint64 seconds = 3 [(gogoproto.jsontag) = "seconds"];
 }
 
 message MsgSetCycleSecondsResponse {
@@ -37,7 +37,7 @@ message MsgSetCycleSecondsResponse {
 message MsgSetShuffleSeconds {
   string creator = 1;
   string denom = 2;
-  uint64 seconds = 3;
+  uint64 seconds = 3 [(gogoproto.jsontag) = "seconds"];
 }
 
 message MsgSetShuffleSecondsResponse {

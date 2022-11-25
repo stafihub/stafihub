@@ -20,7 +20,7 @@ service Msg {
 
 message MsgSetMerkleRoot {
   string creator = 1;
-  uint64 round = 2;
+  uint64 round = 2 [(gogoproto.jsontag) = "round"];
   string merkleRoot = 3;
 }
 
@@ -29,8 +29,8 @@ message MsgSetMerkleRootResponse {
 
 message MsgClaim {
   string creator = 1;
-  uint64 round = 2;
-  uint64 index = 3;
+  uint64 round = 2 [(gogoproto.jsontag) = "round"];
+  uint64 index = 3 [(gogoproto.jsontag) = "index"];
   string account = 4;
   cosmos.base.v1beta1.Coin coin = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
   repeated string proof = 6;
@@ -41,7 +41,7 @@ message MsgClaimResponse {
 
 message MsgToggleClaimSwitch {
   string creator = 1;
-  uint64 round = 2;
+  uint64 round = 2 [(gogoproto.jsontag) = "round"];
 }
 
 message MsgToggleClaimSwitchResponse {

@@ -1,6 +1,7 @@
 syntax = "proto3";
 package stafihub.stafihub.relayers;
 
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/stafihub/stafihub/x/relayers/types";
@@ -33,7 +34,7 @@ message MsgSetThreshold {
   string creator = 1;
   string arena = 2;
   string denom = 3;
-  uint32 value = 4;
+  uint32 value = 4 [(gogoproto.jsontag) = "value"];
 }
 message MsgSetThresholdResponse {}
 

@@ -36,7 +36,7 @@ message MsgSetResourceidToDenomResponse {
 
 message MsgDeposit {
   string creator = 1;
-  uint32 destChainId = 2;
+  uint32 destChainId = 2 [(gogoproto.jsontag) = "destChainId"];
   string denom = 3;
   string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string receiver = 5;
@@ -47,7 +47,7 @@ message MsgDepositResponse {
 
 message MsgAddChainId {
   string creator = 1;
-  uint32 chainId = 2;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
 }
 
 message MsgAddChainIdResponse {
@@ -56,8 +56,8 @@ message MsgAddChainIdResponse {
 
 message MsgVoteProposal {
   string creator = 1;
-  uint32 chainId = 2;
-  uint64 depositNonce = 3;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+  uint64 depositNonce = 3 [(gogoproto.jsontag) = "depositNonce"];
   string resourceId = 4;
   string amount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string receiver = 6;
@@ -68,7 +68,7 @@ message MsgVoteProposalResponse {
 
 message MsgRmChainId {
   string creator = 1;
-  uint32 chainId = 2;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
 }
 
 message MsgRmChainIdResponse {
@@ -84,7 +84,7 @@ message MsgSetRelayFeeReceiverResponse {
 
 message MsgSetRelayFee {
   string creator = 1;
-  uint32 chainId = 2;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
   cosmos.base.v1beta1.Coin value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
 }
 
@@ -93,7 +93,7 @@ message MsgSetRelayFeeResponse {
 
 message MsgAddBannedDenom {
   string creator = 1;
-  uint32 chainId = 2;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
   string denom = 3;
 }
 
@@ -102,7 +102,7 @@ message MsgAddBannedDenomResponse {
 
 message MsgRmBannedDenom {
   string creator = 1;
-  uint32 chainId = 2;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
   string denom = 3;
 }
 

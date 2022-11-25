@@ -29,7 +29,7 @@ message MsgAddMintRewardActResponse {
 message MsgUpdateMintRewardAct {
   string creator = 1;
   string denom = 2;
-  uint64 cycle = 3;
+  uint64 cycle = 3 [(gogoproto.jsontag) = "cycle"];
   MintRewardActPost act = 4;
 }
 
@@ -39,8 +39,8 @@ message MsgUpdateMintRewardActResponse {
 message MsgClaimMintReward {
   string creator = 1;
   string denom = 2;
-  uint64 cycle = 3;
-  uint64 mintIndex = 4;
+  uint64 cycle = 3 [(gogoproto.jsontag) = "cycle"];
+  uint64 mintIndex = 4 [(gogoproto.jsontag) = "mintIndex"];
 }
 
 message MsgClaimMintRewardResponse {

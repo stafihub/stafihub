@@ -45,11 +45,11 @@ message CreateRewardPoolInfo {
   string rewardTokenDenom = 1;
   string totalRewardAmount = 2 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string rewardPerSecond = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  uint64 startTimestamp = 4;
+  uint64 startTimestamp = 4 [(gogoproto.jsontag) = "startTimestamp"];
 }
 
 message CreateStakeItemInfo {
-  uint64 lockSecond = 1;
+  uint64 lockSecond = 1 [(gogoproto.jsontag) = "lockSecond"];
   // user stakedPower = powerRewardRate * stakedAmount
   string powerRewardRate = 2 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
 }
@@ -60,8 +60,8 @@ message MsgAddStakePoolResponse {
 
 message MsgAddStakeItem {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint64 lockSecond = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint64 lockSecond = 3 [(gogoproto.jsontag) = "lockSecond"];
   string powerRewardRate = 4 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
   bool enable = 5;
 }
@@ -71,11 +71,11 @@ message MsgAddStakeItemResponse {
 
 message MsgAddRewardPool {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
   string rewardTokenDenom = 3;
   string totalRewardAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
   string rewardPerSecond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  uint64 startTimestamp = 6;
+  uint64 startTimestamp = 6 [(gogoproto.jsontag) = "startTimestamp"];
 }
 
 message MsgAddRewardPoolResponse {
@@ -83,9 +83,9 @@ message MsgAddRewardPoolResponse {
 
 message MsgStake {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
   string stakeAmount = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  uint32 stakeItemIndex = 4;
+  uint32 stakeItemIndex = 4 [(gogoproto.jsontag) = "stakeItemIndex"];
 }
 
 message MsgStakeResponse {
@@ -93,8 +93,8 @@ message MsgStakeResponse {
 
 message MsgClaimReward {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 stakeRecordIndex = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint32 stakeRecordIndex = 3 [(gogoproto.jsontag) = "stakeRecordIndex"];
 }
 
 message MsgClaimRewardResponse {
@@ -102,8 +102,8 @@ message MsgClaimRewardResponse {
 
 message MsgWithdraw {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 stakeRecordIndex = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint32 stakeRecordIndex = 3 [(gogoproto.jsontag) = "stakeRecordIndex"];
   string withdrawAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
@@ -112,9 +112,9 @@ message MsgWithdrawResponse {
 
 message MsgUpdateStakeItem {
   string creator = 1;
-  uint32 index = 2;
-  uint32 stakePoolIndex = 3;
-  uint64 lockSecond = 4;
+  uint32 index = 2 [(gogoproto.jsontag) = "index"];
+  uint32 stakePoolIndex = 3 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint64 lockSecond = 4 [(gogoproto.jsontag) = "lockSecond"];
   string powerRewardRate = 5 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
   bool enable = 6;
 }
@@ -150,7 +150,7 @@ message MsgAddRewardTokenResponse {
 
 message MsgSetMaxRewardPoolNumber {
   string creator = 1;
-  uint32 number = 2;
+  uint32 number = 2 [(gogoproto.jsontag) = "number"];
 }
 
 message MsgSetMaxRewardPoolNumberResponse {
@@ -158,8 +158,8 @@ message MsgSetMaxRewardPoolNumberResponse {
 
 message MsgUpdateRewardPool {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 rewardPoolIndex = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint32 rewardPoolIndex = 3 [(gogoproto.jsontag) = "rewardPoolIndex"];
   string rewardPerSecond = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
@@ -175,7 +175,7 @@ message MsgToggleProviderSwitchResponse {
 
 message MsgSetMaxStakeItemNumber {
   string creator = 1;
-  uint32 number = 2;
+  uint32 number = 2 [(gogoproto.jsontag) = "number"];
 }
 
 message MsgSetMaxStakeItemNumberResponse {
@@ -183,10 +183,10 @@ message MsgSetMaxStakeItemNumberResponse {
 
 message MsgAddReward {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 rewardPoolIndex = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint32 rewardPoolIndex = 3 [(gogoproto.jsontag) = "rewardPoolIndex"];
   string addAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
-  uint64 startTimestamp = 5;
+  uint64 startTimestamp = 5 [(gogoproto.jsontag) = "startTimestamp"];
   string rewardPerSecond = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 
@@ -195,7 +195,7 @@ message MsgAddRewardResponse {
 
 message MsgToggleEmergencySwitch {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
 }
 
 message MsgToggleEmergencySwitchResponse {
@@ -203,8 +203,8 @@ message MsgToggleEmergencySwitchResponse {
 
 message MsgEmergencyWithdraw {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 stakeRecordIndex = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint32 stakeRecordIndex = 3 [(gogoproto.jsontag) = "stakeRecordIndex"];
 }
 
 message MsgEmergencyWithdrawResponse {
@@ -236,7 +236,7 @@ message MsgRmStakeTokenResponse {
 
 message MsgSetStakeItemLimit {
   string creator = 1;
-  uint64 maxLockSecond = 2;
+  uint64 maxLockSecond = 2 [(gogoproto.jsontag) = "maxLockSecond"];
   string maxPowerRewardRate = 3 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
 }
 
@@ -245,8 +245,8 @@ message MsgSetStakeItemLimitResponse {
 
 message MsgWithdrawRewardToken {
   string creator = 1;
-  uint32 stakePoolIndex = 2;
-  uint32 rewardPoolIndex = 3;
+  uint32 stakePoolIndex = 2 [(gogoproto.jsontag) = "stakePoolIndex"];
+  uint32 rewardPoolIndex = 3 [(gogoproto.jsontag) = "rewardPoolIndex"];
   string withdrawAmount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
 }
 

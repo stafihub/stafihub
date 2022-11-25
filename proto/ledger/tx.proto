@@ -40,7 +40,7 @@ service Msg {
 message MsgSetEraUnbondLimit {
   string creator = 1;
   string denom = 2;
-  uint32 limit = 3;
+  uint32 limit = 3 [(gogoproto.jsontag) = "limit"];
 }
 
 message MsgSetEraUnbondLimitResponse {
@@ -51,7 +51,7 @@ message MsgSetPoolDetail {
   string denom = 2;
   string pool = 3;
   repeated string subAccounts = 4;
-  uint32 threshold = 5;
+  uint32 threshold = 5 [(gogoproto.jsontag) = "threshold"];
 }
 
 message MsgSetPoolDetailResponse {
@@ -122,7 +122,7 @@ message MsgSetUnbondCommissionResponse {
 message MsgSubmitSignature {
   string creator = 1;
   string denom = 2;
-  uint32 era = 3;
+  uint32 era = 3 [(gogoproto.jsontag) = "era"];
   string pool = 4;
   OriginalTxType txType = 5;
   string propId = 6;
@@ -137,8 +137,8 @@ message MsgSetRParams {
   string denom = 2;
   string gasPrice = 3;
   uint32 eraSeconds = 4;
-  int32 offset = 5;
-  uint32 bondingDuration = 6;
+  int32 offset = 5 [(gogoproto.jsontag) = "offset"];
+  uint32 bondingDuration = 6 [(gogoproto.jsontag) = "bondingDuration"];
   string leastBond = 7;
 }
 
@@ -166,9 +166,9 @@ message MsgSetRelayGasPriceResponse {
 message MsgSetEraSeconds {
   string creator = 1;
   string denom = 2;
-  uint32 eraSeconds = 3;
-  uint32 bondingDuration = 4;
-  int32 offset = 5;
+  uint32 eraSeconds = 3 [(gogoproto.jsontag) = "eraSeconds"];
+  uint32 bondingDuration = 4 [(gogoproto.jsontag) = "bondingDuration"];
+  int32 offset = 5 [(gogoproto.jsontag) = "offset"];
 }
 
 message MsgSetEraSecondsResponse {
@@ -202,7 +202,7 @@ message MsgMigrateUnbondings {
   string creator = 1;
   string denom = 2;
   string pool = 3;
-  uint32 era = 4;
+  uint32 era = 4 [(gogoproto.jsontag) = "era"];
   repeated Unbonding unbondings = 5;
 }
 
