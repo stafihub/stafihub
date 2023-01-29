@@ -115,6 +115,8 @@ draw-deps:
 clean:
 	rm -rf build/ tmp-swagger-gen/
 
+lint:
+	golangci-lint run
 
 ########################################
 ### Testing
