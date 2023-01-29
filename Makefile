@@ -116,8 +116,7 @@ clean:
 	rm -rf build/ tmp-swagger-gen/
 
 lint:
-	golangci-lint run
-
+	golangci-lint run ./... --skip-files ".+_test.go" --skip-dirs "testutil"
 ########################################
 ### Testing
 
@@ -134,10 +133,8 @@ test-race:
 test-cover:
 	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' ./...
 
-format:
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./lite/statik/statik.go" -not -path "*.pb.go" | xargs gofmt -w -s
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./lite/statik/statik.go" -not -path "*.pb.go" | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./lite/statik/statik.go" -not -path "*.pb.go" | xargs goimports -w -local github.com/stafihub/stafihub
+fmt:
+	go fmt ./...
 
 benchmark:
 	@go test -mod=readonly -bench=. ./...

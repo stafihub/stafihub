@@ -28,6 +28,6 @@ func BeginBlocker(ctx sdk.Context, k keeper.Keeper, mintKeeper types.MintKeeper)
 	err := k.GetBankKeeper().BurnCoins(ctx, types.ModuleName, mintedCoins)
 	// inflation is zero in err case
 	if err != nil {
-		k.GetBankKeeper().BurnCoins(ctx, k.GetFeeCollectorName(), mintedCoins)
+		_ = k.GetBankKeeper().BurnCoins(ctx, k.GetFeeCollectorName(), mintedCoins)
 	}
 }

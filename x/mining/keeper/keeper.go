@@ -312,7 +312,7 @@ func (k Keeper) GetRewardToken(ctx sdk.Context, denom string) (*types.RewardToke
 	}
 
 	rewardToken := types.RewardToken{}
-	k.cdc.Unmarshal(bts, &rewardToken)
+	k.cdc.MustUnmarshal(bts, &rewardToken)
 
 	return &rewardToken, true
 }
@@ -331,7 +331,7 @@ func (k Keeper) GetRewardTokenList(ctx sdk.Context) []*types.RewardToken {
 	for ; iterator.Valid(); iterator.Next() {
 		rewardToken := types.RewardToken{}
 
-		k.cdc.Unmarshal(iterator.Value(), &rewardToken)
+		k.cdc.MustUnmarshal(iterator.Value(), &rewardToken)
 		list = append(list, &rewardToken)
 	}
 	return list
