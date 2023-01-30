@@ -40936,6 +40936,11 @@ definitions:
       source tracing information path.
   ibc.applications.transfer.v1.MsgTransferResponse:
     type: object
+    properties:
+      sequence:
+        type: string
+        format: uint64
+        title: sequence number of the transfer packet sent
     description: MsgTransferResponse defines the Msg/Transfer response type.
   ibc.applications.transfer.v1.Params:
     type: object

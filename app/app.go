@@ -317,7 +317,8 @@ type App struct {
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
-	mm *module.Manager
+	mm           *module.Manager
+	configurator module.Configurator
 }
 
 // New returns a reference to an initialized Gaia.
@@ -863,7 +864,10 @@ func New(
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
 	app.mm.RegisterRoutes(app.Router(), app.QueryRouter(), encodingConfig.Amino)
-	app.mm.RegisterServices(module.NewConfigurator(app.appCodec, app.MsgServiceRouter(), app.GRPCQueryRouter()))
+	// configurator
+	app.configurator = module.NewConfigurator(app.appCodec, app.MsgServiceRouter(), app.GRPCQueryRouter())
+	app.mm.RegisterServices(app.configurator)
+	app.setupUpgradeHandlers()
 
 	// initialize stores
 	app.MountKVStores(keys)
