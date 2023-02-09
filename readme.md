@@ -20,3 +20,9 @@ If you are looking for historical genesis files and other data
 
 - [`stafihub/mainnet`](https://github.com/stafihub/network/tree/main/mainnets)
 - [`stafihub/testnet`](https://github.com/stafihub/network/tree/main/testnets)
+
+
+## Chain Upgrades
+
+- **v030** _(v0.3.0)_ - Block 2626590 - (2023-02-09 19:57:18)
+  - [Upgrade Instruction](https://github.com/stafihub/stafihub/tree/main/app/upgrades/v030)
