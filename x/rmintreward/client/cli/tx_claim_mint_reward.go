@@ -3,10 +3,10 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rmintreward/types"
 )
@@ -20,12 +20,12 @@ func CmdClaimMintReward() *cobra.Command {
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
-			argCycle, err := sdk.ParseUint(args[1])
+			argCycle, err := math.ParseUint(args[1])
 			if err != nil {
 				return err
 			}
 
-			argMintIndex, err := sdk.ParseUint(args[2])
+			argMintIndex, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}

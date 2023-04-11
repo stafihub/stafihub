@@ -24,10 +24,10 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 	willUseIndex := k.GetIcaPoolNextIndex(ctx, msg.Denom)
 	delegationOwner, withdrawalOwner := types.GetOwners(msg.Denom, willUseIndex)
 
-	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner); err != nil {
+	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner, ""); err != nil {
 		return nil, err
 	}
-	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawalOwner); err != nil {
+	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawalOwner, ""); err != nil {
 		return nil, err
 	}
 

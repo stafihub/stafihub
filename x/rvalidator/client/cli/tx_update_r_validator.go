@@ -3,10 +3,10 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rvalidator/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -24,11 +24,11 @@ func CmdUpdateRValidator() *cobra.Command {
 			argPoolAddress := args[1]
 			argOldAddress := args[2]
 			argNewAddress := args[3]
-			argCycleVersion, err := sdk.ParseUint(args[4])
+			argCycleVersion, err := math.ParseUint(args[4])
 			if err != nil {
 				return err
 			}
-			argCycleNumber, err := sdk.ParseUint(args[5])
+			argCycleNumber, err := math.ParseUint(args[5])
 			if err != nil {
 				return err
 			}

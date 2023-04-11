@@ -3,9 +3,9 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/claim/types"
 )
@@ -18,11 +18,11 @@ func CmdIsClaimed() *cobra.Command {
 		Short: "Query drop is claimed",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			reqRound, err := sdk.ParseUint(args[0])
+			reqRound, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
-			reqIndex, err := sdk.ParseUint(args[1])
+			reqIndex, err := math.ParseUint(args[1])
 			if err != nil {
 				return err
 			}

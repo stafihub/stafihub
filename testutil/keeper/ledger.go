@@ -7,7 +7,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
-	icacontrollerkeeper "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/controller/keeper"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
 	"github.com/stafihub/stafihub/x/ledger/keeper"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stretchr/testify/require"
@@ -23,8 +23,8 @@ var (
 
 func LedgerKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	ledgerOnce.Do(func() {
-		stateStore.MountStoreWithDB(ledgertoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(ledgerMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(ledgertoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(ledgerMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 	require.NoError(t, stateStore.LoadLatestVersion())
 

@@ -3,9 +3,9 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rmintreward/types"
 )
@@ -21,7 +21,7 @@ func CmdUserMintCount() *cobra.Command {
 			reqAddress := args[0]
 			reqDenom := args[1]
 
-			reqCycle, err := sdk.ParseUint(args[2])
+			reqCycle, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}

@@ -22,8 +22,8 @@ var (
 
 func MiningKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	relayersOnce.Do(func() {
-		stateStore.MountStoreWithDB(miningStoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(miningMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(miningStoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(miningMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 	require.NoError(t, stateStore.LoadLatestVersion())
 

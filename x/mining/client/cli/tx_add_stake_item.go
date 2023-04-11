@@ -3,10 +3,10 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/mining/types"
@@ -20,7 +20,7 @@ func CmdAddStakeItem() *cobra.Command {
 		Short: "Add stake item",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argLockSecond, err := sdk.ParseUint(args[0])
+			argLockSecond, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}

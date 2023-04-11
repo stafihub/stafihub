@@ -50,8 +50,8 @@ var (
 
 func SudoKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	sudoOnce.Do(func() {
-		stateStore.MountStoreWithDB(sudoStoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(sudoMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(sudoStoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(sudoMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 
 	require.NoError(t, stateStore.LoadLatestVersion())
@@ -74,16 +74,16 @@ func SudoKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 func NewParamsKeeper(encCfg *params.EncodingConfig) *paramskeeper.Keeper {
 	keyParams := sdk.NewKVStoreKey(paramstypes.StoreKey)
 	tkeyParams := sdk.NewTransientStoreKey(paramstypes.TStoreKey)
-	stateStore.MountStoreWithDB(keyParams, sdk.StoreTypeIAVL, db)
-	stateStore.MountStoreWithDB(tkeyParams, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(keyParams, storetypes.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(tkeyParams, storetypes.StoreTypeIAVL, db)
 
-	k := paramskeeper.NewKeeper(encCfg.Marshaler, encCfg.Amino, keyParams, tkeyParams)
+	k := paramskeeper.NewKeeper(encCfg.Codec, encCfg.Amino, keyParams, tkeyParams)
 	return &k
 }
 
 func NewAccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper) *authkeeper.AccountKeeper {
 	keyAcc := sdk.NewKVStoreKey(authtypes.StoreKey)
-	stateStore.MountStoreWithDB(keyAcc, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(keyAcc, storetypes.StoreTypeIAVL, db)
 
 	maccPerms := map[string][]string{
 		authtypes.FeeCollectorName:     nil,
@@ -95,22 +95,23 @@ func NewAccountKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.
 	}
 
 	k := authkeeper.NewAccountKeeper(
-		encCfg.Marshaler, // amino codec
-		keyAcc,           // target store
+		encCfg.Codec, // amino codec
+		keyAcc,       // target store
 		paramsKeeper.Subspace(authtypes.ModuleName),
 		authtypes.ProtoBaseAccount, // prototype,
 		maccPerms,
+		sdk.Bech32MainPrefix,
 	)
 	return &k
 }
 
 func NewBankKeeper(encCfg *params.EncodingConfig, paramsKeeper *paramskeeper.Keeper, accountKeeper *authkeeper.AccountKeeper) bankkeeper.Keeper {
 	storeKey := sdk.NewKVStoreKey(banktypes.StoreKey)
-	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 
 	blacklistedAddrs := make(map[string]bool)
 	return bankkeeper.NewBaseKeeper(
-		encCfg.Marshaler,
+		encCfg.Codec,
 		storeKey,
 		accountKeeper,
 		paramsKeeper.Subspace(banktypes.ModuleName),

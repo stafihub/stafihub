@@ -21,8 +21,8 @@ var (
 
 func RelayersKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	relayersOnce.Do(func() {
-		stateStore.MountStoreWithDB(relayersStoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(relayersMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(relayersStoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(relayersMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 	require.NoError(t, stateStore.LoadLatestVersion())
 

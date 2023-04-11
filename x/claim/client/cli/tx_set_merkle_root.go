@@ -3,10 +3,10 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/claim/types"
 )
@@ -19,7 +19,7 @@ func CmdSetMerkleRoot() *cobra.Command {
 		Short: "Set merkle root ",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argMerkleRound, err := sdk.ParseUint(args[0])
+			argMerkleRound, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}

@@ -25,8 +25,8 @@ var (
 
 func RStakingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	rstakeOnce.Do(func() {
-		stateStore.MountStoreWithDB(rstakeStoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(rstakeMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(rstakeStoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(rstakeMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 	require.NoError(t, stateStore.LoadLatestVersion())
 

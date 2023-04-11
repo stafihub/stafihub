@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/gov"
 	govclient "github.com/cosmos/cosmos-sdk/x/gov/client"
-	"github.com/cosmos/cosmos-sdk/x/gov/types"
+	govtypesv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	"github.com/stafihub/stafihub/utils"
 )
 
@@ -21,16 +21,16 @@ type AppModuleBasic struct {
 }
 
 // NewAppModuleBasic creates a new AppModuleBasic object
-func NewAppModuleBasic(proposalHandlers ...govclient.ProposalHandler) AppModuleBasic {
+func NewAppModuleBasic(proposalHandlers []govclient.ProposalHandler) AppModuleBasic {
 	return AppModuleBasic{
-		gov.NewAppModuleBasic(proposalHandlers...),
+		gov.NewAppModuleBasic(proposalHandlers),
 	}
 }
 
 // DefaultGenesis returns default genesis state as raw bytes for the gov
 // module.
 func (am AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
-	defaultGenesisState := types.DefaultGenesisState()
+	defaultGenesisState := govtypesv1beta1.DefaultGenesisState()
 	defaultGenesisState.DepositParams.MinDeposit[0].Denom = utils.FisDenom
 
 	return cdc.MustMarshalJSON(defaultGenesisState)

@@ -3,6 +3,7 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -19,7 +20,7 @@ func CmdSwap() *cobra.Command {
 		Short: "Swap ",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			swapPoolIndex, err := sdk.ParseUint(args[0])
+			swapPoolIndex, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}

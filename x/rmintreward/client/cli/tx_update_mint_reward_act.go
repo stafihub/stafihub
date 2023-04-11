@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rmintreward/types"
@@ -45,7 +45,7 @@ Where act.json could be like this:
 		Args: cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			denom := args[0]
-			cycleUint, err := sdk.ParseUint(args[1])
+			cycleUint, err := math.ParseUint(args[1])
 			if err != nil {
 				return err
 			}

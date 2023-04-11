@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -20,11 +21,11 @@ func CmdWithdraw() *cobra.Command {
 		Short: "Withdraw",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakePoolIndex, err := sdk.ParseUint(args[0])
+			argStakePoolIndex, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
-			argStakeRecordIndex, err := sdk.ParseUint(args[1])
+			argStakeRecordIndex, err := math.ParseUint(args[1])
 			if err != nil {
 				return err
 			}

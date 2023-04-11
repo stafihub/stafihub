@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -20,7 +21,7 @@ func CmdAddRewardPool() *cobra.Command {
 		Short: "Add reward pool",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakePoolIndex, err := sdk.ParseUint(args[0])
+			argStakePoolIndex, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
@@ -37,7 +38,7 @@ func CmdAddRewardPool() *cobra.Command {
 				return fmt.Errorf("rewardPerSecond params err")
 			}
 
-			argStartTimestamp, err := sdk.ParseUint(args[4])
+			argStartTimestamp, err := math.ParseUint(args[4])
 			if err != nil {
 				return err
 			}

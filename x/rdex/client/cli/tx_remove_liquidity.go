@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -20,7 +21,7 @@ func CmdRemoveLiquidity() *cobra.Command {
 		Short: "Remove liquidity",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			swapPoolIndex, err := sdk.ParseUint(args[0])
+			swapPoolIndex, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}

@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -20,11 +21,11 @@ func CmdClaim() *cobra.Command {
 		Short: "Claim",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argRound, err := sdk.ParseUint(args[0])
+			argRound, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
-			argIndex, err := sdk.ParseUint(args[1])
+			argIndex, err := math.ParseUint(args[1])
 			if err != nil {
 				return err
 			}

@@ -3,9 +3,9 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/mining/types"
 )
@@ -19,11 +19,11 @@ func CmdStakeReward() *cobra.Command {
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
-			stakePoolIndex, err := sdk.ParseUint(args[1])
+			stakePoolIndex, err := math.ParseUint(args[1])
 			if err != nil {
 				return err
 			}
-			reqIndex, err := sdk.ParseUint(args[2])
+			reqIndex, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}

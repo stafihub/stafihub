@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rvalidator/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
@@ -23,11 +23,11 @@ func CmdUpdateRValidatorReport() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argPoolAddress := args[1]
-			argCycleVersion, err := sdk.ParseUint(args[2])
+			argCycleVersion, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}
-			argCycleNumber, err := sdk.ParseUint(args[3])
+			argCycleNumber, err := math.ParseUint(args[3])
 			if err != nil {
 				return err
 			}

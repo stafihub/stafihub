@@ -5,13 +5,13 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	proto "github.com/gogo/protobuf/proto"
 	"github.com/stafihub/stafihub/x/ledger/types"
 
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
-	icatypes "github.com/cosmos/ibc-go/v3/modules/apps/27-interchain-accounts/types"
-	ibchost "github.com/cosmos/ibc-go/v3/modules/core/24-host"
+	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 )
 
 // Implements core logic for OnAcknowledgementPacket

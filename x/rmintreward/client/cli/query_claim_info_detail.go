@@ -3,9 +3,9 @@ package cli
 import (
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 	"github.com/stafihub/stafihub/x/rmintreward/types"
 )
@@ -20,11 +20,11 @@ func CmdClaimInfoDetail() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
 			reqDenom := args[1]
-			reqCycle, err := sdk.ParseUint(args[2])
+			reqCycle, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}
-			reqMintIndex, err := sdk.ParseUint(args[3])
+			reqMintIndex, err := math.ParseUint(args[3])
 			if err != nil {
 				return err
 			}

@@ -23,8 +23,8 @@ var (
 
 func RvoteKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	rvoteOnce.Do(func() {
-		stateStore.MountStoreWithDB(rvoteStoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(rvoteMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(rvoteStoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(rvoteMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 
 	sudoKeeper, _ := SudoKeeper(t)

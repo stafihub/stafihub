@@ -24,8 +24,8 @@ var (
 
 func RdexKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	rdexOnce.Do(func() {
-		stateStore.MountStoreWithDB(rdexStoreKey, sdk.StoreTypeIAVL, db)
-		stateStore.MountStoreWithDB(rdexMemStoreKey, sdk.StoreTypeMemory, nil)
+		stateStore.MountStoreWithDB(rdexStoreKey, storetypes.StoreTypeIAVL, db)
+		stateStore.MountStoreWithDB(rdexMemStoreKey, storetypes.StoreTypeMemory, nil)
 	})
 	require.NoError(t, stateStore.LoadLatestVersion())
 

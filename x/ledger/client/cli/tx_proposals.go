@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -220,13 +221,13 @@ func CmdInterchainTxProposal() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argPool := args[1]
-			argEra, err := sdk.ParseUint(args[2])
+			argEra, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}
 
 			txType := types.OriginalTxType(types.OriginalTxType_value[args[3]])
-			argFactor, err := sdk.ParseUint(args[4])
+			argFactor, err := math.ParseUint(args[4])
 			if err != nil {
 				return err
 			}

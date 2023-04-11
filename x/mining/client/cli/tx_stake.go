@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -20,7 +21,7 @@ func CmdStake() *cobra.Command {
 		Short: "Stake token ",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argStakePoolIndex, err := sdk.ParseUint(args[0])
+			argStakePoolIndex, err := math.ParseUint(args[0])
 			if err != nil {
 				return err
 			}
@@ -30,7 +31,7 @@ func CmdStake() *cobra.Command {
 				return fmt.Errorf("argStakeAmount err")
 			}
 
-			argStakeItemIndex, err := sdk.ParseUint(args[2])
+			argStakeItemIndex, err := math.ParseUint(args[2])
 			if err != nil {
 				return err
 			}
