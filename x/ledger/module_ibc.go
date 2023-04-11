@@ -6,7 +6,6 @@ import (
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
@@ -43,6 +42,8 @@ func (im IBCModule) OnChanOpenInit(
 	version string,
 ) (string, error) {
 	ctx.Logger().Info("OnChanOpenInit", "connectionHops", connectionHops, "portId", portID, "channelId", channelID, "conterparty", counterparty, "channelCap", channelCap.String(), "version", version)
+	// Note: The channel capability must be claimed by the authentication module in OnChanOpenInit otherwise the
+	// authentication module will not be able to send packets on the channel created for the associated interchain account.
 	if err := im.keeper.ClaimCapability(ctx, channelCap, ibchost.ChannelCapabilityPath(portID, channelID)); err != nil {
 		return version, err
 	}
@@ -58,13 +59,14 @@ func (im IBCModule) OnChanOpenAck(
 	counterpartyVersion string,
 ) error {
 	ctx.Logger().Info("OnChanOpenAck", "portId", portID, "channelId", channelID, "counterpartyChannelID", counterpartyChannelID, "counterpartyVersion", counterpartyVersion)
-	var metadata icatypes.Metadata
-	if err := icatypes.ModuleCdc.UnmarshalJSON([]byte(counterpartyVersion), &metadata); err != nil {
-		return sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal ICS-27 interchain accounts metadata")
+	connectionId, connectionEnd, err := im.keeper.IBCKeeper.ChannelKeeper.GetChannelConnection(ctx, portID, channelID)
+	if err != nil {
+		return fmt.Errorf("cannot get channel connection, portId: %s channelId: %s", portID, channelID)
 	}
 
-	controllerConnectionId := metadata.ControllerConnectionId
-	hostConnectionId := metadata.HostConnectionId
+	controllerConnectionId := connectionId
+	hostConnectionId := connectionEnd.GetCounterparty().GetConnectionID()
+
 	interchainAddress, found := im.keeper.ICAControllerKeeper.GetInterchainAccountAddress(ctx, controllerConnectionId, portID)
 	if !found {
 		return fmt.Errorf("GetInterchainAccountAddress failed for %s/%s", controllerConnectionId, portID)
@@ -150,6 +152,17 @@ func (im IBCModule) OnChanCloseConfirm(
 	channelID string,
 ) error {
 	return nil
+}
+
+func (im IBCModule) NegotiateAppVersion(
+	ctx sdk.Context,
+	order channeltypes.Order,
+	connectionID string,
+	portID string,
+	counterparty channeltypes.Counterparty,
+	proposedVersion string,
+) (version string, err error) {
+	return proposedVersion, nil
 }
 
 // ###################################################################################

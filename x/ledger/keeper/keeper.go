@@ -5,17 +5,16 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-
-	"github.com/tendermint/tendermint/libs/log"
-
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
+	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	"github.com/stafihub/stafihub/utils"
 	"github.com/stafihub/stafihub/x/ledger/types"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
@@ -32,6 +31,7 @@ type (
 
 		ICAControllerKeeper icacontrollerkeeper.Keeper
 		scopedKeeper        capabilitykeeper.ScopedKeeper
+		IBCKeeper           ibckeeper.Keeper
 	}
 )
 
@@ -48,6 +48,7 @@ func NewKeeper(
 
 	icaControllerKeeper icacontrollerkeeper.Keeper,
 	scopedKeeper capabilitykeeper.ScopedKeeper,
+	ibcKeeper ibckeeper.Keeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:      cdc,
@@ -62,6 +63,7 @@ func NewKeeper(
 
 		ICAControllerKeeper: icaControllerKeeper,
 		scopedKeeper:        scopedKeeper,
+		IBCKeeper:           ibcKeeper,
 	}
 }
 

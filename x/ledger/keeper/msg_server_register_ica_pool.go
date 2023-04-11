@@ -2,8 +2,10 @@ package keeper
 
 import (
 	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	sudotypes "github.com/stafihub/stafihub/x/sudo/types"
 )
@@ -24,10 +26,23 @@ func (k msgServer) RegisterIcaPool(goCtx context.Context, msg *types.MsgRegister
 	willUseIndex := k.GetIcaPoolNextIndex(ctx, msg.Denom)
 	delegationOwner, withdrawalOwner := types.GetOwners(msg.Denom, willUseIndex)
 
-	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner, ""); err != nil {
+	connectionEnd, found := k.IBCKeeper.ConnectionKeeper.GetConnection(ctx, msg.ConnectionId)
+	if !found {
+		return nil, types.ErrConnectionIdNotFound
+	}
+
+	appVersion := string(icatypes.ModuleCdc.MustMarshalJSON(&icatypes.Metadata{
+		Version:                icatypes.Version,
+		ControllerConnectionId: msg.ConnectionId,
+		HostConnectionId:       connectionEnd.Counterparty.ConnectionId,
+		Encoding:               icatypes.EncodingProtobuf,
+		TxType:                 icatypes.TxTypeSDKMultiMsg,
+	}))
+
+	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, delegationOwner, appVersion); err != nil {
 		return nil, err
 	}
-	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawalOwner, ""); err != nil {
+	if err := k.Keeper.ICAControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, withdrawalOwner, appVersion); err != nil {
 		return nil, err
 	}
 

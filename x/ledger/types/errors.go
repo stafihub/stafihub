@@ -51,4 +51,5 @@ var (
 	ErrInterchainTxPropIdNotFound   = sdkerrors.Register(ModuleName, 43, "interchain tx prop id not found")
 	ErrInterchainTxMsgsEmpty        = sdkerrors.Register(ModuleName, 44, "interchain tx msgs empty")
 	ErrPoolStatusUnmatch            = sdkerrors.Register(ModuleName, 45, "pool status unmatch")
+	ErrConnectionIdNotFound         = sdkerrors.Register(ModuleName, 46, "connection id not found")
 )

@@ -2,38 +2,45 @@ package keeper
 
 import (
 	"fmt"
+	"strings"
 
+	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	proto "github.com/gogo/protobuf/proto"
-	"github.com/stafihub/stafihub/x/ledger/types"
-
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
+	proto "github.com/gogo/protobuf/proto"
+	"github.com/stafihub/stafihub/x/ledger/types"
 )
 
 // Implements core logic for OnAcknowledgementPacket
 func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Packet, acknowledgement []byte) error {
-	k.Logger(ctx).Info("OnAcknowledgement start--------------------------", "acknowledgement", string(acknowledgement))
-
-	// parse packet data
-	var packetData icatypes.InterchainAccountPacketData
-	err := icatypes.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packetData)
-	if err != nil {
-		k.Logger(ctx).Error("unable to unmarshal acknowledgement packet data", "error", err, "data", packetData)
-		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
-	}
+	k.Logger(ctx).Debug("OnAcknowledgement start--------------------------", "acknowledgement", string(acknowledgement))
 
 	// parse acknowledgement
 	var ack channeltypes.Acknowledgement
-	err = channeltypes.SubModuleCdc.UnmarshalJSON(acknowledgement, &ack)
+	err := channeltypes.SubModuleCdc.UnmarshalJSON(acknowledgement, &ack)
 	if err != nil {
 		k.Logger(ctx).Error("Unable to unmarshal acknowledgement error", "error", err)
-		return err
+		return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal acknowledgement data: %s", err.Error())
 	}
-	if !ack.Success() {
+
+	var ackSuccess bool
+	switch response := ack.Response.(type) {
+	case *channeltypes.Acknowledgement_Result:
+		if len(response.Result) == 0 {
+			return errorsmod.Wrapf(channeltypes.ErrInvalidAcknowledgement, "acknowledgement result cannot be empty")
+		}
+		ackSuccess = true
+	case *channeltypes.Acknowledgement_Error:
+		ackSuccess = false
+	default:
+		return errorsmod.Wrapf(channeltypes.ErrInvalidAcknowledgement, "unsupported acknowledgement response field type %T", response)
+	}
+
+	if !ackSuccess {
 		// acknowledgement error
 		k.Logger(ctx).Info("acknowledgement error", "ack_err", ack.GetError())
 		// update interchain tx status
@@ -43,20 +50,30 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		}
 		return nil
 	}
-
 	// acknowledgement success
-	k.Logger(ctx).Info("acknowledgement success --------------------------", "ack", ack)
+	k.Logger(ctx).Debug("acknowledgement success --------------------------", "ack", ack)
 
-	// parse txMsgData
-	txMsgData := &sdk.TxMsgData{}
-	err = proto.Unmarshal(ack.GetResult(), txMsgData)
+	// parse txMsgData, ack includes tx exec result info
+	msgTypes, _, err := ParseTxMsgData(ack.GetResult())
 	if err != nil {
 		k.Logger(ctx).Error("Unable to unmarshal ack.Result", "error", err, "ack.Result", ack.GetResult())
 		return err
 	}
-	k.Logger(ctx).Info("OnAcknowledgement --------------------------", "txMsgData", txMsgData.String())
 
-	if len(txMsgData.Data) != 0 && txMsgData.Data[0].MsgType == "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress" {
+	isCallBackOfMsgSetWithdrawAddress := false
+	if len(msgTypes) != 0 && strings.EqualFold(msgTypes[0], "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress") {
+		isCallBackOfMsgSetWithdrawAddress = true
+	}
+
+	if isCallBackOfMsgSetWithdrawAddress {
+		// parse packet data
+		var packetData icatypes.InterchainAccountPacketData
+		err = icatypes.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packetData)
+		if err != nil {
+			k.Logger(ctx).Error("unable to unmarshal modulePacket data", "error", err, "data", packetData)
+			return errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal modulePacket data: %s", err.Error())
+		}
+
 		msgs, err := icatypes.DeserializeCosmosTx(k.cdc, packetData.Data)
 		if err != nil {
 			k.Logger(ctx).Info("Error decoding messages", "err", err)
@@ -90,7 +107,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		k.SetInterchainTxProposalStatus(ctx, propId, types.InterchainTxStatusSuccess)
 	}
 
-	k.Logger(ctx).Info("OnAcknowledgement end --------------------------")
+	k.Logger(ctx).Debug("OnAcknowledgement end --------------------------")
 	return nil
 }
 
@@ -104,7 +121,7 @@ func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, c
 	// Send the transaction through SubmitTx
 	_, err := k.SubmitTxs(ctx, ctrlConnectionId, delegationAddrOwner, msgs, "MsgSetWithdrawAddress")
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s", ctrlConnectionId, delegationAddrOwner, msgs)
+		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "Failed to SubmitTxs for %s, %s, %s", ctrlConnectionId, delegationAddrOwner, msgs)
 	}
 	return nil
 }
@@ -118,12 +135,12 @@ func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs 
 
 	channelID, found := k.ICAControllerKeeper.GetActiveChannelID(ctx, ctrlConnectionId, portID)
 	if !found {
-		return 0, sdkerrors.Wrapf(icatypes.ErrActiveChannelNotFound, "failed to retrieve active channel for port %s", portID)
+		return 0, errorsmod.Wrapf(icatypes.ErrActiveChannelNotFound, "failed to retrieve active channel for port %s", portID)
 	}
 
 	chanCap, found := k.scopedKeeper.GetCapability(ctx, ibchost.ChannelCapabilityPath(portID, channelID))
 	if !found {
-		return 0, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
+		return 0, errorsmod.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
 	data, err := icatypes.SerializeCosmosTx(k.cdc, msgs)
@@ -147,4 +164,37 @@ func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs 
 	}
 
 	return sequence, nil
+}
+
+// Parses ICA tx responses and returns a list of each serialized response
+// The format of the raw ack differs depending on which version of ibc-go is used
+// For v5 and prior, the message responses are stored under the `Data` attribute of TxMsgData
+// For v6 and later, the message responses are stored under the `MsgResponse` attribute of TxMsgdata
+func ParseTxMsgData(acknowledgementResult []byte) ([]string, [][]byte, error) {
+	txMsgData := &sdk.TxMsgData{}
+	if err := proto.Unmarshal(acknowledgementResult, txMsgData); err != nil {
+		return nil, nil, errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal ICS-27 tx message data: %s", err.Error())
+	}
+
+	// Unpack all the message responses based on the sdk version (determined from the length of txMsgData.Data)
+	switch len(txMsgData.Data) {
+	case 0:
+		// for SDK 0.46 and above
+		msgDatas := make([][]byte, len(txMsgData.MsgResponses))
+		msgTypes := make([]string, len(txMsgData.MsgResponses))
+		for i, msgResponse := range txMsgData.MsgResponses {
+			msgDatas[i] = msgResponse.GetValue()
+			msgTypes[i] = msgResponse.TypeUrl
+		}
+		return msgTypes, msgDatas, nil
+	default:
+		// for SDK 0.45 and below
+		var msgDatas = make([][]byte, len(txMsgData.Data))
+		var msgTypes = make([]string, len(txMsgData.Data))
+		for i, msgData := range txMsgData.Data {
+			msgDatas[i] = msgData.Data
+			msgTypes[i] = msgData.MsgType
+		}
+		return msgTypes, msgDatas, nil
+	}
 }
