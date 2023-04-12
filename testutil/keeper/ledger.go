@@ -8,6 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/controller/keeper"
+	ibckeeper "github.com/cosmos/ibc-go/v5/modules/core/keeper"
 	"github.com/stafihub/stafihub/x/ledger/keeper"
 	"github.com/stafihub/stafihub/x/ledger/types"
 	"github.com/stretchr/testify/require"
@@ -45,6 +46,7 @@ func LedgerKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 		//todo impl keepers below
 		icacontrollerkeeper.Keeper{},
 		capabilitykeeper.ScopedKeeper{},
+		ibckeeper.Keeper{},
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
