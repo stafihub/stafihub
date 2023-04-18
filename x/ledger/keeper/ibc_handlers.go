@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/hex"
 	"fmt"
 	"strings"
 
@@ -51,7 +52,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 		return nil
 	}
 	// acknowledgement success
-	k.Logger(ctx).Debug("acknowledgement success --------------------------", "ack", ack)
+	k.Logger(ctx).Debug("acknowledgement success --------------------------", "ack", hex.EncodeToString(ack.GetResult()))
 
 	// parse txMsgData, ack includes tx exec result info
 	msgTypes, _, err := ParseTxMsgData(ack.GetResult())
@@ -61,8 +62,11 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 	}
 
 	isCallBackOfMsgSetWithdrawAddress := false
-	if len(msgTypes) != 0 && strings.EqualFold(msgTypes[0], "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress") {
-		isCallBackOfMsgSetWithdrawAddress = true
+	if len(msgTypes) != 0 {
+		if strings.EqualFold(msgTypes[0], "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress") ||
+			strings.EqualFold(msgTypes[0], "/cosmos.distribution.v1beta1.MsgSetWithdrawAddressResponse") {
+			isCallBackOfMsgSetWithdrawAddress = true
+		}
 	}
 
 	if isCallBackOfMsgSetWithdrawAddress {
@@ -184,7 +188,7 @@ func ParseTxMsgData(acknowledgementResult []byte) ([]string, [][]byte, error) {
 		msgTypes := make([]string, len(txMsgData.MsgResponses))
 		for i, msgResponse := range txMsgData.MsgResponses {
 			msgDatas[i] = msgResponse.GetValue()
-			msgTypes[i] = msgResponse.TypeUrl
+			msgTypes[i] = msgResponse.GetTypeUrl()
 		}
 		return msgTypes, msgDatas, nil
 	default:

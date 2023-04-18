@@ -1,12 +1,14 @@
 package keeper_test
 
 import (
+	"encoding/hex"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	testkeeper "github.com/stafihub/stafihub/testutil/keeper"
 	"github.com/stafihub/stafihub/testutil/sample"
 	"github.com/stafihub/stafihub/utils"
+	"github.com/stafihub/stafihub/x/ledger/keeper"
 	"github.com/stretchr/testify/require"
 )
 
@@ -89,4 +91,24 @@ func TestKeeper_RtokenToToken(t *testing.T) {
 	rtoken = sdk.NewInt(100)
 	token = k.RtokenToToken(ctx, sample.TestDenom, rtoken)
 	require.Equal(t, sdk.NewInt(120), token)
+}
+
+func TestParseAck(t *testing.T) {
+	acks := []string{
+		"123c0a3a2f636f736d6f732e646973747269627574696f6e2e763162657461312e4d7367536574576974686472617741646472657373526573706f6e7365",
+		"0a340a322f636f736d6f732e646973747269627574696f6e2e763162657461312e4d7367536574576974686472617741646472657373",
+	}
+
+	for _, a := range acks {
+		bts, err := hex.DecodeString(a)
+		if err != nil {
+			t.Fatal(err)
+		}
+		msgTypes, msgData, err := keeper.ParseTxMsgData(bts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Log(msgTypes)
+		t.Log(msgData)
+	}
 }
