@@ -85,12 +85,6 @@ func (k msgServer) SubmitProposal(goCtx context.Context, msg *types.MsgSubmitPro
 		return nil, err
 	}
 	k.SetProposal(ctx, prop)
-	// The cached context is created with a new EventManager. However, since
-	// the proposal handler execution was successful, we want to track/keep
-	// any events emitted, so we re-emit to "merge" the events into the
-	// original Context's EventManager.
-	ctx.EventManager().EmitEvents(cacheCtx.EventManager().Events())
-
 	// write state to the underlying multi-store
 	writeCache()
 	return res, nil
