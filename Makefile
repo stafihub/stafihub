@@ -6,6 +6,8 @@ LEDGER_ENABLED ?= true
 BINDIR ?= $(GOPATH)/bin
 SDK_PACK := $(shell go list -m github.com/cosmos/cosmos-sdk | sed  's/ /\@/g')
 NetworkType := $(shell if [ -z ${NetworkType} ]; then echo "mainnet"; else echo ${NetworkType}; fi)
+GO_MAJOR_VERSION = $(shell go version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f1)
+GO_MINOR_VERSION = $(shell go version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f2)
 
 export GO111MODULE = on
 
@@ -66,9 +68,15 @@ BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
 
 all: tools install lint
 
+check_version:
+ifneq ($(GO_MINOR_VERSION),20)
+	@echo "ERROR: Go version 1.20 is required for building stafihubd. There are consensus breaking changes between binaries compiled with and without Go 1.20."
+	exit 1
+endif
+
 # The below include contains the tools.
 .PHONY:build
-build: go.sum
+build: check_version go.sum
 ifeq ($(OS),Windows_NT)
 	go build $(BUILD_FLAGS) -o build/stafihubd.exe ./cmd/stafihubd
 else
@@ -83,7 +91,7 @@ build-all-binary: go.sum
 	LEDGER_ENABLED=false GOOS=linux GOARCH=arm64 go build $(BUILD_FLAGS) -o build/iris-linux-arm64 ./cmd/stafihubd
 	LEDGER_ENABLED=false GOOS=windows GOARCH=amd64 go build $(BUILD_FLAGS) -o build/iris-windows-amd64.exe ./cmd/stafihubd
 
-install: go.sum
+install: check_version go.sum
 	go install $(BUILD_FLAGS) ./cmd/stafihubd
 
 update-swagger-docs: statik proto-swagger-gen
