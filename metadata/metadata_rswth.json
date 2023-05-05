@@ -1,0 +1,20 @@
+{
+    "description": "A liquid staking representation of staked SWTHs",
+    "denom_units": [
+        {
+            "denom": "urswth",
+            "exponent": 0,
+            "aliases": [
+                "microrswth"
+            ]
+        },
+        {
+            "denom": "rswth",
+            "exponent": 8
+        }
+    ],
+    "base": "urswth",
+    "display": "rswth",
+    "name": "rSWTH",
+    "symbol": "rSWTH"
+}
