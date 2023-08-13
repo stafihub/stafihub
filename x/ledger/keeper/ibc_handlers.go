@@ -9,9 +9,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
-	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
-	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
+	cosmosProto "github.com/cosmos/gogoproto/proto"
+	icatypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/types"
+	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+	ibchost "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	proto "github.com/gogo/protobuf/proto"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
@@ -116,7 +117,7 @@ func (k Keeper) OnAcknowledgement(ctx sdk.Context, modulePacket channeltypes.Pac
 }
 
 func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, ctrlConnectionId, delegationAddr, withdrawAddr string) error {
-	var msgs []sdk.Msg
+	var msgs []cosmosProto.Message
 
 	k.Logger(ctx).Info(fmt.Sprintf("Setting withdrawal address on host.delegationAddrOwner: %s DelegatorAddress: %s WithdrawAddress: %s ctrlConnectionID: %s",
 		delegationAddrOwner, delegationAddr, withdrawAddr, ctrlConnectionId))
@@ -131,7 +132,7 @@ func (k Keeper) SetWithdrawAddressOnHost(ctx sdk.Context, delegationAddrOwner, c
 }
 
 // SubmitTxs submits an ICA transaction containing multiple messages
-func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs []sdk.Msg, memo string) (uint64, error) {
+func (k Keeper) SubmitTxs(ctx sdk.Context, ctrlConnectionId, owner string, msgs []cosmosProto.Message, memo string) (uint64, error) {
 	portID, err := icatypes.NewControllerPortID(owner)
 	if err != nil {
 		return 0, err

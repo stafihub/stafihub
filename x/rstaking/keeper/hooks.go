@@ -12,6 +12,11 @@ type Hooks struct {
 	k Keeper
 }
 
+// AfterUnbondingInitiated implements types.StakingHooks.
+func (Hooks) AfterUnbondingInitiated(ctx sdk.Context, id uint64) error {
+	panic("unimplemented")
+}
+
 var _ stakingtypes.StakingHooks = Hooks{}
 
 // Create new distribution hooks

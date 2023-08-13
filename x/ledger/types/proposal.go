@@ -2,11 +2,12 @@ package types
 
 import (
 	"encoding/hex"
+
+	"github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
-	"github.com/tendermint/tendermint/crypto"
 )
 
 const (

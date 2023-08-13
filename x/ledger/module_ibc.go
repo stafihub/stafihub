@@ -7,11 +7,11 @@ import (
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
-	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
-	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
-	ibcporttypes "github.com/cosmos/ibc-go/v5/modules/core/05-port/types"
-	ibchost "github.com/cosmos/ibc-go/v5/modules/core/24-host"
-	ibcexported "github.com/cosmos/ibc-go/v5/modules/core/exported"
+	icatypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/types"
+	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
+	ibcporttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v7/modules/core/24-host"
+	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
 	"github.com/stafihub/stafihub/x/ledger/keeper"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
@@ -76,7 +76,7 @@ func (im IBCModule) OnChanOpenAck(
 	if len(portIdSlice) != 4 {
 		return fmt.Errorf("portId format err %s/%s", controllerConnectionId, portID)
 	}
-	if fmt.Sprint(portIdSlice[0], "-") != icatypes.PortPrefix {
+	if fmt.Sprint(portIdSlice[0], "-") != icatypes.PortKeyPrefix {
 		return fmt.Errorf("portId prefix err %s/%s", controllerConnectionId, portID)
 	}
 
@@ -103,7 +103,7 @@ func (im IBCModule) OnChanOpenAck(
 		icaPoolDetail.DelegationAccount.CtrlPortId = portID
 		icaPoolDetail.DelegationAccount.CtrlChannelId = channelID
 		icaPoolDetail.DelegationAccount.HostConnectionId = hostConnectionId
-		icaPoolDetail.DelegationAccount.HostPortId = icatypes.PortID
+		icaPoolDetail.DelegationAccount.HostPortId = icatypes.HostPortID
 		icaPoolDetail.DelegationAccount.HostChannelId = counterpartyChannelID
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
@@ -114,7 +114,7 @@ func (im IBCModule) OnChanOpenAck(
 		icaPoolDetail.WithdrawalAccount.CtrlPortId = portID
 		icaPoolDetail.WithdrawalAccount.CtrlChannelId = channelID
 		icaPoolDetail.WithdrawalAccount.HostConnectionId = hostConnectionId
-		icaPoolDetail.WithdrawalAccount.HostPortId = icatypes.PortID
+		icaPoolDetail.WithdrawalAccount.HostPortId = icatypes.HostPortID
 		icaPoolDetail.WithdrawalAccount.HostChannelId = counterpartyChannelID
 
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)

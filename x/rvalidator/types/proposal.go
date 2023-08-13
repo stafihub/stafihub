@@ -4,10 +4,10 @@ import (
 	"encoding/hex"
 	"fmt"
 
+	"github.com/cometbft/cometbft/crypto"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	rvotetypes "github.com/stafihub/stafihub/x/rvote/types"
-	"github.com/tendermint/tendermint/crypto"
 )
 
 const TypeUpdateRValidatorProposal = "update_r_validator"

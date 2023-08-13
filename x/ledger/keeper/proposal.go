@@ -4,9 +4,10 @@ import (
 	"encoding/hex"
 	"fmt"
 
+	"github.com/cometbft/cometbft/crypto"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	cosmosProto "github.com/cosmos/gogoproto/proto"
 	"github.com/stafihub/stafihub/x/ledger/types"
-	"github.com/tendermint/tendermint/crypto"
 )
 
 func (k Keeper) ProcessSetChainEraProposal(ctx sdk.Context, p *types.SetChainEraProposal) error {
@@ -373,15 +374,20 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 		return types.ErrInterchainTxMsgsEmpty
 	}
 
+	var cosmosProtoMsgs []cosmosProto.Message
+	for _, msg := range txMsg {
+		cosmosProtoMsgs = append(cosmosProtoMsgs, msg)
+	}
+
 	if p.TxType != types.TxTypeReserved {
-		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg, p.TxType.String())
+		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, cosmosProtoMsgs, p.TxType.String())
 		if err != nil {
 			return err
 		}
 
 		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
 	} else {
-		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, txMsg, p.TxType.String())
+		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, cosmosProtoMsgs, p.TxType.String())
 		if err != nil {
 			return err
 		}
