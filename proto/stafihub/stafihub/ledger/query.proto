@@ -1,0 +1,380 @@
+syntax = "proto3";
+package stafihub.stafihub.ledger;
+
+import "gogoproto/gogo.proto";
+import "stafihub/stafihub/ledger/ledger.proto";
+import "google/api/annotations.proto";
+//import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/stafihub/stafihub/x/ledger/types";
+
+// Query defines the gRPC querier service.
+service Query {
+// Queries a list of getExchangeRate items.
+	rpc GetExchangeRate(QueryGetExchangeRateRequest) returns (QueryGetExchangeRateResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/exchange_rate/{denom}";
+	}
+
+// Queries a list of exchangeRateAll items.
+	rpc ExchangeRateAll(QueryExchangeRateAllRequest) returns (QueryExchangeRateAllResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/exchange_rate_all";
+	}
+
+// Queries a list of getEraExchangeRate items.
+	rpc GetEraExchangeRate(QueryGetEraExchangeRateRequest) returns (QueryGetEraExchangeRateResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/era_exchange_rate/{denom}/{era}";
+	}
+
+// Queries a list of eraExchangeRatesByDenom items.
+	rpc EraExchangeRatesByDenom(QueryEraExchangeRatesByDenomRequest) returns (QueryEraExchangeRatesByDenomResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/era_exchange_rates_by_denom/{denom}";
+	}
+
+// Queries a list of bondedPoolsByDenom items.
+	rpc BondedPoolsByDenom(QueryBondedPoolsByDenomRequest) returns (QueryBondedPoolsByDenomResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/bonded_pools_by_denom/{denom}";
+	}
+
+// Queries a list of getPoolDetail items.
+	rpc GetPoolDetail(QueryGetPoolDetailRequest) returns (QueryGetPoolDetailResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_pool_detail/{denom}/{pool}";
+	}
+
+// Queries a list of getChainEra items.
+	rpc GetChainEra(QueryGetChainEraRequest) returns (QueryGetChainEraResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_chain_era/{denom}";
+	}
+
+// Queries a list of getCurrentEraSnapshot items.
+	rpc GetCurrentEraSnapshot(QueryGetCurrentEraSnapshotRequest) returns (QueryGetCurrentEraSnapshotResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_current_era_snapshot/{denom}";
+	}
+
+// Queries a list of getReceiver items.
+	rpc GetProtocolFeeReceiver(QueryGetProtocolFeeReceiverRequest) returns (QueryGetProtocolFeeReceiverResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/protocol_fee_receiver";
+	}
+
+// Queries a list of getCommission items.
+	rpc GetStakingRewardCommission(QueryGetStakingRewardCommissionRequest) returns (QueryGetStakingRewardCommissionResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_staking_reward_commission";
+	}
+
+// Queries a list of getUnbondFee items.
+	rpc GetUnbondRelayFee(QueryGetUnbondRelayFeeRequest) returns (QueryGetUnbondRelayFeeResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_unbond_relay_fee/{denom}";
+	}
+
+// Queries a list of getUnbondCommission items.
+	rpc GetUnbondCommission(QueryGetUnbondCommissionRequest) returns (QueryGetUnbondCommissionResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_unbond_commission";
+	}
+
+// Queries a list of getEraUnbondLimit items.
+	rpc GetEraUnbondLimit(QueryGetEraUnbondLimitRequest) returns (QueryGetEraUnbondLimitResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_era_unbond_limit/{denom}";
+	}
+
+// Queries a list of getBondPipeline items.
+	rpc GetBondPipeline(QueryGetBondPipelineRequest) returns (QueryGetBondPipelineResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_bond_pipeline/{denom}/{pool}";
+	}
+
+// Queries a list of getEraSnapshot items.
+	rpc GetEraSnapshot(QueryGetEraSnapshotRequest) returns (QueryGetEraSnapshotResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_era_snapshot/{denom}/{era}";
+	}
+
+// Queries a list of getSnapshot items.
+	rpc GetSnapshot(QueryGetSnapshotRequest) returns (QueryGetSnapshotResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_snapshot/{shotId}";
+	}
+
+// Queries a list of getTotalExpectedActive items.
+	rpc GetTotalExpectedActive(QueryGetTotalExpectedActiveRequest) returns (QueryGetTotalExpectedActiveResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_total_expected_active/{denom}/{era}";
+	}
+
+// Queries a list of getBondRecord items.
+	rpc GetBondRecord(QueryGetBondRecordRequest) returns (QueryGetBondRecordResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_bond_record/{denom}/{txhash}";
+	}
+
+// Queries a list of getSignature items.
+	rpc GetSignature(QueryGetSignatureRequest) returns (QueryGetSignatureResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_signature";
+	}
+
+// Queries a list of GetRParams items.
+	rpc GetRParams(QueryGetRParamsRequest) returns (QueryGetRParamsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/get_r_params/{denom}";
+	}
+
+// Queries a list of TotalFeeList items.
+	rpc TotalProtocolFee(QueryTotalProtocolFeeRequest) returns (QueryTotalProtocolFeeResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/total_protocol_fee";
+	}
+
+// Queries a list of RelayFeeReceiver items.
+	rpc RelayFeeReceiver(QueryRelayFeeReceiverRequest) returns (QueryRelayFeeReceiverResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/relay_fee_receiver/{denom}";
+	}
+
+// Queries a list of UnbondSwitch items.
+	rpc UnbondSwitch(QueryUnbondSwitchRequest) returns (QueryUnbondSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/unbond_switch/{denom}";
+	}
+
+// Queries a list of PoolUnbondNextSequence items.
+	rpc PoolUnbondNextSequence(QueryPoolUnbondNextSequenceRequest) returns (QueryPoolUnbondNextSequenceResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbond_next_sequence/{denom}/{pool}/{unlockEra}";
+	}
+
+// Queries a list of PoolUnbondings items.
+	rpc PoolUnbondings(QueryPoolUnbondingsRequest) returns (QueryPoolUnbondingsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/pool_unbondings/{denom}/{pool}/{unlockEra}";
+	}
+
+// Queries a list of IcaPoolList items.
+	rpc IcaPoolList(QueryIcaPoolListRequest) returns (QueryIcaPoolListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/ica_pool_list/{denom}";
+	}
+
+// Queries a list of InterchainTxStatus items.
+	rpc InterchainTxStatus(QueryInterchainTxStatusRequest) returns (QueryInterchainTxStatusResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/interchain_tx_status/{propId}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryGetExchangeRateRequest {
+  string denom = 1;
+}
+
+message QueryGetExchangeRateResponse {
+    ExchangeRate exchangeRate = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryExchangeRateAllRequest {
+}
+
+message QueryExchangeRateAllResponse {
+    repeated ExchangeRate exchangeRates = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetEraExchangeRateRequest {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message QueryGetEraExchangeRateResponse {
+    EraExchangeRate eraExchangeRate = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryEraExchangeRatesByDenomRequest {
+  string denom = 1;
+}
+
+message QueryEraExchangeRatesByDenomResponse {
+    repeated EraExchangeRate eraExchangeRates = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryBondedPoolsByDenomRequest {
+  string denom = 1;
+}
+
+message QueryBondedPoolsByDenomResponse {
+  repeated string addrs = 1;
+}
+
+message QueryGetPoolDetailRequest {
+  string denom = 1;
+  string pool = 2;
+}
+
+message QueryGetPoolDetailResponse {
+  PoolDetail detail = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetChainEraRequest {
+  string denom = 1;
+}
+
+message QueryGetChainEraResponse {
+  uint32 era = 1;
+}
+
+message QueryGetCurrentEraSnapshotRequest {
+  string denom = 1;
+}
+
+message QueryGetCurrentEraSnapshotResponse {
+  repeated string shotIds = 1;
+}
+
+message QueryGetProtocolFeeReceiverRequest {
+}
+
+message QueryGetProtocolFeeReceiverResponse {
+  string receiver = 1;
+}
+
+message QueryGetStakingRewardCommissionRequest {
+	string denom = 1;
+}
+
+message QueryGetStakingRewardCommissionResponse {
+  string commission = 1;
+}
+
+message QueryGetUnbondRelayFeeRequest {
+   string denom = 1;
+}
+
+message QueryGetUnbondRelayFeeResponse {
+  UnbondRelayFee fee = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetUnbondCommissionRequest {
+	string denom = 1;
+}
+
+message QueryGetUnbondCommissionResponse {
+  string commission = 1;
+}
+
+
+message QueryGetEraUnbondLimitRequest {
+  string denom = 1;
+}
+
+message QueryGetEraUnbondLimitResponse {
+  uint32 limit = 1;
+}
+
+message QueryGetBondPipelineRequest {
+  string denom = 1;
+  string pool = 2;
+}
+
+message QueryGetBondPipelineResponse {
+  BondPipeline pipeline = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetEraSnapshotRequest {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message QueryGetEraSnapshotResponse {
+  repeated string shotIds = 1;
+}
+
+message QueryGetSnapshotRequest {
+  string shotId = 1;
+}
+
+message QueryGetSnapshotResponse {
+  BondSnapshot shot = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetTotalExpectedActiveRequest {
+  string denom = 1;
+  uint32 era = 2;
+}
+
+message QueryGetTotalExpectedActiveResponse {
+  string active = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message QueryGetBondRecordRequest {
+  string denom = 1;
+  string txhash = 2;
+}
+
+message QueryGetBondRecordResponse {
+  BondRecord bondRecord = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetSignatureRequest {
+  string denom = 1;
+  uint32 era = 2;
+  string pool = 3;
+  OriginalTxType txType = 4;
+  string propId = 5;
+}
+
+message QueryGetSignatureResponse {
+  Signature signature = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetRParamsRequest {
+  string denom = 1;
+}
+
+message QueryGetRParamsResponse {
+	RParams rParams = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryTotalProtocolFeeRequest {
+}
+
+message QueryTotalProtocolFeeResponse {
+	repeated TotalProtocolFee totalProtocolFeeList = 1;
+}
+
+message QueryRelayFeeReceiverRequest {
+	string denom = 1;
+}
+
+message QueryRelayFeeReceiverResponse {
+	string receiver = 1;
+}
+
+message QueryUnbondSwitchRequest {
+  string denom = 1;
+}
+
+message QueryUnbondSwitchResponse {
+  bool isOpen = 1;
+}
+
+message QueryPoolUnbondNextSequenceRequest {
+  string denom = 1;
+  string pool = 2;
+  uint32 unlockEra = 3;
+}
+
+message QueryPoolUnbondNextSequenceResponse {
+  uint32 nextSequence = 1;
+}
+
+message QueryPoolUnbondingsRequest {
+  string denom = 1;
+  string pool = 2;
+  uint32 unlockEra = 3;
+}
+
+message QueryPoolUnbondingsResponse {
+  repeated Unbonding unbondings = 1;
+}
+
+message QueryIcaPoolListRequest {
+  string denom = 1;
+}
+
+message QueryIcaPoolListResponse {
+  repeated IcaPoolDetail icaPoolList = 1;
+}
+
+message QueryInterchainTxStatusRequest {
+  string propId = 1;
+}
+
+message QueryInterchainTxStatusResponse {
+	InterchainTxStatus interchainTxStatus = 1;
+}
+
+// this line is used by starport scaffolding # 3

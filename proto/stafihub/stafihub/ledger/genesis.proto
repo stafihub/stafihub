@@ -1,0 +1,104 @@
+syntax = "proto3";
+package stafihub.stafihub.ledger;
+
+import "gogoproto/gogo.proto";
+import "stafihub/stafihub/ledger/ledger.proto";
+
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/stafihub/stafihub/x/ledger/types";
+
+// GenesisState defines the ledger module's genesis state.
+message GenesisState {
+    repeated ExchangeRate exchangeRateList = 1 [(gogoproto.nullable) = false];
+    repeated EraExchangeRate eraExchangeRateList = 2;
+    repeated TotalProtocolFee totalProtocolFeeList = 3;
+    repeated UnbondSwitch unbondSwitchList = 4;
+
+    repeated Pool bondedPoolList = 5;
+    repeated BondPipeline bondPipelineList = 6;
+    repeated EraUnbondLimit eraUnbondLimitList = 7;
+    repeated PoolDetail poolDetailList = 8;
+    repeated EraSnapshot currentEraSnapshotList = 9;
+    repeated GenesisSnapshot snapshotList = 10;
+    repeated GenesisEraSnapshot eraSnapshotList = 11;
+    repeated ChainEra chainEraList = 12;
+    repeated StakingRewardCommission stakingRewardCommissionList = 13;
+    string protocolFeeReceiver = 14;
+    repeated RelayFeeReceiver relayFeeReceiverList = 15;
+    repeated TotalExpectedActive totalExpectedActiveList = 16;
+    repeated GenesisPoolUnbonding poolUnbondingList = 17;
+    repeated UnbondRelayFee unbondRelayFeeList = 18;
+    repeated UnbondCommission unbondCommissionList = 19;
+    repeated BondRecord bondRecordList = 20;
+    repeated RParams rparamsList = 21;
+    repeated Signature signatureList = 22;
+    bool MigrateIsSealed = 23;
+    repeated IcaPoolDetail icaPoolDetailList = 24;
+    repeated GenesisInterchainTxProposalInfo interchainTxProposalInfoList = 25;
+    repeated TotalExpectedFee totalExpectedFeeList = 26;
+    // this line is used by starport scaffolding # genesis/proto/state
+}
+
+message UnbondSwitch {
+    string denom = 1;
+    bool switch = 2;
+}
+
+
+message GenesisEraSnapshot {
+    string denom = 1;
+    uint32 era = 2;
+    repeated string shotIds = 3;
+}
+
+
+message StakingRewardCommission {
+    string denom = 1;
+    string value = 2 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+}
+
+message UnbondCommission {
+    string denom = 1;
+    string value = 2 [(gogoproto.customtype) = "github.com/stafihub/stafihub/utils.Dec", (gogoproto.nullable) = false];
+}
+
+message RelayFeeReceiver {
+    string denom = 1;
+    string address = 2;
+}
+
+
+message TotalExpectedActive {
+    string denom = 1;
+    uint32 era = 2;
+    string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message TotalExpectedFee {
+    string denom = 1;
+    uint32 era = 2;
+    string value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+
+message GenesisPoolUnbonding {
+    string denom = 1;
+    uint32 era = 2;
+    string pool = 3;
+    uint32 sequence = 4;
+    Unbonding unbonding = 5;
+}
+
+message GenesisSnapshot {
+    string shotId = 1;
+    BondSnapshot snapshot = 2;
+}
+
+message GenesisInterchainTxProposalInfo {
+    string ctrlPortId = 1;
+    string ctrlChannelId = 2;
+    uint64 sequence = 3;
+    string proposalId = 4;
+    InterchainTxStatus status = 5;
+}

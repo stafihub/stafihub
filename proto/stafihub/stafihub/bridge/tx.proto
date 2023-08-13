@@ -1,0 +1,112 @@
+syntax = "proto3";
+package stafihub.stafihub.bridge;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "stafihub/stafihub/bridge/genesis.proto";
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/stafihub/stafihub/x/bridge/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc SetResourceidToDenom(MsgSetResourceidToDenom) returns (MsgSetResourceidToDenomResponse);
+  rpc Deposit(MsgDeposit) returns (MsgDepositResponse);
+  rpc AddChainId(MsgAddChainId) returns (MsgAddChainIdResponse);
+  rpc VoteProposal(MsgVoteProposal) returns (MsgVoteProposalResponse);
+  rpc RmChainId(MsgRmChainId) returns (MsgRmChainIdResponse);
+  rpc SetRelayFeeReceiver(MsgSetRelayFeeReceiver) returns (MsgSetRelayFeeReceiverResponse);
+  rpc SetRelayFee(MsgSetRelayFee) returns (MsgSetRelayFeeResponse);
+  rpc AddBannedDenom(MsgAddBannedDenom) returns (MsgAddBannedDenomResponse);
+  rpc RmBannedDenom(MsgRmBannedDenom) returns (MsgRmBannedDenomResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+
+message MsgSetResourceidToDenom {
+  string creator = 1;
+  string resourceId = 2;
+  string denom = 3;
+  DenomType denomType = 4;
+}
+
+message MsgSetResourceidToDenomResponse {
+}
+
+message MsgDeposit {
+  string creator = 1;
+  uint32 destChainId = 2 [(gogoproto.jsontag) = "destChainId"];
+  string denom = 3;
+  string amount = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string receiver = 5;
+}
+
+message MsgDepositResponse {
+}
+
+message MsgAddChainId {
+  string creator = 1;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+}
+
+message MsgAddChainIdResponse {
+}
+
+
+message MsgVoteProposal {
+  string creator = 1;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+  uint64 depositNonce = 3 [(gogoproto.jsontag) = "depositNonce"];
+  string resourceId = 4;
+  string amount = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string receiver = 6;
+}
+
+message MsgVoteProposalResponse {
+}
+
+message MsgRmChainId {
+  string creator = 1;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+}
+
+message MsgRmChainIdResponse {
+}
+
+message MsgSetRelayFeeReceiver {
+  string creator = 1;
+  string address = 2;
+}
+
+message MsgSetRelayFeeReceiverResponse {
+}
+
+message MsgSetRelayFee {
+  string creator = 1;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+  cosmos.base.v1beta1.Coin value = 3 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message MsgSetRelayFeeResponse {
+}
+
+message MsgAddBannedDenom {
+  string creator = 1;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+  string denom = 3;
+}
+
+message MsgAddBannedDenomResponse {
+}
+
+message MsgRmBannedDenom {
+  string creator = 1;
+  uint32 chainId = 2 [(gogoproto.jsontag) = "chainId"];
+  string denom = 3;
+}
+
+message MsgRmBannedDenomResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

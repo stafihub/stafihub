@@ -1,0 +1,126 @@
+syntax = "proto3";
+package stafihub.stafihub.bridge;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "stafihub/stafihub/bridge/params.proto";
+import "stafihub/stafihub/bridge/proposal.proto";
+import "stafihub/stafihub/bridge/genesis.proto";
+import "cosmos/base/v1beta1/coin.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/stafihub/stafihub/x/bridge/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/stafihub/stafihub/bridge/params";
+  }
+
+// Queries a list of ChaindIds items.
+	rpc ChaindIds(QueryChaindIdsRequest) returns (QueryChaindIdsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/chaind_ids";
+	}
+
+// Queries a list of ProposalDetail items.
+	rpc ProposalDetail(QueryProposalDetailRequest) returns (QueryProposalDetailResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/proposal_detail/{chainId}/{depositNonce}/{resourceId}/{amount}/{receiver}";
+	}
+
+// Queries a list of ResourceidToDenoms items.
+	rpc ResourceidToDenoms(QueryResourceidToDenomsRequest) returns (QueryResourceidToDenomsResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/resourceid_to_denoms";
+	}
+
+// Queries a list of RelayFeeReceiver items.
+	rpc RelayFeeReceiver(QueryRelayFeeReceiverRequest) returns (QueryRelayFeeReceiverResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/relay_fee_receiver";
+	}
+
+// Queries a list of RelayFee items.
+	rpc RelayFee(QueryRelayFeeRequest) returns (QueryRelayFeeResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/relay_fee/{chainId}";
+	}
+
+// Queries a list of BannedDenomList items.
+	rpc BannedDenomList(QueryBannedDenomListRequest) returns (QueryBannedDenomListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/banned_denom_list";
+	}
+
+// Queries a list of GetDepositCount items.
+	rpc GetDepositCount(QueryGetDepositCountRequest) returns (QueryGetDepositCountResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/bridge/get_deposit_count/{chainId}";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+
+message QueryChaindIdsRequest {
+}
+
+message QueryChaindIdsResponse {
+  repeated uint32 chainId = 1;
+}
+
+message QueryProposalDetailRequest {
+  uint32 chainId = 1;
+  uint64 depositNonce = 2;
+  string resourceId = 3;
+  string amount = 4;
+  string receiver = 5;
+}
+
+message QueryProposalDetailResponse {
+  Proposal proposal = 1;
+}
+
+message QueryResourceidToDenomsRequest {
+}
+
+message QueryResourceidToDenomsResponse {
+	repeated ResourceIdToDenom resourceidToDenoms = 1;
+}
+
+message QueryRelayFeeReceiverRequest {
+}
+
+message QueryRelayFeeReceiverResponse {
+	string receiver = 1;
+}
+
+message QueryRelayFeeRequest {
+  uint32 chainId = 1;
+}
+
+message QueryRelayFeeResponse {
+	cosmos.base.v1beta1.Coin value = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message QueryBannedDenomListRequest {
+}
+
+message QueryBannedDenomListResponse {
+  repeated BannedDenom list = 1;
+}
+
+message QueryGetDepositCountRequest {
+  uint32 chainId = 1;
+}
+
+message QueryGetDepositCountResponse {
+  uint32 count = 1;
+}
+
+// this line is used by starport scaffolding # 3

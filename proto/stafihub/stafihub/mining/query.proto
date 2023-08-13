@@ -1,0 +1,187 @@
+syntax = "proto3";
+package stafihub.stafihub.mining;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "stafihub/stafihub/mining/params.proto";
+import "stafihub/stafihub/mining/models.proto";
+import "cosmos/base/v1beta1/coin.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/stafihub/stafihub/x/mining/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/stafihub/stafihub/mining/params";
+  }
+  // Queries a list of StakePoolInfo items.
+	rpc StakePoolInfo(QueryStakePoolInfoRequest) returns (QueryStakePoolInfoResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_info/{stakePoolIndex}";
+	}
+
+// Queries a list of StakeItemList items.
+	rpc StakeItemList(QueryStakeItemListRequest) returns (QueryStakeItemListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_item_list";
+	}
+
+// Queries a list of StakeReward items.
+	rpc StakeReward(QueryStakeRewardRequest) returns (QueryStakeRewardResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_reward/{stakeUserAddress}/{stakePoolIndex}/{stakeRecordIndex}";
+	}
+
+// Queries a list of StakeRecordCount items.
+	rpc StakeRecordCount(QueryStakeRecordCountRequest) returns (QueryStakeRecordCountResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_count/{userAddress}/{stakePoolIndex}";
+	}
+
+// Queries a list of StakeRecord items.
+	rpc StakeRecord(QueryStakeRecordRequest) returns (QueryStakeRecordResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record/{userAddress}/{stakePoolIndex}/{stakeRecordIndex}";
+	}
+
+// Queries a list of StakeRecordList items.
+	rpc StakeRecordList(QueryStakeRecordListRequest) returns (QueryStakeRecordListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_record_list/{userAddress}/{stakePoolIndex}";
+	}
+
+// Queries a list of StakePoolList items.
+	rpc StakePoolList(QueryStakePoolListRequest) returns (QueryStakePoolListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/stake_pool_list";
+	}
+
+// Queries a list of MiningProviderList items.
+	rpc MiningProviderList(QueryMiningProviderListRequest) returns (QueryMiningProviderListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/mining_provider_list";
+	}
+
+// Queries a list of RewardTokenList items.
+	rpc RewardTokenList(QueryRewardTokenListRequest) returns (QueryRewardTokenListResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/reward_token_list";
+	}
+
+// Queries a list of MaxRewardPoolNumber items.
+	rpc MaxRewardPoolNumber(QueryMaxRewardPoolNumberRequest) returns (QueryMaxRewardPoolNumberResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/max_reward_pool_number";
+	}
+
+// Queries a list of MaxStakeItemNumber items.
+	rpc MaxStakeItemNumber(QueryMaxStakeItemNumberRequest) returns (QueryMaxStakeItemNumberResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/max_stake_item_number";
+	}
+
+// Queries a list of ProviderSwitch items.
+	rpc ProviderSwitch(QueryProviderSwitchRequest) returns (QueryProviderSwitchResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/mining/provider_switch";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryStakePoolInfoRequest {
+  uint32 stakePoolIndex = 1;
+}
+
+message QueryStakePoolInfoResponse {
+  StakePool stakePool = 1;
+}
+
+message QueryStakeItemListRequest {
+	uint32 stakePoolIndex = 1;
+}
+
+message QueryStakeItemListResponse {
+  repeated StakeItem stakeItemList = 1;
+}
+
+message QueryStakeRewardRequest {
+  string stakeUserAddress = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 stakeRecordIndex = 3;
+}
+
+message QueryStakeRewardResponse {
+  repeated cosmos.base.v1beta1.Coin rewardTokens = 1 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin", (gogoproto.nullable) = false];
+}
+
+message QueryStakeRecordCountRequest {
+  string userAddress = 1;
+  uint32 stakePoolIndex = 2;
+}
+
+message QueryStakeRecordCountResponse {
+  uint32 count = 1;
+}
+
+message QueryStakeRecordRequest {
+  string userAddress = 1;
+  uint32 stakePoolIndex = 2;
+  uint32 stakeRecordIndex = 3;
+}
+
+message QueryStakeRecordResponse {
+  UserStakeRecord stakeRecord = 1;
+}
+
+message QueryStakeRecordListRequest {
+  string userAddress = 1;
+  uint32 stakePoolIndex = 2;
+}
+
+message QueryStakeRecordListResponse {
+  repeated UserStakeRecord stakeRecordList = 1;
+}
+
+message QueryStakePoolListRequest {
+}
+
+message QueryStakePoolListResponse {
+  repeated StakePool stakePoolList = 1;
+}
+
+message QueryMiningProviderListRequest {
+}
+
+message QueryMiningProviderListResponse {
+  repeated string miningProviderList = 1;
+}
+
+message QueryRewardTokenListRequest {
+}
+
+message QueryRewardTokenListResponse {
+  repeated RewardToken rewardTokenList = 1;
+}
+
+message QueryMaxRewardPoolNumberRequest {
+}
+
+message QueryMaxRewardPoolNumberResponse {
+  uint32 number = 1;
+}
+
+message QueryMaxStakeItemNumberRequest {
+}
+
+message QueryMaxStakeItemNumberResponse {
+  uint32 number = 1;
+}
+
+message QueryProviderSwitchRequest {
+}
+
+message QueryProviderSwitchResponse {
+  bool providerSwitch = 1;
+}
+// this line is used by starport scaffolding # 3
