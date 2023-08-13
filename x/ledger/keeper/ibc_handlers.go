@@ -10,10 +10,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	cosmosProto "github.com/cosmos/gogoproto/proto"
+	proto "github.com/cosmos/gogoproto/proto"
 	icatypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	ibchost "github.com/cosmos/ibc-go/v7/modules/core/24-host"
-	proto "github.com/gogo/protobuf/proto"
 	"github.com/stafihub/stafihub/x/ledger/types"
 )
 

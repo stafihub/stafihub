@@ -2,12 +2,12 @@ package app
 
 import (
 	"io"
-	"net/http"
 	"os"
 	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
+	nodeservice "github.com/cosmos/cosmos-sdk/client/grpc/node"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
@@ -102,9 +102,6 @@ import (
 	"github.com/spf13/cast"
 
 	"github.com/stafihub/stafihub/cosmoscmd"
-	"github.com/tendermint/spm/openapiconsole"
-
-	"github.com/stafihub/stafihub/docs"
 
 	bridgemodule "github.com/stafihub/stafihub/x/bridge"
 	bridgemodulekeeper "github.com/stafihub/stafihub/x/bridge/keeper"
@@ -1037,9 +1034,7 @@ func (app *App) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig
 	// ModuleBasics.RegisterRESTRoutes(clientCtx, apiSvr.Router)
 	ModuleBasics.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
-	// register app's OpenAPI routes.
-	apiSvr.Router.Handle("/static/openapi.yml", http.FileServer(http.FS(docs.Docs)))
-	apiSvr.Router.HandleFunc("/", openapiconsole.Handler(Name, "/static/openapi.yml"))
+	nodeservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 }
 
 // RegisterTxService implements the Application.RegisterTxService method.
