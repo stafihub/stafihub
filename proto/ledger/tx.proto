@@ -34,6 +34,8 @@ service Msg {
   rpc SetWithdrawalAddr(MsgSetWithdrawalAddr) returns (MsgSetWithdrawalAddrResponse);
   rpc InitPool(MsgInitPool) returns (MsgInitPoolResponse);
   rpc SetPoolStatus(MsgSetPoolStatus) returns (MsgSetPoolStatusResponse);
+  rpc ForceRmBondedPool(MsgForceRmBondedPool) returns (MsgForceRmBondedPoolResponse);
+  rpc ForceUpdateBondedPool(MsgForceUpdateBondedPool) returns (MsgForceUpdateBondedPoolResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -258,6 +260,27 @@ message MsgSetPoolStatus {
 }
 
 message MsgSetPoolStatusResponse {
+}
+
+message MsgForceRmBondedPool {
+  string creator = 1;
+  string denom = 2;
+  string address = 3;
+}
+
+message MsgForceRmBondedPoolResponse {
+}
+
+message MsgForceUpdateBondedPool {
+  string creator = 1;
+  string denom = 2;
+  string address = 3;
+  string active = 4 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string bond = 5 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+  string unbond = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+}
+
+message MsgForceUpdateBondedPoolResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
