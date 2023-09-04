@@ -10,13 +10,14 @@ import (
 )
 
 const (
-	SetChainEraProposalType         = "SetChainEraProposal"
-	BondReportProposalType          = "BondReportProposal"
-	BondAndReportActiveProposalType = "BondAndReportActiveProposal"
-	ActiveReportProposalType        = "ActiveReportProposal"
-	TransferReportProposalType      = "TransferReportProposal"
-	ExecuteBondProposalType         = "ExecuteBondProposal"
-	InterchainTxProposalType        = "InterchainTxProposal"
+	SetChainEraProposalType             = "SetChainEraProposal"
+	BondReportProposalType              = "BondReportProposal"
+	BondAndReportActiveProposalType     = "BondAndReportActiveProposal"
+	ActiveReportProposalType            = "ActiveReportProposal"
+	TransferReportProposalType          = "TransferReportProposal"
+	ExecuteBondProposalType             = "ExecuteBondProposal"
+	ExecuteNativeAndLsmBondProposalType = "ExecuteNativeAndLsmBondProposal"
+	InterchainTxProposalType            = "InterchainTxProposal"
 )
 
 func init() {
@@ -31,6 +32,8 @@ func init() {
 	rvotetypes.RegisterProposalTypeCodec(&TransferReportProposal{}, "ledger/TransferReportProposal")
 	rvotetypes.RegisterProposalType(ExecuteBondProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal")
+	rvotetypes.RegisterProposalType(ExecuteNativeAndLsmBondProposalType)
+	rvotetypes.RegisterProposalTypeCodec(&ExecuteNativeAndLsmBondProposal{}, "ledger/ExecuteNativeAndLsmBondProposal")
 	rvotetypes.RegisterProposalType(InterchainTxProposalType)
 	rvotetypes.RegisterProposalTypeCodec(&InterchainTxProposal{}, "ledger/InterchainTxProposal")
 }
@@ -233,7 +236,7 @@ func (p *ExecuteBondProposal) ProposalRoute() string {
 }
 
 func (p *ExecuteBondProposal) ProposalType() string {
-	return TransferReportProposalType
+	return ExecuteBondProposalType
 }
 
 func (p *ExecuteBondProposal) ValidateBasic() error {
@@ -247,6 +250,78 @@ func (p *ExecuteBondProposal) ValidateBasic() error {
 	}
 
 	return nil
+}
+
+func NewExecuteNativeAndLsmBondProposal(
+	proposer sdk.AccAddress, denom string, bonder sdk.AccAddress,
+	pool string, txhash string, nativeBondAmount, lsmBondAmount sdk.Int, state LiquidityBondState, msgs []sdk.Msg) (*ExecuteNativeAndLsmBondProposal, error) {
+
+	any, err := PackTxMsgAny(msgs)
+	if err != nil {
+		return nil, err
+	}
+
+	p := &ExecuteNativeAndLsmBondProposal{
+		Denom:            denom,
+		Bonder:           bonder.String(),
+		Pool:             pool,
+		Txhash:           txhash,
+		NativeBondAmount: nativeBondAmount,
+		LsmBondAmount:    lsmBondAmount,
+		Msgs:             any,
+		State:            state,
+	}
+
+	p.setPropId()
+	p.Proposer = proposer.String()
+
+	return p, nil
+}
+
+func (p *ExecuteNativeAndLsmBondProposal) setPropId() {
+	b, err := p.Marshal()
+	if err != nil {
+		panic(err)
+	}
+
+	p.PropId = hex.EncodeToString(crypto.Sha256(b))
+}
+
+func (p *ExecuteNativeAndLsmBondProposal) ProposalRoute() string {
+	return ModuleName
+}
+
+func (p *ExecuteNativeAndLsmBondProposal) ProposalType() string {
+	return ExecuteNativeAndLsmBondProposalType
+}
+
+func (p *ExecuteNativeAndLsmBondProposal) ValidateBasic() error {
+	err := rvotetypes.ValidateAbstract(p)
+	if err != nil {
+		return err
+	}
+
+	if p.Bonder == "" {
+		return ErrInvalidBonder
+	}
+
+	return nil
+}
+
+// GetTxMsg fetches the cached any message
+func (msg *ExecuteNativeAndLsmBondProposal) GetTxMsg(c codec.BinaryCodec) ([]sdk.Msg, error) {
+	msgs := make([]sdk.Msg, len(msg.Msgs))
+
+	for i, msgAny := range msg.Msgs {
+		var msg sdk.Msg
+		err := c.UnpackAny(msgAny, &msg)
+		if err != nil {
+			return nil, err
+		}
+		msgs[i] = msg
+	}
+
+	return msgs, nil
 }
 
 func NewInterchainTxProposal(
@@ -284,7 +359,7 @@ func (p *InterchainTxProposal) ProposalRoute() string {
 }
 
 func (p *InterchainTxProposal) ProposalType() string {
-	return TransferReportProposalType
+	return InterchainTxProposalType
 }
 
 func (p *InterchainTxProposal) ValidateBasic() error {

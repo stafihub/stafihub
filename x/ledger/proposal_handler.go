@@ -22,6 +22,8 @@ func NewProposalHandler(k keeper.Keeper) rvotetypes.Handler {
 			return k.ProcessTransferReportProposal(ctx, c)
 		case *types.ExecuteBondProposal:
 			return k.ProcessExecuteBondProposal(ctx, c)
+		case *types.ExecuteNativeAndLsmBondProposal:
+			return k.ProcessExecuteNativeAndLsmBondProposal(ctx, c)
 		case *types.InterchainTxProposal:
 			return k.ProcessInterchainTxProposal(ctx, c)
 		default:

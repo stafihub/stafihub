@@ -26651,7 +26651,8 @@ paths:
                       - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
                       - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
                       - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
-                      - ORIGINAL_TX_TYPE_RESERVED
+                      - ORIGINAL_TX_TYPE_WITHDRAW_ADDRESS_SEND
+                      - ORIGINAL_TX_TYPE_REDEEM_TOKEN
                     default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
                     description: OriginalTxType enumerates the tx type of a signature.
                   propId:
@@ -26868,7 +26869,8 @@ paths:
             - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
             - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
             - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
-            - ORIGINAL_TX_TYPE_RESERVED
+            - ORIGINAL_TX_TYPE_WITHDRAW_ADDRESS_SEND
+            - ORIGINAL_TX_TYPE_REDEEM_TOKEN
           default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
         - name: propId
           in: query
@@ -49835,7 +49837,8 @@ definitions:
       - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
       - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
       - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
-      - ORIGINAL_TX_TYPE_RESERVED
+      - ORIGINAL_TX_TYPE_WITHDRAW_ADDRESS_SEND
+      - ORIGINAL_TX_TYPE_REDEEM_TOKEN
     default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
     description: OriginalTxType enumerates the tx type of a signature.
   stafihub.stafihub.ledger.PoolBondState:
@@ -50073,7 +50076,8 @@ definitions:
               - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
               - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
               - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
-              - ORIGINAL_TX_TYPE_RESERVED
+              - ORIGINAL_TX_TYPE_WITHDRAW_ADDRESS_SEND
+              - ORIGINAL_TX_TYPE_REDEEM_TOKEN
             default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
             description: OriginalTxType enumerates the tx type of a signature.
           propId:
@@ -50299,7 +50303,8 @@ definitions:
           - ORIGINAL_TX_TYPE_DEAL_BONDREPORTED
           - ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED
           - ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED
-          - ORIGINAL_TX_TYPE_RESERVED
+          - ORIGINAL_TX_TYPE_WITHDRAW_ADDRESS_SEND
+          - ORIGINAL_TX_TYPE_REDEEM_TOKEN
         default: ORIGINAL_TX_TYPE_DEAL_ERAUPDATED
         description: OriginalTxType enumerates the tx type of a signature.
       propId:
