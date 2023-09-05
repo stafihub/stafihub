@@ -53,4 +53,5 @@ var (
 	ErrPoolStatusUnmatch            = sdkerrors.Register(ModuleName, 45, "pool status unmatch")
 	ErrConnectionIdNotFound         = sdkerrors.Register(ModuleName, 46, "connection id not found")
 	ErrLsmInterchainTxFailed        = sdkerrors.Register(ModuleName, 47, "lsm interchain tx failed")
+	ErrEraIsDealing                 = sdkerrors.Register(ModuleName, 48, "era is dealing")
 )

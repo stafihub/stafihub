@@ -359,7 +359,7 @@ func (k Keeper) ProcessExecuteNativeAndLsmBondProposal(ctx sdk.Context, p *types
 
 	eraShot := k.CurrentEraSnapshots(ctx, p.Denom)
 	if len(eraShot.ShotIds) != 0 {
-		return types.ErrEraNotContinuable
+		return types.ErrEraIsDealing
 	}
 
 	// check pool status
