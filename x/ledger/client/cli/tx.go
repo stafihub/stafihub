@@ -58,6 +58,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdInterchainTxProposal())
 	cmd.AddCommand(CmdInitPool())
 	cmd.AddCommand(CmdSetPoolStatus())
+	cmd.AddCommand(CmdSetInterchainTxProposalStatus())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

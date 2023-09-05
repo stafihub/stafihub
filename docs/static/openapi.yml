@@ -50001,6 +50001,8 @@ definitions:
     type: object
   stafihub.stafihub.ledger.MsgSetEraUnbondLimitResponse:
     type: object
+  stafihub.stafihub.ledger.MsgSetInterchainTxProposalStatusResponse:
+    type: object
   stafihub.stafihub.ledger.MsgSetLeastBondResponse:
     type: object
   stafihub.stafihub.ledger.MsgSetPoolDetailResponse:

@@ -34,6 +34,7 @@ service Msg {
   rpc SetWithdrawalAddr(MsgSetWithdrawalAddr) returns (MsgSetWithdrawalAddrResponse);
   rpc InitPool(MsgInitPool) returns (MsgInitPoolResponse);
   rpc SetPoolStatus(MsgSetPoolStatus) returns (MsgSetPoolStatusResponse);
+  rpc SetInterchainTxProposalStatus(MsgSetInterchainTxProposalStatus) returns (MsgSetInterchainTxProposalStatusResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -258,6 +259,15 @@ message MsgSetPoolStatus {
 }
 
 message MsgSetPoolStatusResponse {
+}
+
+message MsgSetInterchainTxProposalStatus {
+  string creator = 1;
+  string proposalId = 2;
+  InterchainTxStatus status = 3;
+}
+
+message MsgSetInterchainTxProposalStatusResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

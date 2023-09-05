@@ -127,6 +127,17 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	if !found {
 		return types.ErrActiveAlreadySet
 	}
+	// check lsm bond proposal executed
+	preProposalId, found := k.GetLatestLsmBondProposalId(ctx)
+	if found {
+		status, exist := k.GetInterchainTxProposalStatus(ctx, preProposalId)
+		if !exist {
+			return types.ErrInterchainTxPropIdNotFound
+		}
+		if status != types.InterchainTxStatusSuccess {
+			return types.ErrLsmInterchainTxFailed
+		}
+	}
 
 	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
 	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([]string, 0)}
