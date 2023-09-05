@@ -146,6 +146,11 @@ service Query {
 		option (google.api.http).get = "/stafihub/stafihub/ledger/interchain_tx_status/{propId}";
 	}
 
+// Queries a list of LatestLsmBondProposalId items.
+	rpc LatestLsmBondProposalId(QueryLatestLsmBondProposalIdRequest) returns (QueryLatestLsmBondProposalIdResponse) {
+		option (google.api.http).get = "/stafihub/stafihub/ledger/latest_lsm_bond_proposal_id";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -375,6 +380,13 @@ message QueryInterchainTxStatusRequest {
 
 message QueryInterchainTxStatusResponse {
 	InterchainTxStatus interchainTxStatus = 1;
+}
+
+message QueryLatestLsmBondProposalIdRequest {
+}
+
+message QueryLatestLsmBondProposalIdResponse {
+  string proposalId = 1;
 }
 
 // this line is used by starport scaffolding # 3

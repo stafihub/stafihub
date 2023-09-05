@@ -52,4 +52,5 @@ var (
 	ErrInterchainTxMsgsEmpty        = sdkerrors.Register(ModuleName, 44, "interchain tx msgs empty")
 	ErrPoolStatusUnmatch            = sdkerrors.Register(ModuleName, 45, "pool status unmatch")
 	ErrConnectionIdNotFound         = sdkerrors.Register(ModuleName, 46, "connection id not found")
+	ErrLsmInterchainTxFailed        = sdkerrors.Register(ModuleName, 47, "lsm interchain tx failed")
 )

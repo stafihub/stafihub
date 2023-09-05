@@ -421,6 +421,17 @@ func (k Keeper) ProcessExecuteNativeAndLsmBondProposal(ctx sdk.Context, p *types
 		return err
 	}
 	if len(txMsg) > 0 {
+		preProposalId, found := k.GetLatestLsmBondProposalId(ctx)
+		if found {
+			status, exist := k.GetInterchainTxProposalStatus(ctx, preProposalId)
+			if !exist {
+				return types.ErrInterchainTxPropIdNotFound
+			}
+			if status != types.InterchainTxStatusSuccess {
+				return types.ErrLsmInterchainTxFailed
+			}
+		}
+
 		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, txMsg, types.TxTypeReDeemToken.String())
 		if err != nil {
 			return err
@@ -428,6 +439,8 @@ func (k Keeper) ProcessExecuteNativeAndLsmBondProposal(ctx sdk.Context, p *types
 
 		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
 		k.SetInterchainTxProposalStatus(ctx, p.PropId, types.InterchainTxStatusInit)
+
+		k.SetLatestLsmBondProposalId(ctx, p.PropId)
 	}
 
 	ctx.EventManager().EmitEvent(

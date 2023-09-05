@@ -66,6 +66,7 @@ var (
 	InterchainTxPropIdPrefix         = []byte{0x22}
 	InterchainTxPropSeqIndexPrefix   = []byte{0x23}
 	TotalExpectedFeePrefix           = []byte{0x24}
+	LatestLsmBondProposalIdKey       = []byte{0x25}
 )
 
 var (
