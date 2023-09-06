@@ -23,3 +23,16 @@ message MsgRedeemTokensForShares {
 message MsgRedeemTokensForSharesResponse {
   cosmos.base.v1beta1.Coin amount = 1 [ (gogoproto.nullable) = false ];
 }
+
+// MsgTransferTokenizeShareRecord transfer a tokenize share record
+message MsgTransferTokenizeShareRecord {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  uint64 tokenize_share_record_id = 1;
+  string sender                   = 2;
+  string new_owner                = 3;
+}
+
+// MsgTransferTokenizeShareRecordResponse defines the Msg/MsgTransferTokenizeShareRecord response type.
+message MsgTransferTokenizeShareRecordResponse {}

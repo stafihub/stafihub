@@ -25,15 +25,6 @@ stafihubd tx ledger set-relay-fee-receiver uratom stafi1mgjkpyfm00mxk0nmhvfvwhlr
 
 stafihubd query ledger relay-fee-receiver uratom
 
-# this will init bonded pool, exchange rate, pipeline
-stafihubd tx ledger init-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
-
-stafihubd query ledger bonded-pools uratom
-
-stafihubd query ledger exchange-rate uratom
-
-stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
-
 
 
 # add relayers
@@ -50,6 +41,17 @@ stafihubd query relayers threshold ledger uratom
 stafihubd tx ledger set-r-params uratom 0.00001stake 600 0 2 0stake --from admin --keyring-backend file --chain-id local-stafihub
 
 stafihubd query ledger r-params uratom
+
+
+# this will init bonded pool, exchange rate, pipeline
+stafihubd tx ledger init-pool uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 --from admin --chain-id local-stafihub --keyring-backend file
+
+stafihubd query ledger bonded-pools uratom
+
+stafihubd query ledger exchange-rate uratom
+
+stafihubd query ledger bond-pipeline uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75
+
 
 # set pool detail for multisig/ica pool
 stafihubd tx ledger set-pool-detail uratom cosmos13jd2vn5wt8h6slj0gcv05lasgpkwpm26n04y75 cosmos1cad0efr25faywnjp8qp36l8zlqa2sgz0jwn0hl:cosmos13mwxtgrljf9d5r72sc28496ua4lsga0jvmqz8x 1 --from admin --chain-id local-stafihub --keyring-backend file
