@@ -35,6 +35,7 @@ service Msg {
   rpc InitPool(MsgInitPool) returns (MsgInitPoolResponse);
   rpc SetPoolStatus(MsgSetPoolStatus) returns (MsgSetPoolStatusResponse);
   rpc SetInterchainTxProposalStatus(MsgSetInterchainTxProposalStatus) returns (MsgSetInterchainTxProposalStatusResponse);
+  rpc FlushIbcPacket(MsgFlushIbcPacket) returns (MsgFlushIbcPacketResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -268,6 +269,16 @@ message MsgSetInterchainTxProposalStatus {
 }
 
 message MsgSetInterchainTxProposalStatusResponse {
+}
+
+message MsgFlushIbcPacket {
+  string creator = 1;
+  string portID = 2;
+  string channelID = 3;
+  uint32 sequence = 4;
+}
+
+message MsgFlushIbcPacketResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -162,6 +162,7 @@ require (
 )
 
 replace (
+	github.com/cosmos/ibc-go/v5 => github.com/stafihub/ibc-go/v5 v5.2.1-stafihub-0.1.0
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	// replace broken goleveldb
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7

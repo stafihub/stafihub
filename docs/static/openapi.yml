@@ -49985,6 +49985,8 @@ definitions:
     default: LIQUIDITY_BOND_STATE_VERIFY_OK
   stafihub.stafihub.ledger.MsgClearCurrentEraSnapShotsResponse:
     type: object
+  stafihub.stafihub.ledger.MsgFlushIbcPacketResponse:
+    type: object
   stafihub.stafihub.ledger.MsgInitPoolResponse:
     type: object
   stafihub.stafihub.ledger.MsgLiquidityUnbondResponse:
