@@ -46,6 +46,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgRedeemTokensForShares{}, "cosmos-sdk/MsgRedeemTokensForShares", nil)
 	cdc.RegisterConcrete(&MsgTransferTokenizeShareRecord{}, "cosmos-sdk/MsgTransferTokenizeShareRecord", nil)
 	cdc.RegisterConcrete(&MsgSetInterchainTxProposalStatus{}, "ledger/SetInterchainTxProposalStatus", nil)
+	cdc.RegisterConcrete(&MsgOpenIcaChannel{}, "ledger/OpenIcaChannel", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -123,6 +124,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetInterchainTxProposalStatus{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgOpenIcaChannel{},
 	)
 	// this line is used by starport scaffolding # 3
 

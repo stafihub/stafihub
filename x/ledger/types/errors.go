@@ -55,4 +55,5 @@ var (
 	ErrLsmInterchainTxFailed        = sdkerrors.Register(ModuleName, 47, "lsm interchain tx failed")
 	ErrEraIsDealing                 = sdkerrors.Register(ModuleName, 48, "era is dealing")
 	ErrInterchainTxStatusUnmatch    = sdkerrors.Register(ModuleName, 49, "interchain tx status unmatch")
+	ErrUnknownAccountType           = sdkerrors.Register(ModuleName, 50, "unknown account type")
 )

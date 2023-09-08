@@ -49789,6 +49789,13 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  stafihub.stafihub.ledger.AccountType:
+    type: string
+    enum:
+      - ACCOUNT_TYPE_UNSPECIFIED
+      - ACCOUNT_TYPE_DELEGATION
+      - ACCOUNT_TYPE_WITHDRAW
+    default: ACCOUNT_TYPE_UNSPECIFIED
   stafihub.stafihub.ledger.BondPipeline:
     type: object
     properties:
@@ -49992,6 +49999,8 @@ definitions:
   stafihub.stafihub.ledger.MsgMigrateInitResponse:
     type: object
   stafihub.stafihub.ledger.MsgMigrateUnbondingsResponse:
+    type: object
+  stafihub.stafihub.ledger.MsgOpenIcaChannelResponse:
     type: object
   stafihub.stafihub.ledger.MsgRegisterIcaPoolResponse:
     type: object

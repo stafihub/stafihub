@@ -201,3 +201,11 @@ enum InterchainTxStatus {
     INTERCHAIN_TX_STATUS_SUCCESS = 2 [(gogoproto.enumvalue_customname) = "InterchainTxStatusSuccess"];
     INTERCHAIN_TX_STATUS_FAILED = 3 [(gogoproto.enumvalue_customname) = "InterchainTxStatusFailed"];
 }
+
+enum AccountType {
+    option (gogoproto.goproto_enum_prefix) = false;
+  
+    ACCOUNT_TYPE_UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "AccountTypeUnspecified"];
+    ACCOUNT_TYPE_DELEGATION = 1 [(gogoproto.enumvalue_customname) = "AccountTypeDelegation"];
+    ACCOUNT_TYPE_WITHDRAW = 2 [(gogoproto.enumvalue_customname) = "AccountTypeWithdraw"];
+}

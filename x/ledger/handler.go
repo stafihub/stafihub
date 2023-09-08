@@ -89,6 +89,9 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgSetInterchainTxProposalStatus:
 			res, err := msgServer.SetInterchainTxProposalStatus(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgOpenIcaChannel:
+			res, err := msgServer.OpenIcaChannel(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
