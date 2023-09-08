@@ -9,10 +9,11 @@ const TypeMsgOpenIcaChannel = "open_ica_channel"
 
 var _ sdk.Msg = &MsgOpenIcaChannel{}
 
-func NewMsgOpenIcaChannel(creator string, poolAddress string) *MsgOpenIcaChannel {
+func NewMsgOpenIcaChannel(creator string, poolAddress string, accountType AccountType) *MsgOpenIcaChannel {
 	return &MsgOpenIcaChannel{
 		Creator:     creator,
 		PoolAddress: poolAddress,
+		AccountType: accountType,
 	}
 }
 

@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -14,11 +15,16 @@ var _ = strconv.Itoa(0)
 
 func CmdOpenIcaChannel() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "open-ica-channel [pool-address]",
+		Use:   "open-ica-channel [pool-address] [account-type]",
 		Short: "Open ica channel",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argPoolAddress := args[0]
+			argAccountType := args[1]
+
+			if _, exist := types.AccountType_value[argAccountType]; !exist {
+				return fmt.Errorf("status not exist")
+			}
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -28,6 +34,7 @@ func CmdOpenIcaChannel() *cobra.Command {
 			msg := types.NewMsgOpenIcaChannel(
 				clientCtx.GetFromAddress().String(),
 				argPoolAddress,
+				types.AccountType(types.AccountType_value[argAccountType]),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
