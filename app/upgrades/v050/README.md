@@ -20,7 +20,7 @@ make install
 ```bash
 # should be 0.5.0
 stafihubd version
-# Should be commit fbeedb2441f614c9936e63a39cdec29abc70503f
+# Should be commit 920922cd686a94664f736bd604093a305475d0dc
 stafihubd version --long
 ```
 
