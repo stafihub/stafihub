@@ -10,7 +10,7 @@ const (
 	UpgradeName = "v050"
 )
 
-// CreateUpgradeHandler creates an SDK upgrade handler for v040
+// CreateUpgradeHandler creates an SDK upgrade handler for v050
 func CreateUpgradeHandler(
 	mm *module.Manager,
 	configurator module.Configurator,

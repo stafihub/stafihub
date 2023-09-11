@@ -1,5 +1,7 @@
 # StaFiHub v0.5.0 Upgrade
 
+The Upgrade is scheduled for block `5868372`. A countdown clock is [here](https://www.mintscan.io/stafi/blocks/5868372)
+
 This guide assumes that you use cosmovisor to manage upgrades.
 
 ## Changelog
@@ -20,7 +22,7 @@ make install
 ```bash
 # should be 0.5.0
 stafihubd version
-# Should be commit fbeedb2441f614c9936e63a39cdec29abc70503f
+# Should be commit 920922cd686a94664f736bd604093a305475d0dc
 stafihubd version --long
 ```
 

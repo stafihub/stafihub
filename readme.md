@@ -29,3 +29,6 @@ If you are looking for historical genesis files and other data
 
 - **v040** _(v0.4.0)_ - Block 3766566 - (2023-04-28T11:46:11)
   - [Upgrade Instruction](https://github.com/stafihub/stafihub/tree/main/app/upgrades/v040)
+
+- **v050** _(v0.5.0)_ - Block 5868372 - (2023-09-14T15:59:46)
+  - [Upgrade Instruction](https://github.com/stafihub/stafihub/tree/main/app/upgrades/v050)
