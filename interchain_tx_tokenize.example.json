@@ -1,0 +1,12 @@
+[
+    {
+        "@type": "/cosmos.staking.v1beta1.MsgTokenizeShares",
+        "delegator_address": "cosmos1hq5z5a43wn29vldvr48fel86ftuv60q2ty9arf0wydnc7885m2fqs9gjgt",
+        "validator_address": "",
+        "amount": {
+            "denom": "uatom",
+            "amount": "1000"
+        },
+        "tokenized_share_owner": "cosmos1hq5z5a43wn29vldvr48fel86ftuv60q2ty9arf0wydnc7885m2fqs9gjgt"
+    }
+]

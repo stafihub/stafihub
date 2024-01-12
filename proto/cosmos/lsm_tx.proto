@@ -36,3 +36,20 @@ message MsgTransferTokenizeShareRecord {
 
 // MsgTransferTokenizeShareRecordResponse defines the Msg/MsgTransferTokenizeShareRecord response type.
 message MsgTransferTokenizeShareRecordResponse {}
+
+
+// MsgTokenizeShares tokenizes a delegation
+message MsgTokenizeShares {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string                   delegator_address     = 1 [(gogoproto.moretags) = "yaml:\"delegator_address\""];
+  string                   validator_address     = 2 [(gogoproto.moretags) = "yaml:\"validator_address\""];
+  cosmos.base.v1beta1.Coin amount                = 3 [(gogoproto.nullable) = false];
+  string                   tokenized_share_owner = 4;
+}
+
+// MsgTokenizeSharesResponse defines the Msg/MsgTokenizeShares response type.
+message MsgTokenizeSharesResponse {
+  cosmos.base.v1beta1.Coin amount = 1 [(gogoproto.nullable) = false];
+}
