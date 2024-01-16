@@ -12,11 +12,13 @@ import (
 const (
 	TypeMsgRedeemTokensForShares       = "redeem_tokens_for_shares"
 	TypeMsgTransferTokenizeShareRecord = "transfer_tokenize_share_record"
+	TypeMsgTokenizeShares              = "tokenize_shares"
 )
 
 var (
 	_ sdk.Msg = &MsgRedeemTokensForShares{}
 	_ sdk.Msg = &MsgTransferTokenizeShareRecord{}
+	_ sdk.Msg = &MsgTokenizeShares{}
 )
 
 // NewMsgRedeemTokensForShares creates a new MsgRedeemTokensForShares instance.
@@ -104,6 +106,39 @@ func (msg MsgTransferTokenizeShareRecord) ValidateBasic() error {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid sender address: %s", err)
 	}
 	if _, err := sdk.AccAddressFromBech32(msg.NewOwner); err != nil {
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid new owner address: %s", err)
+	}
+
+	return nil
+}
+
+// Route implements the sdk.Msg interface.
+func (msg MsgTokenizeShares) Route() string { return RouterKey }
+
+// Type implements the sdk.Msg interface.
+func (msg MsgTokenizeShares) Type() string { return TypeMsgTokenizeShares }
+
+// GetSigners implements the sdk.Msg interface.
+func (msg MsgTokenizeShares) GetSigners() []sdk.AccAddress {
+	sender, err := sdk.AccAddressFromBech32(msg.DelegatorAddress)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{sender}
+}
+
+// GetSignBytes implements the sdk.Msg interface.
+func (msg MsgTokenizeShares) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(&msg)
+	return sdk.MustSortJSON(bz)
+}
+
+// ValidateBasic implements the sdk.Msg interface.
+func (msg MsgTokenizeShares) ValidateBasic() error {
+	if _, err := sdk.AccAddressFromBech32(msg.DelegatorAddress); err != nil {
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid sender address: %s", err)
+	}
+	if _, err := sdk.AccAddressFromBech32(msg.TokenizedShareOwner); err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid new owner address: %s", err)
 	}
 
