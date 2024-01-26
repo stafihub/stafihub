@@ -71,11 +71,15 @@ func (k msgServer) VoteProposal(goCtx context.Context, msg *types.MsgVoteProposa
 		return nil, types.ErrThresholdNotSet
 	}
 	if len(proposal.Voters) >= int(threshold.Value) {
-		if resourceIdToDenom.DenomType == types.External {
+		switch resourceIdToDenom.DenomType {
+		case types.External:
 			err := k.bankKeeper.MintCoins(ctx, types.ModuleName, shouldMintOrUnlockCoins)
 			if err != nil {
 				return nil, err
 			}
+		case types.Native, types.InNativeOutExternal:
+		default:
+			return nil, types.ErrDenomTypeUnmatch
 		}
 
 		err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiver, shouldMintOrUnlockCoins)

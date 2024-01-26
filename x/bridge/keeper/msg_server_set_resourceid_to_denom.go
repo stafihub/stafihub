@@ -21,7 +21,9 @@ func (k msgServer) SetResourceidToDenom(goCtx context.Context, msg *types.MsgSet
 		return nil, types.ErrResourceIdFormatNotRight
 	}
 
-	if msg.DenomType != types.External && msg.DenomType != types.Native {
+	switch msg.DenomType {
+	case types.External, types.Native, types.InNativeOutExternal:
+	default:
 		return nil, types.ErrDenomTypeUnmatch
 	}
 
