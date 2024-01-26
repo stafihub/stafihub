@@ -98,7 +98,11 @@ func (im IBCModule) OnChanOpenAck(
 	}
 	switch addressTail {
 	case types.DelegationOwnerTail:
-		icaPoolDetail.Status = icaPoolDetail.Status + 1
+		if icaPoolDetail.Status >= types.IcaPoolStatusSetWithdrawal {
+			icaPoolDetail.Status = types.IcaPoolStatusSetWithdrawal
+		} else {
+			icaPoolDetail.Status = icaPoolDetail.Status + 1
+		}
 		icaPoolDetail.DelegationAccount.Address = interchainAddress
 		icaPoolDetail.DelegationAccount.CtrlPortId = portID
 		icaPoolDetail.DelegationAccount.CtrlChannelId = channelID
@@ -109,7 +113,11 @@ func (im IBCModule) OnChanOpenAck(
 		im.keeper.SetIcaPoolDetail(ctx, icaPoolDetail)
 		im.keeper.SetIcaPoolDelegationAddrIndex(ctx, icaPoolDetail)
 	case types.WithdrawalOwnerTail:
-		icaPoolDetail.Status = icaPoolDetail.Status + 1
+		if icaPoolDetail.Status >= types.IcaPoolStatusSetWithdrawal {
+			icaPoolDetail.Status = types.IcaPoolStatusSetWithdrawal
+		} else {
+			icaPoolDetail.Status = icaPoolDetail.Status + 1
+		}
 		icaPoolDetail.WithdrawalAccount.Address = interchainAddress
 		icaPoolDetail.WithdrawalAccount.CtrlPortId = portID
 		icaPoolDetail.WithdrawalAccount.CtrlChannelId = channelID
