@@ -56,5 +56,6 @@ enum DenomType {
   UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "Unspecified"];
   NATIVE = 1 [(gogoproto.enumvalue_customname) = "Native"];
   EXTERNAL = 2 [(gogoproto.enumvalue_customname) = "External"];
+  IN_NATIVE_OUT_EXTERNAL = 3 [(gogoproto.enumvalue_customname) = "InNativeOutExternal"];
 }
 

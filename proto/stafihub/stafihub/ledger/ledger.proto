@@ -149,7 +149,8 @@ enum OriginalTxType {
   ORIGINAL_TX_TYPE_DEAL_BONDREPORTED = 1 [(gogoproto.enumvalue_customname) = "TxTypeDealBondReported"];
   ORIGINAL_TX_TYPE_DEAL_ACTIVEREPORTED = 2 [(gogoproto.enumvalue_customname) = "TxTypeDealActiveReported"];
   ORIGINAL_TX_TYPE_DEAL_VALIDATORUPDATED = 3 [(gogoproto.enumvalue_customname) = "TxTypeDealValidatorUpdated"];
-  ORIGINAL_TX_TYPE_RESERVED = 4 [(gogoproto.enumvalue_customname) = "TxTypeReserved"];
+  ORIGINAL_TX_TYPE_WITHDRAW_ADDRESS_SEND = 4 [(gogoproto.enumvalue_customname) = "TxTypeWithdrawAddressSend"];
+  ORIGINAL_TX_TYPE_REDEEM_TOKEN = 5 [(gogoproto.enumvalue_customname) = "TxTypeReDeemToken"];
 }
 
 message RParams {
@@ -199,4 +200,12 @@ enum InterchainTxStatus {
     INTERCHAIN_TX_STATUS_INIT = 1 [(gogoproto.enumvalue_customname) = "InterchainTxStatusInit"];
     INTERCHAIN_TX_STATUS_SUCCESS = 2 [(gogoproto.enumvalue_customname) = "InterchainTxStatusSuccess"];
     INTERCHAIN_TX_STATUS_FAILED = 3 [(gogoproto.enumvalue_customname) = "InterchainTxStatusFailed"];
+}
+
+enum AccountType {
+    option (gogoproto.goproto_enum_prefix) = false;
+  
+    ACCOUNT_TYPE_UNSPECIFIED = 0 [(gogoproto.enumvalue_customname) = "AccountTypeUnspecified"];
+    ACCOUNT_TYPE_DELEGATION = 1 [(gogoproto.enumvalue_customname) = "AccountTypeDelegation"];
+    ACCOUNT_TYPE_WITHDRAW = 2 [(gogoproto.enumvalue_customname) = "AccountTypeWithdraw"];
 }

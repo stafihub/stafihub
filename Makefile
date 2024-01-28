@@ -94,6 +94,11 @@ build-all-binary: go.sum
 install: check_version go.sum
 	go install $(BUILD_FLAGS) ./cmd/stafihubd
 
+proto-gen:
+	@echo "Generating Protobuf files"
+	@sh ./proto/scripts/protocgen.sh
+
+
 update-swagger-docs: statik proto-swagger-gen
 	$(BINDIR)/statik -src=lite/swagger-ui -dest=lite -f -m
 	@if [ -n "$(git status --porcelain)" ]; then \

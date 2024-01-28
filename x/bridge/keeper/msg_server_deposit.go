@@ -61,11 +61,15 @@ func (k msgServer) Deposit(goCtx context.Context, msg *types.MsgDeposit) (*types
 		return nil, err
 	}
 
-	if resourceIdToDenom.DenomType == types.External {
+	switch resourceIdToDenom.DenomType {
+	case types.External, types.InNativeOutExternal:
 		err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, shouldBurnedOrLockedCoins)
 		if err != nil {
 			return nil, err
 		}
+	case types.Native:
+	default:
+		return nil, types.ErrDenomTypeUnmatch
 	}
 
 	//update deposit count

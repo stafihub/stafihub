@@ -139,6 +139,20 @@ func (k Keeper) GetInterchainTxProposalStatus(ctx sdk.Context, propId string) (s
 	return types.InterchainTxStatus(bts[0]), true
 }
 
+func (k Keeper) SetLatestLsmBondProposalId(ctx sdk.Context, propId string) {
+	store := ctx.KVStore(k.storeKey)
+	store.Set(types.LatestLsmBondProposalIdKey, []byte(propId))
+}
+
+func (k Keeper) GetLatestLsmBondProposalId(ctx sdk.Context) (string, bool) {
+	store := ctx.KVStore(k.storeKey)
+	bts := store.Get(types.LatestLsmBondProposalIdKey)
+	if len(bts) == 0 {
+		return "", false
+	}
+	return string(bts), true
+}
+
 func (k Keeper) SetInterchainTxProposalSequenceIndex(ctx sdk.Context, ctrPortId, ctrChannelId string, sequence uint64, propId string) {
 	store := ctx.KVStore(k.storeKey)
 

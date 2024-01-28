@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/binary"
 	fmt "fmt"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stafihub/stafihub/utils"
@@ -30,6 +31,7 @@ var (
 	DefaultUnbondCommission        = utils.MustNewDecFromStr("0.002")
 	DefaultUnbondRelayFee          = sdk.NewCoin(utils.FisDenom, sdk.NewInt(1000000))
 	DefaultEraUnbondLimit          = uint32(200)
+	ICATxTimeout                   = time.Hour * 30
 )
 
 var (
@@ -66,6 +68,7 @@ var (
 	InterchainTxPropIdPrefix         = []byte{0x22}
 	InterchainTxPropSeqIndexPrefix   = []byte{0x23}
 	TotalExpectedFeePrefix           = []byte{0x24}
+	LatestLsmBondProposalIdKey       = []byte{0x25}
 )
 
 var (

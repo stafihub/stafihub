@@ -59,6 +59,8 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 
 	cmd.AddCommand(CmdInterchainTxStatus())
 
+	cmd.AddCommand(CmdLatestLsmBondProposalId())
+
 	// this line is used by starport scaffolding # 1
 
 	return cmd

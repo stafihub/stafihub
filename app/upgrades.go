@@ -7,6 +7,7 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 	"github.com/stafihub/stafihub/app/upgrades/v030"
 	"github.com/stafihub/stafihub/app/upgrades/v040"
+	"github.com/stafihub/stafihub/app/upgrades/v050"
 )
 
 func (app *App) setupUpgradeHandlers() {
@@ -20,6 +21,12 @@ func (app *App) setupUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v040.UpgradeName,
 		v040.CreateUpgradeHandler(app.mm, app.configurator),
+	)
+
+	// v050 upgrade handler
+	app.UpgradeKeeper.SetUpgradeHandler(
+		v050.UpgradeName,
+		v050.CreateUpgradeHandler(app.mm, app.configurator),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()

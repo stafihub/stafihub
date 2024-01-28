@@ -60,3 +60,16 @@ message InterchainTxProposal {
     repeated google.protobuf.Any msgs = 7;
     string propId = 8;
 }
+
+message ExecuteNativeAndLsmBondProposal {
+    string proposer = 1;
+    string denom = 2;
+    string bonder = 3;
+    string pool = 4;
+    string txhash = 5;
+    string nativeBondAmount = 6 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    string lsmBondAmount = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int", (gogoproto.nullable) = false];
+    repeated google.protobuf.Any msgs = 8;
+    string propId = 9;
+    LiquidityBondState state = 10;
+}

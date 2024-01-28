@@ -25,6 +25,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&ActiveReportProposal{}, "ledger/ActiveReportProposal", nil)
 	cdc.RegisterConcrete(&TransferReportProposal{}, "ledger/TransferReportProposal", nil)
 	cdc.RegisterConcrete(&ExecuteBondProposal{}, "ledger/ExecuteBondProposal", nil)
+	cdc.RegisterConcrete(&ExecuteNativeAndLsmBondProposal{}, "ledger/ExecuteNativeAndLsmBondProposal", nil)
 	cdc.RegisterConcrete(&InterchainTxProposal{}, "ledger/InterchainTxProposal", nil)
 
 	cdc.RegisterConcrete(&MsgSubmitSignature{}, "ledger/SubmitSignature", nil)
@@ -41,6 +42,12 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetWithdrawalAddr{}, "ledger/SetWithdrawalAddr", nil)
 	cdc.RegisterConcrete(&MsgInitPool{}, "ledger/InitPool", nil)
 	cdc.RegisterConcrete(&MsgSetPoolStatus{}, "ledger/SetPoolStatus", nil)
+
+	cdc.RegisterConcrete(&MsgRedeemTokensForShares{}, "cosmos-sdk/MsgRedeemTokensForShares", nil)
+	cdc.RegisterConcrete(&MsgTransferTokenizeShareRecord{}, "cosmos-sdk/MsgTransferTokenizeShareRecord", nil)
+	cdc.RegisterConcrete(&MsgTokenizeShares{}, "cosmos-sdk/MsgTokenizeShares", nil)
+	cdc.RegisterConcrete(&MsgSetInterchainTxProposalStatus{}, "ledger/SetInterchainTxProposalStatus", nil)
+	cdc.RegisterConcrete(&MsgOpenIcaChannel{}, "ledger/OpenIcaChannel", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -64,6 +71,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&ActiveReportProposal{},
 		&TransferReportProposal{},
 		&ExecuteBondProposal{},
+		&ExecuteNativeAndLsmBondProposal{},
 		&InterchainTxProposal{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
@@ -107,6 +115,22 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSetPoolStatus{},
+	)
+
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgRedeemTokensForShares{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgTransferTokenizeShareRecord{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgTokenizeShares{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSetInterchainTxProposalStatus{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgOpenIcaChannel{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -213,11 +213,96 @@ func CmdExecuteBondProposal() *cobra.Command {
 	return cmd
 }
 
+func CmdExecuteNativeAndLsmBondProposal() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "execute-native-and-lsm-bond-proposal [denom] [bonder] [pool] [txhash] [native-bond-amount] [lsm-bond-amount] [state] [path_to_msg.json]",
+		Short: "Broadcast message execute-native-and-lsm-bond-proposal",
+		Args:  cobra.ExactArgs(6),
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			argDenom := args[0]
+			argBonder, err := sdk.AccAddressFromBech32(args[1])
+			if err != nil {
+				return err
+			}
+			argPool := args[2]
+			argTxHash := args[3]
+			argNativeAmount, ok := sdk.NewIntFromString(args[4])
+			if !ok {
+				return fmt.Errorf("cast amount %s into Int error", args[4])
+			}
+
+			argLsmAmount, ok := sdk.NewIntFromString(args[5])
+			if !ok {
+				return fmt.Errorf("cast amount %s into Int error", args[5])
+			}
+			bondState, exist := types.LiquidityBondState_value[args[6]]
+			if !exist {
+				return fmt.Errorf("liquidityBondSate arg not found")
+			}
+
+			// check for file path if JSON input is not provided
+			contents, err := os.ReadFile(args[4])
+			if err != nil {
+				return errors.Wrap(err, "neither JSON input nor path to .json file for sdk msg were provided")
+			}
+			var msgs []interface{}
+
+			err = json.Unmarshal(contents, &msgs)
+			if err != nil {
+				return err
+			}
+			cdc := codec.NewProtoCodec(clientCtx.InterfaceRegistry)
+
+			txMsgs := make([]sdk.Msg, 0)
+
+			for _, msg := range msgs {
+				content, err := json.Marshal(msg)
+				if err != nil {
+					return err
+				}
+				var txMsg sdk.Msg
+				if err := cdc.UnmarshalInterfaceJSON(content, &txMsg); err != nil {
+					return errors.Wrap(err, "error unmarshalling sdk msg file")
+				}
+				txMsgs = append(txMsgs, txMsg)
+			}
+			fmt.Println(txMsgs)
+
+			from := clientCtx.GetFromAddress()
+
+			content, err := types.NewExecuteNativeAndLsmBondProposal(from, argDenom, argBonder, argPool, argTxHash, argNativeAmount, argLsmAmount, types.LiquidityBondState(bondState), txMsgs)
+			if err != nil {
+				return err
+			}
+
+			msg, err := rvotetypes.NewMsgSubmitProposal(from, content)
+			if err != nil {
+				return err
+			}
+
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
+
+	return cmd
+}
+
 func CmdInterchainTxProposal() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "interchain-tx-proposal [denom] [pool] [era] [txType] [factor] [path_to_msg.json]",
 		Short: "Broadcast message interchain tx proposal",
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDenom := args[0]
 			argPool := args[1]
@@ -237,7 +322,7 @@ func CmdInterchainTxProposal() *cobra.Command {
 				return err
 			}
 			// check for file path if JSON input is not provided
-			contents, err := os.ReadFile(args[4])
+			contents, err := os.ReadFile(args[5])
 			if err != nil {
 				return errors.Wrap(err, "neither JSON input nor path to .json file for sdk msg were provided")
 			}

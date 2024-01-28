@@ -128,6 +128,17 @@ func (k Keeper) ProcessActiveReportProposal(ctx sdk.Context, p *types.ActiveRepo
 	if !found {
 		return types.ErrActiveAlreadySet
 	}
+	// check lsm bond proposal executed
+	preProposalId, found := k.GetLatestLsmBondProposalId(ctx)
+	if found {
+		status, exist := k.GetInterchainTxProposalStatus(ctx, preProposalId)
+		if !exist {
+			return types.ErrInterchainTxPropIdNotFound
+		}
+		if status != types.InterchainTxStatusSuccess {
+			return types.ErrLsmInterchainTxFailed
+		}
+	}
 
 	currentEraShots := k.CurrentEraSnapshots(ctx, shot.Denom)
 	newCurrentEraShots := types.EraSnapshot{Denom: shot.Denom, ShotIds: make([]string, 0)}
@@ -343,6 +354,130 @@ func (k Keeper) ProcessExecuteBondProposal(ctx sdk.Context, p *types.ExecuteBond
 	return nil
 }
 
+func (k Keeper) ProcessExecuteNativeAndLsmBondProposal(ctx sdk.Context, p *types.ExecuteNativeAndLsmBondProposal) error {
+	err := k.CheckAddress(ctx, p.Denom, p.Pool)
+	if err != nil {
+		return err
+	}
+
+	if !k.IsBondedPoolExist(ctx, p.Denom, p.Pool) {
+		return types.ErrPoolNotBonded
+	}
+
+	icaPool, found := k.GetIcaPoolByDelegationAddr(ctx, p.Pool)
+	if !found {
+		return types.ErrIcaPoolNotFound
+	}
+
+	eraShot := k.CurrentEraSnapshots(ctx, p.Denom)
+	if len(eraShot.ShotIds) != 0 {
+		return types.ErrEraIsDealing
+	}
+
+	// check pool status
+	poolDetail, found := k.GetPoolDetail(ctx, p.Denom, p.Pool)
+	if !found {
+		return types.ErrPoolDetailNotFound
+	}
+	if poolDetail.Status != types.Active {
+		return types.ErrPoolStatusUnmatch
+	}
+
+	var bonder sdk.AccAddress
+	if p.State == types.LiquidityBondStateVerifyOk {
+		bonder, err = sdk.AccAddressFromBech32(p.Bonder)
+		if err != nil {
+			return err
+		}
+	}
+
+	br, found := k.GetBondRecord(ctx, p.Denom, p.Txhash)
+	if found && br.State == types.LiquidityBondStateVerifyOk {
+		return types.ErrLiquidityBondAlreadyExecuted
+	}
+	totalBondAmount := p.NativeBondAmount.Add(p.LsmBondAmount)
+	br = types.NewBondRecord(p.Denom, p.Bonder, p.Pool, p.Txhash, totalBondAmount, p.State)
+
+	if br.State != types.LiquidityBondStateVerifyOk {
+		k.SetBondRecord(ctx, br)
+		return nil
+	}
+
+	pipe, ok := k.GetBondPipeline(ctx, p.Denom, p.Pool)
+	if !ok {
+		return types.ErrPoolNotBonded
+	}
+	pipe.Chunk.Active = pipe.Chunk.Active.Add(totalBondAmount)
+	pipe.Chunk.Bond = pipe.Chunk.Bond.Add(p.NativeBondAmount)
+
+	rbalance := k.TokenToRtoken(ctx, p.Denom, totalBondAmount)
+	if rbalance.GT(sdk.ZeroInt()) {
+		rcoins := sdk.Coins{
+			sdk.NewCoin(p.Denom, rbalance),
+		}
+		if err := k.bankKeeper.MintCoins(ctx, types.ModuleName, rcoins); err != nil {
+			return err
+		}
+
+		if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, bonder, rcoins); err != nil {
+			return err
+		}
+	}
+
+	k.SetBondRecord(ctx, br)
+	k.SetBondPipeline(ctx, pipe)
+	k.mintrewardKeeper.UpdateUserClaimInfo(ctx, bonder, p.Denom, rbalance, totalBondAmount)
+
+	txMsg, err := p.GetTxMsg(k.cdc)
+	if err != nil {
+		return err
+	}
+
+	var cosmosProtoMsgs []cosmosProto.Message
+	for _, msg := range txMsg {
+		cosmosProtoMsgs = append(cosmosProtoMsgs, msg)
+	}
+
+	if len(txMsg) > 0 {
+		preProposalId, found := k.GetLatestLsmBondProposalId(ctx)
+		if found {
+			status, exist := k.GetInterchainTxProposalStatus(ctx, preProposalId)
+			if !exist {
+				return types.ErrInterchainTxPropIdNotFound
+			}
+			if status != types.InterchainTxStatusSuccess {
+				return types.ErrLsmInterchainTxFailed
+			}
+		}
+
+		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, cosmosProtoMsgs, types.TxTypeReDeemToken.String())
+		if err != nil {
+			return err
+		}
+
+		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
+		k.SetInterchainTxProposalStatus(ctx, p.PropId, types.InterchainTxStatusInit)
+
+		k.SetLatestLsmBondProposalId(ctx, p.PropId)
+	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeNativeAndLsmBondExecuted,
+			sdk.NewAttribute(types.AttributeKeyDenom, br.Denom),
+			sdk.NewAttribute(types.AttributeKeyBonder, br.Bonder),
+			sdk.NewAttribute(types.AttributeKeyPool, br.Pool),
+			sdk.NewAttribute(types.AttributeKeyTxhash, br.Txhash),
+			sdk.NewAttribute(types.AttributeKeyBalance, br.Amount.String()),
+			sdk.NewAttribute(types.AttributeKeyNativeBondAmount, p.NativeBondAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyLsmBondAmount, p.LsmBondAmount.String()),
+			sdk.NewAttribute(types.AttributeKeyRbalance, rbalance.String()),
+		),
+	)
+
+	return nil
+}
+
 func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.InterchainTxProposal) error {
 	err := k.CheckAddress(ctx, p.Denom, p.PoolAddress)
 	if err != nil {
@@ -379,14 +514,14 @@ func (k Keeper) ProcessInterchainTxProposal(ctx sdk.Context, p *types.Interchain
 		cosmosProtoMsgs = append(cosmosProtoMsgs, msg)
 	}
 
-	if p.TxType != types.TxTypeReserved {
+	if p.TxType != types.TxTypeWithdrawAddressSend { //for delegation account
 		sequence, err := k.SubmitTxs(ctx, icaPool.DelegationAccount.CtrlConnectionId, icaPool.DelegationAccount.Owner, cosmosProtoMsgs, p.TxType.String())
 		if err != nil {
 			return err
 		}
 
 		k.SetInterchainTxProposalSequenceIndex(ctx, icaPool.DelegationAccount.CtrlPortId, icaPool.DelegationAccount.CtrlChannelId, sequence, p.PropId)
-	} else {
+	} else { //for withdrawal account
 		sequence, err := k.SubmitTxs(ctx, icaPool.WithdrawalAccount.CtrlConnectionId, icaPool.WithdrawalAccount.Owner, cosmosProtoMsgs, p.TxType.String())
 		if err != nil {
 			return err
