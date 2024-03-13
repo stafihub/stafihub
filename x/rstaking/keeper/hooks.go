@@ -12,9 +12,14 @@ type Hooks struct {
 	k Keeper
 }
 
+// BeforeTokenizeShareRecordRemoved implements types.StakingHooks.
+func (h Hooks) BeforeTokenizeShareRecordRemoved(ctx sdk.Context, recordID uint64) error {
+	return nil
+}
+
 // AfterUnbondingInitiated implements types.StakingHooks.
 func (Hooks) AfterUnbondingInitiated(ctx sdk.Context, id uint64) error {
-	panic("unimplemented")
+	return nil
 }
 
 var _ stakingtypes.StakingHooks = Hooks{}
