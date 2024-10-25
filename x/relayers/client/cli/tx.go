@@ -91,11 +91,14 @@ func CmdDeleteRelayer() *cobra.Command {
 			argArena := args[0]
 
 			argDenom := args[1]
-			if sdk.ValidateDenom(argDenom) != nil {
-				return nil
+
+			if argArena != "bridge" {
+				if sdk.ValidateDenom(argDenom) != nil {
+					return nil
+				}
 			}
 
-			relAddr, err := sdk.AccAddressFromBech32(args[1])
+			relAddr, err := sdk.AccAddressFromBech32(args[2])
 			if err != nil {
 				return err
 			}
