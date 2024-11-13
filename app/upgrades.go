@@ -8,6 +8,7 @@ import (
 	"github.com/stafihub/stafihub/app/upgrades/v030"
 	"github.com/stafihub/stafihub/app/upgrades/v040"
 	"github.com/stafihub/stafihub/app/upgrades/v050"
+	"github.com/stafihub/stafihub/app/upgrades/v051"
 )
 
 func (app *App) setupUpgradeHandlers() {
@@ -27,6 +28,12 @@ func (app *App) setupUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v050.UpgradeName,
 		v050.CreateUpgradeHandler(app.mm, app.configurator),
+	)
+
+	// v051 upgrade handler
+	app.UpgradeKeeper.SetUpgradeHandler(
+		v051.UpgradeName,
+		v051.CreateUpgradeHandler(app.mm, app.configurator),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
