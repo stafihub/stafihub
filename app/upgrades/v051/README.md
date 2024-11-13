@@ -1,6 +1,6 @@
 # StaFiHub v0.5.1 Upgrade
 
-The Upgrade is scheduled for block ``. A countdown clock is [here](https://www.mintscan.io/stafi/blocks/)
+The Upgrade is scheduled for block `12468268`. A countdown clock is [here](https://www.mintscan.io/stafi/blocks/12468268)
 
 This guide assumes that you use cosmovisor to manage upgrades.
 
@@ -8,8 +8,8 @@ This guide assumes that you use cosmovisor to manage upgrades.
 
 ([v0.5.0...v0.5.1](https://github.com/stafihub/stafihub/compare/v0.5.0...v0.5.1))
 
-1. Add more encoding methods
-2. fix pool status when reopen channel
+1. Add MsgRedeemTokensForShares type to support migration to Neutron
+2. Fix pool status when reopen channel
 
 ## Install
 
@@ -25,7 +25,7 @@ make install
 ```bash
 # should be 0.5.1
 stafihubd version
-# Should be commit 
+# Should be commit 97b88db0ba511b94aad6e59f564b079dcbef50f4
 stafihubd version --long
 ```
 
